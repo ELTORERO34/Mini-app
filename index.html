@@ -3,46 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ma Boutique</title>
+  <title>Pochoñ Store • Boutique</title>
 
-  <!-- Styles et scripts -->
-  <link rel="stylesheet" href="style.css?v=4" />
+  <!-- Styles & Telegram SDK -->
+  <link rel="stylesheet" href="style.css?v=10" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script defer src="app.js?v=4"></script>
+  <script defer src="app.js?v=10"></script>
 </head>
 <body>
 
-  <!-- Bannière sticky (PNG transparent) -->
+  <!-- Bannière sticky (image PNG transparente) -->
   <header class="hero-simple">
     <img src="img/banner.png" alt="Bannière" class="hero-banner" />
   </header>
 
-  <!-- Filtres (IDs utilisés par app.js) -->
+  <!-- Filtres -->
   <section class="filters">
     <button id="catBtn" class="chip">Toutes les catégories ▾</button>
     <button id="brandBtn" class="chip">Toutes les marques ▾</button>
   </section>
 
-  <!-- ✅ CONTENEUR PRODUITS ATTENDU PAR app.js -->
+  <!-- Grille produits (id requis par app.js) -->
   <section id="grid" class="grid"></section>
 
-  <!-- Panier (si utilisé par ton app.js) -->
+  <!-- Tabbar Panier -->
   <footer class="tabbar">
     <button id="cartBtn" class="chip">🛒 Panier (<span id="cartCount">0</span>)</button>
   </footer>
 
-  <!-- Fiche produit (IDs utilisés par app.js) -->
+  <!-- Fiche produit (sheet) -->
   <div id="sheet" class="sheet" hidden>
     <div class="sheet-body">
       <div class="sheet-header">
         <h3 id="pTitle"></h3>
-        <button id="closeSheet">✕</button>
+        <button id="closeSheet" class="sheet-close">✕</button>
       </div>
       <img id="pImg" class="sheet-img" alt="" />
       <p id="pBrand" class="muted"></p>
       <p id="pBadges" class="badges"></p>
       <p id="pDesc"></p>
+
+      <!-- Champs dynamiques pour Personnalisable -->
       <div id="customFields"></div>
+
       <div class="sheet-actions">
         <span id="pPrice" class="price"></span>
         <button id="askBtn" class="btn-primary">Ajouter au panier</button>
@@ -50,11 +53,8 @@
     </div>
   </div>
 
-  <!-- Picker pour les listes déroulantes -->
+  <!-- Picker (menu déroulant des filtres) -->
   <div id="picker" class="picker" hidden></div>
 
 </body>
 </html>
-
-
-
