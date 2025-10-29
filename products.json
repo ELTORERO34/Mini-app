@@ -22,7 +22,7 @@
     "category": "Personnalisable",
     "customizable": true,
     "price": 14.9,
-    "img": "img/etiq1.jpg",
+    "img": "img/etiq1.png",
     "badges": ["Pack"],
     "desc": "Étiquettes pour cadeaux, bocaux, événements. Choisis ton texte et ton style.",
     "inputs": [
