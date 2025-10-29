@@ -2,42 +2,59 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ma Boutique Personnalisée</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ma Boutique</title>
 
-  <!-- 🔗 Lien vers ton fichier CSS -->
-  <link rel="stylesheet" href="style.css?v=2" />
-
-  <!-- 🔗 Lien vers ton script -->
-  <script defer src="app.js"></script>
+  <!-- Styles et scripts -->
+  <link rel="stylesheet" href="style.css?v=4" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script defer src="app.js?v=4"></script>
 </head>
-
 <body>
-  <!-- ===== Bannière sticky avec image transparente ===== -->
+
+  <!-- Bannière sticky (PNG transparent) -->
   <header class="hero-simple">
     <img src="img/banner.png" alt="Bannière" class="hero-banner" />
   </header>
 
-  <!-- ===== Filtres ===== -->
+  <!-- Filtres (IDs utilisés par app.js) -->
   <section class="filters">
     <button id="catBtn" class="chip">Toutes les catégories ▾</button>
     <button id="brandBtn" class="chip">Toutes les marques ▾</button>
   </section>
 
-  <!-- ===== Grille produits ===== -->
-  <main class="product-grid" id="productGrid"></main>
+  <!-- ✅ CONTENEUR PRODUITS ATTENDU PAR app.js -->
+  <section id="grid" class="grid"></section>
 
-  <!-- ===== Fiche produit (panneau déroulant) ===== -->
+  <!-- Panier (si utilisé par ton app.js) -->
+  <footer class="tabbar">
+    <button id="cartBtn" class="chip">🛒 Panier (<span id="cartCount">0</span>)</button>
+  </footer>
+
+  <!-- Fiche produit (IDs utilisés par app.js) -->
   <div id="sheet" class="sheet" hidden>
-    <button id="closeSheet">✕</button>
-    <img id="sheetImg" src="" alt="">
-    <h2 id="sheetTitle"></h2>
-    <p id="sheetDesc"></p>
-    <p id="sheetPrice"></p>
+    <div class="sheet-body">
+      <div class="sheet-header">
+        <h3 id="pTitle"></h3>
+        <button id="closeSheet">✕</button>
+      </div>
+      <img id="pImg" class="sheet-img" alt="" />
+      <p id="pBrand" class="muted"></p>
+      <p id="pBadges" class="badges"></p>
+      <p id="pDesc"></p>
+      <div id="customFields"></div>
+      <div class="sheet-actions">
+        <span id="pPrice" class="price"></span>
+        <button id="askBtn" class="btn-primary">Ajouter au panier</button>
+      </div>
+    </div>
   </div>
 
-  <!-- ===== Logo watermark (en fond) ===== -->
+  <!-- Picker pour les listes déroulantes -->
+  <div id="picker" class="picker" hidden></div>
+
 </body>
 </html>
+
 
 
