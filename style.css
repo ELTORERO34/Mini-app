@@ -107,3 +107,7 @@ body {
   border-radius: 8px;
   font-size: 11px;
 }
+/* Correction du bug du panneau bloquant */
+.sheet[hidden] {
+  display: none !important;
+}
