@@ -1,32 +1,89 @@
 [
   {
-    "id": "p1",
-    "name": "Sweat Logo GMF",
-    "brand": "GMF Paris",
-    "category": "Textile",
-    "price": 49.9,
-    "badges": ["Nouveau"],
-    "img": "https://placehold.co/600x400?text=Sweat+GMF",
-    "desc": "Sweat à capuche GMF, coton épais, impression logo premium."
+    "id": "tab-person-01",
+    "name": "Tableau personnalisé",
+    "brand": "Atelier GMF",
+    "category": "Personnalisable",
+    "customizable": true,
+    "price": 39.9,
+    "img": "https://placehold.co/600x400?text=Tableau+perso",
+    "badges": ["Sur-mesure"],
+    "desc": "Crée ton tableau : texte, couleur, format. Envoie ton visuel ensuite dans le chat Telegram.",
+    "inputs": [
+      { "name": "format", "label": "Format", "type": "select", "options": ["A4", "A3", "30x40", "50x70"], "required": true },
+      { "name": "couleur", "label": "Couleur dominante", "type": "text", "placeholder": "ex. Noir & Or", "required": true },
+      { "name": "texte", "label": "Texte à afficher", "type": "textarea", "placeholder": "Ton message ou prénom(s)", "required": false }
+    ]
   },
   {
-    "id": "p2",
-    "name": "Casquette Noire",
-    "brand": "GMF Paris",
-    "category": "Accessoires",
-    "price": 24.9,
-    "badges": ["Top vente"],
-    "img": "https://placehold.co/600x400?text=Casquette+Noire",
-    "desc": "Casquette noire avec logo brodé blanc. Taille réglable."
+    "id": "etiq-person-01",
+    "name": "Étiquettes personnalisées",
+    "brand": "Atelier GMF",
+    "category": "Personnalisable",
+    "customizable": true,
+    "price": 14.9,
+    "img": "https://placehold.co/600x400?text=Etiquettes+perso",
+    "badges": ["Pack"],
+    "desc": "Étiquettes pour cadeaux, bocaux, événements. Choisis ton texte et ton style.",
+    "inputs": [
+      { "name": "quantite", "label": "Quantité", "type": "select", "options": ["24", "48", "96"], "required": true },
+      { "name": "forme", "label": "Forme", "type": "select", "options": ["Rond", "Carré", "Rectangle"], "required": true },
+      { "name": "texte", "label": "Texte", "type": "textarea", "placeholder": "Inscris le texte à imprimer", "required": true }
+    ]
   },
   {
-    "id": "p3",
-    "name": "T-shirt GMF",
-    "brand": "GMF Paris",
-    "category": "Textile",
-    "price": 19.9,
-    "badges": ["Promo"],
-    "img": "https://placehold.co/600x400?text=Tshirt+GMF",
-    "desc": "T-shirt GMF en coton bio. Coupe mixte."
+    "id": "pochon-person-01",
+    "name": "Pochon personnalisé",
+    "brand": "Atelier GMF",
+    "category": "Personnalisable",
+    "customizable": true,
+    "price": 9.9,
+    "img": "https://placehold.co/600x400?text=Pochon+perso",
+    "badges": ["Cadeau"],
+    "desc": "Pochon coton avec texte ou logo. Idéal évènements, cadeaux, anniversaires.",
+    "inputs": [
+      { "name": "taille", "label": "Taille", "type": "select", "options": ["S", "M", "L"], "required": true },
+      { "name": "couleur", "label": "Couleur", "type": "select", "options": ["Naturel", "Noir", "Blanc"], "required": true },
+      { "name": "texte", "label": "Texte / Nom", "type": "text", "placeholder": "Prénom ou mot", "required": false }
+    ]
+  },
+  {
+    "id": "carte-fid-01",
+    "name": "Carte de fidélité personnalisée",
+    "brand": "Atelier GMF",
+    "category": "Personnalisable",
+    "customizable": true,
+    "price": 29.0,
+    "img": "https://placehold.co/600x400?text=Carte+Fidelite",
+    "badges": ["Pro"],
+    "desc": "Carte de fidélité / visite avec ton logo. Impression pro.",
+    "inputs": [
+      { "name": "type", "label": "Type", "type": "select", "options": ["Carte de fidélité", "Carte de visite"], "required": true },
+      { "name": "quantite", "label": "Quantité", "type": "select", "options": ["100", "250", "500", "1000"], "required": true },
+      { "name": "infos", "label": "Infos à imprimer", "type": "textarea", "placeholder": "Nom, téléphone, adresse web…", "required": true }
+    ]
+  },
+
+  {
+    "id": "poster-zen-01",
+    "name": "Poster Zen Nature",
+    "brand": "GMF",
+    "category": "Préfait",
+    "customizable": false,
+    "price": 12.9,
+    "img": "https://placehold.co/600x400?text=Poster+Zen",
+    "badges": ["Prêt"],
+    "desc": "Poster décoratif prêt à accrocher."
+  },
+  {
+    "id": "stickers-pack-01",
+    "name": "Pack Stickers Mix",
+    "brand": "GMF",
+    "category": "Préfait",
+    "customizable": false,
+    "price": 6.9,
+    "img": "https://placehold.co/600x400?text=Stickers",
+    "badges": ["Top"],
+    "desc": "Pack de stickers variés, impression qualité."
   }
 ]
