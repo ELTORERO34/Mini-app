@@ -111,49 +111,36 @@ body {
 .sheet[hidden] {
   display: none !important;
 }
-/* ===== Bannière sticky en haut ===== */
-.hero-sticky{
-  position: sticky;       /* reste collée en haut quand on scroll */
+/* ===== Bannière simple collée en haut ===== */
+.hero-simple {
+  position: sticky;
   top: 0;
   z-index: 20;
-  height: 100px;          /* ajuste 84–120 si besoin */
-  margin: 0 12px 8px;
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,.08);
-  box-shadow: 0 8px 24px rgba(0,0,0,.35);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-.hero-sticky .hero-bg{
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  filter: blur(8px) brightness(.6);
-  transform: scale(1.06); /* évite les bords après blur */
-}
-.hero-sticky .hero-overlay{
-  position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.45));
-}
-.hero-sticky .hero-logo{
-  position: relative;
-  display: block;
-  margin: 26px auto 0;   /* décale verticalement le logo */
-  height: 40px;          /* 36–48px selon ton logo */
-  width: auto; object-fit: contain;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.25);       /* léger fond sombre sous ton PNG */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* pour iPhone */
+  height: 90px;                        /* ajuste selon la hauteur de ton image */
+  border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-/* petit espace sous la bannière pour les filtres */
-.filters{ margin-top: 6px; }
+.hero-banner {
+  height: 70%;                         /* occupe 70% du header, ajuste si besoin */
+  width: auto;
+  object-fit: contain;
+}
 
-/* ===== Gros logo en fond (filigrane) sur toutes les pages ===== */
-body::after{
-  content:"";
-  position: fixed; inset: 0; z-index: -1;
+/* ===== Gros logo en fond (filigrane) ===== */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
   background: url("img/logo-watermark.png") center / 40% auto no-repeat;
-  opacity:.06;                 /* force du filigrane (0.04–0.1) */
-  pointer-events:none;
+  opacity: 0.06;                       /* 0.04–0.1 selon visibilité souhaitée */
+  pointer-events: none;
 }
 
 /* sécurité panneau fiche produit */
