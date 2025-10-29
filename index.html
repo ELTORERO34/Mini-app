@@ -1,46 +1,43 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
-<header class="hero-simple">
-  <img src="img/banner.png" alt="Bannière" class="hero-banner">
-</header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ma Boutique Personnalisée</title>
 
+  <!-- 🔗 Lien vers ton fichier CSS -->
+  <link rel="stylesheet" href="style.css?v=2" />
+
+  <!-- 🔗 Lien vers ton script -->
+  <script defer src="app.js"></script>
+</head>
+
+<body>
+  <!-- ===== Bannière sticky avec image transparente ===== -->
+  <header class="hero-simple">
+    <img src="img/banner.png" alt="Bannière" class="hero-banner" />
+  </header>
+
+  <!-- ===== Filtres ===== -->
   <section class="filters">
     <button id="catBtn" class="chip">Toutes les catégories ▾</button>
     <button id="brandBtn" class="chip">Toutes les marques ▾</button>
   </section>
 
-  <section id="grid" class="grid"></section>
+  <!-- ===== Grille produits ===== -->
+  <main class="product-grid" id="productGrid"></main>
 
-  <footer class="tabbar">
-    <button id="cartBtn" class="chip">🛒 Panier (<span id="cartCount">0</span>)</button>
-  </footer>
-
-  <!-- FICHE PRODUIT -->
+  <!-- ===== Fiche produit (panneau déroulant) ===== -->
   <div id="sheet" class="sheet" hidden>
-    <div class="sheet-body">
-      <div class="sheet-header">
-        <h3 id="pTitle"></h3>
-        <button id="closeSheet">✕</button>
-      </div>
-      <img id="pImg" class="sheet-img" alt="" />
-      <p id="pBrand" class="muted"></p>
-      <p id="pBadges" class="badges"></p>
-      <p id="pDesc"></p>
-
-      <!-- Champs dynamiques pour les articles personnalisables -->
-      <div id="customFields" style="margin-top:10px;"></div>
-
-      <div class="sheet-actions">
-        <span id="pPrice" class="price"></span>
-        <button id="askBtn" class="btn-primary">Ajouter au panier</button>
-      </div>
-    </div>
+    <button id="closeSheet">✕</button>
+    <img id="sheetImg" src="" alt="">
+    <h2 id="sheetTitle"></h2>
+    <p id="sheetDesc"></p>
+    <p id="sheetPrice"></p>
   </div>
 
-  <!-- Picker déroulant -->
-  <div id="picker" class="picker" hidden></div>
-
-  <script src="app.js"></script>
+  <!-- ===== Logo watermark (en fond) ===== -->
 </body>
 </html>
+
 
