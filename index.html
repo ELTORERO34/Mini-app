@@ -1,12 +1,46 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mini App Boutique</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mini Boutique Telegram</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-  <h1>Bienvenue dans ma mini-boutique !</h1>
-  <p>Ce site GitHub Pages fonctionne 🎉</p>
+  <header class="hero">
+    <img src="https://placehold.co/200x60?text=LOGO" alt="Logo" class="logo" />
+  </header>
+
+  <section class="filters">
+    <button id="catBtn" class="chip">Toutes les catégories ▾</button>
+    <button id="brandBtn" class="chip">Toutes les marques ▾</button>
+  </section>
+
+  <section id="grid" class="grid"></section>
+
+  <footer class="tabbar">
+    <button id="cartBtn" class="chip">🛒 Panier (<span id="cartCount">0</span>)</button>
+  </footer>
+
+  <div id="sheet" class="sheet" hidden>
+    <div class="sheet-body">
+      <div class="sheet-header">
+        <h3 id="pTitle"></h3>
+        <button id="closeSheet">✕</button>
+      </div>
+      <img id="pImg" class="sheet-img" alt="" />
+      <p id="pBrand" class="muted"></p>
+      <p id="pBadges" class="badges"></p>
+      <p id="pDesc"></p>
+      <div class="sheet-actions">
+        <span id="pPrice" class="price"></span>
+        <button id="askBtn" class="btn-primary">Ajouter au panier</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
+
