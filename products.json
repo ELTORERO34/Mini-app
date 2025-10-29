@@ -1,0 +1,32 @@
+[
+  {
+    "id": "p1",
+    "name": "Sweat Logo GMF",
+    "brand": "GMF Paris",
+    "category": "Textile",
+    "price": 49.9,
+    "badges": ["Nouveau"],
+    "img": "https://placehold.co/600x400?text=Sweat+GMF",
+    "desc": "Sweat à capuche GMF, coton épais, impression logo premium."
+  },
+  {
+    "id": "p2",
+    "name": "Casquette Noire",
+    "brand": "GMF Paris",
+    "category": "Accessoires",
+    "price": 24.9,
+    "badges": ["Top vente"],
+    "img": "https://placehold.co/600x400?text=Casquette+Noire",
+    "desc": "Casquette noire avec logo brodé blanc. Taille réglable."
+  },
+  {
+    "id": "p3",
+    "name": "T-shirt GMF",
+    "brand": "GMF Paris",
+    "category": "Textile",
+    "price": 19.9,
+    "badges": ["Promo"],
+    "img": "https://placehold.co/600x400?text=Tshirt+GMF",
+    "desc": "T-shirt GMF en coton bio. Coupe mixte."
+  }
+]
