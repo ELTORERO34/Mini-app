@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mini Boutique Telegram</title>
+  <title>Mini Boutique — Personnalisés & Préfaits</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
   <header class="hero">
-    <img src="https://placehold.co/200x60?text=LOGO" alt="Logo" class="logo" />
+    <img src="https://placehold.co/200x60?text=TON+LOGO" alt="Logo" class="logo" />
   </header>
 
   <section class="filters">
@@ -23,6 +23,7 @@
     <button id="cartBtn" class="chip">🛒 Panier (<span id="cartCount">0</span>)</button>
   </footer>
 
+  <!-- FICHE PRODUIT -->
   <div id="sheet" class="sheet" hidden>
     <div class="sheet-body">
       <div class="sheet-header">
@@ -33,12 +34,19 @@
       <p id="pBrand" class="muted"></p>
       <p id="pBadges" class="badges"></p>
       <p id="pDesc"></p>
+
+      <!-- Champs dynamiques pour les articles personnalisables -->
+      <div id="customFields" style="margin-top:10px;"></div>
+
       <div class="sheet-actions">
         <span id="pPrice" class="price"></span>
         <button id="askBtn" class="btn-primary">Ajouter au panier</button>
       </div>
     </div>
   </div>
+
+  <!-- Picker déroulant -->
+  <div id="picker" class="picker" hidden></div>
 
   <script src="app.js"></script>
 </body>
