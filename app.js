@@ -114,7 +114,13 @@ function openSheet(id) {
 
   sheet.hidden = false;
 }
-closeSheet.onclick = () => sheet.hidden = true;
+closeSheet.onclick = () => {
+  sheet.hidden = true;
+  // On s'assure que le scroll et les clics reviennent actifs
+  document.body.style.overflow = "auto";
+  tg.HapticFeedback?.impactOccurred("light");
+};
+
 
 function renderCustomFields(p) {
   customFields.innerHTML = "";
