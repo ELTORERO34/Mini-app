@@ -111,7 +111,7 @@ body {
 .sheet[hidden] {
   display: none !important;
 }
-/* ===== Bannière simple collée en haut ===== */
+/* ===== Bannière sticky simple ===== */
 .hero-simple {
   position: sticky;
   top: 0;
@@ -119,30 +119,49 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(0,0,0,0.25);       /* léger fond sombre sous ton PNG */
+  background: rgba(0,0,0,0.25);       
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px); /* pour iPhone */
-  height: 90px;                        /* ajuste selon la hauteur de ton image */
+  -webkit-backdrop-filter: blur(10px);
+  height: 90px;                        
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
-
 .hero-banner {
-  height: 70%;                         /* occupe 70% du header, ajuste si besoin */
+  height: 70%;
   width: auto;
   object-fit: contain;
 }
 
-/* ===== Gros logo en fond (filigrane) ===== */
+/* ===== Gros logo watermark en fond ===== */
 body::after {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -1;
   background: url("img/logo-watermark.png") center / 40% auto no-repeat;
-  opacity: 0.06;                       /* 0.04–0.1 selon visibilité souhaitée */
+  opacity: 0.06;
   pointer-events: none;
 }
 
-/* sécurité panneau fiche produit */
-.sheet{ z-index: 50; }
-.sheet[hidden]{ display: none !important; }
+/* ===== Exemple basique de style pour les boutons ===== */
+body {
+  background-color: #0b0b0b;
+  color: #fff;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  margin: 0;
+  padding: 0 12px;
+}
+.chip {
+  background: #222;
+  border: 1px solid #333;
+  color: #fff;
+  border-radius: 999px;
+  padding: 10px 14px;
+  margin: 8px 4px;
+  font-size: 14px;
+}
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+  margin-top: 8px;
+}
