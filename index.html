@@ -3,16 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pochoñ Store • Boutique</title>
+  <title>Pssapp • Boutique</title>
 
-  <!-- Styles & Telegram SDK -->
-  <link rel="stylesheet" href="style.css?v=10" />
+  <link rel="stylesheet" href="style.css?v=13" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script defer src="app.js?v=10"></script>
+  <script defer src="app.js?v=13"></script>
 </head>
 <body>
 
-  <!-- Bannière sticky (image PNG transparente) -->
+  <!-- Bannière sticky -->
   <header class="hero-simple">
     <img src="img/banner.png" alt="Bannière" class="hero-banner" />
   </header>
@@ -23,15 +22,15 @@
     <button id="brandBtn" class="chip">Toutes les marques ▾</button>
   </section>
 
-  <!-- Grille produits (id requis par app.js) -->
+  <!-- ✅ Conteneur produits attendu -->
   <section id="grid" class="grid"></section>
 
-  <!-- Tabbar Panier -->
+  <!-- Tabbar -->
   <footer class="tabbar">
     <button id="cartBtn" class="chip">🛒 Panier (<span id="cartCount">0</span>)</button>
   </footer>
 
-  <!-- Fiche produit (sheet) -->
+  <!-- Fiche produit -->
   <div id="sheet" class="sheet" hidden>
     <div class="sheet-body">
       <div class="sheet-header">
@@ -42,10 +41,6 @@
       <p id="pBrand" class="muted"></p>
       <p id="pBadges" class="badges"></p>
       <p id="pDesc"></p>
-
-      <!-- Champs dynamiques pour Personnalisable -->
-      <div id="customFields"></div>
-
       <div class="sheet-actions">
         <span id="pPrice" class="price"></span>
         <button id="askBtn" class="btn-primary">Ajouter au panier</button>
@@ -53,8 +48,9 @@
     </div>
   </div>
 
-  <!-- Picker (menu déroulant des filtres) -->
+  <!-- Picker -->
   <div id="picker" class="picker" hidden></div>
 
 </body>
 </html>
+
