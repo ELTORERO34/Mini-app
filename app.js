@@ -1,4 +1,4 @@
-/* ===== util ===== */
+/* ===== Utils ===== */
 const € = (v) =>
   v != null
     ? new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(v)
@@ -17,9 +17,9 @@ const clearCart = document.getElementById("clearCart");
 const closeCart = document.getElementById("closeCart");
 const checkout  = document.getElementById("checkout");
 
-/* ===== state ===== */
-let ALL = []; // produits
-let CART = JSON.parse(localStorage.getItem("cart") || "[]"); // [{id,name,price,img,qty}]
+/* ===== State ===== */
+let ALL = [];
+let CART = JSON.parse(localStorage.getItem("cart") || "[]");
 
 function saveCart(){
   localStorage.setItem("cart", JSON.stringify(CART));
@@ -28,11 +28,11 @@ function saveCart(){
 }
 function updateCartCount(){
   const count = CART.reduce((n, l) => n + (l.qty || 1), 0);
-  cartCount.textContent = count;
+  cartCount.textContent = String(count);
 }
 updateCartCount();
 
-/* ===== chargement produits ===== */
+/* ===== Charge produits ===== */
 fetch("products.json")
   .then(r => { if (!r.ok) throw new Error("Fichier products.json introuvable"); return r.json(); })
   .then(list => {
@@ -45,7 +45,7 @@ fetch("products.json")
     errorBox.hidden = false;
   });
 
-/* ===== rendu grille ===== */
+/* ===== Rendu grille ===== */
 function renderProducts(list){
   grid.innerHTML = list.map(p => `
     <div class="card" data-id="${p.id}">
@@ -63,7 +63,8 @@ function renderProducts(list){
   [...grid.querySelectorAll(".card")].forEach(card=>{
     const id = card.dataset.id;
     const p  = ALL.find(x=>x.id===id);
-    card.querySelector(".add-btn").onclick = ()=>{
+    const btn = card.querySelector(".add-btn");
+    btn.onclick = ()=>{
       const i = CART.findIndex(x=>x.id===p.id);
       if (i >= 0) CART[i].qty = (CART[i].qty||1) + 1;
       else CART.push({ id:p.id, name:p.name, price:p.price||0, img:p.img, qty:1 });
@@ -72,7 +73,7 @@ function renderProducts(list){
   });
 }
 
-/* ===== panneau panier ===== */
+/* ===== Panneau panier ===== */
 cartBtn.onclick  = () => { renderCart(); cartSheet.hidden = false; };
 closeCart.onclick= () => { cartSheet.hidden = true; };
 
@@ -127,7 +128,7 @@ function renderCart(){
   });
 }
 
-/* vider */
+/* Vider */
 clearCart.onclick = ()=>{
   if (!CART.length) return;
   if (confirm("Vider le panier ?")){
@@ -137,7 +138,7 @@ clearCart.onclick = ()=>{
   }
 };
 
-/* bouton continuer (pour la suite : devis Telegram) */
+/* Continuer (placeholder) */
 checkout.onclick = ()=>{
-  alert("Prochaine étape : envoi d’un devis sur Telegram ✅");
+  alert("Prochaine étape : devis Telegram.");
 };
