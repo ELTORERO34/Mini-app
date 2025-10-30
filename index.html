@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Boutique Test</title>
-  <link rel="stylesheet" href="style.css">
-  <script defer src="app.js"></script>
+  <title>Boutique + Panier</title>
+  <link rel="stylesheet" href="style.css?v=10">
+  <script defer src="app.js?v=10"></script>
 </head>
 <body>
 
@@ -13,9 +13,40 @@
     <h1>🛍️ Ma Boutique</h1>
   </header>
 
+  <!-- Grille produits -->
   <section id="grid"></section>
 
+  <!-- Zone d'erreur -->
   <div id="error" hidden></div>
+
+  <!-- Bouton panier (tabbar) -->
+  <footer class="tabbar">
+    <button id="cartBtn" class="chip">🛒 Panier (<span id="cartCount">0</span>)</button>
+  </footer>
+
+  <!-- Panneau panier -->
+  <div id="cartSheet" class="sheet" hidden>
+    <div class="sheet-body">
+      <div class="sheet-header">
+        <h3>Mon panier</h3>
+        <div class="sheet-actions-right">
+          <button id="clearCart" class="clear-btn">Vider</button>
+          <button id="closeCart" class="sheet-close">✕</button>
+        </div>
+      </div>
+
+      <div id="cartList"></div>
+
+      <div class="cart-footer">
+        <div class="cart-total">
+          <span>Total</span>
+          <strong id="cartTotal">0,00 €</strong>
+        </div>
+        <!-- bouton pour la suite (devis Telegram) -->
+        <button id="checkout" class="btn-primary">Continuer</button>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>
