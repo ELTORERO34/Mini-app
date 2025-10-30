@@ -1,4 +1,6 @@
 /* Base */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
 body {
   margin: 0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -23,11 +25,7 @@ h1 { margin:0; font-size:20px }
   display: flex;
   flex-direction: column;
 }
-.card img {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-}
+.card img { width: 100%; height: 150px; object-fit: cover; }
 .card .info { padding: 10px; display:flex; flex-direction:column; gap:6px }
 .card h3 { margin:0; font-size:16px }
 .card p { margin:0; opacity:.75; font-size:13px }
@@ -39,13 +37,17 @@ h1 { margin:0; font-size:20px }
 }
 
 /* Erreur */
-#error { background:#440000; color:#ffcccc; padding:10px; margin:10px; border-radius:6px }
+#error {
+  background:#440000; color:#ffcccc;
+  padding:10px; margin:10px; border-radius:6px
+}
 
 /* Tabbar (bouton panier) */
 .tabbar{
   position: fixed; left:0; right:0; bottom:0;
   background:#161616; padding:10px; text-align:center;
   box-shadow: 0 -8px 20px rgba(0,0,0,.35);
+  z-index: 50; /* au-dessus du contenu */
 }
 .chip{
   background:#222; color:#fff; border:1px solid #333;
@@ -53,8 +55,20 @@ h1 { margin:0; font-size:20px }
 }
 
 /* Panneau panier (sheet) */
-.sheet{ position:fixed; inset:0; background:rgba(0,0,0,.48); display:flex; align-items:flex-end }
-.sheet[hidden]{ display:none !important }
+.sheet{
+  position:fixed; inset:0;
+  background:rgba(0,0,0,.48);
+  display:flex; align-items:flex-end;
+  z-index: 60;
+}
+/* 🔒 IMPORTANT : quand hidden, on le retire du flux et des clics */
+.sheet[hidden] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
 .sheet-body{
   background:#111; color:#fff; width:100%;
   border-radius: 18px 18px 0 0; padding: 14px;
