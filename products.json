@@ -1,89 +1,12 @@
 [
   {
-    "id": "tab-pers-01",
-    "name": "Tableau personnalisé",
-    "brand": "Plusieurs tailles",
-    "category": "Personnalisable",
-    "customizable": true,
-    "price": 20,
-    "img": "img/tableau1.jpg",
-    "badges": ["Sur-mesure"],
-    "desc": "Crée ton tableau (format, design).",
-    "inputs": [
-      { "name": "format", "label": "Format", "type": "select", "options": ["A4", "A3", "30x40", "50x70"], "required": true },
-      { "name": "couleur", "label": "Couleur dominante", "type": "text", "placeholder": "ex. Noir & Or", "required": true },
-      { "name": "texte", "label": "Texte à afficher", "type": "textarea", "placeholder": "Ton message / prénom(s)", "required": false }
-    ]
-  },
-  {
-    "id": "etq-pers-01",
-    "name": "Étiquettes personnalisées",
+    "id": "p1",
+    "name": "Affiche personnalisée",
     "brand": "Atelier",
     "category": "Personnalisable",
-    "customizable": true,
-    "price": 14.9,
-    "img": "img/etiquettes1.jpg",
-    "badges": ["Pack"],
-    "desc": "Étiquettes pour cadeaux, bocaux, évènements.",
-    "inputs": [
-      { "name": "quantite", "label": "Quantité", "type": "select", "options": ["24", "48", "96"], "required": true },
-      { "name": "forme", "label": "Forme", "type": "select", "options": ["Rond", "Carré", "Rectangle"], "required": true },
-      { "name": "texte", "label": "Texte", "type": "textarea", "placeholder": "Inscris le texte à imprimer", "required": true }
-    ]
-  },
-  {
-    "id": "poch-pers-01",
-    "name": "Pochon personnalisé",
-    "brand": "Atelier",
-    "category": "Personnalisable",
-    "customizable": true,
-    "price": 9.9,
-    "img": "img/pochon1.jpg",
-    "badges": ["Cadeau"],
-    "desc": "Pochon coton avec texte/logo.",
-    "inputs": [
-      { "name": "taille", "label": "Taille", "type": "select", "options": ["S", "M", "L"], "required": true },
-      { "name": "couleur", "label": "Couleur", "type": "select", "options": ["Naturel", "Noir", "Blanc"], "required": true },
-      { "name": "texte", "label": "Texte / Nom", "type": "text", "placeholder": "Prénom / Mot", "required": false }
-    ]
-  },
-  {
-    "id": "carte-pro-01",
-    "name": "Cartes (visite / fidélité)",
-    "brand": "Atelier",
-    "category": "Personnalisable",
-    "customizable": true,
-    "price": 29.0,
-    "img": "img/carte1.jpg",
-    "badges": ["Pro"],
-    "desc": "Impression pro avec ton logo.",
-    "inputs": [
-      { "name": "type", "label": "Type", "type": "select", "options": ["Carte de visite", "Carte de fidélité"], "required": true },
-      { "name": "quantite", "label": "Quantité", "type": "select", "options": ["100", "250", "500", "1000"], "required": true },
-      { "name": "infos", "label": "Infos à imprimer", "type": "textarea", "placeholder": "Nom, téléphone, site…", "required": true }
-    ]
-  },
-
-  {
-    "id": "poster-zen-01",
-    "name": "Poster Zen",
-    "brand": "GMF",
-    "category": "Préfait",
-    "customizable": false,
-    "price": 12.9,
-    "img": "img/poster1.jpg",
-    "badges": ["Prêt"],
-    "desc": "Poster décoratif prêt à accrocher."
-  },
-  {
-    "id": "stickers-pack-01",
-    "name": "Pack Stickers",
-    "brand": "GMF",
-    "category": "Préfait",
-    "customizable": false,
-    "price": 6.9,
-    "img": "img/stickers1.jpg",
-    "badges": ["Top"],
-    "desc": "Pack de stickers assortis."
+    "price": 29.9,
+    "img": "img/affiche.jpg",
+    "desc": "Texte optionnel",
+    "badges": ["Sur-mesure"]
   }
 ]
