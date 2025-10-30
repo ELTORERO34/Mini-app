@@ -85,22 +85,3 @@ closeSheet.onclick = ()=> sheet.hidden = true;
   <button id="cartBtn" class="chip">🛒 Panier (<span id="cartCount">0</span>)</button>
 </footer>
 
-<!-- PANIER -->
-<div id="cartSheet" class="sheet" hidden>
-  <div class="sheet-body">
-    <div class="sheet-header">
-      <h3>Mon panier</h3>
-      <div>
-        <button id="clearCart" class="sheet-close" style="margin-right:6px;color:#ff8080">Vider</button>
-        <button id="closeCart" class="sheet-close">✕</button>
-      </div>
-    </div>
-
-    <div id="cartList"></div>
-
-    <div class="cart-footer" style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:10px">
-      <div><span>Total</span> <strong id="cartTotal">0,00 €</strong></div>
-      <button id="quoteBtn" class="btn-primary">Demander un devis</button>
-    </div>
-  </div>
-</div>
