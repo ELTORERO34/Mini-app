@@ -48,16 +48,21 @@
     </div>
   </div>
 <!-- ===== Panier (récapitulatif) ===== -->
-<div class="sheet-header">
-  <h3>Mon panier</h3>
-  <div>
-    <button id="clearCart" class="clear-btn">Vider</button>
-    <button id="closeCart" class="sheet-close">✕</button>
-  </div>
-</div>
+<div id="cartSheet" class="sheet" hidden>
+  <div class="sheet-body">
 
+    <div class="sheet-header">
+      <h3>Mon panier</h3>
+      <div>
+        <button id="clearCart" class="clear-btn">Vider</button>
+        <button id="closeCart" class="sheet-close">✕</button>
+      </div>
+    </div>
+
+    <!-- Liste des lignes du panier -->
     <div id="cartList"></div>
 
+    <!-- Total + action -->
     <div class="cart-footer">
       <div class="cart-total">
         <span>Total</span>
@@ -65,6 +70,7 @@
       </div>
       <button id="quoteBtn" class="btn-primary">Demander un devis</button>
     </div>
+
   </div>
 </div>
   <!-- Picker -->
