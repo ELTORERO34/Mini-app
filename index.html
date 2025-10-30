@@ -3,13 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pssapp • Boutique</title>
+  <title>Boutique</title>
 
-<link rel="stylesheet" href="style.css?v=28" />
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script defer src="app.js?v=28"></script>
+  <link rel="stylesheet" href="style.css?v=31" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script defer src="app.js?v=31"></script>
+</head>
+<body>
 
-  <!-- Bannière sticky -->
+  <!-- Bannière -->
   <header class="hero-simple">
     <img src="img/banner.png" alt="Bannière" class="hero-banner" />
   </header>
@@ -20,7 +22,7 @@
     <button id="brandBtn" class="chip">Toutes les marques ▾</button>
   </section>
 
-  <!-- ✅ Conteneur produits attendu -->
+  <!-- Grille produits -->
   <section id="grid" class="grid"></section>
 
   <!-- Tabbar -->
@@ -45,35 +47,26 @@
       </div>
     </div>
   </div>
-<!-- ===== Panier (récapitulatif) ===== -->
-<div id="cartSheet" class="sheet" hidden>
-  <div class="sheet-body">
 
-    <div class="sheet-header">
-      <h3>Mon panier</h3>
-      <div>
-        <button id="clearCart" class="clear-btn">Vider</button>
-        <button id="closeCart" class="sheet-close">✕</button>
+  <!-- Panier -->
+  <div id="cartSheet" class="sheet" hidden>
+    <div class="sheet-body">
+      <div class="sheet-header">
+        <h3>Mon panier</h3>
+        <div>
+          <button id="clearCart" class="clear-btn">Vider</button>
+          <button id="closeCart" class="sheet-close">✕</button>
+        </div>
+      </div>
+      <div id="cartList"></div>
+      <div class="cart-footer">
+        <div class="cart-total"><span>Total</span> <strong id="cartTotal">0,00 €</strong></div>
+        <button id="quoteBtn" class="btn-primary">Demander un devis</button>
       </div>
     </div>
-
-    <!-- Liste des lignes du panier -->
-    <div id="cartList"></div>
-
-    <!-- Total + action -->
-    <div class="cart-footer">
-      <div class="cart-total">
-        <span>Total</span>
-        <strong id="cartTotal">0,00 €</strong>
-      </div>
-      <button id="quoteBtn" class="btn-primary">Demander un devis</button>
-    </div>
-
   </div>
-</div>
+
   <!-- Picker -->
   <div id="picker" class="picker" hidden></div>
-
 </body>
 </html>
-
