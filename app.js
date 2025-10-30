@@ -1,4 +1,6 @@
 const tg = window.Telegram.WebApp; tg.expand();
+const CONTACT_USERNAME = "pssv2"; // <-- remplace
+const tg = window.Telegram.WebApp; tg.expand();
 
 /* DOM */
 const grid = document.getElementById("grid");
@@ -16,6 +18,11 @@ const askBtn = document.getElementById("askBtn");
 const closeSheet = document.getElementById("closeSheet");
 const cartBtn = document.getElementById("cartBtn");
 const cartCount = document.getElementById("cartCount");
+const cartSheet = document.getElementById("cartSheet");
+const cartList  = document.getElementById("cartList");
+const cartTotal = document.getElementById("cartTotal");
+const closeCart = document.getElementById("closeCart");
+const quoteBtn  = document.getElementById("quoteBtn");
 
 /* State */
 let ALL = [], cats = [], brands = [];
