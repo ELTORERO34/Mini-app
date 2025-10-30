@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Boutique + Panier</title>
-  <link rel="stylesheet" href="style.css?v=10">
-  <script defer src="app.js?v=10"></script>
+  <link rel="stylesheet" href="style.css?v=12" />
+  <script defer src="app.js?v=12"></script>
 </head>
 <body>
 
@@ -24,7 +24,7 @@
     <button id="cartBtn" class="chip">🛒 Panier (<span id="cartCount">0</span>)</button>
   </footer>
 
-  <!-- Panneau panier -->
+  <!-- Panneau panier (BIEN caché au départ) -->
   <div id="cartSheet" class="sheet" hidden>
     <div class="sheet-body">
       <div class="sheet-header">
@@ -42,7 +42,6 @@
           <span>Total</span>
           <strong id="cartTotal">0,00 €</strong>
         </div>
-        <!-- bouton pour la suite (devis Telegram) -->
         <button id="checkout" class="btn-primary">Continuer</button>
       </div>
     </div>
