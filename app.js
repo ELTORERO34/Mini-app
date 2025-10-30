@@ -1,3 +1,13 @@
+// Polyfill Telegram pour le navigateur (preview hors Telegram)
+window.Telegram = window.Telegram || {};
+Telegram.WebApp = Telegram.WebApp || {
+  initDataUnsafe: { user: null },
+  expand: ()=>{},
+  showPopup: ({title, message}) => alert((title?title+"\n":"")+message),
+  HapticFeedback: { impactOccurred: ()=>{} },
+  openTelegramLink: (url)=> window.open(url, "_blank")
+};
+
 // Telegram (safe si ouvert hors Telegram)
 const tg = (window.Telegram && window.Telegram.WebApp) || { showPopup:()=>{}, HapticFeedback:{} };
 tg.expand?.();
