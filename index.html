@@ -1,61 +1,21 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Boutique</title>
-
-  <link rel="stylesheet" href="style.css?v=1" />
-  <script defer src="app.js?v=1"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Boutique Test</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="app.js"></script>
 </head>
 <body>
-  <header class="hero">🛍️ Ma TEST</header>
 
-  <!-- Grille produits -->
-  <section id="grid" class="grid"></section>
+  <header>
+    <h1>🛍️ Ma Boutique</h1>
+  </header>
 
-  <!-- Zone d'erreur lisible si souci -->
-  <div id="error" class="error" hidden></div>
+  <section id="grid"></section>
+
+  <div id="error" hidden></div>
+
 </body>
 </html>
-
-   <!-- FICHE PRODUIT -->
-<div id="sheet" class="sheet" hidden>
-  <div class="sheet-body">
-    <div class="sheet-header">
-      <h3 id="pTitle"></h3>
-      <button id="closeSheet" class="sheet-close">✕</button>
-    </div>
-    <img id="pImg" class="sheet-img" alt="">
-    <p id="pBrand" class="muted"></p>
-    <p id="pDesc"></p>
-    <div class="sheet-actions">
-      <span id="pPrice" class="price"></span>
-      <button id="addBtn" class="btn-primary">Ajouter au panier</button>
-    </div>
-  </div>
-</div>
-
-<footer class="tabbar">
-  <button id="cartBtn" class="chip">🛒 Panier (<span id="cartCount">0</span>)</button>
-</footer>
-
-<!-- PANIER -->
-<div id="cartSheet" class="sheet" hidden>
-  <div class="sheet-body">
-    <div class="sheet-header">
-      <h3>Mon panier</h3>
-      <div>
-        <button id="clearCart" class="sheet-close" style="margin-right:6px;color:#ff8080">Vider</button>
-        <button id="closeCart" class="sheet-close">✕</button>
-      </div>
-    </div>
-
-    <div id="cartList"></div>
-
-    <div class="cart-footer" style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:10px">
-      <div><span>Total</span> <strong id="cartTotal">0,00 €</strong></div>
-      <button id="quoteBtn" class="btn-primary">Demander un devis</button>
-    </div>
-  </div>
-</div>
