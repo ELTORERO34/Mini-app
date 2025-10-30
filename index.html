@@ -47,7 +47,25 @@
       </div>
     </div>
   </div>
+<!-- ===== Panier (récapitulatif) ===== -->
+<div id="cartSheet" class="sheet" hidden>
+  <div class="sheet-body">
+    <div class="sheet-header">
+      <h3>Mon panier</h3>
+      <button id="closeCart" class="sheet-close">✕</button>
+    </div>
 
+    <div id="cartList"></div>
+
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total</span>
+        <strong id="cartTotal">0,00 €</strong>
+      </div>
+      <button id="quoteBtn" class="btn-primary">Demander un devis</button>
+    </div>
+  </div>
+</div>
   <!-- Picker -->
   <div id="picker" class="picker" hidden></div>
 
