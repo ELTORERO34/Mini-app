@@ -93,7 +93,79 @@ function openPicker(title, options, onSelect){
   picker.hidden = false;
   picker.querySelectorAll(".opt").forEach(btn => btn.onclick = () => { picker.hidden = true; onSelect(btn.textContent); });
 }
+function €(v){ return v!=null ? new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR"}).format(v) : ""; }
 
+function cartTotalValue(){
+  return CART.reduce((s,l)=> s + (l.price||0)*(l.qty||1), 0);
+}
+
+function openCart(){
+  renderCart();
+  cartSheet.hidden = false;
+}
+
+closeCart.onclick = () => { cartSheet.hidden = true; };
+
+function renderCart(){
+  if (!CART.length){
+    cartList.innerHTML = `<p class="muted">Votre panier est vide.</p>`;
+    cartTotal.textContent = "0,00 €";
+    return;
+  }
+
+  cartList.innerHTML = CART.map((l,i)=>`
+    <div class="cart-item" data-i="${i}">
+      <img src="${(ALL.find(p=>p.id===l.id)||{}).img || ''}" alt="">
+      <div class="ci-main">
+        <div class="ci-title">${l.name}</div>
+        <p class="ci-meta">${€(l.price)} / unité</p>
+        <div class="qty">
+          <button class="qminus">−</button>
+          <span>${l.qty||1}</span>
+          <button class="qplus">+</button>
+          <button class="remove">Supprimer</button>
+        </div>
+      </div>
+      <div><strong>${€((l.price||0)*(l.qty||1))}</strong></div>
+    </div>
+  `).join("");
+
+  cartTotal.textContent = €(cartTotalValue());
+
+  // actions +/−/supprimer
+  cartList.querySelectorAll(".cart-item").forEach(row=>{
+    const i = Number(row.dataset.i);
+    row.querySelector(".qplus").onclick  = ()=>{ CART[i].qty=(CART[i].qty||1)+1; saveCart(); };
+    row.querySelector(".qminus").onclick = ()=>{ CART[i].qty=Math.max(1,(CART[i].qty||1)-1); saveCart(); };
+    row.querySelector(".remove").onclick = ()=>{ CART.splice(i,1); saveCart(); };
+  });
+}
+
+function saveCart(){
+  localStorage.setItem("cart", JSON.stringify(CART));
+  updateCartCount();
+  renderCart();
+}
+
+// bouton "Demander un devis"
+quoteBtn.onclick = () => {
+  if (!CART.length){ tg.showPopup?.({title:"Panier vide", message:"Ajoutez des articles avant de demander un devis."}); return; }
+
+  const lines = CART.map(l=>{
+    const qty = l.qty||1;
+    const sub = (l.price||0)*qty;
+    return `• ${l.name} ×${qty} — ${€(sub)}`;
+  }).join("\n");
+
+  const total = €(cartTotalValue());
+  const user  = tg.initDataUnsafe?.user?.username ? `@${tg.initDataUnsafe.user.username}` : "client Telegram";
+
+  const msg = `Demande de devis – Pssapp\n\n${lines}\n\nTotal estimé : ${total}\nClient : ${user}\n\nPouvez-vous me confirmer la disponibilité et le délai ?`;
+
+  tg.openTelegramLink(`https://t.me/${CONTACT_USERNAME}?text=${encodeURIComponent(msg)}`);
+  tg.HapticFeedback?.impactOccurred("light");
+  cartSheet.hidden = true;
+};
 /* Fiche produit */
 let currentProduct=null;
 function openSheet(id){
@@ -119,7 +191,7 @@ function addToCart(p){
   localStorage.setItem("cart", JSON.stringify(CART));
   updateCartCount();
 }
-cartBtn.onclick = () => {
+cartBtn.onclick = () => openCart();
   if(!CART.length){ tg.showPopup?.({title:"Panier vide", message:"Ajoute des produits avant de commander."}); return; }
   const total = CART.reduce((s,l)=> s + (l.price||0)*(l.qty||1), 0);
   tg.showPopup?.({ title:"Panier", message:`Articles: ${CART.length}\nTotal: ${formatPrice(total)}` });
