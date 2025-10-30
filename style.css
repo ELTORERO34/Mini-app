@@ -63,3 +63,26 @@ body {
 .picker h4{ margin:4px 8px 10px; color:var(--muted); font-weight:600; }
 .picker .opt{ display:block; width:100%; text-align:left; padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.08); background:#222; color:#fff; margin:6px 0; }
 .picker .opt.active{ outline:2px solid var(--btn); }
+
+/* ===== Fond plein écran derrière TOUT ===== */
+html, body {
+  height: 100%;
+  background-color: #0b0b0b; /* secours si l'image tarde */
+}
+
+/* Image de fond unique, sans watermark ni calques */
+body {
+  background-image: url("img/bg.jpg");
+  background-position: center center;
+  background-size: cover;       /* remplit tout l'écran */
+  background-repeat: no-repeat;
+  background-attachment: scroll;/* évite le bug iOS avec 'fixed' */
+}
+
+/* S'assure qu'aucun bloc ne repeigne en blanc */
+.hero-simple,
+.filters,
+#grid,
+.tabbar {
+  background: transparent !important;
+}
