@@ -86,3 +86,27 @@ body {
 .tabbar {
   background: transparent !important;
 }
+/* ===== Liste du panier ===== */
+.cart-item{
+  display:flex; align-items:center; gap:10px;
+  padding:10px; margin:8px 0;
+  background:#1a1a1a; border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;
+}
+.cart-item img{ width:54px; height:54px; object-fit:cover; border-radius:10px; }
+.cart-item .ci-main{ flex:1; min-width:0; }
+.ci-title{ margin:0 0 4px; font-weight:700; }
+.ci-meta{ margin:0; color:var(--muted); font-size:12px; }
+
+.qty{ display:flex; align-items:center; gap:8px; }
+.qty button{
+  width:28px; height:28px; border-radius:8px;
+  border:1px solid rgba(255,255,255,.15); background:#222; color:#fff;
+}
+.remove{ background:transparent; border:0; color:#ff7a7a; font-size:13px; }
+
+.cart-footer{
+  margin-top:12px; display:flex; align-items:center; justify-content:space-between; gap:12px;
+}
+.cart-total span{ color:var(--muted); font-size:12px; }
+.cart-total strong{ font-size:18px; }
