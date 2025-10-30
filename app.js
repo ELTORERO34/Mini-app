@@ -23,6 +23,7 @@ const cartList  = document.getElementById("cartList");
 const cartTotal = document.getElementById("cartTotal");
 const closeCart = document.getElementById("closeCart");
 const quoteBtn  = document.getElementById("quoteBtn");
+const clearCart = document.getElementById("clearCart");
 
 /* State */
 let ALL = [], cats = [], brands = [];
