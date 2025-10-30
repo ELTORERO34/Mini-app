@@ -2,13 +2,13 @@
   {
     "id": "tab-pers-01",
     "name": "Tableau personnalisé",
-    "brand": "Atelier",
+    "brand": "Plusieurs tailles",
     "category": "Personnalisable",
     "customizable": true,
-    "price": 39.9,
+    "price": 20,180
     "img": "img/tableau1.jpg",
     "badges": ["Sur-mesure"],
-    "desc": "Crée ton tableau (format, couleur, texte).",
+    "desc": "Crée ton tableau (format, design).",
     "inputs": [
       { "name": "format", "label": "Format", "type": "select", "options": ["A4", "A3", "30x40", "50x70"], "required": true },
       { "name": "couleur", "label": "Couleur dominante", "type": "text", "placeholder": "ex. Noir & Or", "required": true },
