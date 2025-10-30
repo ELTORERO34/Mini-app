@@ -5,8 +5,18 @@
     "brand": "Atelier",
     "category": "Personnalisable",
     "price": 29.9,
-    "img": "img/affiche.jpg",
-    "desc": "Texte optionnel",
+    "img": "https://picsum.photos/seed/affiche/600/400",
+    "desc": "Affiche A3 personnalisée (texte + couleur).",
     "badges": ["Sur-mesure"]
+  },
+  {
+    "id": "p2",
+    "name": "Pochon coton",
+    "brand": "GMF",
+    "category": "Préfait",
+    "price": 12.5,
+    "img": "https://picsum.photos/seed/pochon/600/400",
+    "desc": "Pochon 15×20 cm, impression 1 face.",
+    "badges": ["Top"]
   }
 ]
