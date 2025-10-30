@@ -9,16 +9,11 @@ body{
   padding:0 12px 90px; /* place pour la tabbar */
 }
 
-/* === FOND PLEIN ÉCRAN + WATERMARK === */
-body::before{
-  content:""; position:fixed; inset:0; z-index:-2;
-  background:url("img/bg.jpg") center / cover no-repeat; /* mets img/bg.jpg */
-  filter:brightness(.55); 
-}
-body::after{
-  content:""; position:fixed; inset:0; z-index:-1;
-  background:url("img/logo-.png") center / 60% auto no-repeat;
-  opacity:.06; pointer-events:none;
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: var(--text);
+  background: url("img/bg.jpg") center center / cover no-repeat fixed;
 }
 
 
