@@ -133,20 +133,61 @@ function renderCart(){
 
   cartTotal.textContent = €(cartTotalValue());
 
-  // actions +/−/supprimer
+  // actions +/−/supprimer (avec confirmation)
   cartList.querySelectorAll(".cart-item").forEach(row=>{
     const i = Number(row.dataset.i);
-    row.querySelector(".qplus").onclick  = ()=>{ CART[i].qty=(CART[i].qty||1)+1; saveCart(); };
-    row.querySelector(".qminus").onclick = ()=>{ CART[i].qty=Math.max(1,(CART[i].qty||1)-1); saveCart(); };
-    row.querySelector(".remove").onclick = ()=>{ CART.splice(i,1); saveCart(); };
+    const qtyEl = row.querySelector(".qty span");
+
+    row.querySelector(".qplus").onclick  = ()=>{
+      CART[i].qty = (CART[i].qty||1) + 1;
+      qtyEl.textContent = CART[i].qty;
+      saveCart();
+    };
+    row.querySelector(".qminus").onclick = ()=>{
+      CART[i].qty = Math.max(1, (CART[i].qty||1) - 1);
+      qtyEl.textContent = CART[i].qty;
+      saveCart();
+    };
+
+    row.querySelector(".remove").onclick = ()=>{
+      const name = CART[i].name;
+      if (tg.showPopup){
+        tg.showPopup({
+          title: "Supprimer l'article",
+          message: `Retirer « ${name} » du panier ?`,
+          buttons: [
+            { type:"destructive", id:"yes", text:"Supprimer" },
+            { type:"cancel" }
+          ]
+        }, (btnId)=>{
+          if (btnId==="yes"){ CART.splice(i,1); saveCart(); }
+        });
+      } else {
+        if (confirm(`Retirer « ${name} » du panier ?`)){
+          CART.splice(i,1); saveCart();
+        }
+      }
+    };
   });
 }
 
-function saveCart(){
-  localStorage.setItem("cart", JSON.stringify(CART));
-  updateCartCount();
-  renderCart();
-}
+// ===== Bouton "Vider le panier" =====
+clearCart.onclick = ()=>{
+  if (!CART.length) return;
+  if (tg.showPopup){
+    tg.showPopup({
+      title:"Vider le panier",
+      message:"Supprimer tous les articles ?",
+      buttons:[{type:"destructive", id:"yes", text:"Vider"},{type:"cancel"}]
+    }, (btnId)=>{
+      if (btnId==="yes"){ CART = []; saveCart(); cartSheet.hidden = true; }
+    });
+  } else {
+    if (confirm("Supprimer tous les articles ?")){
+      CART = []; saveCart(); cartSheet.hidden = true;
+    }
+  }
+};
 
 // bouton "Demander un devis"
 quoteBtn.onclick = () => {
@@ -197,4 +238,3 @@ cartBtn.onclick = () => openCart();
   const total = CART.reduce((s,l)=> s + (l.price||0)*(l.qty||1), 0);
   tg.showPopup?.({ title:"Panier", message:`Articles: ${CART.length}\nTotal: ${formatPrice(total)}` });
 };
-
