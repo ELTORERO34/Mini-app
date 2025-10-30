@@ -1,3 +1,4 @@
+
 :root{
   --bg:#0b0b0b; --text:#fff; --muted:#9aa0a6;
   --card:#171717; --btn:#2ea6ff; --btn-text:#fff;
@@ -110,3 +111,16 @@ body {
 }
 .cart-total span{ color:var(--muted); font-size:12px; }
 .cart-total strong{ font-size:18px; }
+
+/* bouton 'Vider' dans l'entête du panier */
+.clear-btn{
+  background:transparent; border:0; color:#ff7a7a;
+  padding:6px 10px; border-radius:8px; font-weight:600;
+}
+
+/* lien 'Supprimer' par ligne (déjà présent mais on renforce le style) */
+.remove{
+  background:transparent; border:0; color:#ff7a7a;
+  font-size:13px; padding:4px 6px; border-radius:6px;
+}
+.remove:active, .clear-btn:active{ opacity:.7; }
