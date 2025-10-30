@@ -1,22 +1,16 @@
 [
   {
-    "id": "p1",
-    "name": "Affiche personnalisée",
-    "brand": "Atelier",
-    "category": "Personnalisable",
+    "id": "1",
+    "name": "Tableau personnalisé",
+    "brand": "PSS",
     "price": 29.9,
-    "img": "https://picsum.photos/seed/affiche/600/400",
-    "desc": "Affiche A3 personnalisée (texte + couleur).",
-    "badges": ["Sur-mesure"]
+    "img": "https://picsum.photos/seed/a/600/400"
   },
   {
-    "id": "p2",
+    "id": "2",
     "name": "Pochon coton",
-    "brand": "GMF",
-    "category": "Préfait",
+    "brand": "PSS",
     "price": 12.5,
-    "img": "https://picsum.photos/seed/pochon/600/400",
-    "desc": "Pochon 15×20 cm, impression 1 face.",
-    "badges": ["Top"]
+    "img": "https://picsum.photos/seed/b/600/400"
   }
 ]
