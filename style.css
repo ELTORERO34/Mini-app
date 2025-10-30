@@ -30,3 +30,10 @@ body{
 .price{font-weight:800}
 .muted{opacity:.7;font-size:12px}
 
+.tabbar{position:fixed;left:0;right:0;bottom:0;background:#111;padding:10px;text-align:center}
+.chip{background:#222;border:1px solid #333;color:#fff;border-radius:999px;padding:10px 16px}
+.cart-item{display:flex;gap:10px;align-items:center;padding:10px;border:1px solid #222;border-radius:12px;margin-bottom:10px;background:#161616}
+.cart-item img{width:64px;height:64px;object-fit:cover;border-radius:8px}
+.ci-main{flex:1}
+.qty{display:flex;gap:6px;align-items:center}
+.qty button,.remove{background:#222;border:0;border-radius:8px;padding:6px 10px}
