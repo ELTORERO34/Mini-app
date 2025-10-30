@@ -1,62 +1,67 @@
-// Debug simple (désactive-le après) :
-// window.onerror = (m,s,l)=>alert("JS: "+m+" @"+l);
-
-// Telegram
-const tg = window.Telegram.WebApp || { showPopup:()=>{}, HapticFeedback:{} };
+// Telegram (safe si ouvert hors Telegram)
+const tg = (window.Telegram && window.Telegram.WebApp) || { showPopup:()=>{}, HapticFeedback:{} };
 tg.expand?.();
 
-// CONFIG
-const CONTACT_USERNAME = "pssv2"; // sans @
+/* ========= Utils ========= */
+function formatPrice(v){
+  return v!=null
+    ? new Intl.NumberFormat("fr-FR", { style:"currency", currency:"EUR" }).format(v)
+    : "";
+}
 
-// Produits EMBARQUÉS (pas de products.json)
-const PRODUCTS = [
-  { id:"p1", name:"Affiche personnalisée", brand:"Atelier", category:"Personnalisable", price:29.9, img:"img/test1.jpg", badges:["Sur-mesure"], desc:"Affiche A3 personnalisée." },
-  { id:"p2", name:"Pack Stickers", brand:"GMF", category:"Préfait", price:6.9, img:"img/test2.jpg", badges:["Top"], desc:"Pack de stickers assortis." }
-];
+/* ========= DOM ========= */
+const grid      = document.getElementById("grid");
+const catBtn    = document.getElementById("catBtn");
+const brandBtn  = document.getElementById("brandBtn");
+const picker    = document.getElementById("picker");
 
-// DOM
-const grid = document.getElementById("grid");
-const catBtn = document.getElementById("catBtn");
-const brandBtn = document.getElementById("brandBtn");
-const picker = document.getElementById("picker");
-
-const sheet = document.getElementById("sheet");
-const pTitle = document.getElementById("pTitle");
-const pImg   = document.getElementById("pImg");
-const pBrand = document.getElementById("pBrand");
-const pBadges= document.getElementById("pBadges");
-const pDesc  = document.getElementById("pDesc");
-const pPrice = document.getElementById("pPrice");
-const askBtn = document.getElementById("askBtn");
-const closeSheet = document.getElementById("closeSheet");
+const sheet     = document.getElementById("sheet");
+const pTitle    = document.getElementById("pTitle");
+const pImg      = document.getElementById("pImg");
+const pBrand    = document.getElementById("pBrand");
+const pBadges   = document.getElementById("pBadges");
+const pDesc     = document.getElementById("pDesc");
+const pPrice    = document.getElementById("pPrice");
+const askBtn    = document.getElementById("askBtn");
+const closeSheet= document.getElementById("closeSheet");
 
 const cartBtn   = document.getElementById("cartBtn");
 const cartCount = document.getElementById("cartCount");
 const cartSheet = document.getElementById("cartSheet");
 const cartList  = document.getElementById("cartList");
 const cartTotal = document.getElementById("cartTotal");
+const clearCart = document.getElementById("clearCart");
 const closeCart = document.getElementById("closeCart");
 const quoteBtn  = document.getElementById("quoteBtn");
-const clearCart = document.getElementById("clearCart");
 
-// Panneaux fermés au départ
-sheet.hidden = true; cartSheet.hidden = true; picker.hidden = true;
-
-// State
-let ALL = PRODUCTS.slice();
-let cats = ["Toutes", ...new Set(ALL.map(p=>p.category))];
-let brands = ["Toutes", ...new Set(ALL.map(p=>p.brand||"—"))];
+/* ========= State ========= */
+const CONTACT_USERNAME = "pssv2"; // sans @
+let ALL = [], cats = [], brands = [];
 let current = { cat:"Toutes", brand:"Toutes" };
 let CART = JSON.parse(localStorage.getItem("cart") || "[]");
 
-// Utils
-const € = v => v!=null ? new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR"}).format(v) : "";
-function cartTotalValue(){ return CART.reduce((s,l)=> s + (l.price||0)*(l.qty||1), 0); }
-function updateCartCount(){ cartCount.textContent = CART.reduce((n,l)=> n + (l.qty||1), 0); }
+function updateCartCount(){ cartCount.textContent = CART.reduce((n,l)=> n+(l.qty||1), 0); }
 function saveCart(){ localStorage.setItem("cart", JSON.stringify(CART)); updateCartCount(); if(!cartSheet.hidden) renderCart(); }
 updateCartCount();
 
-// Rendu
+/* ========= Data load (via products.json) ========= */
+function showError(msg){
+  grid.innerHTML = `<div style="padding:16px;color:#ffb3b3;background:rgba(255,0,0,.08);border:1px solid rgba(255,0,0,.25);border-radius:12px">⚠️ ${msg}</div>`;
+}
+
+fetch("./products.json?v=34")
+  .then(r => { if(!r.ok) throw new Error("products.json introuvable"); return r.text(); })
+  .then(txt => { try { return JSON.parse(txt); } catch(e){ throw new Error("products.json invalide"); } })
+  .then(list => {
+    if (!Array.isArray(list) || !list.length) throw new Error("products.json vide");
+    ALL = list;
+    cats   = ["Toutes", ...new Set(list.map(p=>p.category))];
+    brands = ["Toutes", ...new Set(list.map(p=>p.brand || "—"))];
+    render();
+  })
+  .catch(err => showError(err.message));
+
+/* ========= Render grille ========= */
 function render(){
   catBtn.textContent   = `${current.cat   === "Toutes" ? "Toutes les catégories" : current.cat} ▾`;
   brandBtn.textContent = `${current.brand === "Toutes" ? "Toutes les marques"    : current.brand} ▾`;
@@ -66,6 +71,11 @@ function render(){
     (current.brand === "Toutes" || (p.brand || "—") === current.brand)
   );
 
+  if (!visible.length){
+    grid.innerHTML = `<p class="muted" style="text-align:center;padding:24px">Aucun produit pour ce filtre.</p>`;
+    return;
+  }
+
   grid.innerHTML = visible.map(p => `
     <article class="card" data-id="${p.id}">
       <img src="${p.img}" alt="${p.name}">
@@ -73,16 +83,15 @@ function render(){
         ${(p.badges||[]).slice(0,1).map(b=>`<span class="badge">${b}</span>`).join("")}
         <div class="title">${p.name}</div>
         <div class="subtitle">${p.brand || ""}</div>
-        <div class="price">${€(p.price)}</div>
+        <div class="price">${formatPrice(p.price)}</div>
       </div>
     </article>
   `).join("");
 
   [...grid.querySelectorAll(".card")].forEach(el => el.onclick = () => openSheet(el.dataset.id));
 }
-render();
 
-// Filtres
+/* ========= Filtres ========= */
 catBtn.onclick   = () => openPicker("Catégories", cats,   v => { current.cat = v; render(); });
 brandBtn.onclick = () => openPicker("Marques",    brands, v => { current.brand = v; render(); });
 
@@ -93,28 +102,28 @@ function openPicker(title, options, onSelect){
   picker.querySelectorAll(".opt").forEach(btn => btn.onclick = () => { picker.hidden = true; onSelect(btn.textContent); });
 }
 
-// Fiche produit
+/* ========= Fiche produit ========= */
 let currentProduct = null;
 function openSheet(id){
   const p = ALL.find(x => x.id === id);
   if (!p) return;
   currentProduct = p;
 
-  pTitle.textContent = p.name;
-  pImg.src = p.img;
-  pBrand.textContent = p.brand || "";
-  pBadges.innerHTML  = (p.badges||[]).map(b=>`<span class="badge">${b}</span>`).join("");
-  pDesc.textContent  = p.desc || "";
-  pPrice.textContent = €(p.price);
+  pTitle.textContent  = p.name;
+  pImg.src            = p.img;
+  pBrand.textContent  = p.brand || "";
+  pBadges.innerHTML   = (p.badges||[]).map(b=>`<span class="badge">${b}</span>`).join("");
+  pDesc.textContent   = p.desc || "";
+  pPrice.textContent  = formatPrice(p.price);
 
-  askBtn.textContent = "Ajouter au panier";
-  askBtn.onclick = () => addToCart(p);
+  askBtn.textContent  = "Ajouter au panier";
+  askBtn.onclick      = () => addToCart(p);
 
   sheet.hidden = false;
 }
 closeSheet.onclick = () => { sheet.hidden = true; };
 
-// Panier
+/* ========= Panier ========= */
 function addToCart(p){
   const i = CART.findIndex(it => it.id === p.id);
   if (i >= 0) CART[i].qty = (CART[i].qty||1) + 1;
@@ -128,10 +137,14 @@ function addToCart(p){
 cartBtn.onclick  = () => { renderCart(); cartSheet.hidden = false; };
 closeCart.onclick = () => { cartSheet.hidden = true; };
 
+function cartTotalValue(){
+  return CART.reduce((s,l)=> s + (l.price||0)*(l.qty||1), 0);
+}
+
 function renderCart(){
   if (!CART.length){
     cartList.innerHTML = `<p class="muted">Votre panier est vide.</p>`;
-    cartTotal.textContent = "0,00 €";
+    cartTotal.textContent = formatPrice(0);
     return;
   }
 
@@ -140,7 +153,7 @@ function renderCart(){
       <img src="${(ALL.find(p=>p.id===l.id)||{}).img || ''}" alt="">
       <div class="ci-main">
         <div class="ci-title">${l.name}</div>
-        <p class="ci-meta">${€(l.price)} / unité</p>
+        <p class="ci-meta">${formatPrice(l.price)} / unité</p>
         <div class="qty">
           <button class="qminus">−</button>
           <span>${l.qty||1}</span>
@@ -148,11 +161,11 @@ function renderCart(){
           <button class="remove">Supprimer</button>
         </div>
       </div>
-      <div><strong>${€((l.price||0)*(l.qty||1))}</strong></div>
+      <div><strong>${formatPrice((l.price||0)*(l.qty||1))}</strong></div>
     </div>
   `).join("");
 
-  cartTotal.textContent = €(cartTotalValue());
+  cartTotal.textContent = formatPrice(cartTotalValue());
 
   cartList.querySelectorAll(".cart-item").forEach(row=>{
     const i = Number(row.dataset.i);
@@ -164,9 +177,11 @@ function renderCart(){
     row.querySelector(".remove").onclick = ()=>{
       const name = CART[i].name;
       if (tg.showPopup){
-        tg.showPopup({ title:"Supprimer l'article", message:`Retirer « ${name} » du panier ?`,
-          buttons:[{type:"destructive", id:"yes", text:"Supprimer"}, {type:"cancel"}]
-        }, (btnId)=>{ if(btnId==="yes"){ CART.splice(i,1); saveCart(); }});
+        tg.showPopup({
+          title:"Supprimer l'article",
+          message:`Retirer « ${name} » du panier ?`,
+          buttons:[{type:"destructive", id:"yes", text:"Supprimer"},{type:"cancel"}]
+        }, btnId => { if(btnId==="yes"){ CART.splice(i,1); saveCart(); }});
       } else {
         if (confirm(`Retirer « ${name} » du panier ?`)){ CART.splice(i,1); saveCart(); }
       }
@@ -177,20 +192,33 @@ function renderCart(){
 clearCart.onclick = ()=>{
   if (!CART.length) return;
   if (tg.showPopup){
-    tg.showPopup({ title:"Vider le panier", message:"Supprimer tous les articles ?",
+    tg.showPopup({
+      title:"Vider le panier",
+      message:"Supprimer tous les articles ?",
       buttons:[{type:"destructive", id:"yes", text:"Vider"}, {type:"cancel"}]
-    }, (btnId)=>{ if(btnId==="yes"){ CART=[]; saveCart(); cartSheet.hidden=true; }});
+    }, btnId=>{ if(btnId==="yes"){ CART=[]; saveCart(); cartSheet.hidden=true; }});
   } else {
     if (confirm("Supprimer tous les articles ?")){ CART=[]; saveCart(); cartSheet.hidden=true; }
   }
 };
 
+/* ========= Devis Telegram ========= */
 quoteBtn.onclick = () => {
-  if (!CART.length){ tg.showPopup?.({title:"Panier vide", message:"Ajoutez des articles avant de demander un devis."}); return; }
-  const lines = CART.map(l=>`• ${l.name} ×${l.qty||1} — ${€((l.price||0)*(l.qty||1))}`).join("\n");
-  const total = €(cartTotalValue());
+  if (!CART.length){
+    tg.showPopup?.({title:"Panier vide", message:"Ajoutez des articles avant de demander un devis."});
+    return;
+  }
+
+  const lines = CART.map(l=>{
+    const qty = l.qty||1;
+    const sub = (l.price||0)*qty;
+    return `• ${l.name} ×${qty} — ${formatPrice(sub)}`;
+  }).join("\n");
+
+  const total = formatPrice(cartTotalValue());
   const user  = tg.initDataUnsafe?.user?.username ? `@${tg.initDataUnsafe.user.username}` : "client Telegram";
   const msg = `Demande de devis – Boutique\n\n${lines}\n\nTotal estimé : ${total}\nClient : ${user}\n\nPouvez-vous me confirmer la disponibilité et le délai ?`;
+
   tg.openTelegramLink?.(`https://t.me/${CONTACT_USERNAME}?text=${encodeURIComponent(msg)}`);
   tg.HapticFeedback?.impactOccurred?.("light");
   cartSheet.hidden = true;
