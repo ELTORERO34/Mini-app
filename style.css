@@ -13,13 +13,14 @@ body{
 body::before{
   content:""; position:fixed; inset:0; z-index:-2;
   background:url("img/bg.jpg") center / cover no-repeat; /* mets img/bg.jpg */
-  filter:brightness(.55);
+  filter:brightness(.55); 
 }
 body::after{
   content:""; position:fixed; inset:0; z-index:-1;
-  background:url("img/logo-watermark.png") center / 60% auto no-repeat;
+  background:url("img/logo-.png") center / 60% auto no-repeat;
   opacity:.06; pointer-events:none;
 }
+
 
 /* Bannière */
 .hero-simple{
