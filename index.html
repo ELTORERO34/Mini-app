@@ -1,51 +1,115 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Boutique + Panier</title>
-  <link rel="stylesheet" href="style.css?v=12" />
-  <script defer src="app.js?v=12"></script>
+  <title>Gangster Street Shop</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-
-  <header>
-    <h1>🛍️ Ma Boutique</h1>
+  <header class="app-header">
+    <h1>Gangster Street Shop</h1>
+    <p class="subtitle">Mini-boutique officielle</p>
   </header>
 
-  <!-- Grille produits -->
-  <section id="grid"></section>
+  <!-- Barre d’onglets -->
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="catalog">Catalogue</button>
+    <button class="tab-btn" data-tab="infos">Infos</button>
+    <button class="tab-btn" data-tab="canal">Canal</button>
+    <button class="tab-btn" data-tab="contact">Contact</button>
+  </nav>
 
-  <!-- Zone d'erreur -->
-  <div id="error" hidden></div>
+  <!-- Contenu -->
+  <main class="tab-content">
 
-  <!-- Bouton panier (tabbar) -->
-  <footer class="tabbar">
-    <button id="cartBtn" class="chip">🛒 Panier (<span id="cartCount">0</span>)</button>
-  </footer>
+    <!-- CATALOGUE -->
+    <section id="catalog" class="tab-panel active">
+      <div id="products" class="grid"></div>
+    </section>
 
-  <!-- Panneau panier (BIEN caché au départ) -->
-  <div id="cartSheet" class="sheet" hidden>
-    <div class="sheet-body">
-      <div class="sheet-header">
-        <h3>Mon panier</h3>
-        <div class="sheet-actions-right">
-          <button id="clearCart" class="clear-btn">Vider</button>
-          <button id="closeCart" class="sheet-close">✕</button>
-        </div>
+    <!-- INFOS -->
+    <section id="infos" class="tab-panel">
+      <div class="card">
+        <h2>Informations</h2>
+        <ul class="info-list">
+          <li>Paiement : acompte à la commande, solde avant expédition.</li>
+          <li>Délais : design basique 2–3j, premium 4–5j. Production/expédition selon volume.</li>
+          <li>Fichiers : accepte .png / .jpg / .pdf. Vectoriels bienvenus (.ai/.svg).</li>
+          <li>Retours : personnalisés non échangeables, sauf défaut prouvé.</li>
+          <li>Support : via « Contact » en bas.</li>
+        </ul>
       </div>
+    </section>
 
-      <div id="cartList"></div>
-
-      <div class="cart-footer">
-        <div class="cart-total">
-          <span>Total</span>
-          <strong id="cartTotal">0,00 €</strong>
-        </div>
-        <button id="checkout" class="btn-primary">Continuer</button>
+    <!-- CANAL -->
+    <section id="canal" class="tab-panel">
+      <div class="card">
+        <h2>Rejoindre le canal</h2>
+        <p>Actus, promos, coulisses.</p>
+        <button id="openChannel" class="btn primary">Ouvrir le canal</button>
       </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="tab-panel">
+      <div class="card">
+        <h2>Contact</h2>
+        <p>Parle directement avec nous sur Telegram.</p>
+        <button id="openContact" class="btn primary">Écrire au compte</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Panier (dock) -->
+  <aside class="cart-dock">
+    <div class="cart-summary">
+      <span id="cartCount">0</span> article(s) — <span id="cartTotal">0,00 €</span>
+    </div>
+    <div class="cart-actions">
+      <button id="viewCart" class="btn ghost">Voir</button>
+      <button id="askQuote" class="btn primary">Demander un devis</button>
+    </div>
+  </aside>
+
+  <!-- Modal Panier -->
+  <div id="cartModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-inner">
+      <header class="modal-header">
+        <h3>Votre panier</h3>
+        <button id="closeCart" class="icon-btn" aria-label="Fermer">✕</button>
+      </header>
+      <div id="cartItems" class="cart-items"></div>
+      <footer class="modal-footer">
+        <div class="total-line">Total estimé : <strong id="cartTotalModal">0,00 €</strong></div>
+        <button id="clearCart" class="btn ghost">Vider</button>
+        <button id="askQuoteModal" class="btn primary">Demander un devis</button>
+      </footer>
     </div>
   </div>
 
+  <template id="productTpl">
+    <div class="product-card">
+      <div class="product-visual"></div>
+      <div class="product-body">
+        <h3 class="product-title"></h3>
+        <p class="product-desc"></p>
+        <div class="product-meta">
+          <span class="pill min-price"></span>
+          <span class="pill lead-time"></span>
+        </div>
+        <div class="product-options"></div>
+        <div class="qty-row">
+          <button class="qty-btn dec">−</button>
+          <input type="number" class="qty-input" min="1" value="1" />
+          <button class="qty-btn inc">+</button>
+          <button class="btn add-to-cart">Ajouter</button>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <script src="app.js"></script>
 </body>
 </html>
