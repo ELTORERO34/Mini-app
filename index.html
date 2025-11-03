@@ -33,17 +33,18 @@
     }
     .subtitle{color:var(--muted);margin:0}
 
-    .tab-content{padding:8px 10px 120px} /* padding bas pour laisser place au menu + panier */
+    .tab-content{padding:0 10px 120px} /* padding bas pour laisser place au menu + panier */
     .tab-panel{display:none}
     .tab-panel.active{display:block}
 
     /* ======= NOUVELLE BANNIÈRE FLOUE AVEC LOGO ======= */
     .hero{
-      height:140px;
-      border-radius:18px;
-      margin:8px 4px 14px;
-      position:relative;
-      overflow:hidden;
+  height:150px;
+  border-radius:0;         /* pas de coins arrondis en haut */
+  margin:0 -10px 14px;     /* colle aux bords et tout en haut */
+  position:relative;
+  overflow:hidden;
+}
     }
     /* fond image + flou + assombrissement */
     .hero-bg{
@@ -150,11 +151,6 @@
 </head>
 <body>
   <div id="diag">⚠️ Erreur JS</div>
-
-  <header class="app-header">
-    <h1>PochonStoretest</h1>
-    <p class="subtitle">Mini-boutique officielle</p>
-  </header>
 
   <main class="tab-content">
     <!-- CATALOGUE / MENU -->
