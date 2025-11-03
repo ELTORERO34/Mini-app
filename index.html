@@ -20,37 +20,21 @@
     /* Bandeau diag (erreur JS) */
     #diag{display:none;position:sticky;top:0;z-index:9999;background:#4a0000;color:#fff;padding:8px 12px;border-bottom:1px solid #700;font-size:14px}
 
-    /* HEADER + HERO */
-    .app-header{
-      padding:14px 16px 10px;
-      text-align:center;
-      border-bottom:1px solid var(--border);
-      background:radial-gradient(circle at 0 0,rgba(212,175,55,.2),transparent 55%);
-    }
-    .app-header h1{
-      font-family:"Impact",system-ui,sans-serif;
-      letter-spacing:.7px;font-size:2rem;
-    }
-    .subtitle{color:var(--muted);margin:0}
-
-    .tab-content{padding:8px 10px 120px} /* padding bas pour laisser place au menu + panier */
+    /* CONTENU PRINCIPAL */
+    .tab-content{padding:0 10px 120px} /* pas de padding top, la bannière est collée en haut */
     .tab-panel{display:none}
     .tab-panel.active{display:block}
 
-.hero{
-  height:140px;
-  border-radius:18px;
-  margin:8px 4px 14px;
-  position:relative;
-  overflow:hidden;
-  /* image + voile sombre par-dessus */
-  background:
-    linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.95)),
-    url('img/banner.png') center/cover no-repeat;
-}
-    .hero::before{
-      content:"";position:absolute;inset:0;
-      box-shadow:inset 0 0 40px rgba(0,0,0,.85);
+    /* HERO / BANNIÈRE – collée sous la barre Telegram */
+    .hero{
+      height:150px;
+      margin:0 -10px 14px;  /* on enlève la marge horizontale pour coller aux bords */
+      position:relative;
+      overflow:hidden;
+      border-radius:0;      /* pas de coins arrondis pour coller au style de ton exemple */
+      background:
+        linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.95)),
+        url('img/banner.png') center/cover no-repeat;
     }
     .hero-inner{
       position:absolute;inset:0;
@@ -60,8 +44,9 @@
     .hero-logo{
       font-family:"Impact",system-ui,sans-serif;
       font-size:1.6rem;letter-spacing:.5px;
+      text-shadow:0 2px 8px rgba(0,0,0,.8);
     }
-    .hero-sub{color:var(--muted);font-size:.9rem}
+    .hero-sub{color:var(--muted);font-size:.9rem;text-shadow:0 2px 8px rgba(0,0,0,.8)}
 
     /* PRODUIT */
     .grid{display:grid;grid-template-columns:1fr;gap:12px}
@@ -105,7 +90,7 @@
     .modal-footer{display:flex;justify-content:space-between;align-items:center;padding:12px;border-top:1px solid var(--border)}
     .total-line{font-size:1.1rem}
 
-    /* BOTTOM NAV */
+    /* NAV BAS */
     .bottom-nav{
       position:fixed;left:0;right:0;bottom:0;height:64px;
       background:rgba(5,5,6,.96);backdrop-filter:blur(14px);
@@ -121,7 +106,7 @@
     .nav-btn span.icon{font-size:1.2rem;margin-bottom:2px}
     .nav-btn.active{color:var(--accent);font-weight:600}
 
-    /* FAB PANIER (au dessus du menu bas) */
+    /* FAB PANIER (au-dessus du menu bas) */
     .cart-fab{
       position:fixed;right:14px;bottom:74px;z-index:50;
       width:56px;height:56px;border-radius:50%;
@@ -138,14 +123,10 @@
 <body>
   <div id="diag">⚠️ Erreur JS</div>
 
-  <header class="app-header">
-    <h1>PochonStoretest</h1>
-    <p class="subtitle">Mini-boutique officielle</p>
-  </header>
-
   <main class="tab-content">
     <!-- CATALOGUE / MENU -->
     <section id="catalog" class="tab-panel active">
+      <!-- BANNIÈRE COLLEE EN HAUT -->
       <div class="hero">
         <div class="hero-inner">
           <div class="hero-logo">PochonStoretest</div>
@@ -263,8 +244,8 @@
 
   <script>
     /* ====== CONFIG ====== */
-    var CHANNEL_URL = "https://t.me/+BQ5eqgaiZG80MTY0";  // <-- remplace
-    var CONTACT_USERNAME = "pssv2";          // <-- remplace (sans @)
+    var CHANNEL_URL = "https://t.me/ton_canal_telegram";  // <-- remplace
+    var CONTACT_USERNAME = "ton_compte_telegram";          // <-- remplace (sans @)
     var PRICE_P1 = 0.35;
 
     var tg = null;
@@ -403,7 +384,7 @@
       console.error(e);
     }
 
-    // met le bon format de prix au chargement
+    // prix formaté au chargement
     document.getElementById('p1price').textContent = euro(PRICE_P1);
   </script>
 </body>
