@@ -168,9 +168,19 @@
     var CART=getLS("ps_cart",[]);
     function cartTotal(){var t=0;for(var i=0;i<CART.length;i++){var it=CART[i];if(it.unitMinPrice){t+=it.unitMinPrice*it.qty}}return t}
 
-    document.addEventListener("DOMContentLoaded",function(){
-      safe(setupTabs); safe(renderProducts); safe(wireCartUi); safe(wireLinks);
-    });
+    function init(){
+  safe(setupTabs);
+  safe(renderProducts);
+  safe(wireCartUi);
+  safe(wireLinks);
+}
+
+// Lance tout de suite si le DOM est déjà prêt, sinon attend
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
 
     function setupTabs(){
       var btns=document.querySelectorAll(".tab-btn");
