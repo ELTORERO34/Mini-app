@@ -3,90 +3,113 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PochonStore</title>
+  <title>PochonStoretest</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
-  :root{--bg:#0b0b0c;--card:#141417;--ink:#f3f3f3;--muted:#bdbdbd;--accent:#d4af37;--danger:#ff5252;--border:#26262b;--radius:14px;--shadow:0 10px 30px rgba(0,0,0,.45)}
-  *{box-sizing:border-box}
-  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,Segoe UI,Roboto,Inter,Arial}
-  h1,h2,h3{margin:.2rem 0 .6rem}
-  p{margin:.3rem 0}
-  a{color:var(--accent);text-decoration:none}
-  .diag{position:sticky;top:0;z-index:9999;background:#4a0000;color:#fff;padding:8px 12px;border-bottom:1px solid #700;font-size:14px;display:none}
-
-  .app-header{padding:22px 16px 12px;border-bottom:1px solid var(--border);text-align:center;background:linear-gradient(180deg,rgba(212,175,55,.18),transparent)}
-  .app-header h1{font-family:"Impact",system-ui,sans-serif;letter-spacing:.5px;font-size:2rem}
-  .subtitle{color:var(--muted);margin:0}
-
-  .tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:10px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(11,11,12,.9);backdrop-filter:saturate(140%) blur(8px);z-index:5}
-  .tab-btn{padding:12px;border:1px solid var(--border);background:#111;color:var(--ink);border-radius:14px}
-  .tab-btn.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
-  .tab-content{padding:12px 10px 90px}
-  .tab-panel{display:none}
-  .tab-panel.active{display:block}
-
-  .grid{display:grid;grid-template-columns:1fr;gap:12px}
-  @media(min-width:560px){.grid{grid-template-columns:1fr 1fr}}
-  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
-
-  .product-card{display:grid;grid-template-columns:100px 1fr;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:10px;box-shadow:var(--shadow)}
-  .product-visual{width:100px;height:100px;border-radius:10px;background:
-    radial-gradient(80% 80% at 25% 20%, rgba(212,175,55,.28), transparent 60%),
-    linear-gradient(135deg,#1a1a1f,#0f0f12);border:1px solid var(--border)}
-  .product-title{margin:2px 0 4px}
-  .product-desc{color:var(--muted);margin:0 0 8px}
-  .product-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
-  .pill{padding:4px 8px;border:1px solid var(--border);border-radius:16px;color:#ddd}
-  .pill::before{content:"• ";color:var(--accent)}
-  .qty-row{display:flex;align-items:center;gap:8px;margin-top:6px}
-  .qty-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:#101015;color:var(--ink)}
-  .qty-input{width:64px;height:36px;border-radius:10px;border:1px solid var(--border);background:#111;color:var(--ink);text-align:center}
-  .btn{height:36px;border-radius:10px;border:1px solid var(--border);background:#15151a;color:var(--ink);padding:0 12px}
-  .btn.primary{background:linear-gradient(180deg,#1d1d22,#111);border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
-  .btn.ghost{background:#0f0f12}
-
-  .modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:flex-end}
-  .modal.hidden{display:none}
-  .modal-inner{background:var(--bg);border-top-left-radius:18px;border-top-right-radius:18px;box-shadow:var(--shadow);width:100%;max-height:86vh;display:flex;flex-direction:column}
-  .modal-header{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--border)}
-  .icon-btn{background:#121216;border:1px solid var(--border);color:var(--ink);border-radius:10px;height:34px;width:34px}
-  .cart-items{padding:10px 12px;overflow:auto}
-  .cart-item{display:grid;grid-template-columns:1fr auto;gap:6px;padding:10px;border-bottom:1px dashed var(--border)}
-  .item-title{font-weight:700}
-  .item-sub{color:var(--muted);font-size:.95rem}
-  .item-right{display:flex;gap:6px;align-items:center}
-  .item-qty{border:1px solid var(--border);border-radius:10px;background:#101015;color:var(--ink);width:50px;height:32px;text-align:center}
-  .remove{color:var(--danger);background:#1a1111;border:1px solid #311}
-  .modal-footer{display:flex;justify-content:space-between;align-items:center;padding:12px;border-top:1px solid var(--border)}
-  .total-line{font-size:1.1rem}
-  .info-list{margin:.6rem 0 .2rem 1rem}
-
-  .cart-fab{position:fixed;right:14px;bottom:22px;z-index:50;width:56px;height:56px;border-radius:50%;
-    border:1px solid var(--accent);background:linear-gradient(180deg,#1d1d22,#111);color:#f5f5f5;font-size:22px;
-    box-shadow:0 10px 26px rgba(0,0,0,.45)}
-  .cart-fab:active{transform:translateY(1px)}
+    :root{--bg:#0b0b0c;--card:#141417;--ink:#f3f3f3;--muted:#bdbdbd;--accent:#d4af37;--danger:#ff5252;--border:#26262b;--radius:14px;--shadow:0 10px 30px rgba(0,0,0,.45)}
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,Segoe UI,Roboto,Inter,Arial}
+    h1,h2,h3{margin:.2rem 0 .6rem}
+    p{margin:.3rem 0}
+    .app-header{padding:22px 16px 12px;border-bottom:1px solid var(--border);text-align:center;background:linear-gradient(180deg,rgba(212,175,55,.18),transparent)}
+    .app-header h1{font-family:"Impact",system-ui,sans-serif;letter-spacing:.5px;font-size:2rem}
+    .subtitle{color:var(--muted)}
+    .tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:10px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(11,11,12,.9);backdrop-filter:saturate(140%) blur(8px);z-index:5}
+    .tab-btn{padding:12px;border:1px solid var(--border);background:#111;color:var(--ink);border-radius:14px}
+    .tab-btn.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+    .tab-content{padding:12px 10px 90px}
+    .tab-panel{display:none}
+    .tab-panel.active{display:block}
+    .grid{display:grid;grid-template-columns:1fr;gap:12px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+    .product-card{display:grid;grid-template-columns:100px 1fr;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:10px;box-shadow:var(--shadow)}
+    .product-visual{width:100px;height:100px;border-radius:10px;background:
+      radial-gradient(80% 80% at 25% 20%, rgba(212,175,55,.28), transparent 60%),
+      linear-gradient(135deg,#1a1a1f,#0f0f12);border:1px solid var(--border)}
+    .product-desc{color:var(--muted);margin:0 0 8px}
+    .product-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+    .pill{padding:4px 8px;border:1px solid var(--border);border-radius:16px;color:#ddd}
+    .pill::before{content:"• ";color:var(--accent)}
+    .qty-row{display:flex;align-items:center;gap:8px;margin-top:6px}
+    .qty-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:#101015;color:var(--ink)}
+    .qty-input{width:64px;height:36px;border-radius:10px;border:1px solid var(--border);background:#111;color:var(--ink);text-align:center}
+    .btn{height:36px;border-radius:10px;border:1px solid var(--border);background:#15151a;color:var(--ink);padding:0 12px}
+    .btn.primary{background:linear-gradient(180deg,#1d1d22,#111);border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:flex-end}
+    .modal.hidden{display:none}
+    .modal-inner{background:var(--bg);border-top-left-radius:18px;border-top-right-radius:18px;box-shadow:var(--shadow);width:100%;max-height:86vh;display:flex;flex-direction:column}
+    .modal-header{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--border)}
+    .icon-btn{background:#121216;border:1px solid var(--border);color:var(--ink);border-radius:10px;height:34px;width:34px}
+    .cart-items{padding:10px 12px;overflow:auto}
+    .cart-item{display:grid;grid-template-columns:1fr auto;gap:6px;padding:10px;border-bottom:1px dashed var(--border)}
+    .item-title{font-weight:700}
+    .item-sub{color:var(--muted);font-size:.95rem}
+    .item-right{display:flex;gap:6px;align-items:center}
+    .item-qty{border:1px solid var(--border);border-radius:10px;background:#101015;color:var(--ink);width:50px;height:32px;text-align:center}
+    .remove{color:#fff;background:#6b2626;border:1px solid #311}
+    .modal-footer{display:flex;justify-content:space-between;align-items:center;padding:12px;border-top:1px solid var(--border)}
+    .total-line{font-size:1.1rem}
+    .cart-fab{position:fixed;right:14px;bottom:22px;z-index:50;width:56px;height:56px;border-radius:50%;border:1px solid var(--accent);background:linear-gradient(180deg,#1d1d22,#111);color:#f5f5f5;font-size:22px;box-shadow:0 10px 26px rgba(0,0,0,.45)}
+    .cart-fab:active{transform:translateY(1px)}
+    .info-list{margin:.6rem 0 .2rem 1rem}
+    #diag{display:none;position:sticky;top:0;z-index:9999;background:#4a0000;color:#fff;padding:8px 12px;border-bottom:1px solid #700;font-size:14px}
   </style>
 </head>
 <body>
-  <div id="diag" class="diag">⚠️ Erreur JS</div>
+  <div id="diag">⚠️ Erreur JS</div>
 
   <header class="app-header">
-    <h1>PochonStoretesttt</h1>
+    <h1>PochonStoretest</h1>
     <p class="subtitle">Mini-boutique officielle</p>
   </header>
 
   <nav class="tabs">
-    <button class="tab-btn active" data-tab="catalog">Catalogue</button>
-    <button class="tab-btn" data-tab="infos">Infos</button>
-    <button class="tab-btn" data-tab="canal">Canal</button>
-    <button class="tab-btn" data-tab="contact">Contact</button>
+    <button class="tab-btn active" data-tab="catalog" onclick="switchTab(this)">Catalogue</button>
+    <button class="tab-btn" data-tab="infos" onclick="switchTab(this)">Infos</button>
+    <button class="tab-btn" data-tab="canal" onclick="switchTab(this)">Canal</button>
+    <button class="tab-btn" data-tab="contact" onclick="switchTab(this)">Contact</button>
   </nav>
 
   <main class="tab-content">
+    <!-- CATALOGUE -->
     <section id="catalog" class="tab-panel active">
-      <div id="products" class="grid"></div>
+      <div class="grid">
+        <!-- PRODUIT EN DUR (affiché quoi qu’il arrive) -->
+        <div class="product-card" id="p1">
+          <div class="product-visual"></div>
+          <div class="product-body">
+            <h3 class="product-title">Pochon personnalisé 8×11 cm</h3>
+            <p class="product-desc">Sérigraphie 1 face. Couleurs au choix.</p>
+            <div class="product-meta">
+              <span class="pill">Min: <span id="p1price">0,35 €</span></span>
+              <span class="pill">Délai: 2–3 jours</span>
+            </div>
+            <div class="product-options">
+              <label class="pill" style="display:inline-flex;align-items:center;gap:6px">
+                Couleur:
+                <select id="p1_couleur">
+                  <option>Noir</option><option>Blanc</option><option>Rouge</option><option>Vert</option>
+                </select>
+              </label>
+              <label class="pill" style="display:inline-flex;align-items:center;gap:6px">
+                Impression:
+                <select id="p1_impr">
+                  <option>1 couleur</option><option>2 couleurs</option>
+                </select>
+              </label>
+            </div>
+            <div class="qty-row">
+              <button class="qty-btn" onclick="dec('p1_qty')">−</button>
+              <input id="p1_qty" type="number" class="qty-input" min="1" value="1" />
+              <button class="qty-btn" onclick="inc('p1_qty')">+</button>
+              <button class="btn" onclick="addP1()">Ajouter</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
+    <!-- INFOS -->
     <section id="infos" class="tab-panel">
       <div class="card">
         <h2>Informations</h2>
@@ -100,217 +123,175 @@
       </div>
     </section>
 
+    <!-- CANAL -->
     <section id="canal" class="tab-panel">
       <div class="card">
         <h2>Rejoindre le canal</h2>
         <p>Actus, promos, coulisses.</p>
-        <button id="openChannel" class="btn primary">Ouvrir le canal</button>
+        <button class="btn primary" onclick="openChannel()">Ouvrir le canal</button>
       </div>
     </section>
 
+    <!-- CONTACT -->
     <section id="contact" class="tab-panel">
       <div class="card">
         <h2>Contact</h2>
         <p>Parle directement avec nous sur Telegram.</p>
-        <button id="openContact" class="btn primary">Écrire au compte</button>
+        <button class="btn primary" onclick="openContact()">Écrire au compte</button>
       </div>
     </section>
 
-    <button id="cartFab" class="cart-fab" aria-label="Voir le panier">🛒</button>
+    <!-- Bouton flottant panier -->
+    <button id="cartFab" class="cart-fab" aria-label="Voir le panier" onclick="openCart()">🛒</button>
   </main>
 
+  <!-- Modal Panier -->
   <div id="cartModal" class="modal hidden" aria-hidden="true">
     <div class="modal-inner">
       <header class="modal-header">
         <h3>Votre panier</h3>
-        <button id="closeCart" class="icon-btn" aria-label="Fermer">✕</button>
+        <button class="icon-btn" onclick="closeCart()">✕</button>
       </header>
       <div id="cartItems" class="cart-items"></div>
       <footer class="modal-footer">
-        <div class="total-line">Total estimé : <strong id="cartTotalModal">0,00 €</strong></div>
-        <button id="clearCart" class="btn ghost">Vider</button>
-        <button id="askQuoteModal" class="btn primary">Demander un devis</button>
+        <div class="total-line">Total estimé : <strong id="cartTotal">0,00 €</strong></div>
+        <button class="btn" onclick="clearCart()">Vider</button>
+        <button class="btn primary" onclick="sendQuote()">Demander un devis</button>
       </footer>
     </div>
   </div>
 
-  <template id="productTpl">
-    <div class="product-card">
-      <div class="product-visual"></div>
-      <div class="product-body">
-        <h3 class="product-title"></h3>
-        <p class="product-desc"></p>
-        <div class="product-meta">
-          <span class="pill min-price"></span>
-          <span class="pill lead-time"></span>
-        </div>
-        <div class="product-options"></div>
-        <div class="qty-row">
-          <button class="qty-btn dec">−</button>
-          <input type="number" class="qty-input" min="1" value="1" />
-          <button class="qty-btn inc">+</button>
-          <button class="btn add-to-cart">Ajouter</button>
-        </div>
-      </div>
-    </div>
-  </template>
-
   <script>
-  (function(){
-    function diag(msg){var d=document.getElementById('diag');d.style.display='block';d.textContent='⚠️ '+msg}
-    function safe(fn){try{fn()}catch(e){console.error(e);diag(e.message||'Erreur JS')}}
-    var tg=null; try{ if(window.Telegram&&window.Telegram.WebApp){ tg=window.Telegram.WebApp; tg.expand&&tg.expand(); } }catch(e){}
-    var CONFIG={CHANNEL_URL:"https://t.me/ton_canal_telegram",CONTACT_USERNAME:"ton_compte_telegram",CURRENCY:"EUR",LOCALE:"fr-FR"};
-    var PRODUCTS=[{id:"pochon_8x11",title:"Pochon personnalisé 8×11 cm",desc:"Sérigraphie 1 face. Couleurs au choix.",minPrice:0.35,leadTime:"2–3 jours",options:[{key:"couleur",label:"Couleur",choices:["Noir","Blanc","Rouge","Vert"]},{key:"impression",label:"Impression",choices:["1 couleur","2 couleurs"]}]}];
-    function €(n){try{return new Intl.NumberFormat(CONFIG.LOCALE,{style:"currency",currency:CONFIG.CURRENCY}).format(n||0)}catch(e){return (n||0).toFixed(2)+" €"}}
-    function getLS(k,f){try{var v=localStorage.getItem(k);return v?JSON.parse(v):f}catch(e){return f}}
-    function setLS(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
-    var CART=getLS("ps_cart",[]);
-    function cartTotal(){var t=0;for(var i=0;i<CART.length;i++){var it=CART[i];if(it.unitMinPrice){t+=it.unitMinPrice*it.qty}}return t}
+    /* ====== CONFIG ====== */
+    var CHANNEL_URL = "https://t.me/ton_canal_telegram";      // <-- remplace
+    var CONTACT_USERNAME = "ton_compte_telegram";              // <-- remplace (sans @)
+    var PRICE_P1 = 0.35; // € prix unitaire minimal
 
-    function init(){
-  safe(setupTabs);
-  safe(renderProducts);
-  safe(wireCartUi);
-  safe(wireLinks);
-}
+    /* ====== TELEGRAM SAFETY ====== */
+    var tg = null;
+    try { if (window.Telegram && window.Telegram.WebApp) { tg = window.Telegram.WebApp; if (tg.expand) tg.expand(); } } catch(e){}
 
-// Lance tout de suite si le DOM est déjà prêt, sinon attend
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
-} else {
-  init();
-  console.log('PochonStore init OK');
-}
-
-    function setupTabs(){
-      var btns=document.querySelectorAll(".tab-btn");
-      for(var i=0;i<btns.length;i++){(function(b){b.addEventListener("click",function(){
-        var all=document.querySelectorAll(".tab-btn");for(var j=0;j<all.length;j++)all[j].classList.remove("active");
-        b.classList.add("active");
-        var panels=document.querySelectorAll(".tab-panel");for(var k=0;k<panels.length;k++)panels[k].classList.remove("active");
-        var p=document.getElementById(b.getAttribute("data-tab")); if(p) p.classList.add("active");
-      })})(btns[i]);}
+    function euro(n){
+      try { return new Intl.NumberFormat("fr-FR", {style:"currency", currency:"EUR"}).format(n||0); }
+      catch(e){ return (n||0).toFixed(2) + " €"; }
     }
 
-    function renderProducts(){
-      var wrap=document.getElementById("products"); var tpl=document.getElementById("productTpl");
-      if(!wrap||!tpl){diag("Template/zone produits manquants");return}
-      wrap.innerHTML="";
-      for(var i=0;i<PRODUCTS.length;i++){
-        var p=PRODUCTS[i]; var node=document.importNode(tpl.content,true);
-        node.querySelector(".product-title").textContent=p.title;
-        node.querySelector(".product-desc").textContent=p.desc;
-        node.querySelector(".min-price").textContent=(p.minPrice!=null)?("Min: "+€(p.minPrice)):"Prix: sur devis";
-        node.querySelector(".lead-time").textContent="Délai: "+p.leadTime;
-        var optWrap=node.querySelector(".product-options");
-        if(p.options&&p.options.length){
-          for(var oi=0;oi<p.options.length;oi++){
-            var o=p.options[oi]; var selId=p.id+"_"+o.key;
-            var label=document.createElement("label"); label.className="pill"; label.style.display="inline-flex"; label.style.alignItems="center"; label.style.gap="6px";
-            label.appendChild(document.createTextNode(o.label+": "));
-            var select=document.createElement("select"); select.id=selId; select.className="opt-select";
-            for(var ci=0;ci<o.choices.length;ci++){var op=document.createElement("option"); op.value=o.choices[ci]; op.textContent=o.choices[ci]; select.appendChild(op);}
-            label.appendChild(select); optWrap.appendChild(label);
+    /* ====== ONGLET ====== */
+    function switchTab(btn){
+      try{
+        var buttons = document.querySelectorAll('.tab-btn'); for (var i=0;i<buttons.length;i++){ buttons[i].classList.remove('active'); }
+        btn.classList.add('active');
+        var panels = document.querySelectorAll('.tab-panel'); for (var j=0;j<panels.length;j++){ panels[j].classList.remove('active'); }
+        var id = btn.getAttribute('data-tab'); var p = document.getElementById(id); if (p) p.classList.add('active');
+      }catch(e){diag(e);}
+    }
+
+    /* ====== PANIER ====== */
+    var CART = []; // [{title, qty, unit, opts:{...}}]
+
+    function inc(id){ var el=document.getElementById(id); var v=parseInt(el.value||'1',10)||1; el.value=v+1; }
+    function dec(id){ var el=document.getElementById(id); var v=parseInt(el.value||'1',10)||1; el.value = Math.max(1, v-1); }
+
+    function addP1(){
+      try{
+        var qty = parseInt(document.getElementById('p1_qty').value||'1',10); if (isNaN(qty)||qty<1) qty=1;
+        var couleur = document.getElementById('p1_couleur').value;
+        var impr = document.getElementById('p1_impr').value;
+        // fusion si mêmes options
+        var merged = false;
+        for (var i=0;i<CART.length;i++){
+          var it=CART[i];
+          if (it.title==='Pochon personnalisé 8×11 cm' && it.opts.couleur===couleur && it.opts.impression===impr){
+            it.qty += qty; merged = true; break;
           }
         }
-        (function(p,node){
-          var qtyInput=node.querySelector(".qty-input");
-          node.querySelector(".qty-btn.dec").addEventListener("click",function(){var v=parseInt(qtyInput.value||"1",10);if(isNaN(v))v=1;qtyInput.value=Math.max(1,v-1)});
-          node.querySelector(".qty-btn.inc").addEventListener("click",function(){var v=parseInt(qtyInput.value||"1",10);if(isNaN(v))v=1;qtyInput.value=v+1});
-          node.querySelector(".add-to-cart").addEventListener("click",function(){
-            var qty=parseInt(qtyInput.value||"1",10); if(isNaN(qty)||qty<1)qty=1;
-            var chosen={}; if(p.options){for(var oi=0;oi<p.options.length;oi++){var o=p.options[oi]; var el=document.getElementById(p.id+"_"+o.key); if(el&&el.value)chosen[o.key]=el.value;}}
-            addToCart({id:p.id,title:p.title,options:chosen,qty:qty,unitMinPrice:(p.minPrice!=null?p.minPrice:null)});
-          });
-        })(p,node);
-        wrap.appendChild(node);
-      }
+        if (!merged){
+          CART.push({ title:'Pochon personnalisé 8×11 cm', qty:qty, unit:PRICE_P1, opts:{couleur:couleur, impression:impr} });
+        }
+        renderCart();
+        toast('Ajouté au panier');
+      }catch(e){diag(e);}
     }
 
-    function addToCart(item){
-      for(var i=0;i<CART.length;i++){
-        var same=(CART[i].id===item.id)&&(JSON.stringify(CART[i].options)===JSON.stringify(item.options));
-        if(same){CART[i].qty+=item.qty; setLS("ps_cart",CART); toast("Ajouté au panier"); renderCart(); return;}
-      }
-      CART.push(item); setLS("ps_cart",CART); toast("Ajouté au panier"); renderCart();
-    }
-
-    function wireCartUi(){
-      var modal=document.getElementById("cartModal");
-      var fab=document.getElementById("cartFab");
-      var closeBtn=document.getElementById("closeCart");
-      var clearBtn=document.getElementById("clearCart");
-      var askBtn=document.getElementById("askQuoteModal");
-      function open(){renderCart(); modal.classList.remove("hidden"); modal.setAttribute("aria-hidden","false")}
-      function close(){modal.classList.add("hidden"); modal.setAttribute("aria-hidden","true")}
-      if(fab)fab.addEventListener("click",open);
-      if(closeBtn)closeBtn.addEventListener("click",close);
-      if(clearBtn)clearBtn.addEventListener("click",function(){CART=[]; setLS("ps_cart",CART); renderCart()});
-      if(askBtn)askBtn.addEventListener("click",sendQuote);
-      window.addEventListener("keydown",function(e){if(e.key==="Escape"&&!modal.classList.contains("hidden"))close()});
-    }
+    function openCart(){ try{ document.getElementById('cartModal').classList.remove('hidden'); }catch(e){diag(e);} }
+    function closeCart(){ try{ document.getElementById('cartModal').classList.add('hidden'); }catch(e){diag(e);} }
+    function clearCart(){ CART=[]; renderCart(); }
 
     function renderCart(){
-      var box=document.getElementById("cartItems"); var totalEl=document.getElementById("cartTotalModal");
-      if(!box||!totalEl)return;
-      box.innerHTML="";
-      if(!CART.length){ box.innerHTML='<p class="item-sub">Votre panier est vide.</p>'; }
-      else{
-        for(var i=0;i<CART.length;i++){
-          (function(it,idx){
-            var row=document.createElement("div"); row.className="cart-item";
-            var left=document.createElement("div");
-            var title=document.createElement("div"); title.className="item-title"; title.textContent=it.title;
-            var sub=document.createElement("div"); sub.className="item-sub";
-            var optTxt=(it.options&&Object.keys(it.options).length)?Object.keys(it.options).map(function(k){return k+": "+it.options[k]}).join(" • "):"—";
-            var priceTxt=it.unitMinPrice?(" | min "+€(it.unitMinPrice)+"/u"):" | prix sur devis";
-            sub.textContent=optTxt+priceTxt; left.appendChild(title); left.appendChild(sub);
-            var right=document.createElement("div"); right.className="item-right";
-            var qty=document.createElement("input"); qty.className="item-qty"; qty.type="number"; qty.min="1"; qty.value=it.qty;
-            qty.addEventListener("change",function(){var v=parseInt(qty.value||"1",10); if(isNaN(v)||v<1)v=1; CART[idx].qty=v; setLS("ps_cart",CART); renderCart();});
-            var rm=document.createElement("button"); rm.className="btn remove"; rm.textContent="Suppr.";
-            rm.addEventListener("click",function(){CART.splice(idx,1); setLS("ps_cart",CART); renderCart();});
-            right.appendChild(qty); right.appendChild(rm);
-            row.appendChild(left); row.appendChild(right);
-            box.appendChild(row);
-          })(CART[i],i);
-        }
-      }
-      totalEl.textContent=€(cartTotal());
-    }
-
-    function sendQuote(){
-      if(!CART.length){toast("Ajoutez des articles au panier.");return}
-      var lines=[]; lines.push("🧾 *Demande de devis – PochonStore*",""); 
-      for(var i=0;i<CART.length;i++){
-        var it=CART[i];
-        var opts=(it.options&&Object.keys(it.options).length)?Object.keys(it.options).map(function(k){return k+": "+it.options[k]}).join(" • "):"—";
-        var unit=it.unitMinPrice?€(it.unitMinPrice):"sur devis";
-        lines.push((i+1)+". "+it.title+" × "+it.qty+"  | "+unit+"/u  | "+opts);
-      }
-      lines.push("","Total estimé (min connus) : *"+€(cartTotal())+"*","_Certains articles sont sur devis. Le tarif final sera confirmé._");
-      var payload={type:"QUOTE_REQUEST",cart:CART,estTotal:cartTotal(),text:lines.join("\n")};
       try{
-        if(tg&&tg.sendData){ tg.sendData(JSON.stringify(payload)); tg.HapticFeedback&&tg.HapticFeedback.notificationOccurred&&tg.HapticFeedback.notificationOccurred("success"); toast("Devis envoyé au bot. Merci !"); }
-        else{ navigator.clipboard&&navigator.clipboard.writeText&&navigator.clipboard.writeText(payload.text); alert("Ouvert hors Telegram : devis copié dans le presse-papiers."); }
-      }catch(e){ console.error(e); diag("Envoi devis: "+(e.message||"erreur")); }
+        var box=document.getElementById('cartItems'); var total=0;
+        box.innerHTML='';
+        if (!CART.length){ box.innerHTML='<p class="item-sub">Votre panier est vide.</p>'; }
+        for (var i=0;i<CART.length;i++){
+          (function(it,idx){
+            total += (it.unit||0)*it.qty;
+            var row=document.createElement('div'); row.className='cart-item';
+
+            var left=document.createElement('div');
+            var t=document.createElement('div'); t.className='item-title'; t.textContent=it.title + ' × ' + it.qty;
+            var s=document.createElement('div'); s.className='item-sub';
+            s.textContent = 'couleur: ' + it.opts.couleur + ' • impression: ' + it.opts.impression + ' | min ' + euro(it.unit) + '/u';
+            left.appendChild(t); left.appendChild(s);
+
+            var right=document.createElement('div'); right.className='item-right';
+            var btn=document.createElement('button'); btn.className='btn remove'; btn.textContent='Suppr.';
+            btn.onclick=function(){ CART.splice(idx,1); renderCart(); };
+
+            right.appendChild(btn); row.appendChild(left); row.appendChild(right); box.appendChild(row);
+          })(CART[i], i);
+        }
+        document.getElementById('cartTotal').textContent = euro(total);
+      }catch(e){diag(e);}
     }
 
-    function wireLinks(){
-      var ch=document.getElementById("openChannel");
-      var ct=document.getElementById("openContact");
-      if(ch)ch.addEventListener("click",function(){var url=CONFIG.CHANNEL_URL; if(tg&&tg.openTelegramLink)tg.openTelegramLink(url); else window.open(url,"_blank");});
-      if(ct)ct.addEventListener("click",function(){var url="https://t.me/"+CONFIG.CONTACT_USERNAME; if(tg&&tg.openTelegramLink)tg.openTelegramLink(url); else window.open(url,"_blank");});
+    /* ====== ENVOI DEVIS ====== */
+    function sendQuote(){
+      if (!CART.length){ toast('Ajoutez des articles au panier.'); return; }
+      var lines = [];
+      lines.push('🧾 *Demande de devis – PochonStore*','');
+      for (var i=0;i<CART.length;i++){
+        var it=CART[i];
+        lines.push((i+1)+'. '+it.title+' × '+it.qty+'  | '+euro(it.unit)+'/u  | couleur: '+it.opts.couleur+' • impression: '+it.opts.impression);
+      }
+      lines.push('', 'Total estimé (min connus) : *'+document.getElementById('cartTotal').textContent+'*', '_Certains articles sont sur devis. Le tarif final sera confirmé._');
+      var payload = { type:'QUOTE_REQUEST', cart:CART, text: lines.join('\n') };
+
+      try{
+        if (tg && tg.sendData){ tg.sendData(JSON.stringify(payload)); tg.HapticFeedback && tg.HapticFeedback.notificationOccurred && tg.HapticFeedback.notificationOccurred('success'); toast('Devis envoyé au bot.'); }
+        else { navigator.clipboard && navigator.clipboard.writeText && navigator.clipboard.writeText(payload.text); alert('Ouvert hors Telegram : devis copié.'); }
+      }catch(e){diag(e);}
     }
 
+    /* ====== LIENS ====== */
+    function openChannel(){ var url=CHANNEL_URL; if (tg && tg.openTelegramLink) tg.openTelegramLink(url); else window.open(url,'_blank'); }
+    function openContact(){ var url='https://t.me/'+CONTACT_USERNAME; if (tg && tg.openTelegramLink) tg.openTelegramLink(url); else window.open(url,'_blank'); }
+
+    /* ====== UI HELP ====== */
     var toastTimer=null;
     function toast(msg){
-      var el=document.getElementById("toast");
-      if(!el){ el=document.createElement("div"); el.id="toast"; el.style.position="fixed"; el.style.left="50%"; el.style.bottom="84px"; el.style.transform="translateX(-50%)"; el.style.padding="10px 14px"; el.style.background="#121216"; el.style.color="#fff"; el.style.border="1px solid #333"; el.style.borderRadius="10px"; el.style.boxShadow="0 10px 30px rgba(0,0,0,.4)"; el.style.zIndex="9999"; document.body.appendChild(el); }
-      el.textContent=msg; el.style.opacity="1"; if(toastTimer)clearTimeout(toastTimer); toastTimer=setTimeout(function(){el.style.opacity="0"},1800);
+      var el=document.getElementById('toast');
+      if(!el){
+        el=document.createElement('div'); el.id='toast';
+        el.style.position='fixed'; el.style.left='50%'; el.style.bottom='84px';
+        el.style.transform='translateX(-50%)'; el.style.padding='10px 14px';
+        el.style.background='#121216'; el.style.color='#fff';
+        el.style.border='1px solid #333'; el.style.borderRadius='10px';
+        el.style.boxShadow='0 10px 30px rgba(0,0,0,.4)'; el.style.zIndex='9999';
+        document.body.appendChild(el);
+      }
+      el.textContent=msg; el.style.opacity='1';
+      clearTimeout(toastTimer); toastTimer=setTimeout(function(){el.style.opacity='0';}, 1800);
     }
-  })();
+
+    function diag(e){
+      var d=document.getElementById('diag');
+      d.style.display='block';
+      d.textContent='⚠️ ' + (e && (e.message || e.toString()) || 'Erreur');
+      console.error(e);
+    }
+
+    // Affiche le prix formaté dès le chargement (pas d'attente d'événement)
+    document.getElementById('p1price').textContent = euro(PRICE_P1);
   </script>
 </body>
 </html>
