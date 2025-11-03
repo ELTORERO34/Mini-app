@@ -3,17 +3,20 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Gangster Street Shop</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>PochonStore</title>
+  <link rel="stylesheet" href="styles.css" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
+  <!-- Bandeau diagnostic si un bug JS survient -->
+  <div id="diag" class="diag" style="display:none">⚠️ Erreur JS</div>
+
   <header class="app-header">
-    <h1>Gangster Street Shop</h1>
+    <h1>PochonStore</h1>
     <p class="subtitle">Mini-boutique officielle</p>
   </header>
 
-  <!-- Barre d’onglets -->
+  <!-- Onglets -->
   <nav class="tabs">
     <button class="tab-btn active" data-tab="catalog">Catalogue</button>
     <button class="tab-btn" data-tab="infos">Infos</button>
@@ -21,9 +24,7 @@
     <button class="tab-btn" data-tab="contact">Contact</button>
   </nav>
 
-  <!-- Contenu -->
   <main class="tab-content">
-
     <!-- CATALOGUE -->
     <section id="catalog" class="tab-panel active">
       <div id="products" class="grid"></div>
@@ -35,10 +36,10 @@
         <h2>Informations</h2>
         <ul class="info-list">
           <li>Paiement : acompte à la commande, solde avant expédition.</li>
-          <li>Délais : design basique 2–3j, premium 4–5j. Production/expédition selon volume.</li>
-          <li>Fichiers : accepte .png / .jpg / .pdf. Vectoriels bienvenus (.ai/.svg).</li>
-          <li>Retours : personnalisés non échangeables, sauf défaut prouvé.</li>
-          <li>Support : via « Contact » en bas.</li>
+          <li>Délais indicatifs : 2–5 jours selon volume.</li>
+          <li>Fichiers acceptés : .png / .jpg / .pdf (vectoriel .ai/.svg apprécié).</li>
+          <li>Produits personnalisés : non échangeables (sauf défaut).</li>
+          <li>Support : via l’onglet « Contact ».</li>
         </ul>
       </div>
     </section>
@@ -60,18 +61,10 @@
         <button id="openContact" class="btn primary">Écrire au compte</button>
       </div>
     </section>
-  </main>
 
-  <!-- Panier (dock) -->
-  <aside class="cart-dock">
-    <div class="cart-summary">
-      <span id="cartCount">0</span> article(s) — <span id="cartTotal">0,00 €</span>
-    </div>
-    <div class="cart-actions">
-      <button id="viewCart" class="btn ghost">Voir</button>
-      <button id="askQuote" class="btn primary">Demander un devis</button>
-    </div>
-  </aside>
+    <!-- Bouton flottant panier -->
+    <button id="cartFab" class="cart-fab" aria-label="Voir le panier">🛒</button>
+  </main>
 
   <!-- Modal Panier -->
   <div id="cartModal" class="modal hidden" aria-hidden="true">
@@ -89,6 +82,7 @@
     </div>
   </div>
 
+  <!-- Template produit -->
   <template id="productTpl">
     <div class="product-card">
       <div class="product-visual"></div>
