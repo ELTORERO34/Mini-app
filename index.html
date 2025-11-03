@@ -1,72 +1,60 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>PochonStoretest</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root{
       --bg:#050506;--card:#141417;--ink:#f3f3f3;--muted:#bdbdbd;
-      --accent:#d4af37;--danger:#ff5252;--border:#26262b;
+      --accent:#d4af37;--border:#26262b;
       --radius:14px;--shadow:0 10px 30px rgba(0,0,0,.45);
     }
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,Segoe UI,Roboto,Inter,Arial}
-    h1,h2,h3{margin:.2rem 0 .6rem}
-    p{margin:.3rem 0}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:system-ui,Segoe UI,Roboto,Inter,Arial}
+    h1,h2,h3{margin:.3rem 0}
+    p{margin:.2rem 0}
     a{color:var(--accent);text-decoration:none}
 
-    /* Bandeau diag (erreur JS) */
-    #diag{display:none;position:sticky;top:0;z-index:9999;background:#4a0000;color:#fff;padding:8px 12px;border-bottom:1px solid #700;font-size:14px}
+    /* HEADER FIXE FLOU */
+    .topbar{
+      position:fixed;top:0;left:0;right:0;z-index:100;
+      height:60px;
+      display:flex;align-items:center;justify-content:center;
+      backdrop-filter:blur(12px);
+      background:rgba(5,5,5,0.85);
+      border-bottom:1px solid var(--border);
+    }
+    .topbar img{
+      height:42px;
+      object-fit:contain;
+      filter:drop-shadow(0 2px 5px rgba(0,0,0,.8));
+    }
 
-    /* CONTENU PRINCIPAL */
-    .tab-content{padding:0 10px 120px} /* pas de padding top, la bannière est collée en haut */
-    .tab-panel{display:none}
-    .tab-panel.active{display:block}
-
-    /* HERO / BANNIÈRE – collée sous la barre Telegram */
+    /* HERO / BANNIÈRE */
     .hero{
+      margin-top:60px; /* espace sous le header fixe */
       height:150px;
-      margin:0 -10px 14px;  /* on enlève la marge horizontale pour coller aux bords */
-      position:relative;
-      overflow:hidden;
-      border-radius:0;      /* pas de coins arrondis pour coller au style de ton exemple */
       background:
-        linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.95)),
+        linear-gradient(180deg,rgba(0,0,0,.3),rgba(0,0,0,.95)),
         url('img/banner.png') center/cover no-repeat;
+      display:flex;flex-direction:column;justify-content:flex-end;
+      padding:16px;
     }
-    .hero-inner{
-      position:absolute;inset:0;
-      display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;
-      padding:14px 16px;
-    }
-    .hero-logo{
-      font-family:"Impact",system-ui,sans-serif;
-      font-size:1.6rem;letter-spacing:.5px;
-      text-shadow:0 2px 8px rgba(0,0,0,.8);
-    }
-    .hero-sub{color:var(--muted);font-size:.9rem;text-shadow:0 2px 8px rgba(0,0,0,.8)}
+    .hero h1{font-family:"Impact",sans-serif;font-size:1.6rem;margin:0}
+    .hero p{color:var(--muted);margin:0}
 
     /* PRODUIT */
-    .grid{display:grid;grid-template-columns:1fr;gap:12px}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
-
+    .grid{display:grid;grid-template-columns:1fr;gap:12px;padding:0 12px 120px}
     .product-card{
       display:grid;grid-template-columns:100px 1fr;gap:12px;
       background:var(--card);border:1px solid var(--border);
       border-radius:var(--radius);padding:10px;box-shadow:var(--shadow);
     }
-    .product-visual{
-      width:100px;height:100px;border-radius:10px;
-      background:
-        radial-gradient(80% 80% at 25% 20%, rgba(212,175,55,.28), transparent 60%),
-        linear-gradient(135deg,#1a1a1f,#0f0f12);
-      border:1px solid var(--border);
-    }
-    .product-desc{color:var(--muted);margin:0 0 8px}
-    .product-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
-    .pill{padding:4px 8px;border:1px solid var(--border);border-radius:16px;color:#ddd;font-size:.86rem}
+    .product-visual{width:100px;height:100px;border-radius:10px;background:#111;border:1px solid var(--border);}
+    .product-desc{color:var(--muted)}
+    .pill{padding:4px 8px;border:1px solid var(--border);border-radius:16px;color:#ddd;font-size:.85rem}
     .pill::before{content:"• ";color:var(--accent)}
     .qty-row{display:flex;align-items:center;gap:8px;margin-top:6px}
     .qty-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:#101015;color:var(--ink)}
@@ -74,39 +62,19 @@
     .btn{height:36px;border-radius:10px;border:1px solid var(--border);background:#15151a;color:var(--ink);padding:0 12px}
     .btn.primary{background:linear-gradient(180deg,#1d1d22,#111);border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
 
-    /* MODAL PANIER */
-    .modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:flex-end}
-    .modal.hidden{display:none}
-    .modal-inner{background:var(--bg);border-top-left-radius:18px;border-top-right-radius:18px;box-shadow:var(--shadow);width:100%;max-height:86vh;display:flex;flex-direction:column}
-    .modal-header{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--border)}
-    .icon-btn{background:#121216;border:1px solid var(--border);color:var(--ink);border-radius:10px;height:34px;width:34px}
-    .cart-items{padding:10px 12px;overflow:auto}
-    .cart-item{display:grid;grid-template-columns:1fr auto;gap:6px;padding:10px;border-bottom:1px dashed var(--border)}
-    .item-title{font-weight:700}
-    .item-sub{color:var(--muted);font-size:.95rem}
-    .item-right{display:flex;gap:6px;align-items:center}
-    .item-qty{border:1px solid var(--border);border-radius:10px;background:#101015;color:var(--ink);width:50px;height:32px;text-align:center}
-    .remove{color:#fff;background:#6b2626;border:1px solid #311}
-    .modal-footer{display:flex;justify-content:space-between;align-items:center;padding:12px;border-top:1px solid var(--border)}
-    .total-line{font-size:1.1rem}
-
-    /* NAV BAS */
+    /* MENU BAS */
     .bottom-nav{
       position:fixed;left:0;right:0;bottom:0;height:64px;
       background:rgba(5,5,6,.96);backdrop-filter:blur(14px);
       border-top:1px solid var(--border);
       display:flex;z-index:40;
     }
-    .nav-btn{
-      flex:1;border:none;background:transparent;
-      color:var(--muted);
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      font-size:.78rem;
-    }
+    .nav-btn{flex:1;border:none;background:transparent;color:var(--muted);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.78rem;}
     .nav-btn span.icon{font-size:1.2rem;margin-bottom:2px}
     .nav-btn.active{color:var(--accent);font-weight:600}
 
-    /* FAB PANIER (au-dessus du menu bas) */
+    /* PANIER FLOTTANT */
     .cart-fab{
       position:fixed;right:14px;bottom:74px;z-index:50;
       width:56px;height:56px;border-radius:50%;
@@ -115,277 +83,50 @@
       color:#f5f5f5;font-size:22px;
       box-shadow:0 10px 26px rgba(0,0,0,.45);
     }
-    .cart-fab:active{transform:translateY(1px)}
-
-    .info-list{margin:.6rem 0 .2rem 1rem}
   </style>
 </head>
 <body>
-  <div id="diag">⚠️ Erreur JS</div>
 
-  <main class="tab-content">
-    <!-- CATALOGUE / MENU -->
-    <section id="catalog" class="tab-panel active">
-      <!-- BANNIÈRE COLLEE EN HAUT -->
-      <div class="hero">
-        <div class="hero-inner">
-          <div class="hero-logo">PochonStoretest</div>
-          <div class="hero-sub">Pochons & visuels personnalisés</div>
+  <!-- HEADER FLOU FIXE -->
+  <div class="topbar">
+    <img src="img/logo.png" alt="Logo PochonStore">
+  </div>
+
+  <!-- BANNIÈRE -->
+  <div class="hero">
+    <h1>PochonStoretest</h1>
+    <p>Pochons & visuels personnalisés</p>
+  </div>
+
+  <!-- PRODUIT -->
+  <div class="grid">
+    <div class="product-card">
+      <div class="product-visual"></div>
+      <div>
+        <h3>Pochon personnalisé 8×11 cm</h3>
+        <p class="product-desc">Sérigraphie 1 face. Couleurs au choix.</p>
+        <p class="pill">Min : 0,35 €</p>
+        <p class="pill">Délai : 2–3 jours</p>
+        <div class="qty-row">
+          <button class="qty-btn">−</button>
+          <input type="number" class="qty-input" value="1">
+          <button class="qty-btn">+</button>
+          <button class="btn primary">Ajouter</button>
         </div>
       </div>
-
-      <div class="grid">
-        <!-- PRODUIT 1 -->
-        <div class="product-card" id="p1">
-          <div class="product-visual"></div>
-          <div class="product-body">
-            <h3 class="product-title">Pochon personnalisé 8×11 cm</h3>
-            <p class="product-desc">Sérigraphie 1 face. Couleurs au choix.</p>
-            <div class="product-meta">
-              <span class="pill">Min: <span id="p1price">0,35 €</span></span>
-              <span class="pill">Délai: 2–3 jours</span>
-            </div>
-            <div class="product-options">
-              <label class="pill" style="display:inline-flex;align-items:center;gap:6px">
-                Couleur:
-                <select id="p1_couleur">
-                  <option>Noir</option><option>Blanc</option><option>Rouge</option><option>Vert</option>
-                </select>
-              </label>
-              <label class="pill" style="display:inline-flex;align-items:center;gap:6px">
-                Impression:
-                <select id="p1_impr">
-                  <option>1 couleur</option><option>2 couleurs</option>
-                </select>
-              </label>
-            </div>
-            <div class="qty-row">
-              <button class="qty-btn" onclick="dec('p1_qty')">−</button>
-              <input id="p1_qty" type="number" class="qty-input" min="1" value="1" />
-              <button class="qty-btn" onclick="inc('p1_qty')">+</button>
-              <button class="btn primary" onclick="addP1()">Ajouter</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- INFOS -->
-    <section id="infos" class="tab-panel">
-      <div class="card">
-        <h2>Informations</h2>
-        <ul class="info-list">
-          <li>Paiement : acompte à la commande, solde avant expédition.</li>
-          <li>Délais indicatifs : 2–5 jours selon volume.</li>
-          <li>Fichiers acceptés : .png / .jpg / .pdf (vectoriel .ai/.svg apprécié).</li>
-          <li>Produits personnalisés : non échangeables (sauf défaut).</li>
-          <li>Support : via l’onglet « Contact ».</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- CANAL -->
-    <section id="canal" class="tab-panel">
-      <div class="card">
-        <h2>Rejoindre le canal</h2>
-        <p>Actus, promos, coulisses.</p>
-        <button class="btn primary" onclick="openChannel()">Ouvrir le canal</button>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="tab-panel">
-      <div class="card">
-        <h2>Contact</h2>
-        <p>Parle directement avec nous sur Telegram.</p>
-        <button class="btn primary" onclick="openContact()">Écrire au compte</button>
-      </div>
-    </section>
-  </main>
-
-  <!-- Bouton flottant panier -->
-  <button id="cartFab" class="cart-fab" aria-label="Voir le panier" onclick="openCart()">🛒</button>
-
-  <!-- MENU BAS -->
-  <nav class="bottom-nav">
-    <button class="nav-btn active" data-tab="catalog" onclick="navTo(this)">
-      <span class="icon">🏠</span>
-      <span>Menu</span>
-    </button>
-    <button class="nav-btn" data-tab="infos" onclick="navTo(this)">
-      <span class="icon">ℹ️</span>
-      <span>Infos</span>
-    </button>
-    <button class="nav-btn" data-tab="canal" onclick="navTo(this)">
-      <span class="icon">📣</span>
-      <span>Canal</span>
-    </button>
-    <button class="nav-btn" data-tab="contact" onclick="navTo(this)">
-      <span class="icon">✉️</span>
-      <span>Contact</span>
-    </button>
-  </nav>
-
-  <!-- Modal Panier -->
-  <div id="cartModal" class="modal hidden" aria-hidden="true">
-    <div class="modal-inner">
-      <header class="modal-header">
-        <h3>Votre panier</h3>
-        <button class="icon-btn" onclick="closeCart()">✕</button>
-      </header>
-      <div id="cartItems" class="cart-items"></div>
-      <footer class="modal-footer">
-        <div class="total-line">Total estimé : <strong id="cartTotal">0,00 €</strong></div>
-        <button class="btn" onclick="clearCart()">Vider</button>
-        <button class="btn primary" onclick="sendQuote()">Demander un devis</button>
-      </footer>
     </div>
   </div>
 
-  <script>
-    /* ====== CONFIG ====== */
-    var CHANNEL_URL = "https://t.me/ton_canal_telegram";  // <-- remplace
-    var CONTACT_USERNAME = "ton_compte_telegram";          // <-- remplace (sans @)
-    var PRICE_P1 = 0.35;
+  <!-- BOUTON PANIER -->
+  <button class="cart-fab">🛒</button>
 
-    var tg = null;
-    try { if (window.Telegram && window.Telegram.WebApp){ tg = window.Telegram.WebApp; tg.expand && tg.expand(); } } catch(e){}
+  <!-- MENU BAS -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active"><span class="icon">🏠</span><span>Menu</span></button>
+    <button class="nav-btn"><span class="icon">ℹ️</span><span>Infos</span></button>
+    <button class="nav-btn"><span class="icon">📣</span><span>Canal</span></button>
+    <button class="nav-btn"><span class="icon">✉️</span><span>Contact</span></button>
+  </nav>
 
-    function euro(n){
-      try { return new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR"}).format(n||0); }
-      catch(e){ return (n||0).toFixed(2)+" €"; }
-    }
-
-    function navTo(btn){
-      try{
-        var tab = btn.getAttribute('data-tab');
-        var navs = document.querySelectorAll('.nav-btn');
-        for (var i=0;i<navs.length;i++) navs[i].classList.remove('active');
-        btn.classList.add('active');
-        var panels = document.querySelectorAll('.tab-panel');
-        for (var j=0;j<panels.length;j++) panels[j].classList.remove('active');
-        var p = document.getElementById(tab); if (p) p.classList.add('active');
-        window.scrollTo(0,0);
-      }catch(e){diag(e);}
-    }
-
-    /* ====== PANIER ====== */
-    var CART = [];
-
-    function inc(id){ var el=document.getElementById(id); var v=parseInt(el.value||'1',10)||1; el.value=v+1; }
-    function dec(id){ var el=document.getElementById(id); var v=parseInt(el.value||'1',10)||1; el.value=Math.max(1,v-1); }
-
-    function addP1(){
-      try{
-        var qty = parseInt(document.getElementById('p1_qty').value||'1',10); if(isNaN(qty)||qty<1)qty=1;
-        var couleur = document.getElementById('p1_couleur').value;
-        var impr    = document.getElementById('p1_impr').value;
-
-        var merged = false;
-        for (var i=0;i<CART.length;i++){
-          var it = CART[i];
-          if (it.title==='Pochon personnalisé 8×11 cm' && it.opts.couleur===couleur && it.opts.impression===impr){
-            it.qty += qty; merged = true; break;
-          }
-        }
-        if (!merged){
-          CART.push({ title:'Pochon personnalisé 8×11 cm', qty:qty, unit:PRICE_P1, opts:{couleur:couleur, impression:impr} });
-        }
-        renderCart();
-        toast('Ajouté au panier');
-      }catch(e){diag(e);}
-    }
-
-    function openCart(){ document.getElementById('cartModal').classList.remove('hidden'); }
-    function closeCart(){ document.getElementById('cartModal').classList.add('hidden'); }
-    function clearCart(){ CART=[]; renderCart(); }
-
-    function renderCart(){
-      try{
-        var box=document.getElementById('cartItems'); var total=0;
-        box.innerHTML='';
-        if (!CART.length){ box.innerHTML='<p class="item-sub">Votre panier est vide.</p>'; }
-        for (var i=0;i<CART.length;i++){
-          (function(it,idx){
-            total += (it.unit||0)*it.qty;
-            var row=document.createElement('div'); row.className='cart-item';
-
-            var left=document.createElement('div');
-            var t=document.createElement('div'); t.className='item-title'; t.textContent=it.title+' × '+it.qty;
-            var s=document.createElement('div'); s.className='item-sub';
-            s.textContent='couleur: '+it.opts.couleur+' • impression: '+it.opts.impression+' | min '+euro(it.unit)+'/u';
-            left.appendChild(t); left.appendChild(s);
-
-            var right=document.createElement('div'); right.className='item-right';
-            var btn=document.createElement('button'); btn.className='btn remove'; btn.textContent='Suppr.';
-            btn.onclick=function(){ CART.splice(idx,1); renderCart(); };
-
-            right.appendChild(btn); row.appendChild(left); row.appendChild(right); box.appendChild(row);
-          })(CART[i],i);
-        }
-        document.getElementById('cartTotal').textContent = euro(total);
-      }catch(e){diag(e);}
-    }
-
-    function sendQuote(){
-      if (!CART.length){ toast('Ajoutez des articles au panier.'); return; }
-      var lines = [];
-      lines.push('🧾 *Demande de devis – PochonStore*','');
-      for (var i=0;i<CART.length;i++){
-        var it=CART[i];
-        lines.push((i+1)+'. '+it.title+' × '+it.qty+'  | '+euro(it.unit)+'/u  | couleur: '+it.opts.couleur+' • impression: '+it.opts.impression);
-      }
-      lines.push('','Total estimé (min connus) : *'+document.getElementById('cartTotal').textContent+'*','_Certains articles sont sur devis. Le tarif final sera confirmé._');
-      var payload={type:'QUOTE_REQUEST',cart:CART,text:lines.join('\n')};
-
-      try{
-        if (tg && tg.sendData){
-          tg.sendData(JSON.stringify(payload));
-          tg.HapticFeedback && tg.HapticFeedback.notificationOccurred && tg.HapticFeedback.notificationOccurred('success');
-          toast('Devis envoyé au bot.');
-        } else {
-          navigator.clipboard && navigator.clipboard.writeText && navigator.clipboard.writeText(payload.text);
-          alert('Ouvert hors Telegram : devis copié.');
-        }
-      }catch(e){diag(e);}
-    }
-
-    /* ====== LIENS ====== */
-    function openChannel(){
-      var url = CHANNEL_URL;
-      if (tg && tg.openTelegramLink) tg.openTelegramLink(url); else window.open(url,'_blank');
-    }
-    function openContact(){
-      var url = 'https://t.me/'+CONTACT_USERNAME;
-      if (tg && tg.openTelegramLink) tg.openTelegramLink(url); else window.open(url,'_blank');
-    }
-
-    /* ====== UI HELP ====== */
-    var toastTimer=null;
-    function toast(msg){
-      var el=document.getElementById('toast');
-      if(!el){
-        el=document.createElement('div'); el.id='toast';
-        el.style.position='fixed'; el.style.left='50%'; el.style.bottom='84px';
-        el.style.transform='translateX(-50%)'; el.style.padding='10px 14px';
-        el.style.background='#121216'; el.style.color='#fff';
-        el.style.border='1px solid #333'; el.style.borderRadius='10px';
-        el.style.boxShadow='0 10px 30px rgba(0,0,0,.4)'; el.style.zIndex='9999';
-        document.body.appendChild(el);
-      }
-      el.textContent=msg; el.style.opacity='1';
-      clearTimeout(toastTimer); toastTimer=setTimeout(function(){el.style.opacity='0';},1800);
-    }
-
-    function diag(e){
-      var d=document.getElementById('diag');
-      d.style.display='block';
-      d.textContent='⚠️ '+(e && (e.message||e.toString()) || 'Erreur');
-      console.error(e);
-    }
-
-    // prix formaté au chargement
-    document.getElementById('p1price').textContent = euro(PRICE_P1);
-  </script>
 </body>
 </html>
