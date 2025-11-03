@@ -215,6 +215,38 @@
         </div>
       </div>
     </section>
+    
+    <!-- PRODUIT 3 : Cartes de fidélité / visite -->
+<div class="product-card" id="p3">
+  <div class="product-visual"></div>
+  <div class="product-body">
+    <h3 class="product-title">Cartes de fidélité / visite</h3>
+    <p class="product-desc">Impression recto-verso sur papier 350g premium.</p>
+    <div class="product-meta">
+      <span class="pill">Min: <span id="p3price">70,00 €</span></span>
+      <span class="pill">Délai: 5–7 jours ouvrables</span>
+    </div>
+
+    <div class="product-options">
+      <label class="pill" style="display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap">
+        Quantité :
+        <select id="p3_format">
+          <option value="250|70">250 cartes — 70 €</option>
+          <option value="500|140">500 cartes — 140 €</option>
+          <option value="1000|180">1000 cartes — 180 €</option>
+          <option value="+1000|0">+ de 1000 cartes — sur devis</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="qty-row">
+      <button class="qty-btn" onclick="dec('p3_qty')">−</button>
+      <input id="p3_qty" type="number" class="qty-input" min="1" value="1" />
+      <button class="qty-btn" onclick="inc('p3_qty')">+</button>
+      <button class="btn primary" onclick="addP3()">Ajouter</button>
+    </div>
+  </div>
+</div>
 
     <!-- ===== INFOS ===== -->
     <section id="infos" class="tab-panel">
@@ -452,6 +484,40 @@ right.appendChild(btn); row.appendChild(left); row.appendChild(right); box.appen
 }
 document.getElementById('cartTotal').textContent = euro(total);
 }catch(e){diag(e);}
+}
+
+function addP3(){
+  try{
+    var qty = parseInt(document.getElementById('p3_qty').value || '1', 10);
+    if(isNaN(qty) || qty < 1) qty = 1;
+
+    var formatVal = document.getElementById('p3_format').value; // "250|70"
+    var parts = formatVal.split('|');
+    var quantite = parts[0];
+    var prix = parseFloat(parts[1]) || 0;
+
+    var merged = false;
+    for (var i = 0; i < CART.length; i++) {
+      var it = CART[i];
+      if (it.title === 'Cartes de fidélité / visite' && it.opts && it.opts.quantite === quantite) {
+        it.qty += qty;
+        merged = true;
+        break;
+      }
+    }
+
+    if (!merged) {
+      CART.push({
+        title: 'Cartes de fidélité / visite',
+        qty: qty,
+        unit: prix,
+        opts: { quantite: quantite }
+      });
+    }
+
+    renderCart();
+    toast('Ajouté au panier');
+  }catch(e){diag(e);}
 }
 
     function sendQuote(){
