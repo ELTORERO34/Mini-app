@@ -16,20 +16,15 @@
     h1,h2,h3{margin:.2rem 0 .6rem}
     p{margin:.3rem 0}
     a{color:var(--accent);text-decoration:none}
+    #diag{display:none;position:sticky;top:0;z-index:9999;background:#4a0000;color:#fff;padding:8px 12px;border-bottom:1px solid #700;font-size:14px}
 
-    #diag{
-      display:none;position:sticky;top:0;z-index:9999;
-      background:#4a0000;color:#fff;padding:8px 12px;
-      border-bottom:1px solid #700;font-size:14px;
-    }
-
-    /* ===== BANNIÈRE GLOBALE EN HAUT (SUR TOUS LES ONGLES) ===== */
+    /* ===== BANNIÈRE EN HAUT (logo + fond flou) ===== */
     .hero-header{
-      position:sticky;       /* reste en haut quand tu scrolls */
+      position:sticky;
       top:0;
       z-index:20;
       height:150px;
-      margin:0 -10px 12px;   /* colle aux bords comme GMF */
+      margin:0 -10px 12px;
       overflow:hidden;
     }
     .hero-header-bg{
@@ -54,11 +49,11 @@
     }
 
     /* CONTENU PRINCIPAL */
-    .tab-content{padding:0 10px 120px;} /* 120px pour laisser place au menu bas */
+    .tab-content{padding:0 10px 120px;}
     .tab-panel{display:none}
     .tab-panel.active{display:block}
 
-    /* CARTES / PRODUIT */
+    /* CARTES / PRODUITS */
     .grid{display:grid;grid-template-columns:1fr;gap:12px}
     .card{
       background:var(--card);border:1px solid var(--border);
@@ -81,7 +76,7 @@
     .product-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
     .pill{padding:4px 8px;border:1px solid var(--border);border-radius:16px;color:#ddd;font-size:.86rem}
     .pill::before{content:"• ";color:var(--accent)}
-    .qty-row{display:flex;align-items:center;gap:8px;margin-top:6px}
+    .qty-row{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
     .qty-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:#101015;color:var(--ink)}
     .qty-input{width:64px;height:36px;border-radius:10px;border:1px solid var(--border);background:#111;color:var(--ink);text-align:center}
     .btn{height:36px;border-radius:10px;border:1px solid var(--border);background:#15151a;color:var(--ink);padding:0 12px}
@@ -98,8 +93,6 @@
     .item-title{font-weight:700}
     .item-sub{color:var(--muted);font-size:.95rem}
     .item-right{display:flex;gap:6px;align-items:center}
-    .item-qty{border:1px solid var(--border);border-radius:10px;background:#101015;color:var(--ink);width:50px;height:32px;text-align:center}
-    .remove{color:#fff;background:#6b2626;border:1px solid #311}
     .modal-footer{display:flex;justify-content:space-between;align-items:center;padding:12px;border-top:1px solid var(--border)}
     .total-line{font-size:1.1rem}
 
@@ -136,37 +129,37 @@
 <body>
   <div id="diag">⚠️ Erreur JS</div>
 
-  <!-- BANNIÈRE GLOBALE : FOND FLOU + LOGO -->
+  <!-- Bannière globale -->
   <header class="hero-header">
     <div class="hero-header-bg"></div>
     <div class="hero-header-overlay"></div>
     <div class="hero-header-inner">
-      <!-- ton logo au milieu -->
       <img src="img/banner.png" alt="PochonStoretest" class="hero-header-logo">
     </div>
   </header>
 
   <main class="tab-content">
-    <!-- ===== CATALOGUE / MENU ===== -->
+    <!-- ====== CATALOGUE ====== -->
     <section id="catalog" class="tab-panel active">
       <div class="grid">
+        <!-- PRODUIT 1 : Pochon -->
         <div class="product-card" id="p1">
           <div class="product-visual"></div>
           <div class="product-body">
             <h3 class="product-title">Pochon personnalisé 8×11 cm</h3>
-            <p class="product-desc">Pochons Flatbag imprimé. design de votre choix.</p>
+            <p class="product-desc">Pochons flatbag imprimé avec votre design.</p>
             <div class="product-meta">
               <span class="pill">Min: <span id="p1price">0,8 €</span></span>
-              <span class="pill">Délai: 12–13 jours ouvrables</span>
+              <span class="pill">Délai: 12-13 jours ouvrables</span>
             </div>
             <div class="product-options">
-              <label class="pill" style="display:inline-flex;align-items:center;gap:6px">
+              <label class="pill" style="display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap">
                 Quantité:
                 <select id="p1_couleur">
-                  <option>500</option><option>1000</option><option>1500</option><option>2000</option><option>2500</option><option>3000</option>
+                  <option>500</option><option>1000</option><option>1500</option><option>2000</option>
                 </select>
               </label>
-              <label class="pill" style="display:inline-flex;align-items:center;gap:6px">
+              <label class="pill" style="display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap">
                 Impression:
                 <select id="p1_impr">
                   <option>1 design</option><option>multi designs 40€</option>
@@ -181,6 +174,45 @@
             </div>
           </div>
         </div>
+
+        <!-- PRODUIT 2 : Tableau personnalisé -->
+        <div class="product-card" id="p2">
+          <div class="product-visual"></div>
+          <div class="product-body">
+            <h3 class="product-title">Tableau personnalisé</h3>
+            <p class="product-desc">Impression HD sur toile, plusieurs formats disponibles.</p>
+            <div class="product-meta">
+              <span class="pill">Min: <span id="p2price">50,00 €</span></span>
+              <span class="pill">Délai: 4–7 jours</span>
+            </div>
+            <div class="product-options">
+              <label class="pill" style="display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap">
+                Format:
+                <select id="p2_format">
+                  <!-- panoramiques -->
+                  <option value="Panoramique|60×20|50">Panoramique 60×20 — 50 €</option>
+                  <option value="Panoramique|60×30|60">Panoramique 60×30 — 60 €</option>
+                  <option value="Panoramique|80×40|80">Panoramique 80×40 — 80 €</option>
+                  <option value="Panoramique|100×50|100">Panoramique 100×50 — 100 €</option>
+                  <option value="Panoramique|120×60|120">Panoramique 120×60 — 120 €</option>
+                  <!-- populaires -->
+                  <option value="Populaire|60×40|70">Populaire 60×40 — 70 €</option>
+                  <option value="Populaire|80×60|90">Populaire 80×60 — 90 €</option>
+                  <option value="Populaire|90×60|100">Populaire 90×60 — 100 €</option>
+                  <!-- carrés -->
+                  <option value="Carré|60×60|70">Carré 60×60 — 70 €</option>
+                  <option value="Carré|80×80|90">Carré 80×80 — 90 €</option>
+                </select>
+              </label>
+            </div>
+            <div class="qty-row">
+              <button class="qty-btn" onclick="dec('p2_qty')">−</button>
+              <input id="p2_qty" type="number" class="qty-input" min="1" value="1" />
+              <button class="qty-btn" onclick="inc('p2_qty')">+</button>
+              <button class="btn primary" onclick="addP2()">Ajouter</button>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -189,7 +221,7 @@
       <div class="card">
         <h2>Informations</h2>
         <ul class="info-list">
-          <li>Paiement : paiement à la commande, solde avant expédition.</li>
+          <li>Paiement : acompte à la commande, solde avant expédition.</li>
           <li>Délais indicatifs : 2–5 jours selon volume.</li>
           <li>Fichiers acceptés : .png / .jpg / .pdf (vectoriel .ai/.svg apprécié).</li>
           <li>Produits personnalisés : non échangeables (sauf défaut).</li>
@@ -260,6 +292,7 @@
     var CHANNEL_URL = "https://t.me/ton_canal_telegram";  // <-- remplace
     var CONTACT_USERNAME = "ton_compte_telegram";          // <-- remplace (sans @)
     var PRICE_P1 = 0.35;
+    var PRICE_P2_MIN = 50;
 
     var tg = null;
     try { if (window.Telegram && window.Telegram.WebApp){ tg = window.Telegram.WebApp; tg.expand && tg.expand(); } } catch(e){}
@@ -296,12 +329,46 @@
         var merged = false;
         for (var i=0;i<CART.length;i++){
           var it = CART[i];
-          if (it.title==='Pochon personnalisé 8×11 cm' && it.opts.couleur===couleur && it.opts.impression===impr){
+          if (it.title==='Pochon personnalisé 8×11 cm' && it.opts && it.opts.couleur===couleur && it.opts.impression===impr){
             it.qty += qty; merged = true; break;
           }
         }
         if (!merged){
-          CART.push({ title:'Pochon personnalisé 8×11 cm', qty:qty, unit:PRICE_P1, opts:{couleur:couleur, impression:impr} });
+          CART.push({
+            title:'Pochon personnalisé 8×11 cm',
+            qty:qty,
+            unit:PRICE_P1,
+            opts:{couleur:couleur, impression:impr}
+          });
+        }
+        renderCart();
+        toast('Ajouté au panier');
+      }catch(e){diag(e);}
+    }
+
+    function addP2(){
+      try{
+        var qty = parseInt(document.getElementById('p2_qty').value||'1',10); if(isNaN(qty)||qty<1)qty=1;
+        var formatVal = document.getElementById('p2_format').value; // "Panoramique|60×20|50"
+        var parts = formatVal.split('|');
+        var type   = parts[0] || '';
+        var taille = parts[1] || '';
+        var unit   = parseFloat(parts[2] || '0'); if(isNaN(unit)) unit = 0;
+
+        var merged = false;
+        for (var i=0;i<CART.length;i++){
+          var it = CART[i];
+          if (it.title==='Tableau personnalisé' && it.opts && it.opts.type===type && it.opts.taille===taille){
+            it.qty += qty; merged = true; break;
+          }
+        }
+        if (!merged){
+          CART.push({
+            title:'Tableau personnalisé',
+            qty:qty,
+            unit:unit,
+            opts:{type:type, taille:taille}
+          });
         }
         renderCart();
         toast('Ajouté au panier');
@@ -324,8 +391,20 @@
 
             var left=document.createElement('div');
             var t=document.createElement('div'); t.className='item-title'; t.textContent=it.title+' × '+it.qty;
+
+            var summary='';
+            if (it.opts){
+              var parts=[];
+              if (it.opts.couleur)    parts.push('couleur: '+it.opts.couleur);
+              if (it.opts.impression) parts.push('impression: '+it.opts.impression);
+              if (it.opts.type)       parts.push('type: '+it.opts.type);
+              if (it.opts.taille)     parts.push('taille: '+it.opts.taille);
+              summary = parts.join(' • ');
+            }
+
             var s=document.createElement('div'); s.className='item-sub';
-            s.textContent='couleur: '+it.opts.couleur+' • impression: '+it.opts.impression+' | min '+euro(it.unit)+'/u';
+            s.textContent=(summary ? summary+' | ' : '')+'min '+euro(it.unit)+'/u';
+
             left.appendChild(t); left.appendChild(s);
 
             var right=document.createElement('div'); right.className='item-right';
@@ -345,7 +424,22 @@
       lines.push('🧾 *Demande de devis – PochonStore*','');
       for (var i=0;i<CART.length;i++){
         var it=CART[i];
-        lines.push((i+1)+'. '+it.title+' × '+it.qty+'  | '+euro(it.unit)+'/u  | couleur: '+it.opts.couleur+' • impression: '+it.opts.impression);
+
+        var summary='';
+        if (it.opts){
+          var parts=[];
+          if (it.opts.couleur)    parts.push('couleur: '+it.opts.couleur);
+          if (it.opts.impression) parts.push('impression: '+it.opts.impression);
+          if (it.opts.type)       parts.push('type: '+it.opts.type);
+          if (it.opts.taille)     parts.push('taille: '+it.opts.taille);
+          summary = parts.join(' • ');
+        }
+
+        lines.push(
+          (i+1)+'. '+it.title+' × '+it.qty+
+          '  | '+euro(it.unit)+'/u'+
+          (summary ? '  | '+summary : '')
+        );
       }
       lines.push('','Total estimé (min connus) : *'+document.getElementById('cartTotal').textContent+'*','_Certains articles sont sur devis. Le tarif final sera confirmé._');
       var payload={type:'QUOTE_REQUEST',cart:CART,text:lines.join('\n')};
@@ -394,7 +488,9 @@
       console.error(e);
     }
 
+    // prix formatés au chargement
     document.getElementById('p1price').textContent = euro(PRICE_P1);
+    document.getElementById('p2price').textContent = euro(PRICE_P2_MIN);
   </script>
 </body>
 </html>
