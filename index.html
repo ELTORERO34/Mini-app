@@ -322,17 +322,18 @@
 
 function addP1(){
   try{
-    // nombre de packs (1,2,3...)
-    var qty = parseInt(document.getElementById('p1_qty').value||'1',10);
-    if(isNaN(qty) || qty < 1) qty = 1;
+    // nombre de packs (1, 2, 3…)
+    var qty = parseInt(document.getElementById('p1_qty').value || '1', 10);
+    if (isNaN(qty) || qty < 1) qty = 1;
 
     // valeur choisie dans le select quantité (500 / 1000 / 1500 / 2000)
     var quantitePack = document.getElementById('p1_couleur').value;
+
     // valeur choisie dans le select impression
-    var impression   = document.getElementById('p1_impr').value;
+    var impression = document.getElementById('p1_impr').value;
 
     var merged = false;
-    for (var i=0;i<CART.length;i++){
+    for (var i = 0; i < CART.length; i++) {
       var it = CART[i];
       // on fusionne si même produit + même pack + même impression
       if (
@@ -340,28 +341,29 @@ function addP1(){
         it.opts &&
         it.opts.quantitePack === quantitePack &&
         it.opts.impression === impression
-      ){
+      ) {
         it.qty += qty;
         merged = true;
         break;
       }
     }
 
-    if (!merged){
+    if (!merged) {
       CART.push({
         title: 'Pochon personnalisé 8×11 cm',
         qty: qty,
-        unit: PRICE_P1, // prix min /u
+        unit: 0, // ⚠️ pas de prix utilisé pour le calcul
         opts: {
           quantitePack: quantitePack,
-          impression: impression
+          impression: impression,
+          minPrice: 0.8  // info seulement, pas utilisée pour total
         }
       });
     }
 
     renderCart();
     toast('Ajouté au panier');
-  }catch(e){diag(e);}
+  } catch (e) { diag(e); }
 }
 
     function addP2(){
@@ -417,24 +419,40 @@ function addP1(){
               if (it.opts.impression) parts.push('impression: '+it.opts.impression);
               if (it.opts.type)       parts.push('type: '+it.opts.type);
               if (it.opts.taille)     parts.push('taille: '+it.opts.taille);
-              summary = parts.join(' • ');
-            }
+summary = parts.join(' • ');
+}
 
-            var s=document.createElement('div'); s.className='item-sub';
-            s.textContent=(summary ? summary+' | ' : '')+'min '+euro(it.unit)+'/u';
+var s = document.createElement('div');
+s.className = 'item-sub';
 
-            left.appendChild(t); left.appendChild(s);
+// Affichage différent selon si le produit a un vrai prix ou pas
+if (it.unit && it.unit > 0) {
+  // Ex : tableaux → ont un prix unitaire
+  s.textContent = (summary ? summary + ' | ' : '') + 'min ' + euro(it.unit) + '/u';
+} else {
+  // Ex : pochons → sur devis
+  var minTxt = '';
+  if (it.opts && it.opts.minPrice) {
+    minTxt = 'à partir de ' + euro(it.opts.minPrice) + ' (500 pcs)';
+  } else {
+    minTxt = 'tarif sur devis';
+  }
+  s.textContent = (summary ? summary + ' | ' : '') + minTxt;
+}
 
-            var right=document.createElement('div'); right.className='item-right';
-            var btn=document.createElement('button'); btn.className='btn remove'; btn.textContent='Suppr.';
-            btn.onclick=function(){ CART.splice(idx,1); renderCart(); };
+left.appendChild(t);
+left.appendChild(s);
 
-            right.appendChild(btn); row.appendChild(left); row.appendChild(right); box.appendChild(row);
-          })(CART[i],i);
-        }
-        document.getElementById('cartTotal').textContent = euro(total);
-      }catch(e){diag(e);}
-    }
+var right=document.createElement('div'); right.className='item-right';
+var btn=document.createElement('button'); btn.className='btn remove'; btn.textContent='Suppr.';
+btn.onclick=function(){ CART.splice(idx,1); renderCart(); };
+
+right.appendChild(btn); row.appendChild(left); row.appendChild(right); box.appendChild(row);
+})(CART[i],i);
+}
+document.getElementById('cartTotal').textContent = euro(total);
+}catch(e){diag(e);}
+}
 
     function sendQuote(){
       if (!CART.length){ toast('Ajoutez des articles au panier.'); return; }
@@ -453,11 +471,20 @@ function addP1(){
           summary = parts.join(' • ');
         }
 
-        lines.push(
-          (i+1)+'. '+it.title+' × '+it.qty+
-          '  | '+euro(it.unit)+'/u'+
-          (summary ? '  | '+summary : '')
-        );
+        var pricePart = '';
+if (it.unit && it.unit > 0) {
+  pricePart = '  | ' + euro(it.unit) + '/u';
+} else if (it.opts && it.opts.minPrice) {
+  pricePart = '  | à partir de ' + euro(it.opts.minPrice) + ' (500 pcs)';
+} else {
+  pricePart = '  | tarif sur devis';
+}
+
+lines.push(
+  (i+1)+'. '+it.title+' × '+it.qty +
+  pricePart +
+  (summary ? '  | '+summary : '')
+);
       }
       lines.push('','Total estimé (min connus) : *'+document.getElementById('cartTotal').textContent+'*','_Certains articles sont sur devis. Le tarif final sera confirmé._');
       var payload={type:'QUOTE_REQUEST',cart:CART,text:lines.join('\n')};
