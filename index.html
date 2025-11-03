@@ -291,7 +291,7 @@
   <script>
     var CHANNEL_URL = "https://t.me/ton_canal_telegram";  // <-- remplace
     var CONTACT_USERNAME = "ton_compte_telegram";          // <-- remplace (sans @)
-    var PRICE_P1 = 0.35;
+    var PRICE_P1 = 0.8;
     var PRICE_P2_MIN = 50;
 
     var tg = null;
@@ -320,31 +320,49 @@
     function inc(id){ var el=document.getElementById(id); var v=parseInt(el.value||'1',10)||1; el.value=v+1; }
     function dec(id){ var el=document.getElementById(id); var v=parseInt(el.value||'1',10)||1; el.value=Math.max(1,v-1); }
 
-    function addP1(){
-      try{
-        var qty = parseInt(document.getElementById('p1_qty').value||'1',10); if(isNaN(qty)||qty<1)qty=1;
-        var couleur = document.getElementById('p1_couleur').value;
-        var impr    = document.getElementById('p1_impr').value;
+function addP1(){
+  try{
+    // nombre de packs (1,2,3...)
+    var qty = parseInt(document.getElementById('p1_qty').value||'1',10);
+    if(isNaN(qty) || qty < 1) qty = 1;
 
-        var merged = false;
-        for (var i=0;i<CART.length;i++){
-          var it = CART[i];
-          if (it.title==='Pochon personnalisé 8×11 cm' && it.opts && it.opts.couleur===couleur && it.opts.impression===impr){
-            it.qty += qty; merged = true; break;
-          }
-        }
-        if (!merged){
-          CART.push({
-            title:'Pochon personnalisé 8×11 cm',
-            qty:qty,
-            unit:PRICE_P1,
-            opts:{couleur:couleur, impression:impr}
-          });
-        }
-        renderCart();
-        toast('Ajouté au panier');
-      }catch(e){diag(e);}
+    // valeur choisie dans le select quantité (500 / 1000 / 1500 / 2000)
+    var quantitePack = document.getElementById('p1_couleur').value;
+    // valeur choisie dans le select impression
+    var impression   = document.getElementById('p1_impr').value;
+
+    var merged = false;
+    for (var i=0;i<CART.length;i++){
+      var it = CART[i];
+      // on fusionne si même produit + même pack + même impression
+      if (
+        it.title === 'Pochon personnalisé 8×11 cm' &&
+        it.opts &&
+        it.opts.quantitePack === quantitePack &&
+        it.opts.impression === impression
+      ){
+        it.qty += qty;
+        merged = true;
+        break;
+      }
     }
+
+    if (!merged){
+      CART.push({
+        title: 'Pochon personnalisé 8×11 cm',
+        qty: qty,
+        unit: PRICE_P1, // prix min /u
+        opts: {
+          quantitePack: quantitePack,
+          impression: impression
+        }
+      });
+    }
+
+    renderCart();
+    toast('Ajouté au panier');
+  }catch(e){diag(e);}
+}
 
     function addP2(){
       try{
@@ -395,7 +413,7 @@
             var summary='';
             if (it.opts){
               var parts=[];
-              if (it.opts.couleur)    parts.push('couleur: '+it.opts.couleur);
+              if (it.opts.quantitePack) parts.push('quantité pack: '+it.opts.quantitePack);
               if (it.opts.impression) parts.push('impression: '+it.opts.impression);
               if (it.opts.type)       parts.push('type: '+it.opts.type);
               if (it.opts.taille)     parts.push('taille: '+it.opts.taille);
@@ -428,7 +446,7 @@
         var summary='';
         if (it.opts){
           var parts=[];
-          if (it.opts.couleur)    parts.push('couleur: '+it.opts.couleur);
+          if (it.opts.quantitePack) parts.push('quantité pack: '+it.opts.quantitePack);
           if (it.opts.impression) parts.push('impression: '+it.opts.impression);
           if (it.opts.type)       parts.push('type: '+it.opts.type);
           if (it.opts.taille)     parts.push('taille: '+it.opts.taille);
