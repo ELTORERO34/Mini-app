@@ -17,69 +17,53 @@
     p{margin:.3rem 0}
     a{color:var(--accent);text-decoration:none}
 
-    /* Bandeau diag (erreur JS) */
-    #diag{display:none;position:sticky;top:0;z-index:9999;background:#4a0000;color:#fff;padding:8px 12px;border-bottom:1px solid #700;font-size:14px}
+    #diag{
+      display:none;position:sticky;top:0;z-index:9999;
+      background:#4a0000;color:#fff;padding:8px 12px;
+      border-bottom:1px solid #700;font-size:14px;
+    }
 
-    /* HEADER */
-    .app-header{
-      padding:14px 16px 10px;
-      text-align:center;
-      border-bottom:1px solid var(--border);
-      background:radial-gradient(circle at 0 0,rgba(212,175,55,.2),transparent 55%);
+    /* ===== BANNIÈRE GLOBALE EN HAUT (SUR TOUS LES ONGLES) ===== */
+    .hero-header{
+      position:sticky;       /* reste en haut quand tu scrolls */
+      top:0;
+      z-index:20;
+      height:150px;
+      margin:0 -10px 12px;   /* colle aux bords comme GMF */
+      overflow:hidden;
     }
-    .app-header h1{
-      font-family:"Impact",system-ui,sans-serif;
-      letter-spacing:.7px;font-size:2rem;
+    .hero-header-bg{
+      position:absolute;inset:0;
+      background:url("img/banner.png") center/cover no-repeat;
+      filter:blur(4px) brightness(0.5);
+      transform:scale(1.06);
     }
-    .subtitle{color:var(--muted);margin:0}
-
-    .tab-content{padding:0 10px 120px} /* padding bas pour laisser place au menu + panier */
-    .tab-panel{display:none}
-    .tab-panel.active{display:block}
-
-    /* ======= NOUVELLE BANNIÈRE FLOUE AVEC LOGO ======= */
-    .hero{
-  height:150px;
-  border-radius:0;         /* pas de coins arrondis en haut */
-  margin:0 -10px 14px;     /* colle aux bords et tout en haut */
-  position:relative;
-  overflow:hidden;
-}
+    .hero-header-overlay{
+      position:absolute;inset:0;
+      background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.95));
     }
-    /* fond image + flou + assombrissement */
-    .hero-bg{
-      position:absolute;
-      inset:0;
-      background:
-        url("img/banner.png") center/cover no-repeat;
-      filter:blur(4px) brightness(0.6);
-      transform:scale(1.06); /* évite les bords après blur */
+    .hero-header-inner{
+      position:absolute;inset:0;
+      display:flex;align-items:center;justify-content:center;
+      padding:12px;
     }
-    .hero-overlay{
-      position:absolute;
-      inset:0;
-      background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.9));
-    }
-    /* logo centré */
-    .hero-inner{
-      position:absolute;
-      inset:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:14px 16px;
-    }
-    .hero-logo-img{
-      max-width:70%;
-      max-height:80%;
+    .hero-header-logo{
+      max-width:70%;max-height:80%;
       object-fit:contain;
       filter:drop-shadow(0 4px 14px rgba(0,0,0,.9));
     }
-    .hero-sub{display:none;} /* on n’utilise plus le sous-titre texte ici */
 
-    /* PRODUIT */
+    /* CONTENU PRINCIPAL */
+    .tab-content{padding:0 10px 120px;} /* 120px pour laisser place au menu bas */
+    .tab-panel{display:none}
+    .tab-panel.active{display:block}
+
+    /* CARTES / PRODUIT */
     .grid{display:grid;grid-template-columns:1fr;gap:12px}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+    .card{
+      background:var(--card);border:1px solid var(--border);
+      border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);
+    }
 
     .product-card{
       display:grid;grid-template-columns:100px 1fr;gap:12px;
@@ -119,7 +103,7 @@
     .modal-footer{display:flex;justify-content:space-between;align-items:center;padding:12px;border-top:1px solid var(--border)}
     .total-line{font-size:1.1rem}
 
-    /* BOTTOM NAV */
+    /* NAV BAS */
     .bottom-nav{
       position:fixed;left:0;right:0;bottom:0;height:64px;
       background:rgba(5,5,6,.96);backdrop-filter:blur(14px);
@@ -135,7 +119,7 @@
     .nav-btn span.icon{font-size:1.2rem;margin-bottom:2px}
     .nav-btn.active{color:var(--accent);font-weight:600}
 
-    /* FAB PANIER (au dessus du menu bas) */
+    /* BOUTON PANIER FLOTTANT */
     .cart-fab{
       position:fixed;right:14px;bottom:74px;z-index:50;
       width:56px;height:56px;border-radius:50%;
@@ -152,21 +136,20 @@
 <body>
   <div id="diag">⚠️ Erreur JS</div>
 
-  <main class="tab-content">
-    <!-- CATALOGUE / MENU -->
-    <section id="catalog" class="tab-panel active">
-      <!-- BANNIÈRE -->
-      <div class="hero">
-        <div class="hero-bg"></div>
-        <div class="hero-overlay"></div>
-        <div class="hero-inner">
-          <!-- ton logo au milieu -->
-          <img src="img/banner.png" alt="PochonStoretest" class="hero-logo-img">
-        </div>
-      </div>
+  <!-- BANNIÈRE GLOBALE : FOND FLOU + LOGO -->
+  <header class="hero-header">
+    <div class="hero-header-bg"></div>
+    <div class="hero-header-overlay"></div>
+    <div class="hero-header-inner">
+      <!-- ton logo au milieu -->
+      <img src="img/banner.png" alt="PochonStoretest" class="hero-header-logo">
+    </div>
+  </header>
 
+  <main class="tab-content">
+    <!-- ===== CATALOGUE / MENU ===== -->
+    <section id="catalog" class="tab-panel active">
       <div class="grid">
-        <!-- PRODUIT 1 -->
         <div class="product-card" id="p1">
           <div class="product-visual"></div>
           <div class="product-body">
@@ -201,7 +184,7 @@
       </div>
     </section>
 
-    <!-- INFOS -->
+    <!-- ===== INFOS ===== -->
     <section id="infos" class="tab-panel">
       <div class="card">
         <h2>Informations</h2>
@@ -215,7 +198,7 @@
       </div>
     </section>
 
-    <!-- CANAL -->
+    <!-- ===== CANAL ===== -->
     <section id="canal" class="tab-panel">
       <div class="card">
         <h2>Rejoindre le canal</h2>
@@ -224,7 +207,7 @@
       </div>
     </section>
 
-    <!-- CONTACT -->
+    <!-- ===== CONTACT ===== -->
     <section id="contact" class="tab-panel">
       <div class="card">
         <h2>Contact</h2>
@@ -234,7 +217,7 @@
     </section>
   </main>
 
-  <!-- Bouton flottant panier -->
+  <!-- BOUTON PANIER -->
   <button id="cartFab" class="cart-fab" aria-label="Voir le panier" onclick="openCart()">🛒</button>
 
   <!-- MENU BAS -->
@@ -257,7 +240,7 @@
     </button>
   </nav>
 
-  <!-- Modal Panier -->
+  <!-- MODAL PANIER -->
   <div id="cartModal" class="modal hidden" aria-hidden="true">
     <div class="modal-inner">
       <header class="modal-header">
@@ -274,7 +257,6 @@
   </div>
 
   <script>
-    /* ====== CONFIG ====== */
     var CHANNEL_URL = "https://t.me/ton_canal_telegram";  // <-- remplace
     var CONTACT_USERNAME = "ton_compte_telegram";          // <-- remplace (sans @)
     var PRICE_P1 = 0.35;
@@ -300,7 +282,6 @@
       }catch(e){diag(e);}
     }
 
-    /* ====== PANIER ====== */
     var CART = [];
 
     function inc(id){ var el=document.getElementById(id); var v=parseInt(el.value||'1',10)||1; el.value=v+1; }
@@ -381,7 +362,6 @@
       }catch(e){diag(e);}
     }
 
-    /* ====== LIENS ====== */
     function openChannel(){
       var url = CHANNEL_URL;
       if (tg && tg.openTelegramLink) tg.openTelegramLink(url); else window.open(url,'_blank');
@@ -391,7 +371,6 @@
       if (tg && tg.openTelegramLink) tg.openTelegramLink(url); else window.open(url,'_blank');
     }
 
-    /* ====== UI HELP ====== */
     var toastTimer=null;
     function toast(msg){
       var el=document.getElementById('toast');
@@ -415,7 +394,6 @@
       console.error(e);
     }
 
-    // met le bon format de prix au chargement
     document.getElementById('p1price').textContent = euro(PRICE_P1);
   </script>
 </body>
