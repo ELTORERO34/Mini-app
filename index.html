@@ -275,11 +275,11 @@ main {
   font-weight: 600;
 }
 
-/* BOUTON PANIER FLOTTANT, TOUJOURS VISIBLE */
+/* BOUTON PANIER FLOTTANT, AU-DESSUS DU MENU */
 .cart-fab{
   position: fixed;
   right: 16px;
-  bottom: 86px;           /* juste au-dessus du menu bas */
+  bottom: 110px;  /* ← hauteur : plus le nombre est grand, plus le bouton monte */
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -288,7 +288,7 @@ main {
   color: #f5f5f5;
   font-size: 22px;
   box-shadow: 0 10px 26px rgba(0,0,0,.45);
-  z-index: 301;           /* au-dessus du menu */
+  z-index: 1001;
 }
 .cart-fab:active{
   transform: translateY(1px);
