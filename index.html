@@ -236,22 +236,24 @@ main {
       color: var(--muted);
     }
 
-/* MENU BAS TOUJOURS VISIBLE */
-.bottom-nav{
-  position: fixed;              /* reste collé en bas */
+/* MENU BAS COLLANT — TOUJOURS VISIBLE SANS ÊTRE FIXE */
+.bottom-nav {
+  position: sticky;
+  bottom: 0;
   left: 0;
   right: 0;
-  bottom: 0;
   height: 70px;
   display: flex;
+  align-items: center;
+  justify-content: space-around;
   background: rgba(5,5,6,0.96);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-top: 1px solid rgba(255,255,255,0.08);
-  z-index: 300;                 /* au-dessus du contenu */
+  z-index: 300;
 }
 
-.nav-btn{
+.nav-btn {
   flex: 1;
   border: none;
   background: transparent;
@@ -263,12 +265,12 @@ main {
   font-size: 0.78rem;
 }
 
-.nav-btn span.icon{
+.nav-btn span.icon {
   font-size: 1.2rem;
   margin-bottom: 2px;
 }
 
-.nav-btn.active{
+.nav-btn.active {
   color: #d4af37;
   font-weight: 600;
 }
@@ -397,6 +399,16 @@ main {
     header h1, h2, h3 {
       color: #ffd766;
     }
+    
+    /* ==== CONTENEUR PRINCIPAL ==== */
+main {
+  display: block;
+  overflow-y: auto;
+  height: 100vh;
+  padding-top: 160px;   /* espace pour la bannière */
+  padding-bottom: 110px;/* espace pour le menu en bas */
+  box-sizing: border-box;
+}
   </style>
 </head>
 <body>
