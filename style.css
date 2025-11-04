@@ -1,0 +1,100 @@
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #0e0e0e;
+  color: #fff;
+}
+
+/* HEADER FLOU */
+.header {
+  position: sticky;
+  top: 0;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(10px);
+  z-index: 100;
+}
+.header-logo {
+  height: 45px;
+  object-fit: contain;
+}
+
+/* PRODUITS - GRILLE */
+.product-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 16px;
+}
+.product-thumb {
+  border: none;
+  background: #1a1a1a;
+  border-radius: 10px;
+  overflow: hidden;
+  color: #fff;
+}
+.product-thumb img {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+}
+.product-thumb-body {
+  padding: 8px;
+}
+.product-thumb-title {
+  font-weight: 600;
+  font-size: 1rem;
+}
+.product-thumb-sub {
+  font-size: 0.8rem;
+  color: #bbb;
+}
+
+/* FICHE PRODUIT */
+.hidden { display: none; }
+.product-detail {
+  padding: 16px;
+}
+.btn-back {
+  border: none;
+  background: #222;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+.detail-media img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.product-card {
+  background: #1a1a1a;
+  border-radius: 10px;
+  padding: 16px;
+}
+.product-options label {
+  display: block;
+  margin: 8px 0;
+}
+.qty-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+.qty-row button {
+  background: #333;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 5px;
+}
+.btn.primary {
+  background: #ffbf00;
+  color: #000;
+  font-weight: 600;
+}
