@@ -236,55 +236,61 @@ main {
       color: var(--muted);
     }
 
-    /* MENU BAS */
-    .bottom-nav {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 64px;
-      background: rgba(0,0,0,0.9);
-      backdrop-filter: blur(16px);
-      border-top: 1px solid var(--border);
-      display: flex;
-      z-index: 200;
-    }
-    .nav-btn {
-      flex: 1;
-      border: none;
-      background: transparent;
-      color: var(--muted);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.8rem;
-    }
-    .nav-btn span.icon {
-      font-size: 1.2rem;
-      margin-bottom: 2px;
-    }
-    .nav-btn.active {
-      color: var(--accent);
-      font-weight: 600;
-    }
+/* MENU BAS TOUJOURS VISIBLE */
+.bottom-nav{
+  position: fixed;              /* reste collé en bas */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 70px;
+  display: flex;
+  background: rgba(5,5,6,0.96);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  z-index: 300;                 /* au-dessus du contenu */
+}
 
-    /* PANIER : FAB + MODAL */
-    .cart-fab{
-      position:fixed;
-      right:14px;
-      bottom:74px; /* au-dessus du menu bas */
-      z-index:210;
-      width:56px;
-      height:56px;
-      border-radius:50%;
-      border:1px solid var(--accent);
-      background:linear-gradient(180deg,#1d1d22,#111);
-      color:#f5f5f5;
-      font-size:22px;
-      box-shadow:0 10px 26px rgba(0,0,0,.45);
-    }
-    .cart-fab:active{transform:translateY(1px);}
+.nav-btn{
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: #bdbdbd;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  font-size: 0.78rem;
+}
+
+.nav-btn span.icon{
+  font-size: 1.2rem;
+  margin-bottom: 2px;
+}
+
+.nav-btn.active{
+  color: #d4af37;
+  font-weight: 600;
+}
+
+/* BOUTON PANIER FLOTTANT, TOUJOURS VISIBLE */
+.cart-fab{
+  position: fixed;
+  right: 16px;
+  bottom: 86px;           /* juste au-dessus du menu bas */
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1px solid #d4af37;
+  background: linear-gradient(180deg,#1d1d22,#111);
+  color: #f5f5f5;
+  font-size: 22px;
+  box-shadow: 0 10px 26px rgba(0,0,0,.45);
+  z-index: 301;           /* au-dessus du menu */
+}
+.cart-fab:active{
+  transform: translateY(1px);
+}
 
     .modal{
       position:fixed;
