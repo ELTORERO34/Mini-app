@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PochonStore</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
     :root {
@@ -174,6 +175,15 @@
       border-radius: 6px;
       padding: 4px;
     }
+
+    .btn {
+      background:#222;
+      color:#fff;
+      border:1px solid var(--border);
+      padding:8px 12px;
+      border-radius:8px;
+      cursor:pointer;
+    }
     .btn.primary {
       background: var(--accent);
       color: #000;
@@ -231,6 +241,100 @@
     .nav-btn.active {
       color: var(--accent);
       font-weight: 600;
+    }
+
+    /* PANIER : FAB + MODAL */
+    .cart-fab{
+      position:fixed;
+      right:14px;
+      bottom:74px; /* au-dessus du menu bas */
+      z-index:210;
+      width:56px;
+      height:56px;
+      border-radius:50%;
+      border:1px solid var(--accent);
+      background:linear-gradient(180deg,#1d1d22,#111);
+      color:#f5f5f5;
+      font-size:22px;
+      box-shadow:0 10px 26px rgba(0,0,0,.45);
+    }
+    .cart-fab:active{transform:translateY(1px);}
+
+    .modal{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.6);
+      display:flex;
+      align-items:flex-end;
+      z-index:300;
+    }
+    .modal.hidden{display:none;}
+    .modal-inner{
+      background:var(--bg);
+      border-top-left-radius:18px;
+      border-top-right-radius:18px;
+      box-shadow:0 -10px 30px rgba(0,0,0,.6);
+      width:100%;
+      max-height:86vh;
+      display:flex;
+      flex-direction:column;
+    }
+    .modal-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:12px 14px;
+      border-bottom:1px solid var(--border);
+    }
+    .icon-btn{
+      background:#121216;
+      border:1px solid var(--border);
+      color:var(--text);
+      border-radius:10px;
+      height:34px;
+      width:34px;
+    }
+    .cart-items{
+      padding:10px 12px;
+      overflow:auto;
+    }
+    .cart-item{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:6px;
+      padding:10px 0;
+      border-bottom:1px dashed var(--border);
+    }
+    .item-title{font-weight:700;}
+    .item-sub{color:var(--muted);font-size:.95rem;}
+    .item-right{display:flex;gap:6px;align-items:center;}
+
+    .modal-footer{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:12px;
+      border-top:1px solid var(--border);
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .total-line{font-size:1.05rem;}
+
+    /* Toast petit message */
+    #toast{
+      position:fixed;
+      left:50%;
+      bottom:86px;
+      transform:translateX(-50%);
+      padding:10px 14px;
+      background:#121216;
+      color:#fff;
+      border:1px solid #333;
+      border-radius:10px;
+      box-shadow:0 10px 30px rgba(0,0,0,.4);
+      z-index:350;
+      opacity:0;
+      transition:opacity .2s;
     }
   </style>
 </head>
@@ -339,6 +443,27 @@
 
   </main>
 
+  <!-- BOUTON PANIER FLOTTANT -->
+  <button id="cartFab" class="cart-fab" type="button" onclick="openCart()">🛒</button>
+
+  <!-- MODAL PANIER -->
+  <div id="cartModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-inner">
+      <header class="modal-header">
+        <h3>Votre panier</h3>
+        <button class="icon-btn" type="button" onclick="closeCart()">✕</button>
+      </header>
+      <div id="cartItems" class="cart-items"></div>
+      <footer class="modal-footer">
+        <div class="total-line">
+          Total estimé : <strong id="cartTotal">0,00 €</strong>
+        </div>
+        <button class="btn" type="button" onclick="clearCart()">Vider</button>
+        <button class="btn primary" type="button" onclick="sendQuote()">Demander un devis</button>
+      </footer>
+    </div>
+  </div>
+
   <!-- MENU BAS -->
   <nav class="bottom-nav">
     <button class="nav-btn active" data-tab="menu" onclick="switchTab(this)">
@@ -359,7 +484,18 @@
     </button>
   </nav>
 
+  <div id="toast"></div>
+
   <script>
+    /* ==== TELEGRAM ==== */
+    var tg = null;
+    try{
+      if (window.Telegram && window.Telegram.WebApp){
+        tg = window.Telegram.WebApp;
+        tg.expand && tg.expand();
+      }
+    }catch(e){}
+
     /* ==== NAVIGATION TABS BAS ==== */
     function switchTab(btn){
       var tab = btn.getAttribute('data-tab'); // menu / infos / canal / contact
@@ -379,10 +515,13 @@
       var active = document.getElementById('tab-' + tab);
       if (active) active.classList.add('active');
 
-      // si on quitte le menu, on ferme la fiche produit et on remet la grille
+      // si on quitte le menu, on ferme la fiche produit
       if (tab !== 'menu'){
         closeProduct(true);
       }
+
+      // on ferme le panier aussi si ouvert
+      closeCart(true);
 
       window.scrollTo(0,0);
     }
@@ -417,8 +556,192 @@
       el.value = v;
     }
 
+    /* ==== PANIER ==== */
+    var CART = [];
+
+    function euro(n){
+      try {
+        return new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR"}).format(n||0);
+      } catch(e){
+        return (n||0).toFixed(2) + " €";
+      }
+    }
+
     function addP1(){
-      alert("Pochon ajouté (démo panier).");
+      try{
+        var pack = document.getElementById('p1_quantite').value;      // 500 / 1000 / ...
+        var impression = document.getElementById('p1_impression').value;
+        var qty = parseInt(document.getElementById('p1_qty').value || '1',10);
+        if (isNaN(qty) || qty < 1) qty = 1;
+
+        var merged = false;
+        for (var i=0;i<CART.length;i++){
+          var it = CART[i];
+          if (it.title === 'Pochon personnalisé 8×11 cm' &&
+              it.opts &&
+              it.opts.quantitePack === pack &&
+              it.opts.impression === impression){
+            it.qty += qty;
+            merged = true;
+            break;
+          }
+        }
+
+        if (!merged){
+          CART.push({
+            title: 'Pochon personnalisé 8×11 cm',
+            qty: qty,
+            unit: 0, // sur devis → pas de prix calculé
+            opts: {
+              quantitePack: pack,
+              impression: impression,
+              minPrice: 0.8 // info seulement si on veut l'afficher plus tard
+            }
+          });
+        }
+
+        renderCart();
+        toast('Ajouté au panier');
+      }catch(e){
+        console.error(e);
+      }
+    }
+
+    function openCart(){
+      renderCart();
+      document.getElementById('cartModal').classList.remove('hidden');
+      var fab = document.getElementById('cartFab');
+      if (fab) fab.style.display = 'none';   // cacher le logo panier
+    }
+
+    function closeCart(fromTab){
+      var modal = document.getElementById('cartModal');
+      if (modal) modal.classList.add('hidden');
+      var fab = document.getElementById('cartFab');
+      if (fab) fab.style.display = 'block';  // remettre le logo panier
+    }
+
+    function clearCart(){
+      CART = [];
+      renderCart();
+    }
+
+    function renderCart(){
+      try{
+        var box = document.getElementById('cartItems');
+        var total = 0;
+        box.innerHTML = '';
+
+        if (!CART.length){
+          box.innerHTML = '<p class="item-sub">Votre panier est vide.</p>';
+        }
+
+        for (var i=0;i<CART.length;i++){
+          (function(it,idx){
+            total += (it.unit || 0) * it.qty;
+
+            var row = document.createElement('div');
+            row.className = 'cart-item';
+
+            var left = document.createElement('div');
+            var t = document.createElement('div');
+            t.className = 'item-title';
+            t.textContent = it.title + ' × ' + it.qty;
+
+            var summaryParts = [];
+            if (it.opts){
+              if (it.opts.quantitePack) summaryParts.push('pack: ' + it.opts.quantitePack);
+              if (it.opts.impression)   summaryParts.push('impression: ' + it.opts.impression);
+            }
+            var s = document.createElement('div');
+            s.className = 'item-sub';
+            s.textContent = summaryParts.join(' • ');
+
+            left.appendChild(t);
+            left.appendChild(s);
+
+            var right = document.createElement('div');
+            right.className = 'item-right';
+            var btn = document.createElement('button');
+            btn.className = 'btn';
+            btn.textContent = 'Suppr.';
+            btn.onclick = function(){
+              CART.splice(idx,1);
+              renderCart();
+            };
+
+            right.appendChild(btn);
+            row.appendChild(left);
+            row.appendChild(right);
+            box.appendChild(row);
+          })(CART[i],i);
+        }
+
+        document.getElementById('cartTotal').textContent = euro(total);
+      }catch(e){
+        console.error(e);
+      }
+    }
+
+    function sendQuote(){
+      if (!CART.length){
+        toast('Ajoutez des articles au panier.');
+        return;
+      }
+      var lines = [];
+      lines.push('🧾 *Demande de devis – PochonStore*','');
+
+      for (var i=0;i<CART.length;i++){
+        var it = CART[i];
+        var summaryParts = [];
+        if (it.opts){
+          if (it.opts.quantitePack) summaryParts.push('pack: ' + it.opts.quantitePack);
+          if (it.opts.impression)   summaryParts.push('impression: ' + it.opts.impression);
+        }
+        var summary = summaryParts.join(' • ');
+
+        var priceInfo = (it.unit && it.unit>0) ? euro(it.unit)+'/u' : 'sur devis';
+
+        lines.push(
+          (i+1)+'. '+it.title+' × '+it.qty+
+          ' | '+priceInfo+
+          (summary ? ' | '+summary : '')
+        );
+      }
+
+      lines.push('','Total estimé (produits tarifés) : '+document.getElementById('cartTotal').textContent);
+
+      var payload = {
+        type: 'QUOTE_REQUEST',
+        cart: CART,
+        text: lines.join('\n')
+      };
+
+      try{
+        if (tg && tg.sendData){
+          tg.sendData(JSON.stringify(payload));
+          tg.HapticFeedback &&
+          tg.HapticFeedback.notificationOccurred &&
+          tg.HapticFeedback.notificationOccurred('success');
+          toast('Devis envoyé au bot.');
+        } else {
+          alert(payload.text);
+        }
+      }catch(e){
+        console.error(e);
+      }
+    }
+
+    /* ==== TOAST ==== */
+    var toastTimer = null;
+    function toast(msg){
+      var el = document.getElementById('toast');
+      el.textContent = msg;
+      el.style.opacity = '1';
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function(){
+        el.style.opacity = '0';
+      },1800);
     }
 
     /* ==== LIENS TELEGRAM (à adapter) ==== */
