@@ -27,50 +27,54 @@
       color: var(--text);
     }
 
-/* HEADER BANNIÈRE FLOUE STYLE GMF (fixe) */
+/* ===== HEADER STYLE TYPE GMF ===== */
 .header {
-  position: fixed;            /* reste toujours collée en haut */
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 100;
-  height: 150px;              /* hauteur de la bannière */
-  border-bottom: 1px solid var(--border);
-  background: #000;
+  height: 150px;
   overflow: hidden;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-/* fond flou de la bannière */
+/* Image floutée de fond */
 .header-bg {
   position: absolute;
   inset: 0;
-  background: url("img/banner.png") center/cover no-repeat;
-  filter: blur(6px);
-  transform: scale(1.1);
+  background: url('img/banner.png') center/cover no-repeat;
+  filter: blur(12px) brightness(0.6) saturate(1.2);
+  transform: scale(1.1); /* évite les bords nets du blur */
 }
 
-/* voile sombre par-dessus le fond flou */
+/* Voile sombre et légèrement transparent */
 .header-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom,
+  background: linear-gradient(
+    180deg,
     rgba(0,0,0,0.25),
-    rgba(0,0,0,0.9)
+    rgba(0,0,0,0.8)
   );
 }
 
-/* logo centré sur la bannière */
+/* Logo net et centré */
 .header-logo {
-  position: relative;
-  z-index: 1;
-  height: 80px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 80px;
   object-fit: contain;
-  margin-top: 35px;
+  z-index: 2;
+  filter: drop-shadow(0 0 8px rgba(255,215,0,0.3)); /* léger halo doré */
 }
 
-    main {
-  padding-top: 150px;   /* même hauteur que la bannière */
-  padding-bottom: 80px; /* place pour le menu bas */
+/* Pour que le contenu commence sous la bannière */
+main {
+  padding-top: 160px;
+  padding-bottom: 80px;
 }
 
     /* TABS */
@@ -365,10 +369,11 @@
 <body>
 
   <!-- HEADER -->
-  <header class="header">
-    <!-- mets ton vrai logo dans img/logo.png -->
-    <img src="img/logo.png" alt="PochonStore" class="header-logo" />
-  </header>
+<header class="header">
+  <div class="header-bg"></div>
+  <div class="header-overlay"></div>
+  <img src="img/banner.png" alt="PochonStore" class="header-logo" />
+</header>
 
   <main id="main">
 
@@ -399,13 +404,13 @@
           <img src="img/cartes.jpg" alt="Cartes fidélité / visite" />
           <div class="product-thumb-body">
             <div class="product-thumb-title">Cartes fidélité / visite</div>
-            <div class="product-thumb-sub">Recto verso, papier 350g</div>
+            <div class="product-thumb-sub">Recto verso, 8,5cm x 5,4cm</div>
           </div>
         </button>
 
         <!-- Carte 4 : Étiquettes -->
         <button class="product-thumb" onclick="openProduct('p4')">
-          <img src="img/etiquettes.jpg" alt="Étiquettes personnalisées" />
+          <img src="img/etiquettes1.jpg" alt="Étiquettes personnalisées" />
           <div class="product-thumb-body">
             <div class="product-thumb-title">Étiquettes personnalisées</div>
             <div class="product-thumb-sub">Rondes, rectangles, tailles sur devis</div>
