@@ -27,27 +27,51 @@
       color: var(--text);
     }
 
-    /* HEADER FLOU (fixe sur toutes les pages) */
-    .header {
-      position: sticky;
-      top: 0;
-      height: 70px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(10px);
-      z-index: 100;
-      border-bottom: 1px solid var(--border);
-    }
-    .header-logo {
-      height: 46px;
-      object-fit: contain;
-    }
+/* HEADER BANNIÈRE FLOUE STYLE GMF (fixe) */
+.header {
+  position: fixed;            /* reste toujours collée en haut */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: 150px;              /* hauteur de la bannière */
+  border-bottom: 1px solid var(--border);
+  background: #000;
+  overflow: hidden;
+}
+
+/* fond flou de la bannière */
+.header-bg {
+  position: absolute;
+  inset: 0;
+  background: url("img/banner.jpg") center/cover no-repeat;
+  filter: blur(6px);
+  transform: scale(1.1);
+}
+
+/* voile sombre par-dessus le fond flou */
+.header-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom,
+    rgba(0,0,0,0.25),
+    rgba(0,0,0,0.9)
+  );
+}
+
+/* logo centré sur la bannière */
+.header-logo {
+  position: relative;
+  z-index: 1;
+  height: 80px;
+  object-fit: contain;
+  margin-top: 35px;
+}
 
     main {
-      padding-bottom: 80px; /* place pour le menu bas */
-    }
+  padding-top: 150px;   /* même hauteur que la bannière */
+  padding-bottom: 80px; /* place pour le menu bas */
+}
 
     /* TABS */
     .tab-panel { display: none; }
