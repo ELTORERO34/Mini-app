@@ -366,6 +366,48 @@ main {
       transition:opacity .2s;
     }
   </style>
+    <!-- ====== FOND DORÉ GLOBAL ====== -->
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(circle at 50% 30%, rgba(255, 215, 100, 0.15) 0%, rgba(0, 0, 0, 1) 80%);
+      background-attachment: fixed;
+      background-size: cover;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* Cartes avec effet verre */
+    .product-card {
+      background: rgba(20, 20, 20, 0.85);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 215, 100, 0.2);
+      box-shadow: 0 0 10px rgba(255, 215, 100, 0.1);
+      border-radius: 10px;
+    }
+
+    /* Titres dorés */
+    .product-title,
+    header h1, h2, h3 {
+      color: #ffd766;
+    }
+
+    /* Header flou doré */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      background: rgba(0, 0, 0, 0.5);
+      border-bottom: 1px solid rgba(255, 215, 100, 0.2);
+    }
+  </style>
 </head>
 <body>
 
