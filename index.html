@@ -569,7 +569,7 @@ main {
         </div>
       </div>
 
-      <!-- FICHE PRODUIT : ÉTIQUETTES -->
+            <!-- FICHE PRODUIT : ÉTIQUETTES -->
       <div id="productDetail_p4" class="product-detail hidden">
         <button class="btn-back" onclick="closeProduct()">← Retour</button>
 
@@ -602,47 +602,65 @@ main {
         </div>
       </div>
 
-      <!-- Fiche produit : Scelleuse -->
-<div class="product-card hidden" id="p5">
-  <div class="product-body">
-    <h3 class="product-title">Scelleuse</h3>
-    <p class="product-desc">Appareil de soudure thermique idéal pour fermer vos pochons avec efficacité.</p>
-    <div class="product-meta">
-      <span class="pill">Prix : 10 €</span>
-      <span class="pill">Délai : 2–3 jours</span>
-    </div>
-    <div class="qty-row">
-      <button class="qty-btn" onclick="dec('p5_qty')">−</button>
-      <input id="p5_qty" type="number" class="qty-input" min="1" value="1" />
-      <button class="qty-btn" onclick="inc('p5_qty')">+</button>
-      <button class="btn primary" onclick="addP5()">Ajouter</button>
-    </div>
-  </div>
-</div>
+      <!-- FICHE PRODUIT : SCELLEUSE -->
+      <div id="productDetail_p5" class="product-detail hidden">
+        <button class="btn-back" onclick="closeProduct()">← Retour</button>
 
-<!-- Fiche produit : Fusées 1,5ml -->
-<div class="product-card hidden" id="p6">
-  <div class="product-body">
-    <h3 class="product-title">Fusées 1,5 ml</h3>
-    <p class="product-desc">Capsules vides prêtes à remplir. Tarifs dégressifs selon la quantité.</p>
-    <div class="product-options">
-      <label class="pill">Quantité :
-        <select id="p6_qtySelect">
-          <option value="20">100 – 20 €</option>
-          <option value="50">500 – 50 €</option>
-          <option value="100">1000 – 100 €</option>
-          <option value="0">+ sur devis</option>
-        </select>
-      </label>
-    </div>
-    <div class="qty-row">
-      <button class="qty-btn" onclick="dec('p6_qty')">−</button>
-      <input id="p6_qty" type="number" class="qty-input" min="1" value="1" />
-      <button class="qty-btn" onclick="inc('p6_qty')">+</button>
-      <button class="btn primary" onclick="addP6()">Ajouter</button>
-    </div>
-  </div>
-</div>
+        <div class="detail-media">
+          <img src="img/scelleuse.jpg" alt="Scelleuse" />
+        </div>
+
+        <div class="product-card">
+          <h3 class="product-title">Scelleuse</h3>
+          <p class="product-desc">
+            Appareil de soudure thermique idéal pour fermer vos pochons avec efficacité.
+          </p>
+          <div class="product-meta">
+            <span class="pill">Prix : 10 €</span>
+            <span class="pill">Délai : 2–3 jours</span>
+          </div>
+          <div class="qty-row">
+            <button class="qty-btn" onclick="dec('p5_qty')">−</button>
+            <input id="p5_qty" type="number" class="qty-input" min="1" value="1" />
+            <button class="qty-btn" onclick="inc('p5_qty')">+</button>
+            <button class="btn primary" onclick="addP5()">Ajouter</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- FICHE PRODUIT : FUSÉES 1,5 ml -->
+      <div id="productDetail_p6" class="product-detail hidden">
+        <button class="btn-back" onclick="closeProduct()">← Retour</button>
+
+        <div class="detail-media">
+          <img src="img/fusees.jpg" alt="Fusées 1,5 ml" />
+        </div>
+
+        <div class="product-card">
+          <h3 class="product-title">Fusées 1,5 ml</h3>
+          <p class="product-desc">
+            Capsules vides prêtes à remplir. Tarifs dégressifs selon la quantité.
+          </p>
+
+          <div class="product-options">
+            <label>Quantité :
+              <select id="p6_quantite">
+                <option>100 — 20 €</option>
+                <option>500 — 50 €</option>
+                <option>1000 — 100 €</option>
+                <option>+ sur devis</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="qty-row">
+            <button class="qty-btn" onclick="dec('p6_qty')">−</button>
+            <input id="p6_qty" type="number" class="qty-input" min="1" value="1" />
+            <button class="qty-btn" onclick="inc('p6_qty')">+</button>
+            <button class="btn primary" onclick="addP6()">Ajouter</button>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- ONGLET INFOS -->
