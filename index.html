@@ -245,6 +245,46 @@
     </div>
   </div>
 </div>
+
+        <!-- PRODUIT 4 : Étiquettes personnalisées -->
+<div class="product-card" id="p4">
+  <div class="product-visual"></div>
+  <div class="product-body">
+    <h3 class="product-title">Étiquettes personnalisées</h3>
+    <p class="product-desc">Étiquettes adhésives personnalisées pour vos pochons, produits, packaging…</p>
+
+    <div class="product-meta">
+      <span class="pill">Min: <span id="p4price">60,00 €</span></span>
+      <span class="pill">Délai: 5–7 jours ouvrables</span>
+    </div>
+
+    <div class="product-options">
+      <label class="pill" style="display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap">
+        Format / pack :
+        <select id="p4_format">
+          <!-- valeur = "label affiché | prix du pack" -->
+          <option value="200 étiquettes 7×4 cm|70">
+            200 étiquettes 7×4 cm — 70 €
+          </option>
+          <option value="400 étiquettes rondes 0–3 cm|60">
+            400 étiquettes rondes 0–3 cm — 60 €
+          </option>
+          <option value="Taille personnalisée (sur devis)|0">
+            Taille personnalisée — sur devis
+          </option>
+        </select>
+      </label>
+    </div>
+
+    <div class="qty-row">
+      <button class="qty-btn" onclick="dec('p4_qty')">−</button>
+      <input id="p4_qty" type="number" class="qty-input" min="1" value="1" />
+      <button class="qty-btn" onclick="inc('p4_qty')">+</button>
+      <button class="btn primary" onclick="addP4()">Ajouter</button>
+    </div>
+  </div>
+</div>
+
       </div>
     </section>
 
@@ -512,6 +552,50 @@ function addP3(){
         qty: qty,
         unit: prix,
         opts: { quantite: quantite }
+      });
+    }
+
+    renderCart();
+    toast('Ajouté au panier');
+  }catch(e){diag(e);}
+}
+
+    function addP4(){
+  try{
+    // nombre de packs (1, 2, 3…)
+    var qty = parseInt(document.getElementById('p4_qty').value || '1', 10);
+    if (isNaN(qty) || qty < 1) qty = 1;
+
+    // valeur du select, ex : "200 étiquettes 7×4 cm|70"
+    var formatVal = document.getElementById('p4_format').value;
+    var parts = formatVal.split('|');
+    var packLabel = parts[0];               // ex "200 étiquettes 7×4 cm"
+    var packPrice = parseFloat(parts[1]) || 0; // 70, 60 ou 0 (sur devis)
+
+    var merged = false;
+    for (var i = 0; i < CART.length; i++){
+      var it = CART[i];
+      // on fusionne si même produit + même pack
+      if (
+        it.title === 'Étiquettes personnalisées' &&
+        it.opts &&
+        it.opts.quantitePack === packLabel
+      ){
+        it.qty += qty;
+        merged = true;
+        break;
+      }
+    }
+
+    if (!merged){
+      CART.push({
+        title: 'Étiquettes personnalisées',
+        qty: qty,
+        unit: packPrice, // 70 / 60, ou 0 si "sur devis"
+        opts: {
+          quantitePack: packLabel
+          // pas de minPrice ici : si packPrice = 0 → sur devis dans l’affichage
+        }
       });
     }
 
