@@ -435,24 +435,6 @@ main {
           <div class="product-thumb-sub">Capsules vides, tarifs selon quantité</div>
         </div>
       </button>
-
-        <!-- Produit : Scelleuse -->
-<button class="product-thumb" onclick="openProduct('p5')">
-  <img src="img/scelleuse.jpg" alt="Scelleuse" />
-  <div class="product-thumb-body">
-    <div class="product-thumb-title">Scelleuse</div>
-    <div class="product-thumb-sub">Compacte et simple d’utilisation</div>
-  </div>
-</button>
-
-<!-- Produit : Fusées 1,5ml -->
-<button class="product-thumb" onclick="openProduct('p6')">
-  <img src="img/fusees.jpg" alt="Fusées 1,5ml" />
-  <div class="product-thumb-body">
-    <div class="product-thumb-title">Fusées 1,5 ml</div>
-    <div class="product-thumb-sub">Capsules vides, personnalisables, plusieurs quantités</div>
-  </div>
-</button>
       </div>
 
       <!-- FICHE PRODUIT : POCHON -->
@@ -662,12 +644,12 @@ main {
 
           <div class="product-options">
             <label>Quantité :
-              <select id="p6_quantite">
-                <option>100 — 20 €</option>
-                <option>500 — 50 €</option>
-                <option>1000 — 100 €</option>
-                <option>+ sur devis</option>
-              </select>
+<select id="p6_quantite">
+  <option data-price="20">100 — 20 €</option>
+  <option data-price="50">500 — 50 €</option>
+  <option data-price="100">1000 — 100 €</option>
+  <option data-price="0">+ sur devis</option>
+</select>
             </label>
           </div>
 
