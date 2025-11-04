@@ -89,7 +89,7 @@
       color: var(--muted);
     }
 
-    /* FICHE PRODUIT */
+    /* FICHES PRODUITS */
     .hidden { display: none; }
 
     .product-detail {
@@ -354,45 +354,43 @@
       <div class="product-grid" id="productGrid">
         <!-- Carte 1 : Pochon -->
         <button class="product-thumb" onclick="openProduct('p1')">
-          <!-- mets la photo du produit dans img/pochon.jpg -->
           <img src="img/pochon.jpg" alt="Pochon personnalisé" />
           <div class="product-thumb-body">
             <div class="product-thumb-title">Pochon personnalisé</div>
             <div class="product-thumb-sub">Flatbags imprimés avec ton visuel</div>
           </div>
         </button>
-        
-              <!-- Carte 2 : Tableaux personnalisés -->
-      <button class="product-thumb" onclick="openProduct('p2')">
-        <img src="img/tableau1.jpg" alt="Tableau personnalisé" />
-        <div class="product-thumb-body">
-          <div class="product-thumb-title">Tableaux personnalisés</div>
-          <div class="product-thumb-sub">Plusieurs tailles et formats disponibles</div>
-        </div>
-      </button>
 
-      <!-- Carte 3 : Cartes de fidélité / visite -->
-      <button class="product-thumb" onclick="openProduct('p3')">
-        <img src="img/cartes.jpg" alt="Cartes de fidélité / visite" />
-        <div class="product-thumb-body">
-          <div class="product-thumb-title">Cartes de fidélité / visite</div>
-          <div class="product-thumb-sub">Cartes recto verso, impression pro</div>
-        </div>
-      </button>
+        <!-- Carte 2 : Tableau -->
+        <button class="product-thumb" onclick="openProduct('p2')">
+          <img src="img/tableau1.jpg" alt="Tableaux personnalisés" />
+          <div class="product-thumb-body">
+            <div class="product-thumb-title">Tableaux personnalisés</div>
+            <div class="product-thumb-sub">Panoramiques, populaires, carrés</div>
+          </div>
+        </button>
 
-      <!-- Carte 4 : Étiquettes personnalisées -->
-      <button class="product-thumb" onclick="openProduct('p4')">
-        <img src="img/etiquettes.jpg" alt="Étiquettes personnalisées" />
-        <div class="product-thumb-body">
-          <div class="product-thumb-title">Étiquettes personnalisées</div>
-          <div class="product-thumb-sub">Formats variés et tailles sur devis</div>
-        </div>
-      </button>
+        <!-- Carte 3 : Cartes fidélité / visite -->
+        <button class="product-thumb" onclick="openProduct('p3')">
+          <img src="img/cartes.jpg" alt="Cartes fidélité / visite" />
+          <div class="product-thumb-body">
+            <div class="product-thumb-title">Cartes fidélité / visite</div>
+            <div class="product-thumb-sub">Recto verso, papier 350g</div>
+          </div>
+        </button>
+
+        <!-- Carte 4 : Étiquettes -->
+        <button class="product-thumb" onclick="openProduct('p4')">
+          <img src="img/etiquettes.jpg" alt="Étiquettes personnalisées" />
+          <div class="product-thumb-body">
+            <div class="product-thumb-title">Étiquettes personnalisées</div>
+            <div class="product-thumb-sub">Rondes, rectangles, tailles sur devis</div>
+          </div>
+        </button>
       </div>
 
-      <!-- FICHE PRODUIT DÉTAILLÉE -->
-      <!-- FICHE PRODUIT POCHONS -->
-      <div id="productDetail" class="product-detail hidden">
+      <!-- FICHE PRODUIT : POCHON -->
+      <div id="productDetail_p1" class="product-detail hidden">
         <button class="btn-back" onclick="closeProduct()">← Retour</button>
 
         <div class="detail-media">
@@ -402,17 +400,18 @@
         <div class="product-card">
           <h3 class="product-title">Pochon personnalisé 8×11 cm</h3>
           <p class="product-desc">
-            Pochons flatbag imprimé avec votre design.
+            Pochons flatbag imprimés avec votre design, impression 1 face.
           </p>
 
           <div class="product-meta">
-            <span class="pill">Min: 500</span>
+            <span class="pill">Min: 500 pièces</span>
+            <span class="pill">À partir de 0,8 €/u (indicatif)</span>
             <span class="pill">Délai: 12–13 jours ouvrables</span>
           </div>
 
           <div class="product-options">
             <label>
-              Quantité :
+              Quantité (pack) :
               <select id="p1_quantite">
                 <option>500</option>
                 <option>1000</option>
@@ -429,7 +428,7 @@
               </select>
             </label>
           </div>
-<!-- FICHE PRODUIT TABLEAUX -->
+
           <div class="qty-row">
             <button type="button" onclick="dec('p1_qty')">−</button>
             <input id="p1_qty" type="number" min="1" value="1" />
@@ -439,103 +438,115 @@
         </div>
       </div>
 
+      <!-- FICHE PRODUIT : TABLEAUX -->
       <div id="productDetail_p2" class="product-detail hidden">
-  <button class="btn-back" onclick="closeProduct()">← Retour</button>
+        <button class="btn-back" onclick="closeProduct()">← Retour</button>
 
-  <div class="detail-media">
-    <img src="img/tableau1.jpg" alt="Tableaux personnalisés" />
-  </div>
+        <div class="detail-media">
+          <img src="img/tableau1.jpg" alt="Tableaux personnalisés" />
+        </div>
 
-  <div class="product-card">
-    <h3 class="product-title">Tableaux personnalisés</h3>
-    <p class="product-desc">Impression haute qualité sur toile tendue ou aluminium.</p>
+        <div class="product-card">
+          <h3 class="product-title">Tableaux personnalisés</h3>
+          <p class="product-desc">
+            Impression haute qualité sur toile, plusieurs formats panoramiques, populaires et carrés.
+          </p>
 
-    <div class="product-options">
-      <label>Format :
-        <select id="p2_format">
-          <option>Panoramique — 60×20 cm — 50€</option>
-          <option>Panoramique — 60×30 cm — 60€</option>
-          <option>Panoramique — 80×40 cm — 80€</option>
-          <option>Panoramique — 100×50 cm — 100€</option>
-          <option>Panoramique — 120×60 cm — 120€</option>
-          <option>Populaire — 60×40 cm — 70€</option>
-          <option>Populaire — 80×60 cm — 90€</option>
-          <option>Populaire — 90×60 cm — 100€</option>
-          <option>Carré — 60×60 cm — 70€</option>
-          <option>Carré — 80×80 cm — 90€</option>
-        </select>
-      </label>
-    </div>
-<!-- FICHE PRODUIT CARTE de fidélités -->
-    <div class="qty-row">
-      <button type="button" onclick="dec('p2_qty')">−</button>
-      <input id="p2_qty" type="number" min="1" value="1" />
-      <button type="button" onclick="inc('p2_qty')">+</button>
-      <button class="btn primary" type="button" onclick="addP2()">Ajouter</button>
-    </div>
-  </div>
-</div>
+          <div class="product-options">
+            <label>Format :
+              <select id="p2_format">
+                <!-- panoramiques -->
+                <option value="Panoramique|60×20|50">Panoramique 60×20 — 50 €</option>
+                <option value="Panoramique|60×30|60">Panoramique 60×30 — 60 €</option>
+                <option value="Panoramique|80×40|80">Panoramique 80×40 — 80 €</option>
+                <option value="Panoramique|100×50|100">Panoramique 100×50 — 100 €</option>
+                <option value="Panoramique|120×60|120">Panoramique 120×60 — 120 €</option>
+                <!-- populaires -->
+                <option value="Populaire|60×40|70">Populaire 60×40 — 70 €</option>
+                <option value="Populaire|80×60|90">Populaire 80×60 — 90 €</option>
+                <option value="Populaire|90×60|100">Populaire 90×60 — 100 €</option>
+                <!-- carrés -->
+                <option value="Carré|60×60|70">Carré 60×60 — 70 €</option>
+                <option value="Carré|80×80|90">Carré 80×80 — 90 €</option>
+              </select>
+            </label>
+          </div>
 
+          <div class="qty-row">
+            <button type="button" onclick="dec('p2_qty')">−</button>
+            <input id="p2_qty" type="number" min="1" value="1" />
+            <button type="button" onclick="inc('p2_qty')">+</button>
+            <button class="btn primary" type="button" onclick="addP2()">Ajouter</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- FICHE PRODUIT : CARTES -->
       <div id="productDetail_p3" class="product-detail hidden">
-  <button class="btn-back" onclick="closeProduct()">← Retour</button>
+        <button class="btn-back" onclick="closeProduct()">← Retour</button>
 
-  <div class="detail-media">
-    <img src="img/cartes.jpg" alt="Cartes de fidélité / visite" />
-  </div>
+        <div class="detail-media">
+          <img src="img/cartes.jpg" alt="Cartes de fidélité / visite" />
+        </div>
 
-  <div class="product-card">
-    <h3 class="product-title">Cartes de fidélité / visite</h3>
-    <p class="product-desc">Impression recto verso, papier 350g, vernis mat.</p>
+        <div class="product-card">
+          <h3 class="product-title">Cartes de fidélité / visite</h3>
+          <p class="product-desc">
+            Cartes professionnelles recto verso, papier 350g, impression couleur.
+          </p>
 
-    <div class="product-options">
-      <label>Quantité :
-        <select id="p3_quantite">
-          <option>250 cartes — 70€</option>
-          <option>500 cartes — 140€</option>
-          <option>1000 cartes — 180€</option>
-          <option>+ sur devis</option>
-        </select>
-      </label>
-    </div>
+          <div class="product-options">
+            <label>Quantité :
+              <select id="p3_quantite">
+                <option value="250|70">250 cartes — 70 €</option>
+                <option value="500|140">500 cartes — 140 €</option>
+                <option value="1000|180">1000 cartes — 180 €</option>
+                <option value="+1000|0">+ 1000 cartes — sur devis</option>
+              </select>
+            </label>
+          </div>
 
-    <div class="qty-row">
-      <button type="button" onclick="dec('p3_qty')">−</button>
-      <input id="p3_qty" type="number" min="1" value="1" />
-      <button type="button" onclick="inc('p3_qty')">+</button>
-      <button class="btn primary" type="button" onclick="addP3()">Ajouter</button>
-    </div>
-  </div>
-</div>
-<!-- FICHE PRODUIT etiquettes -->
+          <div class="qty-row">
+            <button type="button" onclick="dec('p3_qty')">−</button>
+            <input id="p3_qty" type="number" min="1" value="1" />
+            <button type="button" onclick="inc('p3_qty')">+</button>
+            <button class="btn primary" type="button" onclick="addP3()">Ajouter</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- FICHE PRODUIT : ÉTIQUETTES -->
       <div id="productDetail_p4" class="product-detail hidden">
-  <button class="btn-back" onclick="closeProduct()">← Retour</button>
+        <button class="btn-back" onclick="closeProduct()">← Retour</button>
 
-  <div class="detail-media">
-    <img src="img/etiquettes.jpg" alt="Étiquettes personnalisées" />
-  </div>
+        <div class="detail-media">
+          <img src="img/etiquettes.jpg" alt="Étiquettes personnalisées" />
+        </div>
 
-  <div class="product-card">
-    <h3 class="product-title">Étiquettes personnalisées</h3>
-    <p class="product-desc">Étiquettes en rouleaux ou découpées, selon vos besoins.</p>
+        <div class="product-card">
+          <h3 class="product-title">Étiquettes personnalisées</h3>
+          <p class="product-desc">
+            Étiquettes adhésives pour packaging, pochons, produits… Formats au choix.
+          </p>
 
-    <div class="product-options">
-      <label>Format :
-        <select id="p4_format">
-          <option>200 — 7×4 cm — 70€</option>
-          <option>400 — rond 0 à 3 cm — 60€</option>
-          <option>Autre taille — sur devis</option>
-        </select>
-      </label>
-    </div>
+          <div class="product-options">
+            <label>Format :
+              <select id="p4_format">
+                <option value="200 étiquettes 7×4 cm|70">200 étiquettes 7×4 cm — 70 €</option>
+                <option value="400 étiquettes rondes 0–3 cm|60">400 étiquettes rondes 0–3 cm — 60 €</option>
+                <option value="Taille personnalisée (sur devis)|0">Taille personnalisée — sur devis</option>
+              </select>
+            </label>
+          </div>
 
-    <div class="qty-row">
-      <button type="button" onclick="dec('p4_qty')">−</button>
-      <input id="p4_qty" type="number" min="1" value="1" />
-      <button type="button" onclick="inc('p4_qty')">+</button>
-      <button class="btn primary" type="button" onclick="addP4()">Ajouter</button>
-    </div>
-  </div>
-</div>
+          <div class="qty-row">
+            <button type="button" onclick="dec('p4_qty')">−</button>
+            <input id="p4_qty" type="number" min="1" value="1" />
+            <button type="button" onclick="inc('p4_qty')">+</button>
+            <button class="btn primary" type="button" onclick="addP4()">Ajouter</button>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- ONGLET INFOS -->
@@ -641,42 +652,47 @@
       var active = document.getElementById('tab-' + tab);
       if (active) active.classList.add('active');
 
-      // si on quitte le menu, on ferme la fiche produit
+      // si on quitte le menu, on ferme les fiches produits
       if (tab !== 'menu'){
         closeProduct(true);
       }
 
-      // on ferme le panier aussi si ouvert
+      // on ferme aussi le panier si ouvert
       closeCart(true);
 
       window.scrollTo(0,0);
     }
 
-/* ==== FICHE PRODUIT MENU (multi-produits) ==== */
-function openProduct(id){
-  // Masquer la grille et toutes les fiches existantes
-  const grid = document.getElementById('productGrid');
-  if (grid) grid.style.display = 'none';
+    /* ==== FICHES PRODUITS MENU (multi-produits) ==== */
+    function openProduct(id){
+      // masquer la grille
+      var grid = document.getElementById('productGrid');
+      if (grid) grid.style.display = 'none';
 
-  // Masquer toutes les fiches produits
-  document.getElementById('productDetail')?.classList.add('hidden');
-  document.querySelectorAll('[id^="productDetail_"]').forEach(e => e.classList.add('hidden'));
+      // masquer toutes les fiches
+      document.querySelectorAll('[id^="productDetail_"]').forEach(function(e){
+        e.classList.add('hidden');
+      });
 
-  // Afficher la fiche correspondante
-  const el = document.getElementById('productDetail_' + id);
-  if (el) el.classList.remove('hidden');
+      // afficher celle demandée
+      var el = document.getElementById('productDetail_'+id);
+      if (el) el.classList.remove('hidden');
 
-  window.scrollTo(0, 0);
-}
+      window.scrollTo(0,0);
+    }
 
-function closeProduct(fromTabSwitch){
-  // Fermer toutes les fiches produits
-  document.querySelectorAll('[id^="productDetail_"]').forEach(e => e.classList.add('hidden'));
-  const grid = document.getElementById('productGrid');
-  if (grid) grid.style.display = 'grid';
-  if (!fromTabSwitch) window.scrollTo(0,0);
-}
+    function closeProduct(fromTabSwitch){
+      // cacher toutes les fiches
+      document.querySelectorAll('[id^="productDetail_"]').forEach(function(e){
+        e.classList.add('hidden');
+      });
+      // remettre la grille
+      var grid = document.getElementById('productGrid');
+      if (grid) grid.style.display = 'grid';
+      if (!fromTabSwitch) window.scrollTo(0,0);
+    }
 
+    /* ==== INCR / DECR ==== */
     function inc(id){
       var el = document.getElementById(id);
       var v = parseInt(el.value || '1', 10) || 1;
@@ -702,9 +718,10 @@ function closeProduct(fromTabSwitch){
       }
     }
 
+    // Pochons (sur devis, unit = 0)
     function addP1(){
       try{
-        var pack = document.getElementById('p1_quantite').value;      // 500 / 1000 / ...
+        var pack = document.getElementById('p1_quantite').value;
         var impression = document.getElementById('p1_impression').value;
         var qty = parseInt(document.getElementById('p1_qty').value || '1',10);
         if (isNaN(qty) || qty < 1) qty = 1;
@@ -726,45 +743,137 @@ function closeProduct(fromTabSwitch){
           CART.push({
             title: 'Pochon personnalisé 8×11 cm',
             qty: qty,
-            unit: 0, // sur devis → pas de prix calculé
+            unit: 0, // sur devis
             opts: {
               quantitePack: pack,
               impression: impression,
-              minPrice: 0.8 // info seulement si on veut l'afficher plus tard
+              minPrice: 0.8
             }
           });
         }
 
         renderCart();
-        toast('Ajouté au panier');
+        toast('Pochons ajoutés');
       }catch(e){
         console.error(e);
       }
     }
+
+    // Tableaux (avec prix)
     function addP2(){
-  const format = document.getElementById('p2_format').value;
-  const qty = parseInt(document.getElementById('p2_qty').value || '1',10);
-  CART.push({title:'Tableau personnalisé',qty,opts:{format}});
-  renderCart();
-  toast('Tableau ajouté');
-}
+      try{
+        var v = document.getElementById('p2_format').value; // type|taille|prix
+        var parts = v.split('|');
+        var type = parts[0];
+        var taille = parts[1];
+        var unit = parseFloat(parts[2] || '0') || 0;
+        var qty = parseInt(document.getElementById('p2_qty').value || '1',10);
+        if (isNaN(qty) || qty < 1) qty = 1;
 
-function addP3(){
-  const pack = document.getElementById('p3_quantite').value;
-  const qty = parseInt(document.getElementById('p3_qty').value || '1',10);
-  CART.push({title:'Cartes fidélité / visite',qty,opts:{pack}});
-  renderCart();
-  toast('Cartes ajoutées');
-}
+        var merged = false;
+        for (var i=0;i<CART.length;i++){
+          var it = CART[i];
+          if (it.title === 'Tableau personnalisé' &&
+              it.opts &&
+              it.opts.type === type &&
+              it.opts.taille === taille){
+            it.qty += qty;
+            merged = true;
+            break;
+          }
+        }
 
-function addP4(){
-  const format = document.getElementById('p4_format').value;
-  const qty = parseInt(document.getElementById('p4_qty').value || '1',10);
-  CART.push({title:'Étiquettes personnalisées',qty,opts:{format}});
-  renderCart();
-  toast('Étiquettes ajoutées');
-}
+        if (!merged){
+          CART.push({
+            title:'Tableau personnalisé',
+            qty:qty,
+            unit:unit,
+            opts:{type:type, taille:taille}
+          });
+        }
 
+        renderCart();
+        toast('Tableaux ajoutés');
+      }catch(e){
+        console.error(e);
+      }
+    }
+
+    // Cartes fidélité / visite
+    function addP3(){
+      try{
+        var v = document.getElementById('p3_quantite').value; // "250|70"
+        var parts = v.split('|');
+        var quantite = parts[0];
+        var unit = parseFloat(parts[1] || '0') || 0;
+        var qty = parseInt(document.getElementById('p3_qty').value || '1',10);
+        if (isNaN(qty) || qty < 1) qty = 1;
+
+        var merged = false;
+        for (var i=0;i<CART.length;i++){
+          var it = CART[i];
+          if (it.title === 'Cartes de fidélité / visite' &&
+              it.opts &&
+              it.opts.quantite === quantite){
+            it.qty += qty;
+            merged = true;
+            break;
+          }
+        }
+
+        if (!merged){
+          CART.push({
+            title:'Cartes de fidélité / visite',
+            qty:qty,
+            unit:unit,
+            opts:{quantite:quantite}
+          });
+        }
+
+        renderCart();
+        toast('Cartes ajoutées');
+      }catch(e){
+        console.error(e);
+      }
+    }
+
+    // Étiquettes
+    function addP4(){
+      try{
+        var v = document.getElementById('p4_format').value; // "label|prix"
+        var parts = v.split('|');
+        var formatLabel = parts[0];
+        var unit = parseFloat(parts[1] || '0') || 0;
+        var qty = parseInt(document.getElementById('p4_qty').value || '1',10);
+        if (isNaN(qty) || qty < 1) qty = 1;
+
+        var merged = false;
+        for (var i=0;i<CART.length;i++){
+          var it = CART[i];
+          if (it.title === 'Étiquettes personnalisées' &&
+              it.opts &&
+              it.opts.format === formatLabel){
+            it.qty += qty;
+            merged = true;
+            break;
+          }
+        }
+
+        if (!merged){
+          CART.push({
+            title:'Étiquettes personnalisées',
+            qty:qty,
+            unit:unit,
+            opts:{format:formatLabel}
+          });
+        }
+
+        renderCart();
+        toast('Étiquettes ajoutées');
+      }catch(e){
+        console.error(e);
+      }
+    }
 
     function openCart(){
       renderCart();
@@ -809,12 +918,27 @@ function addP4(){
 
             var summaryParts = [];
             if (it.opts){
-              if (it.opts.quantitePack) summaryParts.push('pack: ' + it.opts.quantitePack);
-              if (it.opts.impression)   summaryParts.push('impression: ' + it.opts.impression);
+              if (it.opts.quantitePack) summaryParts.push('pack: '+it.opts.quantitePack);
+              if (it.opts.impression)   summaryParts.push('impression: '+it.opts.impression);
+              if (it.opts.type)         summaryParts.push('type: '+it.opts.type);
+              if (it.opts.taille)       summaryParts.push('taille: '+it.opts.taille);
+              if (it.opts.quantite)     summaryParts.push('quantité: '+it.opts.quantite);
+              if (it.opts.format)       summaryParts.push('format: '+it.opts.format);
             }
+            var summary = summaryParts.join(' • ');
+
+            var priceInfo;
+            if (it.unit && it.unit > 0){
+              priceInfo = 'min '+euro(it.unit)+'/u';
+            } else if (it.opts && it.opts.minPrice){
+              priceInfo = 'à partir de '+euro(it.opts.minPrice)+' (500 pcs)';
+            } else {
+              priceInfo = 'sur devis';
+            }
+
             var s = document.createElement('div');
             s.className = 'item-sub';
-            s.textContent = summaryParts.join(' • ');
+            s.textContent = (summary ? summary+' | ' : '') + priceInfo;
 
             left.appendChild(t);
             left.appendChild(s);
@@ -852,14 +976,25 @@ function addP4(){
 
       for (var i=0;i<CART.length;i++){
         var it = CART[i];
-        var summaryParts = [];
+        var sp = [];
         if (it.opts){
-          if (it.opts.quantitePack) summaryParts.push('pack: ' + it.opts.quantitePack);
-          if (it.opts.impression)   summaryParts.push('impression: ' + it.opts.impression);
+          if (it.opts.quantitePack) sp.push('pack: '+it.opts.quantitePack);
+          if (it.opts.impression)   sp.push('impression: '+it.opts.impression);
+          if (it.opts.type)         sp.push('type: '+it.opts.type);
+          if (it.opts.taille)       sp.push('taille: '+it.opts.taille);
+          if (it.opts.quantite)     sp.push('quantité: '+it.opts.quantite);
+          if (it.opts.format)       sp.push('format: '+it.opts.format);
         }
-        var summary = summaryParts.join(' • ');
+        var summary = sp.join(' • ');
 
-        var priceInfo = (it.unit && it.unit>0) ? euro(it.unit)+'/u' : 'sur devis';
+        var priceInfo;
+        if (it.unit && it.unit > 0){
+          priceInfo = euro(it.unit)+'/u';
+        } else if (it.opts && it.opts.minPrice){
+          priceInfo = 'à partir de '+euro(it.opts.minPrice)+' (500 pcs)';
+        } else {
+          priceInfo = 'sur devis';
+        }
 
         lines.push(
           (i+1)+'. '+it.title+' × '+it.qty+
@@ -868,7 +1003,8 @@ function addP4(){
         );
       }
 
-      lines.push('','Total estimé (produits tarifés) : '+document.getElementById('cartTotal').textContent);
+      lines.push('');
+      lines.push('Total estimé (produits tarifés) : '+document.getElementById('cartTotal').textContent);
 
       var payload = {
         type: 'QUOTE_REQUEST',
