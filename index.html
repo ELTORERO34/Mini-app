@@ -357,7 +357,7 @@
           <img src="img/pochon.jpg" alt="Pochon personnalisé" />
           <div class="product-thumb-body">
             <div class="product-thumb-title">Pochon personnalisé</div>
-            <div class="product-thumb-sub">Flatbags imprimés avec ton visuel</div>
+            <div class="product-thumb-sub">Flatbags et doypacks imprimés avec ton visuel</div>
           </div>
         </button>
 
@@ -398,14 +398,14 @@
         </div>
 
         <div class="product-card">
-          <h3 class="product-title">Pochon personnalisé 8×11 cm</h3>
+          <h3 class="product-title">Pochon personnalisé</h3>
           <p class="product-desc">
-            Pochons flatbag imprimés avec votre design, impression 1 face.
+            Pochons flatbag et Doypacks imprimés avec votre design.
           </p>
 
           <div class="product-meta">
             <span class="pill">Min: 500 pièces</span>
-            <span class="pill">À partir de 0,8 €/u (indicatif)</span>
+            <span class="pill">À partir de 0,8 €/u. Prix évolutif</span>
             <span class="pill">Délai: 12–13 jours ouvrables</span>
           </div>
 
@@ -419,7 +419,13 @@
                 <option>2000</option>
               </select>
             </label>
-
+                  <label>
+        Taille :
+        <select id="p1_taille">
+          <option>8×11 cm</option>
+          <option>8×13 cm</option>
+        </select>
+      </label>
             <label>
               Impression :
               <select id="p1_impression">
@@ -718,46 +724,50 @@
       }
     }
 
-    // Pochons (sur devis, unit = 0)
-    function addP1(){
-      try{
-        var pack = document.getElementById('p1_quantite').value;
-        var impression = document.getElementById('p1_impression').value;
-        var qty = parseInt(document.getElementById('p1_qty').value || '1',10);
-        if (isNaN(qty) || qty < 1) qty = 1;
+  // Pochons (sur devis, unit = 0)
+function addP1(){
+  try{
+    var pack = document.getElementById('p1_quantite').value;
+    var taille = document.getElementById('p1_taille').value;
+    var impression = document.getElementById('p1_impression').value;
+    var qty = parseInt(document.getElementById('p1_qty').value || '1',10);
+    if (isNaN(qty) || qty < 1) qty = 1;
 
-        var merged = false;
-        for (var i=0;i<CART.length;i++){
-          var it = CART[i];
-          if (it.title === 'Pochon personnalisé 8×11 cm' &&
-              it.opts &&
-              it.opts.quantitePack === pack &&
-              it.opts.impression === impression){
-            it.qty += qty;
-            merged = true;
-            break;
-          }
-        }
-
-        if (!merged){
-          CART.push({
-            title: 'Pochon personnalisé 8×11 cm',
-            qty: qty,
-            unit: 0, // sur devis
-            opts: {
-              quantitePack: pack,
-              impression: impression,
-              minPrice: 0.8
-            }
-          });
-        }
-
-        renderCart();
-        toast('Pochons ajoutés');
-      }catch(e){
-        console.error(e);
+    var merged = false;
+    for (var i=0;i<CART.length;i++){
+      var it = CART[i];
+      if (it.title === 'Pochon personnalisé' &&
+          it.opts &&
+          it.opts.quantitePack === pack &&
+          it.opts.taille === taille &&
+          it.opts.impression === impression){
+        it.qty += qty;
+        merged = true;
+        break;
       }
     }
+
+    if (!merged){
+      CART.push({
+        title: 'Pochon personnalisé',
+        qty: qty,
+        unit: 0, // sur devis
+        opts: {
+          quantitePack: pack,
+          taille: taille,
+          impression: impression,
+          minPrice: 0.8
+        }
+      });
+    }
+
+    renderCart();
+    toast('Pochons ajoutés');
+  }catch(e){
+    console.error(e);
+  }
+}
+
 
     // Tableaux (avec prix)
     function addP2(){
