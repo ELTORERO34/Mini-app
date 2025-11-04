@@ -1201,64 +1201,84 @@ function addP6(){
       }
     }
 
+        // Compte Telegram qui reçoit les devis
+    var QUOTE_USERNAME = "pssv2";
+
     function sendQuote(){
       if (!CART.length){
-        toast('Ajoutez des articles au panier.');
+        toast("Ajoutez des articles au panier.");
         return;
       }
-      var lines = [];
-      lines.push('🧾 *Demande de devis – PochonStore*','');
-
-      for (var i=0;i<CART.length;i++){
-        var it = CART[i];
-        var sp = [];
-        if (it.opts){
-          if (it.opts.quantitePack) sp.push('pack: '+it.opts.quantitePack);
-          if (it.opts.impression)   sp.push('impression: '+it.opts.impression);
-          if (it.opts.type)         sp.push('type: '+it.opts.type);
-          if (it.opts.taille)       sp.push('taille: '+it.opts.taille);
-          if (it.opts.quantite)     sp.push('quantité: '+it.opts.quantite);
-          if (it.opts.format)       sp.push('format: '+it.opts.format);
-        }
-        var summary = sp.join(' • ');
-
-        var priceInfo;
-        if (it.unit && it.unit > 0){
-          priceInfo = euro(it.unit)+'/u';
-        } else if (it.opts && it.opts.minPrice){
-          priceInfo = 'à partir de '+euro(it.opts.minPrice)+' (500 pcs)';
-        } else {
-          priceInfo = 'sur devis';
-        }
-
-        lines.push(
-          (i+1)+'. '+it.title+' × '+it.qty+
-          ' | '+priceInfo+
-          (summary ? ' | '+summary : '')
-        );
-      }
-
-      lines.push('');
-      lines.push('Total estimé (produits tarifés) : '+document.getElementById('cartTotal').textContent);
-
-      var payload = {
-        type: 'QUOTE_REQUEST',
-        cart: CART,
-        text: lines.join('\n')
-      };
 
       try{
-        if (tg && tg.sendData){
-          tg.sendData(JSON.stringify(payload));
-          tg.HapticFeedback &&
-          tg.HapticFeedback.notificationOccurred &&
-          tg.HapticFeedback.notificationOccurred('success');
-          toast('Devis envoyé au bot.');
-        } else {
-          alert(payload.text);
+        var lines = [];
+        lines.push("🧾 Demande de devis – PochonStore");
+        lines.push("");
+        lines.push("Détail du panier :");
+        lines.push("");
+
+        var total = 0;
+
+        for (var i = 0; i < CART.length; i++){
+          var it = CART[i];
+          var index = i + 1;
+
+          // Titre de la ligne
+          var ligneTitre = index + ") " + it.title + " × " + it.qty;
+          if (it.unit){
+            ligneTitre += " — " + euro(it.unit) + " /u";
+          }
+          lines.push(ligneTitre);
+
+          // Options détaillées
+          if (it.opts){
+            var parts = [];
+            for (var key in it.opts){
+              if (!Object.prototype.hasOwnProperty.call(it.opts, key)) continue;
+              var value = it.opts[key];
+              if (value === undefined || value === null || value === "") continue;
+              // clé lisible
+              var label = key
+                .replace(/_/g," ")
+                .replace(/^\w/, c => c.toUpperCase());
+              parts.push(label + " : " + value);
+            }
+            if (parts.length){
+              lines.push("   • " + parts.join("\n   • "));
+            }
+          }
+
+          // Sous-total estimé si prix connu
+          if (it.unit){
+            var sousTotal = (it.unit || 0) * it.qty;
+            total += sousTotal;
+            lines.push("   Sous-total estimé : " + euro(sousTotal));
+          }
+
+          lines.push("");
         }
+
+        lines.push("Total estimé (min connu) : " + euro(total));
+        lines.push("");
+        lines.push("Merci de vérifier les infos puis d’envoyer ce message à PochonStore pour finaliser le devis.");
+
+        var message = lines.join("\n");
+
+        // Ouvre le chat Telegram avec texte prérempli
+        var url = "https://t.me/" + QUOTE_USERNAME + "?text=" + encodeURIComponent(message);
+
+        if (tg && tg.openTelegramLink){
+          tg.openTelegramLink(url);
+        } else {
+          window.open(url, "_blank");
+        }
+
+        // On ferme le panier + petit feedback
+        closeCart();
+        toast("Ouverture du chat avec PochonStore…");
+
       }catch(e){
-        console.error(e);
+        diag(e);
       }
     }
 
