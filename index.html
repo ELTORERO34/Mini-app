@@ -27,39 +27,38 @@
       color: var(--text);
     }
 
-/* ===== HEADER STYLE TYPE GMF ===== */
+/* ===== BANNIÈRE FIXE AVEC FOND FLOU ===== */
 .header {
-  position: fixed;          /* reste collé sous la barre Telegram */
+  position: fixed;           /* reste collée en haut, comme tu aimes */
   top: 0;
   left: 0;
   right: 0;
-  z-index: 100;
-  height: 150px;            /* hauteur de la bannière */
+  height: 150px;
+  z-index: 200;
   overflow: hidden;
-  border-bottom: 1px solid rgba(255,255,255,0.12);
 }
 
-/* Image floutée de fond (même fichier que le logo) */
+/* image floutée derrière le logo */
 .header-bg {
   position: absolute;
   inset: 0;
   background: url("img/banner.png") center/cover no-repeat;
-  filter: blur(12px) brightness(0.6) saturate(1.2); /* flou + gris/foncé */
-  transform: scale(1.12);                            /* évite les bords nets */
+  filter: blur(10px) brightness(0.8);
+  transform: scale(1.12); /* évite les bords nets du blur */
 }
 
-/* Voile sombre par-dessus pour bien lire le contenu */
+/* voile sombre pour bien lire le logo */
 .header-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(0,0,0,0.25),
-    rgba(0,0,0,0.85)
+    rgba(0, 0, 0, 0.25),
+    rgba(0, 0, 0, 0.9)
   );
 }
 
-/* Logo net au milieu avec glow doré */
+/* logo net au milieu + glow doré */
 .header-logo {
   position: absolute;
   top: 50%;
@@ -67,9 +66,7 @@
   transform: translate(-50%, -50%);
   max-height: 80px;
   object-fit: contain;
-  z-index: 2;
-  /* halo doré soft autour du logo */
-  filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.6));
+  filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.8));
 }
 
 /* Pour que le contenu commence sous la bannière */
@@ -394,20 +391,6 @@ main {
     header h1, h2, h3 {
       color: #ffd766;
     }
-
-    /* Header flou doré */
-    header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 100;
-  backdrop-filter: blur(12px) saturate(160%);
-  -webkit-backdrop-filter: blur(12px) saturate(160%);
-  background: rgba(20, 20, 20, 0.25); /* plus transparent */
-  border-bottom: 1px solid rgba(255, 215, 100, 0.25);
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
-}
   </style>
 </head>
 <body>
