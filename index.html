@@ -1246,13 +1246,17 @@
         lines.push("Merci de vérifier les infos puis d’envoyer ce message à PochonStore pour finaliser le devis.");
 
         var message = lines.join("\n");
-        var url = "https://t.me/" + QUOTE_USERNAME + "?text=" + encodeURIComponent(message);
 
-        if (tg && tg.openTelegramLink){
-          tg.openTelegramLink(url);
-        } else {
-          window.open(url, "_blank");
-        }
+// Lien de partage Telegram avec message pré-rempli
+var url = "https://t.me/share/url"
+        + "?url="  + encodeURIComponent("https://t.me/" + QUOTE_USERNAME)
+        + "&text=" + encodeURIComponent(message);
+
+if (tg && tg.openTelegramLink){
+  tg.openTelegramLink(url);
+} else {
+  window.open(url, "_blank");
+}
 
         closeCart(true);
         toast("Ouverture du chat avec PochonStore…");
