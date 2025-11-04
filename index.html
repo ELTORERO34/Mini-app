@@ -17,70 +17,74 @@
       --radius: 14px;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
+      padding: 0;
+      background: radial-gradient(circle at 50% 30%,
+                  rgba(255, 215, 100, 0.15) 0%,
+                  rgba(0, 0, 0, 1) 80%);
+      background-attachment: fixed;
+      background-size: cover;
+      color: #fff;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
                    Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
     }
 
-/* ==== BANNIÈRE FLOUE TRANSPARENTE DORÉE ==== */
-.header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 140px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  background: rgba(255, 215, 102, 0.05); /* très léger voile doré */
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 1px solid rgba(255, 215, 102, 0.15); /* reflet doré léger */
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* juste un petit relief doux */
-}
+    /* ===== BANNIÈRE FLOUE ===== */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      background: rgba(255, 215, 102, 0.05);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(255, 215, 102, 0.15);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
 
-/* Logo centré et lumineux */
-.header img {
-  max-height: 90px;
-  width: auto;
-  filter: drop-shadow(0 0 6px rgba(255,215,102,0.4));
-}
+    .header-overlay {
+      position: absolute;
+      inset: 0;
+      background: transparent;
+    }
 
-/* voile sombre pour bien lire le logo */
-.header-overlay {
-  position: absolute;
-  inset: 0;
-  background: transparent;
-  }
+    .header-logo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-height: 80px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.8));
+    }
 
-/* logo net au milieu + glow doré */
-.header-logo {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  max-height: 80px;
-  object-fit: contain;
-  filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.8));
-}
+    /* ==== CONTENU PRINCIPAL ==== */
+    main {
+      display: block;
+      padding-top: 160px;     /* place pour la bannière */
+      padding-bottom: 110px;  /* place pour menu + panier */
+      box-sizing: border-box;
+    }
 
-/* Pour que le contenu commence sous la bannière */
-main{
-  padding-top: 160px;
-  padding-bottom: 110px;
-}
+    .tab-panel {
+      display: none;
+    }
+    .tab-panel.active {
+      display: block;
+    }
 
-    /* TABS */
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
-
-    /* GRILLE PRODUITS (onglet Menu) */
+    /* ===== GRILLE PRODUITS (onglet Menu) ===== */
     .product-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -90,38 +94,48 @@ main{
 
     .product-thumb {
       border: 1px solid var(--border);
-      background: var(--card);
+      background: rgba(20, 20, 20, 0.85);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
       border-radius: var(--radius);
       overflow: hidden;
       box-shadow: 0 4px 10px rgba(0,0,0,0.35);
       color: var(--text);
       padding: 0;
     }
+
     .product-thumb img {
       width: 100%;
       height: 130px;
       object-fit: cover;
       display: block;
     }
+
     .product-thumb-body {
       padding: 8px;
       text-align: left;
     }
+
     .product-thumb-title {
       font-weight: 600;
       font-size: 1rem;
+      color: #ffd766;
     }
+
     .product-thumb-sub {
       font-size: 0.8rem;
       color: var(--muted);
     }
 
-    /* FICHES PRODUITS */
-    .hidden { display: none; }
+    /* ===== FICHES PRODUITS ===== */
+    .hidden {
+      display: none;
+    }
 
     .product-detail {
       padding: 16px;
     }
+
     .btn-back {
       border: 1px solid var(--border);
       background: #111;
@@ -130,33 +144,43 @@ main{
       border-radius: 10px;
       margin-bottom: 12px;
     }
+
     .detail-media img {
       width: 100%;
       border-radius: 10px;
       margin-bottom: 10px;
-      display:block;
+      display: block;
     }
+
     .product-card {
-      background: var(--card);
-      border-radius: var(--radius);
+      background: rgba(20, 20, 20, 0.85);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 215, 100, 0.2);
+      box-shadow: 0 0 10px rgba(255, 215, 100, 0.1);
+      border-radius: 10px;
       padding: 16px;
-      border: 1px solid var(--border);
     }
+
     .product-title {
       margin-top: 0;
       margin-bottom: 8px;
+      color: #ffd766;
     }
+
     .product-desc {
       margin-top: 0;
       margin-bottom: 10px;
       color: var(--muted);
     }
+
     .product-meta {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       margin-bottom: 10px;
     }
+
     .pill {
       padding: 4px 8px;
       border: 1px solid var(--border);
@@ -164,17 +188,19 @@ main{
       color: var(--muted);
       font-size: 0.85rem;
     }
+
     .product-options label {
       display: block;
       margin: 8px 0;
       color: var(--muted);
       font-size: 0.9rem;
     }
+
     .product-options select {
       margin-left: 4px;
       border-radius: 8px;
       border: 1px solid var(--border);
-      background:#111;
+      background: #111;
       color: var(--text);
       padding: 4px 6px;
     }
@@ -186,6 +212,7 @@ main{
       margin-top: 10px;
       flex-wrap: wrap;
     }
+
     .qty-row button {
       background: #222;
       color: #fff;
@@ -193,6 +220,7 @@ main{
       padding: 6px 10px;
       border-radius: 5px;
     }
+
     .qty-row input {
       background: #111;
       color: #fff;
@@ -204,13 +232,14 @@ main{
     }
 
     .btn {
-      background:#222;
-      color:#fff;
-      border:1px solid var(--border);
-      padding:8px 12px;
-      border-radius:8px;
-      cursor:pointer;
+      background: #222;
+      color: #fff;
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
     }
+
     .btn.primary {
       background: var(--accent);
       color: #000;
@@ -220,7 +249,7 @@ main{
       border: none;
     }
 
-    /* CARTES INFO / CANAL / CONTACT */
+    /* ===== CARTES INFO / CANAL / CONTACT ===== */
     .info-card {
       margin: 16px;
       background: var(--card);
@@ -228,212 +257,197 @@ main{
       padding: 16px;
       border: 1px solid var(--border);
     }
+
     .info-card h2 {
       margin-top: 0;
       margin-bottom: 8px;
+      color: #ffd766;
     }
+
     .info-card p {
       margin-top: 0;
       color: var(--muted);
     }
 
-/* MENU BAS COLLANT — TOUJOURS VISIBLE SANS ÊTRE FIXE */
-/* Menu du bas toujours visible */
-.bottom-nav{
-  position: fixed;                /* 🔥 attaché à la fenêtre, pas à la page */
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  background: rgba(5,5,6,0.97);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-top: 1px solid rgba(255,255,255,0.06);
-  z-index: 300;
-}
-
-.nav-btn {
-  flex: 1;
-  border: none;
-  background: transparent;
-  color: #bdbdbd;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  font-size: 0.78rem;
-}
-
-.nav-btn span.icon {
-  font-size: 1.2rem;
-  margin-bottom: 2px;
-}
-
-.nav-btn.active {
-  color: #d4af37;
-  font-weight: 600;
-}
-
-/* Bouton panier toujours au-dessus du menu bas */
-.cart-fab{
-  position: fixed;                /* 🔥 fixé à l’écran */
-  right: 18px;
-  bottom: 84px;                   /* juste au-dessus du menu bas */
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 1px solid rgba(255,215,102,0.9);
-  background: radial-gradient(circle at 30% 20%, rgba(255,215,102,0.15), transparent 60%),
-              linear-gradient(180deg,#151515,#050505);
-  box-shadow: 0 10px 26px rgba(0,0,0,0.55);
-  color: #fefefe;
-  font-size: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 310;                  /* au-dessus du menu bas */
-}
-.cart-fab:active{
-  transform: translateY(1px);
-}
-
-    .modal{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,.6);
-      display:flex;
-      align-items:flex-end;
-      z-index:300;
-    }
-    .modal.hidden{display:none;}
-    .modal-inner{
-      background:var(--bg);
-      border-top-left-radius:18px;
-      border-top-right-radius:18px;
-      box-shadow:0 -10px 30px rgba(0,0,0,.6);
-      width:100%;
-      max-height:86vh;
-      display:flex;
-      flex-direction:column;
-    }
-    .modal-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:12px 14px;
-      border-bottom:1px solid var(--border);
-    }
-    .icon-btn{
-      background:#121216;
-      border:1px solid var(--border);
-      color:var(--text);
-      border-radius:10px;
-      height:34px;
-      width:34px;
-    }
-    .cart-items{
-      padding:10px 12px;
-      overflow:auto;
-    }
-    .cart-item{
-      display:grid;
-      grid-template-columns:1fr auto;
-      gap:6px;
-      padding:10px 0;
-      border-bottom:1px dashed var(--border);
-    }
-    .item-title{font-weight:700;}
-    .item-sub{color:var(--muted);font-size:.95rem;}
-    .item-right{display:flex;gap:6px;align-items:center;}
-
-    .modal-footer{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:12px;
-      border-top:1px solid var(--border);
-      gap:8px;
-      flex-wrap:wrap;
-    }
-    .total-line{font-size:1.05rem;}
-
-    /* Toast petit message */
-    #toast{
-  position: fixed;
-  left: 50%;
-  bottom: 86px;
-  transform: translateX(-50%);
-  padding: 10px 14px;
-  background: #121216;
-  color: #fff;
-  border: 1px solid #333;
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-  z-index: 350;
-  opacity: 0;
-  transition: opacity .2s;
-  pointer-events: none;  /* 🔥 ajoute juste cette ligne */
-}
-  </style>
-    <!-- ====== FOND DORÉ GLOBAL ====== -->
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: radial-gradient(circle at 50% 30%, rgba(255, 215, 100, 0.15) 0%, rgba(0, 0, 0, 1) 80%);
-      background-attachment: fixed;
-      background-size: cover;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      color: #fff;
-      font-family: 'Poppins', sans-serif;
+    /* ===== MENU BAS FIXE ===== */
+    .bottom-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      background: rgba(5,5,6,0.97);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      z-index: 300;
     }
 
-    /* Cartes avec effet verre */
-    .product-card {
-      background: rgba(20, 20, 20, 0.85);
-      backdrop-filter: blur(6px);
-      border: 1px solid rgba(255, 215, 100, 0.2);
-      box-shadow: 0 0 10px rgba(255, 215, 100, 0.1);
+    .nav-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      color: #bdbdbd;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+    }
+
+    .nav-btn span.icon {
+      font-size: 1.2rem;
+      margin-bottom: 2px;
+    }
+
+    .nav-btn.active {
+      color: #d4af37;
+      font-weight: 600;
+    }
+
+    /* ===== BOUTON PANIER ===== */
+    .cart-fab {
+      position: fixed;
+      right: 18px;
+      bottom: 84px; /* juste au-dessus du menu bas */
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,215,102,0.9);
+      background: radial-gradient(circle at 30% 20%, rgba(255,215,102,0.15), transparent 60%),
+                  linear-gradient(180deg,#151515,#050505);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.55);
+      color: #fefefe;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 310;
+    }
+
+    .cart-fab:active {
+      transform: translateY(1px);
+    }
+
+    /* ===== MODAL PANIER ===== */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.6);
+      display: flex;
+      align-items: flex-end;
+      z-index: 320;
+    }
+
+    .modal.hidden {
+      display: none;
+    }
+
+    .modal-inner {
+      background: var(--bg);
+      border-top-left-radius: 18px;
+      border-top-right-radius: 18px;
+      box-shadow: 0 -10px 30px rgba(0,0,0,.6);
+      width: 100%;
+      max-height: 86vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .icon-btn {
+      background: #121216;
+      border: 1px solid var(--border);
+      color: var(--text);
       border-radius: 10px;
+      height: 34px;
+      width: 34px;
     }
 
-    /* Titres dorés */
-    .product-title,
-    header h1, h2, h3 {
-      color: #ffd766;
+    .cart-items {
+      padding: 10px 12px;
+      overflow: auto;
     }
-    
-    /* ==== CONTENEUR PRINCIPAL ==== */
-main {
-  display: block;
-  overflow-y: auto;
-  height: 100vh;
-  padding-top: 160px;   /* espace pour la bannière */
-  padding-bottom: 110px;/* espace pour le menu en bas */
-  box-sizing: border-box;
-}
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 6px;
+      padding: 10px 0;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .item-title {
+      font-weight: 700;
+    }
+
+    .item-sub {
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
+    .item-right {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      border-top: 1px solid var(--border);
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .total-line {
+      font-size: 1.05rem;
+    }
+
+    /* ===== TOAST ===== */
+    #toast {
+      position: fixed;
+      left: 50%;
+      bottom: 86px;
+      transform: translateX(-50%);
+      padding: 10px 14px;
+      background: #121216;
+      color: #fff;
+      border: 1px solid #333;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      z-index: 350;
+      opacity: 0;
+      transition: opacity .2s;
+      pointer-events: none; /* ne bloque pas les clics */
+    }
   </style>
 </head>
 <body>
 
   <!-- HEADER -->
-<header class="header">
-  <div class="header-bg"></div>
-  <div class="header-overlay"></div>
-  <img src="img/banner.png" alt="PochonStore" class="header-logo" />
-</header>
+  <header class="header">
+    <div class="header-overlay"></div>
+    <img src="img/banner.png" alt="PochonStore" class="header-logo" />
+  </header>
 
   <main id="main">
-
-    <!-- ONGLET MENU (catalogue) -->
+    <!-- ONGLET MENU -->
     <section id="tab-menu" class="tab-panel active">
-      <!-- GRILLE DES PRODUITS -->
       <div class="product-grid" id="productGrid">
-        <!-- Carte 1 : Pochon -->
+        <!-- P1 : Pochons -->
         <button class="product-thumb" onclick="openProduct('p1')">
           <img src="img/pochon.jpg" alt="Pochon personnalisé" />
           <div class="product-thumb-body">
@@ -442,7 +456,7 @@ main {
           </div>
         </button>
 
-        <!-- Carte 2 : Tableau -->
+        <!-- P2 : Tableaux -->
         <button class="product-thumb" onclick="openProduct('p2')">
           <img src="img/tableau1.jpg" alt="Tableaux personnalisés" />
           <div class="product-thumb-body">
@@ -451,7 +465,7 @@ main {
           </div>
         </button>
 
-        <!-- Carte 3 : Cartes fidélité / visite -->
+        <!-- P3 : Cartes -->
         <button class="product-thumb" onclick="openProduct('p3')">
           <img src="img/cartes.jpg" alt="Cartes fidélité / visite" />
           <div class="product-thumb-body">
@@ -460,7 +474,7 @@ main {
           </div>
         </button>
 
-        <!-- Carte 4 : Étiquettes -->
+        <!-- P4 : Étiquettes -->
         <button class="product-thumb" onclick="openProduct('p4')">
           <img src="img/etiquettes1.jpg" alt="Étiquettes personnalisées" />
           <div class="product-thumb-body">
@@ -469,45 +483,41 @@ main {
           </div>
         </button>
 
-              <!-- Carte 5 : Scelleuse -->
-      <button class="product-thumb" onclick="openProduct('p5')">
-        <img src="img/scelleuse.jpg" alt="Scelleuse" />
-        <div class="product-thumb-body">
-          <div class="product-thumb-title">Scelleuse</div>
-          <div class="product-thumb-sub">Scelleuse thermique pour fermer tes pochons</div>
-        </div>
-      </button>
+        <!-- P5 : Scelleuse -->
+        <button class="product-thumb" onclick="openProduct('p5')">
+          <img src="img/scelleuse.jpg" alt="Scelleuse" />
+          <div class="product-thumb-body">
+            <div class="product-thumb-title">Scelleuse</div>
+            <div class="product-thumb-sub">Scelleuse thermique pour fermer tes pochons</div>
+          </div>
+        </button>
 
-      <!-- Carte 6 : Fusées 1,5 ml -->
-      <button class="product-thumb" onclick="openProduct('p6')">
-        <img src="img/fusées1.jpg" alt="Fusées 1,5 ml" />
-        <div class="product-thumb-body">
-          <div class="product-thumb-title">Fusées 1,5 ml</div>
-          <div class="product-thumb-sub">Capsules vides, tarifs selon quantité</div>
-        </div>
-      </button>
+        <!-- P6 : Fusées -->
+        <button class="product-thumb" onclick="openProduct('p6')">
+          <img src="img/fusées1.jpg" alt="Fusées 1,5 ml" />
+          <div class="product-thumb-body">
+            <div class="product-thumb-title">Fusées 1,5 ml</div>
+            <div class="product-thumb-sub">Capsules vides, tarifs selon quantité</div>
+          </div>
+        </button>
       </div>
 
-      <!-- FICHE PRODUIT : POCHON -->
+      <!-- FICHE PRODUIT P1 -->
       <div id="productDetail_p1" class="product-detail hidden">
         <button class="btn-back" onclick="closeProduct()">← Retour</button>
-
         <div class="detail-media">
           <img src="img/pochon.jpg" alt="Pochon personnalisé" />
         </div>
-
         <div class="product-card">
           <h3 class="product-title">Pochon personnalisé</h3>
           <p class="product-desc">
-            Pochons flatbag et Doypacks imprimés avec votre design.
+            Pochons flatbag et doypacks imprimés avec votre design.
           </p>
-
           <div class="product-meta">
-            <span class="pill">Min: 500 pièces</span>
-            <span class="pill">À partir de 0,8 €/u. Prix évolutif</span>
-            <span class="pill">Délai: 12–13 jours ouvrables</span>
+            <span class="pill">Min : 500 pièces</span>
+            <span class="pill">À partir de 0,8 €/u</span>
+            <span class="pill">Délai : 12–13 jours ouvrables</span>
           </div>
-
           <div class="product-options">
             <label>
               Quantité (pack) :
@@ -518,13 +528,13 @@ main {
                 <option>2000</option>
               </select>
             </label>
-                  <label>
-        Taille :
-        <select id="p1_taille">
-          <option>8×11 cm</option>
-          <option>8×13 cm</option>
-        </select>
-      </label>
+            <label>
+              Taille :
+              <select id="p1_taille">
+                <option>8×11 cm</option>
+                <option>8×13 cm</option>
+              </select>
+            </label>
             <label>
               Impression :
               <select id="p1_impression">
@@ -533,7 +543,6 @@ main {
               </select>
             </label>
           </div>
-
           <div class="qty-row">
             <button type="button" onclick="dec('p1_qty')">−</button>
             <input id="p1_qty" type="number" min="1" value="1" />
@@ -543,40 +552,36 @@ main {
         </div>
       </div>
 
-      <!-- FICHE PRODUIT : TABLEAUX -->
+      <!-- FICHE PRODUIT P2 -->
       <div id="productDetail_p2" class="product-detail hidden">
         <button class="btn-back" onclick="closeProduct()">← Retour</button>
-
         <div class="detail-media">
           <img src="img/tableau1.jpg" alt="Tableaux personnalisés" />
         </div>
-
         <div class="product-card">
           <h3 class="product-title">Tableaux personnalisés</h3>
           <p class="product-desc">
-            Impression haute qualité sur toile, plusieurs formats panoramiques, populaires et carrés.
+            Impression haute qualité sur toile, formats panoramiques, populaires et carrés.
           </p>
-
           <div class="product-options">
             <label>Format :
               <select id="p2_format">
-                <!-- panoramiques -->
+                <!-- Panoramiques -->
                 <option value="Panoramique|60×20|50">Panoramique 60×20 — 50 €</option>
                 <option value="Panoramique|60×30|60">Panoramique 60×30 — 60 €</option>
                 <option value="Panoramique|80×40|80">Panoramique 80×40 — 80 €</option>
                 <option value="Panoramique|100×50|100">Panoramique 100×50 — 100 €</option>
                 <option value="Panoramique|120×60|120">Panoramique 120×60 — 120 €</option>
-                <!-- populaires -->
+                <!-- Populaires -->
                 <option value="Populaire|60×40|70">Populaire 60×40 — 70 €</option>
                 <option value="Populaire|80×60|90">Populaire 80×60 — 90 €</option>
                 <option value="Populaire|90×60|100">Populaire 90×60 — 100 €</option>
-                <!-- carrés -->
+                <!-- Carrés -->
                 <option value="Carré|60×60|70">Carré 60×60 — 70 €</option>
                 <option value="Carré|80×80|90">Carré 80×80 — 90 €</option>
               </select>
             </label>
           </div>
-
           <div class="qty-row">
             <button type="button" onclick="dec('p2_qty')">−</button>
             <input id="p2_qty" type="number" min="1" value="1" />
@@ -586,20 +591,17 @@ main {
         </div>
       </div>
 
-      <!-- FICHE PRODUIT : CARTES -->
+      <!-- FICHE PRODUIT P3 -->
       <div id="productDetail_p3" class="product-detail hidden">
         <button class="btn-back" onclick="closeProduct()">← Retour</button>
-
         <div class="detail-media">
-          <img src="img/cartes.jpg" alt="Cartes de fidélité / visite" />
+          <img src="img/cartes.jpg" alt="Cartes fidélité / visite" />
         </div>
-
         <div class="product-card">
           <h3 class="product-title">Cartes de fidélité / visite</h3>
           <p class="product-desc">
             Cartes professionnelles recto verso, papier 350g, impression couleur.
           </p>
-
           <div class="product-options">
             <label>Quantité :
               <select id="p3_quantite">
@@ -610,7 +612,6 @@ main {
               </select>
             </label>
           </div>
-
           <div class="qty-row">
             <button type="button" onclick="dec('p3_qty')">−</button>
             <input id="p3_qty" type="number" min="1" value="1" />
@@ -620,20 +621,17 @@ main {
         </div>
       </div>
 
-            <!-- FICHE PRODUIT : ÉTIQUETTES -->
+      <!-- FICHE PRODUIT P4 -->
       <div id="productDetail_p4" class="product-detail hidden">
         <button class="btn-back" onclick="closeProduct()">← Retour</button>
-
         <div class="detail-media">
           <img src="img/etiquettes.jpg" alt="Étiquettes personnalisées" />
         </div>
-
         <div class="product-card">
           <h3 class="product-title">Étiquettes personnalisées</h3>
           <p class="product-desc">
             Étiquettes adhésives pour packaging, pochons, produits… Formats au choix.
           </p>
-
           <div class="product-options">
             <label>Format :
               <select id="p4_format">
@@ -643,7 +641,6 @@ main {
               </select>
             </label>
           </div>
-
           <div class="qty-row">
             <button type="button" onclick="dec('p4_qty')">−</button>
             <input id="p4_qty" type="number" min="1" value="1" />
@@ -653,62 +650,56 @@ main {
         </div>
       </div>
 
-      <!-- FICHE PRODUIT : SCELLEUSE -->
+      <!-- FICHE PRODUIT P5 -->
       <div id="productDetail_p5" class="product-detail hidden">
         <button class="btn-back" onclick="closeProduct()">← Retour</button>
-
         <div class="detail-media">
           <img src="img/scelleuse.jpg" alt="Scelleuse" />
         </div>
-
         <div class="product-card">
           <h3 class="product-title">Scelleuse</h3>
           <p class="product-desc">
-            Appareil de soudure thermique idéal pour fermer vos pochons avec efficacité.
+            Appareil de soudure thermique idéal pour fermer vos pochons.
           </p>
           <div class="product-meta">
             <span class="pill">Prix : 10 €</span>
             <span class="pill">Délai : 2–3 jours</span>
           </div>
           <div class="qty-row">
-            <button class="qty-btn" onclick="dec('p5_qty')">−</button>
-            <input id="p5_qty" type="number" class="qty-input" min="1" value="1" />
-            <button class="qty-btn" onclick="inc('p5_qty')">+</button>
-            <button class="btn primary" onclick="addP5()">Ajouter</button>
+            <button type="button" onclick="dec('p5_qty')">−</button>
+            <input id="p5_qty" type="number" min="1" value="1" />
+            <button type="button" onclick="inc('p5_qty')">+</button>
+            <button class="btn primary" type="button" onclick="addP5()">Ajouter</button>
           </div>
         </div>
       </div>
 
-      <!-- FICHE PRODUIT : FUSÉES 1,5 ml -->
+      <!-- FICHE PRODUIT P6 -->
       <div id="productDetail_p6" class="product-detail hidden">
         <button class="btn-back" onclick="closeProduct()">← Retour</button>
-
         <div class="detail-media">
           <img src="img/fusées1.jpg" alt="Fusées 1,5 ml" />
         </div>
-
         <div class="product-card">
           <h3 class="product-title">Fusées 1,5 ml</h3>
           <p class="product-desc">
             Capsules vides prêtes à remplir. Tarifs dégressifs selon la quantité.
           </p>
-
           <div class="product-options">
             <label>Quantité :
-<select id="p6_quantite">
-  <option data-price="20">100 — 20 €</option>
-  <option data-price="50">500 — 50 €</option>
-  <option data-price="100">1000 — 100 €</option>
-  <option data-price="0">+ sur devis</option>
-</select>
+              <select id="p6_quantite">
+                <option data-price="20">100 — 20 €</option>
+                <option data-price="50">500 — 50 €</option>
+                <option data-price="100">1000 — 100 €</option>
+                <option data-price="0">+ sur devis</option>
+              </select>
             </label>
           </div>
-
           <div class="qty-row">
-            <button class="qty-btn" onclick="dec('p6_qty')">−</button>
-            <input id="p6_qty" type="number" class="qty-input" min="1" value="1" />
-            <button class="qty-btn" onclick="inc('p6_qty')">+</button>
-            <button class="btn primary" onclick="addP6()">Ajouter</button>
+            <button type="button" onclick="dec('p6_qty')">−</button>
+            <input id="p6_qty" type="number" min="1" value="1" />
+            <button type="button" onclick="inc('p6_qty')">+</button>
+            <button class="btn primary" type="button" onclick="addP6()">Ajouter</button>
           </div>
         </div>
       </div>
@@ -742,7 +733,6 @@ main {
         <button class="btn primary" type="button" onclick="openContact()">Écrire au compte</button>
       </div>
     </section>
-
   </main>
 
   <!-- BOUTON PANIER FLOTTANT -->
@@ -753,7 +743,7 @@ main {
     <div class="modal-inner">
       <header class="modal-header">
         <h3>Votre panier</h3>
-        <button class="icon-btn" type="button" onclick="closeCart()">✕</button>
+        <button class="icon-btn" type="button" onclick="closeCart(true)">✕</button>
       </header>
       <div id="cartItems" class="cart-items"></div>
       <footer class="modal-footer">
@@ -786,19 +776,16 @@ main {
     </button>
   </nav>
 
+  <!-- TOAST -->
   <div id="toast"></div>
 
   <script>
-    /* ==== TELEGRAM ==== */
-    var tg = null;
-    try{
-      if (window.Telegram && window.Telegram.WebApp){
-        tg = window.Telegram.WebApp;
-        tg.expand && tg.expand();
-      }
-    }catch(e){}
+    // Récup Telegram WebApp (si lancé dans Telegram)
+    var tg = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
+    // Compte qui reçoit les devis
+    var QUOTE_USERNAME = "pssv2";
 
-    /* ==== NAVIGATION TABS BAS ==== */
+    /* ==== NAVIGATION TABS ==== */
     function switchTab(btn){
       var tab = btn.getAttribute('data-tab'); // menu / infos / canal / contact
 
@@ -817,41 +804,36 @@ main {
       var active = document.getElementById('tab-' + tab);
       if (active) active.classList.add('active');
 
-      // si on quitte le menu, on ferme les fiches produits
+      // si on quitte le menu : fermer fiche produit
       if (tab !== 'menu'){
         closeProduct(true);
       }
 
-      // on ferme aussi le panier si ouvert
+      // on ferme aussi le panier
       closeCart(true);
 
       window.scrollTo(0,0);
     }
 
-    /* ==== FICHES PRODUITS MENU (multi-produits) ==== */
+    /* ==== FICHES PRODUITS ==== */
     function openProduct(id){
-      // masquer la grille
       var grid = document.getElementById('productGrid');
       if (grid) grid.style.display = 'none';
 
-      // masquer toutes les fiches
       document.querySelectorAll('[id^="productDetail_"]').forEach(function(e){
         e.classList.add('hidden');
       });
 
-      // afficher celle demandée
-      var el = document.getElementById('productDetail_'+id);
+      var el = document.getElementById('productDetail_' + id);
       if (el) el.classList.remove('hidden');
 
       window.scrollTo(0,0);
     }
 
     function closeProduct(fromTabSwitch){
-      // cacher toutes les fiches
       document.querySelectorAll('[id^="productDetail_"]').forEach(function(e){
         e.classList.add('hidden');
       });
-      // remettre la grille
       var grid = document.getElementById('productGrid');
       if (grid) grid.style.display = 'grid';
       if (!fromTabSwitch) window.scrollTo(0,0);
@@ -883,52 +865,51 @@ main {
       }
     }
 
-  // Pochons (sur devis, unit = 0)
-function addP1(){
-  try{
-    var pack = document.getElementById('p1_quantite').value;
-    var taille = document.getElementById('p1_taille').value;
-    var impression = document.getElementById('p1_impression').value;
-    var qty = parseInt(document.getElementById('p1_qty').value || '1',10);
-    if (isNaN(qty) || qty < 1) qty = 1;
+    // P1 : Pochons (sur devis)
+    function addP1(){
+      try{
+        var pack = document.getElementById('p1_quantite').value;
+        var taille = document.getElementById('p1_taille').value;
+        var impression = document.getElementById('p1_impression').value;
+        var qty = parseInt(document.getElementById('p1_qty').value || '1',10);
+        if (isNaN(qty) || qty < 1) qty = 1;
 
-    var merged = false;
-    for (var i=0;i<CART.length;i++){
-      var it = CART[i];
-      if (it.title === 'Pochon personnalisé' &&
-          it.opts &&
-          it.opts.quantitePack === pack &&
-          it.opts.taille === taille &&
-          it.opts.impression === impression){
-        it.qty += qty;
-        merged = true;
-        break;
+        var merged = false;
+        for (var i=0;i<CART.length;i++){
+          var it = CART[i];
+          if (it.title === 'Pochon personnalisé' &&
+              it.opts &&
+              it.opts.quantitePack === pack &&
+              it.opts.taille === taille &&
+              it.opts.impression === impression){
+            it.qty += qty;
+            merged = true;
+            break;
+          }
+        }
+
+        if (!merged){
+          CART.push({
+            title: 'Pochon personnalisé',
+            qty: qty,
+            unit: 0, // sur devis
+            opts: {
+              quantitePack: pack,
+              taille: taille,
+              impression: impression,
+              minPrice: 0.8
+            }
+          });
+        }
+
+        renderCart();
+        toast('Pochons ajoutés');
+      }catch(e){
+        console.error(e);
       }
     }
 
-    if (!merged){
-      CART.push({
-        title: 'Pochon personnalisé',
-        qty: qty,
-        unit: 0, // sur devis
-        opts: {
-          quantitePack: pack,
-          taille: taille,
-          impression: impression,
-          minPrice: 0.8
-        }
-      });
-    }
-
-    renderCart();
-    toast('Pochons ajoutés');
-  }catch(e){
-    console.error(e);
-  }
-}
-
-
-    // Tableaux (avec prix)
+    // P2 : Tableaux
     function addP2(){
       try{
         var v = document.getElementById('p2_format').value; // type|taille|prix
@@ -968,7 +949,7 @@ function addP1(){
       }
     }
 
-    // Cartes fidélité / visite
+    // P3 : Cartes fidélité / visite
     function addP3(){
       try{
         var v = document.getElementById('p3_quantite').value; // "250|70"
@@ -1006,7 +987,7 @@ function addP1(){
       }
     }
 
-    // Étiquettes
+    // P4 : Étiquettes
     function addP4(){
       try{
         var v = document.getElementById('p4_format').value; // "label|prix"
@@ -1044,90 +1025,90 @@ function addP1(){
       }
     }
 
-    // Scelleuse - 10 €
-function addP5(){
-  try{
-    var qty = parseInt(document.getElementById('p5_qty').value || '1', 10);
-    if (isNaN(qty) || qty < 1) qty = 1;
+    // P5 : Scelleuse (10 €)
+    function addP5(){
+      try{
+        var qty = parseInt(document.getElementById('p5_qty').value || '1', 10);
+        if (isNaN(qty) || qty < 1) qty = 1;
 
-    var merged = false;
-    for (var i = 0; i < CART.length; i++){
-      var it = CART[i];
-      if (it.title === 'Scelleuse'){
-        it.qty += qty;
-        merged = true;
-        break;
-      }
-    }
-
-    if (!merged){
-      CART.push({
-        title: 'Scelleuse',
-        qty: qty,
-        unit: 10,     // 10 € la pièce
-        opts: {}      // pas d’options
-      });
-    }
-
-    renderCart();
-    toast('Scelleuse ajoutée');
-  }catch(e){
-    console.error(e);
-  }
-}
-
-// Fusées 1,5 ml
-function addP6(){
-  try{
-    var sel   = document.getElementById('p6_quantite');
-    var opt   = sel.options[sel.selectedIndex];
-    var label = opt.text; // ex: "100 — 20 €"
-    var unit  = parseFloat(opt.getAttribute('data-price') || '0') || 0;
-
-    var qty = parseInt(document.getElementById('p6_qty').value || '1', 10);
-    if (isNaN(qty) || qty < 1) qty = 1;
-
-    var merged = false;
-    for (var i = 0; i < CART.length; i++){
-      var it = CART[i];
-      if (it.title === 'Fusées 1,5 ml' &&
-          it.opts && it.opts.quantite === label){
-        it.qty += qty;
-        merged = true;
-        break;
-      }
-    }
-
-    if (!merged){
-      CART.push({
-        title: 'Fusées 1,5 ml',
-        qty: qty,
-        unit: unit,          // 20 / 50 / 100 ou 0 (sur devis)
-        opts: {
-          quantite: label    // ex : "100 — 20 €"
+        var merged = false;
+        for (var i = 0; i < CART.length; i++){
+          var it = CART[i];
+          if (it.title === 'Scelleuse'){
+            it.qty += qty;
+            merged = true;
+            break;
+          }
         }
-      });
+
+        if (!merged){
+          CART.push({
+            title: 'Scelleuse',
+            qty: qty,
+            unit: 10,
+            opts: {}
+          });
+        }
+
+        renderCart();
+        toast('Scelleuse ajoutée');
+      }catch(e){
+        console.error(e);
+      }
     }
 
-    renderCart();
-    toast('Fusées ajoutées');
-  }catch(e){
-    console.error(e);
-  }
-}
+    // P6 : Fusées 1,5 ml
+    function addP6(){
+      try{
+        var sel   = document.getElementById('p6_quantite');
+        var opt   = sel.options[sel.selectedIndex];
+        var label = opt.text; // ex: "100 — 20 €"
+        var unit  = parseFloat(opt.getAttribute('data-price') || '0') || 0;
+
+        var qty = parseInt(document.getElementById('p6_qty').value || '1', 10);
+        if (isNaN(qty) || qty < 1) qty = 1;
+
+        var merged = false;
+        for (var i = 0; i < CART.length; i++){
+          var it = CART[i];
+          if (it.title === 'Fusées 1,5 ml' &&
+              it.opts && it.opts.quantite === label){
+            it.qty += qty;
+            merged = true;
+            break;
+          }
+        }
+
+        if (!merged){
+          CART.push({
+            title: 'Fusées 1,5 ml',
+            qty: qty,
+            unit: unit,
+            opts: {
+              quantite: label
+            }
+          });
+        }
+
+        renderCart();
+        toast('Fusées ajoutées');
+      }catch(e){
+        console.error(e);
+      }
+    }
 
     function openCart(){
       renderCart();
       document.getElementById('cartModal').classList.remove('hidden');
       var fab = document.getElementById('cartFab');
-      if (fab) fab.style.display = 'none';   // cacher le logo panier
+      if (fab) fab.style.display = 'none';
     }
 
     function closeCart(fromTab){
       var modal = document.getElementById('cartModal');
       if (modal) modal.classList.add('hidden');
       var fab = document.getElementById('cartFab');
-      if (fab) fab.style.display = 'block';  // remettre le logo panier
+      if (fab) fab.style.display = 'block';
     }
 
     function clearCart(){
@@ -1207,16 +1188,7 @@ function addP6(){
       }
     }
 
-    // Compte Telegram qui reçoit les devis
-    var QUOTE_USERNAME = "pssv2";
-
-        // Récup Telegram WebApp (si lancé dans Telegram)
-    var tg = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
-
-    // Compte Telegram qui reçoit les devis
-    var QUOTE_USERNAME = "pssv2";
-
-    // === ENVOI DU DEVIS ===
+    /* ==== ENVOI DU DEVIS VERS @pssv2 ==== */
     function sendQuote(){
       if (!CART.length){
         toast("Ajoutez des articles au panier.");
@@ -1236,14 +1208,12 @@ function addP6(){
           var it = CART[i];
           var index = i + 1;
 
-          // Titre de la ligne : Nom × quantité — prix/u
           var ligneTitre = index + ") " + it.title + " × " + it.qty;
           if (it.unit){
             ligneTitre += " — " + euro(it.unit) + " /u";
           }
           lines.push(ligneTitre);
 
-          // Options (taille, type, packs, etc.)
           if (it.opts){
             var parts = [];
             for (var key in it.opts){
@@ -1251,10 +1221,7 @@ function addP6(){
               var value = it.opts[key];
               if (value === undefined || value === null || value === "") continue;
 
-              var label = key
-                .replace(/_/g," ")
-                .replace(/^\w/, c => c.toUpperCase()); // première lettre en maj
-
+              var label = key.replace(/_/g," ").replace(/^\w/, c => c.toUpperCase());
               parts.push(label + " : " + value);
             }
             if (parts.length){
@@ -1262,14 +1229,13 @@ function addP6(){
             }
           }
 
-          // Sous-total si prix connu
           if (it.unit){
             var sousTotal = (it.unit || 0) * it.qty;
             total += sousTotal;
             lines.push("   Sous-total estimé : " + euro(sousTotal));
           }
 
-          lines.push(""); // ligne vide
+          lines.push("");
         }
 
         lines.push("Total estimé (min connu) : " + euro(total));
@@ -1277,8 +1243,6 @@ function addP6(){
         lines.push("Merci de vérifier les infos puis d’envoyer ce message à PochonStore pour finaliser le devis.");
 
         var message = lines.join("\n");
-
-        // Lien vers ton compte Telegram avec texte pré-rempli
         var url = "https://t.me/" + QUOTE_USERNAME + "?text=" + encodeURIComponent(message);
 
         if (tg && tg.openTelegramLink){
@@ -1287,11 +1251,11 @@ function addP6(){
           window.open(url, "_blank");
         }
 
-        closeCart();             // on ferme le panneau panier
+        closeCart(true);
         toast("Ouverture du chat avec PochonStore…");
-
       }catch(e){
-        diag(e);
+        console.error(e);
+        toast("Erreur lors de la préparation du devis.");
       }
     }
 
@@ -1308,7 +1272,7 @@ function addP6(){
       },1800);
     }
 
-    /* ==== LIENS TELEGRAM (boutons du bas) ==== */
+    /* ==== LIENS TELEGRAM (Infos / Contact) ==== */
     function openChannel(){
       var url = "https://t.me/ton_canal_telegram"; // à remplacer
       if (tg && tg.openTelegramLink){
@@ -1319,7 +1283,6 @@ function addP6(){
     }
 
     function openContact(){
-      // on réutilise le même compte que pour le devis
       var url = "https://t.me/" + QUOTE_USERNAME;
       if (tg && tg.openTelegramLink){
         tg.openTelegramLink(url);
