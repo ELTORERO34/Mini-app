@@ -1011,30 +1011,76 @@ function addP1(){
       }
     }
 
-    function addP5(){
-  var qty = parseInt(document.getElementById('p5_qty').value);
-  CART.push({
-    name: 'Scelleuse',
-    unit: 10,
-    qty: qty,
-    summary: 'Scelleuse thermique'
-  });
-  renderCart();
+    // Scelleuse - 10 €
+function addP5(){
+  try{
+    var qty = parseInt(document.getElementById('p5_qty').value || '1', 10);
+    if (isNaN(qty) || qty < 1) qty = 1;
+
+    var merged = false;
+    for (var i = 0; i < CART.length; i++){
+      var it = CART[i];
+      if (it.title === 'Scelleuse'){
+        it.qty += qty;
+        merged = true;
+        break;
+      }
+    }
+
+    if (!merged){
+      CART.push({
+        title: 'Scelleuse',
+        qty: qty,
+        unit: 10,     // 10 € la pièce
+        opts: {}      // pas d’options
+      });
+    }
+
+    renderCart();
+    toast('Scelleuse ajoutée');
+  }catch(e){
+    console.error(e);
+  }
 }
 
+// Fusées 1,5 ml
 function addP6(){
-  var select = document.getElementById('p6_qtySelect');
-  var value = parseInt(select.value);
-  var label = select.options[select.selectedIndex].text;
-  var qty = parseInt(document.getElementById('p6_qty').value);
-  var price = value; // correspond déjà à la valeur (€)
-  CART.push({
-    name: 'Fusées 1,5 ml',
-    unit: price,
-    qty: qty,
-    summary: label
-  });
-  renderCart();
+  try{
+    var sel   = document.getElementById('p6_quantite');
+    var opt   = sel.options[sel.selectedIndex];
+    var label = opt.text; // ex: "100 — 20 €"
+    var unit  = parseFloat(opt.getAttribute('data-price') || '0') || 0;
+
+    var qty = parseInt(document.getElementById('p6_qty').value || '1', 10);
+    if (isNaN(qty) || qty < 1) qty = 1;
+
+    var merged = false;
+    for (var i = 0; i < CART.length; i++){
+      var it = CART[i];
+      if (it.title === 'Fusées 1,5 ml' &&
+          it.opts && it.opts.quantite === label){
+        it.qty += qty;
+        merged = true;
+        break;
+      }
+    }
+
+    if (!merged){
+      CART.push({
+        title: 'Fusées 1,5 ml',
+        qty: qty,
+        unit: unit,          // 20 / 50 / 100 ou 0 (sur devis)
+        opts: {
+          quantite: label    // ex : "100 — 20 €"
+        }
+      });
+    }
+
+    renderCart();
+    toast('Fusées ajoutées');
+  }catch(e){
+    console.error(e);
+  }
 }
 
     function openCart(){
