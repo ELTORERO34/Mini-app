@@ -26,7 +26,7 @@
       color: var(--text);
     }
 
-    /* HEADER FLOU */
+    /* HEADER FLOU (fixe sur toutes les pages) */
     .header {
       position: sticky;
       top: 0;
@@ -45,10 +45,14 @@
     }
 
     main {
-      padding-bottom: 40px;
+      padding-bottom: 80px; /* place pour le menu bas */
     }
 
-    /* GRILLE PRODUITS */
+    /* TABS */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* GRILLE PRODUITS (onglet Menu) */
     .product-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -178,6 +182,56 @@
       padding: 8px 12px;
       border: none;
     }
+
+    /* CARTES INFO / CANAL / CONTACT */
+    .info-card {
+      margin: 16px;
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px;
+      border: 1px solid var(--border);
+    }
+    .info-card h2 {
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+    .info-card p {
+      margin-top: 0;
+      color: var(--muted);
+    }
+
+    /* MENU BAS */
+    .bottom-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 64px;
+      background: rgba(0,0,0,0.9);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      z-index: 200;
+    }
+    .nav-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+    }
+    .nav-btn span.icon {
+      font-size: 1.2rem;
+      margin-bottom: 2px;
+    }
+    .nav-btn.active {
+      color: var(--accent);
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
@@ -189,69 +243,151 @@
   </header>
 
   <main id="main">
-    <!-- GRILLE DES PRODUITS -->
-    <div class="product-grid" id="productGrid">
-      <!-- Carte 1 : Pochon -->
-      <button class="product-thumb" onclick="openProduct('p1')">
-        <!-- mets la photo du produit dans img/pochon.jpg -->
-        <img src="img/pochon.jpg" alt="Pochon personnalisé" />
-        <div class="product-thumb-body">
-          <div class="product-thumb-title">Pochon personnalisé</div>
-          <div class="product-thumb-sub">Flatbags imprimés avec ton visuel</div>
-        </div>
-      </button>
-    </div>
 
-    <!-- FICHE PRODUIT DÉTAILLÉE -->
-    <div id="productDetail" class="product-detail hidden">
-      <button class="btn-back" onclick="closeProduct()">← Retour</button>
-
-      <div class="detail-media">
-        <img src="img/pochon.jpg" alt="Pochon personnalisé" />
+    <!-- ONGLET MENU (catalogue) -->
+    <section id="tab-menu" class="tab-panel active">
+      <!-- GRILLE DES PRODUITS -->
+      <div class="product-grid" id="productGrid">
+        <!-- Carte 1 : Pochon -->
+        <button class="product-thumb" onclick="openProduct('p1')">
+          <!-- mets la photo du produit dans img/pochon.jpg -->
+          <img src="img/pochon.jpg" alt="Pochon personnalisé" />
+          <div class="product-thumb-body">
+            <div class="product-thumb-title">Pochon personnalisé</div>
+            <div class="product-thumb-sub">Flatbags imprimés avec ton visuel</div>
+          </div>
+        </button>
       </div>
 
-      <div class="product-card">
-        <h3 class="product-title">Pochon personnalisé 8×11 cm</h3>
-        <p class="product-desc">
-          Pochons flatbag imprimé avec votre design.
-        </p>
+      <!-- FICHE PRODUIT DÉTAILLÉE -->
+      <div id="productDetail" class="product-detail hidden">
+        <button class="btn-back" onclick="closeProduct()">← Retour</button>
 
-        <div class="product-meta">
-          <span class="pill">Min: 500</span>
-          <span class="pill">Délai: 12–13 jours ouvrables</span>
+        <div class="detail-media">
+          <img src="img/pochon.jpg" alt="Pochon personnalisé" />
         </div>
 
-        <div class="product-options">
-          <label>
-            Quantité :
-            <select id="p1_quantite">
-              <option>500</option>
-              <option>1000</option>
-              <option>1500</option>
-              <option>2000</option>
-            </select>
-          </label>
+        <div class="product-card">
+          <h3 class="product-title">Pochon personnalisé 8×11 cm</h3>
+          <p class="product-desc">
+            Pochons flatbag imprimé avec votre design.
+          </p>
 
-          <label>
-            Impression :
-            <select id="p1_impression">
-              <option>1 design</option>
-              <option>multi designs +40€</option>
-            </select>
-          </label>
-        </div>
+          <div class="product-meta">
+            <span class="pill">Min: 500</span>
+            <span class="pill">Délai: 12–13 jours ouvrables</span>
+          </div>
 
-        <div class="qty-row">
-          <button type="button" onclick="dec('p1_qty')">−</button>
-          <input id="p1_qty" type="number" min="1" value="1" />
-          <button type="button" onclick="inc('p1_qty')">+</button>
-          <button class="btn primary" type="button" onclick="addP1()">Ajouter</button>
+          <div class="product-options">
+            <label>
+              Quantité :
+              <select id="p1_quantite">
+                <option>500</option>
+                <option>1000</option>
+                <option>1500</option>
+                <option>2000</option>
+              </select>
+            </label>
+
+            <label>
+              Impression :
+              <select id="p1_impression">
+                <option>1 design</option>
+                <option>multi designs +40€</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="qty-row">
+            <button type="button" onclick="dec('p1_qty')">−</button>
+            <input id="p1_qty" type="number" min="1" value="1" />
+            <button type="button" onclick="inc('p1_qty')">+</button>
+            <button class="btn primary" type="button" onclick="addP1()">Ajouter</button>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
+
+    <!-- ONGLET INFOS -->
+    <section id="tab-infos" class="tab-panel">
+      <div class="info-card">
+        <h2>Informations</h2>
+        <p>Paiement : acompte à la commande, solde avant expédition.</p>
+        <p>Délais indicatifs : varient selon les produits et volumes.</p>
+        <p>Fichiers : .png / .jpg / .pdf (vectoriel recommandé).</p>
+        <p>Produits personnalisés : non échangeables sauf défaut.</p>
+      </div>
+    </section>
+
+    <!-- ONGLET CANAL -->
+    <section id="tab-canal" class="tab-panel">
+      <div class="info-card">
+        <h2>Rejoindre le canal</h2>
+        <p>Actus, promos, coulisses de PochonStore.</p>
+        <button class="btn primary" type="button" onclick="openChannel()">Ouvrir le canal</button>
+      </div>
+    </section>
+
+    <!-- ONGLET CONTACT -->
+    <section id="tab-contact" class="tab-panel">
+      <div class="info-card">
+        <h2>Contact</h2>
+        <p>Parle directement avec nous sur Telegram.</p>
+        <button class="btn primary" type="button" onclick="openContact()">Écrire au compte</button>
+      </div>
+    </section>
+
   </main>
 
+  <!-- MENU BAS -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-tab="menu" onclick="switchTab(this)">
+      <span class="icon">🏠</span>
+      <span>Menu</span>
+    </button>
+    <button class="nav-btn" data-tab="infos" onclick="switchTab(this)">
+      <span class="icon">ℹ️</span>
+      <span>Infos</span>
+    </button>
+    <button class="nav-btn" data-tab="canal" onclick="switchTab(this)">
+      <span class="icon">📣</span>
+      <span>Canal</span>
+    </button>
+    <button class="nav-btn" data-tab="contact" onclick="switchTab(this)">
+      <span class="icon">✉️</span>
+      <span>Contact</span>
+    </button>
+  </nav>
+
   <script>
+    /* ==== NAVIGATION TABS BAS ==== */
+    function switchTab(btn){
+      var tab = btn.getAttribute('data-tab'); // menu / infos / canal / contact
+
+      // boutons
+      var navs = document.querySelectorAll('.nav-btn');
+      for (var i=0;i<navs.length;i++){
+        navs[i].classList.remove('active');
+      }
+      btn.classList.add('active');
+
+      // panels
+      var panels = document.querySelectorAll('.tab-panel');
+      for (var j=0;j<panels.length;j++){
+        panels[j].classList.remove('active');
+      }
+      var active = document.getElementById('tab-' + tab);
+      if (active) active.classList.add('active');
+
+      // si on quitte le menu, on ferme la fiche produit et on remet la grille
+      if (tab !== 'menu'){
+        closeProduct(true);
+      }
+
+      window.scrollTo(0,0);
+    }
+
+    /* ==== FICHE PRODUIT MENU ==== */
     function openProduct(id){
       // pour l'instant on n'a qu'un produit, donc id pas utilisé
       document.getElementById('productGrid').style.display = 'none';
@@ -259,10 +395,12 @@
       window.scrollTo(0,0);
     }
 
-    function closeProduct(){
-      document.getElementById('productDetail').classList.add('hidden');
-      document.getElementById('productGrid').style.display = 'grid';
-      window.scrollTo(0,0);
+    function closeProduct(fromTabSwitch){
+      var detail = document.getElementById('productDetail');
+      var grid   = document.getElementById('productGrid');
+      if (detail) detail.classList.add('hidden');
+      if (grid)   grid.style.display = 'grid';
+      if (!fromTabSwitch) window.scrollTo(0,0);
     }
 
     function inc(id){
@@ -280,8 +418,17 @@
     }
 
     function addP1(){
-      // plus tard on branchera le vrai panier / Telegram
-      alert("Pochon ajouté (démo).");
+      alert("Pochon ajouté (démo panier).");
+    }
+
+    /* ==== LIENS TELEGRAM (à adapter) ==== */
+    function openChannel(){
+      // mets ici ton vrai lien de canal Telegram
+      window.open('https://t.me/ton_canal_telegram','_blank');
+    }
+    function openContact(){
+      // mets ici ton @username
+      window.open('https://t.me/ton_compte_telegram','_blank');
     }
   </script>
 </body>
