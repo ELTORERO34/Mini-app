@@ -1204,6 +1204,13 @@ function addP6(){
     // Compte Telegram qui reçoit les devis
     var QUOTE_USERNAME = "pssv2";
 
+        // Récup Telegram WebApp (si lancé dans Telegram)
+    var tg = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
+
+    // Compte Telegram qui reçoit les devis
+    var QUOTE_USERNAME = "pssv2";
+
+    // === ENVOI DU DEVIS ===
     function sendQuote(){
       if (!CART.length){
         toast("Ajoutez des articles au panier.");
@@ -1230,7 +1237,7 @@ function addP6(){
           }
           lines.push(ligneTitre);
 
-          // Options détaillées (taille, type, quantité pack, etc.)
+          // Options (taille, type, packs, etc.)
           if (it.opts){
             var parts = [];
             for (var key in it.opts){
@@ -1238,10 +1245,9 @@ function addP6(){
               var value = it.opts[key];
               if (value === undefined || value === null || value === "") continue;
 
-              // On rend la clé lisible : "quantitePack" → "Quantite pack"
               var label = key
                 .replace(/_/g," ")
-                .replace(/^\w/, c => c.toUpperCase());
+                .replace(/^\w/, c => c.toUpperCase()); // première lettre en maj
 
               parts.push(label + " : " + value);
             }
@@ -1250,14 +1256,14 @@ function addP6(){
             }
           }
 
-          // Sous-total estimé si prix connu
+          // Sous-total si prix connu
           if (it.unit){
             var sousTotal = (it.unit || 0) * it.qty;
             total += sousTotal;
             lines.push("   Sous-total estimé : " + euro(sousTotal));
           }
 
-          lines.push(""); // ligne vide entre les articles
+          lines.push(""); // ligne vide
         }
 
         lines.push("Total estimé (min connu) : " + euro(total));
@@ -1266,19 +1272,16 @@ function addP6(){
 
         var message = lines.join("\n");
 
-        // Lien vers ton compte Telegram avec le texte pré-rempli
+        // Lien vers ton compte Telegram avec texte pré-rempli
         var url = "https://t.me/" + QUOTE_USERNAME + "?text=" + encodeURIComponent(message);
 
-        // Dans la mini-app Telegram, on passe par l’API
         if (tg && tg.openTelegramLink){
           tg.openTelegramLink(url);
         } else {
-          // fallback au cas où on est dans un navigateur normal
           window.open(url, "_blank");
         }
 
-        // On ferme le panier + toast
-        closeCart();
+        closeCart();             // on ferme le panneau panier
         toast("Ouverture du chat avec PochonStore…");
 
       }catch(e){
@@ -1299,18 +1302,18 @@ function addP6(){
       },1800);
     }
 
-    /* ==== LIENS TELEGRAM (à adapter) ==== */
+    /* ==== LIENS TELEGRAM (boutons du bas) ==== */
     function openChannel(){
-      // mets ici ton vrai lien de canal Telegram si tu veux
+      var url = "https://t.me/ton_canal_telegram"; // à remplacer
       if (tg && tg.openTelegramLink){
-        tg.openTelegramLink('https://t.me/ton_canal_telegram');
+        tg.openTelegramLink(url);
       } else {
-        window.open('https://t.me/ton_canal_telegram','_blank');
+        window.open(url,'_blank');
       }
     }
 
     function openContact(){
-      // bouton "Contact" en bas → ouvre aussi ton compte
+      // on réutilise le même compte que pour le devis
       var url = "https://t.me/" + QUOTE_USERNAME;
       if (tg && tg.openTelegramLink){
         tg.openTelegramLink(url);
