@@ -522,30 +522,41 @@
             <span class="pill">Délai : 12–13 jours ouvrables</span>
           </div>
           <div class="product-options">
-            <label>
-              Quantité (pack) :
-              <select id="p1_quantite">
-                <option>500</option>
-                <option>1000</option>
-                <option>1500</option>
-                <option>2000</option>
-              </select>
-            </label>
-            <label>
-              Taille :
-              <select id="p1_taille">
-                <option>8×11 cm</option>
-                <option>8×13 cm</option>
-              </select>
-            </label>
-            <label>
-              Impression :
-              <select id="p1_impression">
-                <option>1 design</option>
-                <option>multi designs +40€</option>
-              </select>
-            </label>
-          </div>
+  <label>
+    Quantité (pack) :
+    <select id="p1_quantite">
+      <option>500</option>
+      <option>1000</option>
+      <option>1500</option>
+      <option>2000</option>
+      <option>+ de quantité (sur devis)</option>
+    </select>
+  </label>
+
+  <label>
+    Taille :
+    <select id="p1_taille">
+      <option>8×11 cm</option>
+      <option>8×13 cm</option>
+    </select>
+  </label>
+
+  <label>
+    Finition :
+    <select id="p1_finition">
+      <option>Mat</option>
+      <option>Brillant</option>
+    </select>
+  </label>
+
+  <label>
+    Impression :
+    <select id="p1_impression">
+      <option>1 design</option>
+      <option>multi designs +40€</option>
+    </select>
+  </label>
+</div>
           <div class="qty-row">
             <button type="button" onclick="dec('p1_qty')">−</button>
             <input id="p1_qty" type="number" min="1" value="1" />
@@ -870,47 +881,50 @@
 
     // P1 : Pochons (sur devis)
     function addP1(){
-      try{
-        var pack = document.getElementById('p1_quantite').value;
-        var taille = document.getElementById('p1_taille').value;
-        var impression = document.getElementById('p1_impression').value;
-        var qty = parseInt(document.getElementById('p1_qty').value || '1',10);
-        if (isNaN(qty) || qty < 1) qty = 1;
+  try{
+    var pack       = document.getElementById('p1_quantite').value;
+    var taille     = document.getElementById('p1_taille').value;
+    var finition   = document.getElementById('p1_finition').value;
+    var impression = document.getElementById('p1_impression').value;
+    var qty = parseInt(document.getElementById('p1_qty').value || '1',10);
+    if (isNaN(qty) || qty < 1) qty = 1;
 
-        var merged = false;
-        for (var i=0;i<CART.length;i++){
-          var it = CART[i];
-          if (it.title === 'Pochon personnalisé' &&
-              it.opts &&
-              it.opts.quantitePack === pack &&
-              it.opts.taille === taille &&
-              it.opts.impression === impression){
-            it.qty += qty;
-            merged = true;
-            break;
-          }
-        }
-
-        if (!merged){
-          CART.push({
-            title: 'Pochon personnalisé',
-            qty: qty,
-            unit: 0, // sur devis
-            opts: {
-              quantitePack: pack,
-              taille: taille,
-              impression: impression,
-              minPrice: 0.8
-            }
-          });
-        }
-
-        renderCart();
-        toast('Pochons ajoutés');
-      }catch(e){
-        console.error(e);
+    var merged = false;
+    for (var i=0;i<CART.length;i++){
+      var it = CART[i];
+      if (it.title === 'Pochon personnalisé' &&
+          it.opts &&
+          it.opts.quantitePack === pack &&
+          it.opts.taille === taille &&
+          it.opts.finition === finition &&
+          it.opts.impression === impression){
+        it.qty += qty;
+        merged = true;
+        break;
       }
     }
+
+    if (!merged){
+      CART.push({
+        title: 'Pochon personnalisé',
+        qty: qty,
+        unit: 0, // sur devis
+        opts: {
+          quantitePack: pack,
+          taille: taille,
+          finition: finition,
+          impression: impression,
+          minPrice: 0.8
+        }
+      });
+    }
+
+    renderCart();
+    toast('Pochons ajoutés');
+  }catch(e){
+    console.error(e);
+  }
+}
 
     // P2 : Tableaux
     function addP2(){
@@ -1142,14 +1156,15 @@
             t.textContent = it.title + ' × ' + it.qty;
 
             var summaryParts = [];
-            if (it.opts){
-              if (it.opts.quantitePack) summaryParts.push('pack: '+it.opts.quantitePack);
-              if (it.opts.impression)   summaryParts.push('impression: '+it.opts.impression);
-              if (it.opts.type)         summaryParts.push('type: '+it.opts.type);
-              if (it.opts.taille)       summaryParts.push('taille: '+it.opts.taille);
-              if (it.opts.quantite)     summaryParts.push('quantité: '+it.opts.quantite);
-              if (it.opts.format)       summaryParts.push('format: '+it.opts.format);
-            }
+if (it.opts){
+  if (it.opts.quantitePack) summaryParts.push('pack: '+it.opts.quantitePack);
+  if (it.opts.impression)   summaryParts.push('impression: '+it.opts.impression);
+  if (it.opts.finition)     summaryParts.push('finition: '+it.opts.finition);
+  if (it.opts.type)         summaryParts.push('type: '+it.opts.type);
+  if (it.opts.taille)       summaryParts.push('taille: '+it.opts.taille);
+  if (it.opts.quantite)     summaryParts.push('quantité: '+it.opts.quantite);
+  if (it.opts.format)       summaryParts.push('format: '+it.opts.format);
+}
             var summary = summaryParts.join(' • ');
 
             var priceInfo;
