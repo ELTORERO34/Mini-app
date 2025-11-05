@@ -504,6 +504,15 @@
             <div class="product-thumb-sub">Capsules vides, tarifs selon quantité</div>
           </div>
         </button>
+        
+        <!-- P7 : Design personnalisé -->
+<button class="product-thumb" onclick="openProduct('p7')">
+  <img src="img/design.jpg" alt="Design personnalisé" />
+  <div class="product-thumb-body">
+    <div class="product-thumb-title">Design personnalisé</div>
+    <div class="product-thumb-sub">Basique, Premium ou Pack identité</div>
+  </div>
+</button>
       </div>
 
       <!-- FICHE PRODUIT P1 -->
@@ -717,6 +726,51 @@
           </div>
         </div>
       </div>
+      
+      <!-- FICHE PRODUIT P7: DESIGN PERSONNALISÉ -->
+<div id="productDetail_p7" class="product-detail hidden">
+  <button class="btn-back" onclick="closeProduct()">← Retour</button>
+
+  <div class="detail-media">
+    <img src="img/design.jpg" alt="Design personnalisé" />
+  </div>
+
+  <div class="product-card">
+    <h3 class="product-title">Design personnalisé</h3>
+    <p class="product-desc">
+      Tu n’as pas encore de visuel ? On s’occupe du design pour tes pochons, cartes, étiquettes, etc.
+      Choisis la formule qui correspond à ton besoin.
+    </p>
+
+    <div class="product-meta">
+      <span class="pill">Fichier livrable : PNG/JPG haute qualité</span>
+      <span class="pill">Révisions possibles selon la formule</span>
+    </div>
+
+    <div class="product-options">
+      <label>Formule :
+        <select id="p7_formule">
+          <option value="Basique|40|2–3 jours">
+            Formule basique — 40 € (2–3 jours)
+          </option>
+          <option value="Premium (dessin fait main)|180|4–5 jours">
+            Formule premium (dessin fait main) — 180 € (4–5 jours)
+          </option>
+          <option value="Pack identité (1 logo + 1 flyer + 2 stickers)|80|3–4 jours">
+            Pack identité — 80 € (3–4 jours)
+          </option>
+        </select>
+      </label>
+    </div>
+
+    <div class="qty-row">
+      <button type="button" onclick="dec('p7_qty')">−</button>
+      <input id="p7_qty" type="number" min="1" value="1" />
+      <button type="button" onclick="inc('p7_qty')">+</button>
+      <button class="btn primary" type="button" onclick="addP7()">Ajouter</button>
+    </div>
+  </div>
+</div>
     </section>
 
         <!-- ONGLET INFOS -->
@@ -1133,6 +1187,52 @@
         console.error(e);
       }
     }
+
+// Design personnalisé
+function addP7(){
+  try{
+    // Récupère la formule choisie
+    var v = document.getElementById('p7_formule').value; // "Basique|40|2–3 jours"
+    var parts = v.split('|');
+    var formule = parts[0];          // ex: "Basique"
+    var unit    = parseFloat(parts[1] || '0') || 0; // 40, 180, 80
+    var delai   = parts[2];          // "2–3 jours", etc.
+
+    // Quantité
+    var qty = parseInt(document.getElementById('p7_qty').value || '1', 10);
+    if (isNaN(qty) || qty < 1) qty = 1;
+
+    var merged = false;
+    for (var i = 0; i < CART.length; i++){
+      var it = CART[i];
+      if (it.title === 'Design personnalisé' &&
+          it.opts &&
+          it.opts.formule === formule &&
+          it.opts.delai === delai){
+        it.qty += qty;
+        merged = true;
+        break;
+      }
+    }
+
+    if (!merged){
+      CART.push({
+        title: 'Design personnalisé',
+        qty: qty,
+        unit: unit,
+        opts: {
+          formule: formule,
+          delai: delai
+        }
+      });
+    }
+
+    renderCart();
+    toast('Design ajouté au panier');
+  }catch(e){
+    console.error(e);
+  }
+}
 
     function openCart(){
       renderCart();
