@@ -731,13 +731,19 @@
     </section>
 
     <!-- ONGLET CANAL -->
-    <section id="tab-canal" class="tab-panel">
-      <div class="info-card">
-        <h2>Rejoindre le canal</h2>
-        <p>Actus, promos, coulisses de PochonStore.</p>
-        <button class="btn primary" type="button" onclick="openChannel()">Ouvrir le canal</button>
-      </div>
-    </section>
+<section id="tab-canal" class="tab-panel">
+  <div class="info-card">
+    <h2>Rejoindre le canal</h2>
+    <p>Actus, promos, coulisses de PochonStore.</p>
+    <button class="btn primary" type="button" onclick="openChannel()">Ouvrir le canal</button>
+  </div>
+
+  <div class="info-card">
+    <h2>Rejoindre tous nos liens</h2>
+    <p>Retrouve la boutique, les réseaux, les contacts et plus encore sur une seule page.</p>
+    <button class="btn primary" type="button" onclick="openLinksHub()">Voir tous nos liens</button>
+  </div>
+</section>
 
     <!-- ONGLET CONTACT -->
     <section id="tab-contact" class="tab-panel">
@@ -1296,7 +1302,7 @@ if (tg && tg.openTelegramLink){
 
     /* ==== LIENS TELEGRAM (Infos / Contact) ==== */
     function openChannel(){
-      var url = "https://t.me/ton_canal_telegram"; // à remplacer
+      var url = "https://t.me/+BQ5eqgaiZG80MTY0"; // à remplacer
       if (tg && tg.openTelegramLink){
         tg.openTelegramLink(url);
       } else {
@@ -1312,6 +1318,16 @@ if (tg && tg.openTelegramLink){
         window.open(url,'_blank');
       }
     }
+    
+    function openLinksHub(){
+  // mets ici ton vrai lien Linktree
+  var url = "https://linktr.ee/pochons"; // ← remplace TON_LINKTREE
+  if (tg && tg.openTelegramLink){
+    tg.openTelegramLink(url);
+  } else {
+    window.open(url,'_blank');
+  }
+}
   </script>
 </body>
 </html>
