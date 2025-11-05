@@ -1334,18 +1334,14 @@ if (tg && tg.openTelegramLink){
     }
     
     function openLinksHub(){
-  // mets bien ici ton vrai lien Linktree complet
-  var url = "https://linktr.ee/pochons"; // ex: "https://linktr.ee/pssv2"
+  // 👉 Mets ici ton vrai lien Linktree
+  var url = "https://linktr.ee/pochons";
 
+  // Si on est dans la Mini App Telegram
   if (tg && tg.openLink){
-    // méthode officielle pour ouvrir un site externe dans la WebApp
-    tg.openLink(url);
-  } else if (tg && tg.openTelegramLink){
-    // fallback au cas où, même si normalement c'est pour les liens t.me
-    tg.openTelegramLink(url);
+    tg.openLink(url);        // ouvre le lien dans Telegram
   } else {
-    // si on n'est pas dans Telegram (test navigateur normal)
-    window.open(url, "_blank");
+    window.open(url, "_blank"); // fallback navigateur
   }
 }
   </script>
