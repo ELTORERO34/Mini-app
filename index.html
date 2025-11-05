@@ -109,8 +109,8 @@
 
     .product-thumb img {
   width: 100%;
-  height: 130px;
-  object-fit: cover; /* 🔥 remplit bien le cadre sans déformer */
+  aspect-ratio: 4 / 3;   /* 🔥 ratio fixe, s’adapte à la taille de la carte */
+  object-fit: cover;     /* remplit sans déformer */
   display: block;
   border-radius: 10px;
 }
