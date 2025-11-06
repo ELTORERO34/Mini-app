@@ -66,6 +66,7 @@
   animation: splash-pop 0.7s ease-out forwards;
 }
 
+/* cercle avec le logo */
 .splash-logo{
   width: 170px;
   height: 170px;
@@ -101,12 +102,20 @@
   animation: splash-glow 1.6s ease-out infinite;
 }
 
+/* texte sous le logo : caché au début */
+.splash-title,
+.splash-sub{
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .45s ease-out, transform .45s ease-out;
+}
+
 .splash-title{
   font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: .08em;
   text-transform: uppercase;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   background: linear-gradient(120deg, #ffd766, #f3c13a, #ffffff);
   -webkit-background-clip: text;
   background-clip: text;
@@ -116,10 +125,44 @@
 .splash-sub{
   font-size: .9rem;
   color: #d0d0d0;
-  opacity: .85;
 }
 
-/* animations du splash */
+/* quand on ajoute la classe, le texte apparaît */
+.splash--show-text .splash-title,
+.splash--show-text .splash-sub{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== Trois petits points ===== */
+.splash-dots{
+  margin-top: 18px;
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  opacity:0;
+  transform: translateY(4px);
+  transition: opacity .4s ease, transform .4s ease;
+}
+
+.splash-dots span{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#ffd766;
+  box-shadow:0 0 12px rgba(255,215,100,0.7);
+  animation:splash-dot 1s ease-in-out infinite;
+}
+
+.splash-dots span:nth-child(2){ animation-delay:.15s; }
+.splash-dots span:nth-child(3){ animation-delay:.30s; }
+
+.splash-dots--show{
+  opacity:1;
+  transform: translateY(0);
+}
+
+/* animations */
 @keyframes splash-pop{
   0%{
     opacity: 0;
@@ -147,6 +190,17 @@
   100%{
     opacity: 0;
     transform: scale(1.25);
+  }
+}
+
+@keyframes splash-dot{
+  0%, 80%, 100%{
+    transform: translateY(0);
+    opacity:.4;
+  }
+  40%{
+    transform: translateY(-5px);
+    opacity:1;
   }
 }
 
@@ -615,6 +669,23 @@ header img:hover {
   </style>
 </head>
 <body>
+
+  <!-- SPLASH SCREEN POCHONSTORE -->
+  <div id="splash" class="splash">
+    <div class="splash-inner">
+      <div class="splash-logo">
+        <img src="img/banner.png" alt="PochonStore">
+      </div>
+
+      <div class="splash-title">PochonStore</div>
+      <div class="splash-sub">Chargement de la boutique…</div>
+
+      <!-- les trois petits points -->
+      <div class="splash-dots" id="splashDots">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
 
       <!-- SPLASH SCREEN POCHONSTORE -->
   <div id="splash" class="splash">
@@ -1632,23 +1703,35 @@ if (tg && tg.openTelegramLink){
   }
 }
 
-        /* ==== SPLASH AUTO-HIDE ==== */
-  document.addEventListener('DOMContentLoaded', function(){
-    var splash = document.getElementById('splash');
-    if (!splash) return;
+        <script>
+// ==== SPLASH ANIMATION PochonStore ====
+window.addEventListener('load', function(){
+  var splash = document.getElementById('splash');
+  var dots   = document.getElementById('splashDots');
+  if (!splash) return;
 
-    // Temps d'affichage : 900 ms avant de commencer le fade-out
-    setTimeout(function(){
-      splash.classList.add('splash--hide');
+  // Étape 1 : apparition du logo
+  setTimeout(function(){
+    splash.classList.add('splash--show-text');
+  }, 500); // après 0.5s
 
-      // On retire complètement le splash après l'anim
-      setTimeout(function(){
-        if (splash && splash.parentNode){
-          splash.parentNode.removeChild(splash);
-        }
-      }, 600); // doit être un peu plus long que la transition CSS (.5s)
-    }, 900);
-  });
+  // Étape 2 : petits points qui apparaissent
+  setTimeout(function(){
+    if (dots) dots.classList.add('splash-dots--show');
+  }, 1100);
+
+  // Étape 3 : disparition du splash
+  setTimeout(function(){
+    splash.classList.add('splash--hide');
+  }, 2600);
+
+  // Étape 4 : suppression du splash du DOM
+  setTimeout(function(){
+    if (splash && splash.parentNode){
+      splash.parentNode.removeChild(splash);
+    }
+  }, 3200);
+});
   </script>
 </body>
 </html>
