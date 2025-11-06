@@ -21,20 +21,39 @@
       box-sizing: border-box;
     }
 
-    body {
-      margin: 0;
-      padding: 0;
-      background: radial-gradient(circle at 50% 30%,
-                  rgba(255, 215, 100, 0.15) 0%,
-                  rgba(0, 0, 0, 1) 80%);
-      background-attachment: fixed;
-      background-size: cover;
-      color: #fff;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-                   Roboto, sans-serif;
-    }
-    html, body {
-  touch-action: manipulation;
+    /* ===== LAYOUT PRINCIPAL + FOND DORÉ ===== */
+
+/* on contrôle le scroll global ici */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  touch-action: manipulation;      /* ton réglage anti-zoom */
+  overscroll-behavior-y: none;     /* empêche le “tirage” vers le bas */
+}
+
+/* fond général de la mini-app */
+body {
+  background: radial-gradient(circle at 50% 30%,
+              rgba(255, 215, 100, 0.15) 0%,
+              rgba(0, 0, 0, 1) 80%);
+  background-attachment: fixed;
+  background-size: cover;
+  color: #fff;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Roboto, sans-serif;
+  overflow: hidden;                /* ⛔ pas de scroll sur le body */
+}
+
+/* zone scrollable : ton contenu principal */
+main {
+  display: block;
+  height: 100vh;                   /* toute la hauteur de l’écran */
+  box-sizing: border-box;
+  padding-top: 160px;              /* laisse la bannière en haut */
+  padding-bottom: 110px;           /* laisse le menu en bas */
+  overflow-y: auto;                /* ✅ seul endroit qui scrolle */
+  -webkit-overflow-scrolling: touch; /* scroll fluide iOS */
 }
 
     /* ==== SPLASH NOIR / DORÉ ==== */
