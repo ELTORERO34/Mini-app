@@ -462,6 +462,43 @@
   font-weight: 700; /* en gras */
   text-shadow: 0 0 4px rgba(255, 215, 0, 0.3); /* petit halo doré */
 }
+
+/* ===== ANIMATIONS FLUIDES ===== */
+
+/* Effet d’apparition douce des blocs */
+.info-card, .product-card {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeUp 0.6s ease forwards;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Effet de survol sur les boutons */
+.btn {
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+}
+
+/* Effet “lueur” sur le logo */
+header img {
+  filter: drop-shadow(0 0 12px rgba(255, 200, 0, 0.5));
+  transition: 0.3s ease;
+}
+
+header img:hover {
+  transform: scale(1.02);
+  filter: drop-shadow(0 0 18px rgba(255, 230, 150, 0.8));
+}
   </style>
 </head>
 <body>
