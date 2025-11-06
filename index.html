@@ -37,6 +37,119 @@
   touch-action: manipulation;
 }
 
+    /* ==== SPLASH NOIR / DORÉ ==== */
+.splash{
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 30% 0%, rgba(255,215,100,0.25) 0%, transparent 45%),
+    radial-gradient(circle at 70% 100%, rgba(255,215,100,0.20) 0%, transparent 55%),
+    #050505;
+  overflow: hidden;
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity .5s ease-out, transform .5s ease-out;
+}
+
+.splash--hide{
+  opacity: 0;
+  transform: scale(1.03);
+  pointer-events: none;
+}
+
+.splash-inner{
+  text-align: center;
+  animation: splash-pop 0.7s ease-out forwards;
+}
+
+.splash-logo{
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,215,100,0.9);
+  box-shadow:
+    0 0 25px rgba(255,215,100,0.55),
+    0 18px 40px rgba(0,0,0,0.75);
+  background: radial-gradient(circle at 30% 20%, #3a2600, #050505);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 22px;
+  position: relative;
+  overflow: hidden;
+}
+
+.splash-logo img{
+  width: 80%;
+  height: auto;
+  filter: drop-shadow(0 0 12px rgba(0,0,0,0.9));
+}
+
+/* halo doré animé derrière le logo */
+.splash-logo::after{
+  content: "";
+  position: absolute;
+  width: 180%;
+  height: 180%;
+  background: radial-gradient(circle, rgba(255,215,100,0.35) 0%, transparent 60%);
+  opacity: 0.0;
+  transform: scale(0.6);
+  animation: splash-glow 1.6s ease-out infinite;
+}
+
+.splash-title{
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  background: linear-gradient(120deg, #ffd766, #f3c13a, #ffffff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.splash-sub{
+  font-size: .9rem;
+  color: #d0d0d0;
+  opacity: .85;
+}
+
+/* animations du splash */
+@keyframes splash-pop{
+  0%{
+    opacity: 0;
+    transform: translateY(10px) scale(0.9);
+  }
+  60%{
+    opacity: 1;
+    transform: translateY(0) scale(1.02);
+  }
+  100%{
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes splash-glow{
+  0%{
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  40%{
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  100%{
+    opacity: 0;
+    transform: scale(1.25);
+  }
+}
+
     /* ===== BANNIÈRE FLOUE ===== */
     .header {
       position: fixed;
@@ -503,6 +616,18 @@ header img:hover {
 </head>
 <body>
 
+      <!-- SPLASH SCREEN POCHONSTORE -->
+  <div id="splash" class="splash">
+    <div class="splash-inner">
+      <div class="splash-logo">
+        <!-- Tu peux mettre ici un logo spécial splash (rond) si tu veux -->
+        <img src="img/banner.png" alt="PochonStore">
+      </div>
+      <div class="splash-title">PochonStore</div>
+      <div class="splash-sub">Préparation de la mini-boutique…</div>
+    </div>
+  </div>
+  
   <!-- HEADER -->
   <header class="header">
     <div class="header-overlay"></div>
@@ -1506,6 +1631,24 @@ if (tg && tg.openTelegramLink){
     window.open(url, "_blank"); // fallback navigateur
   }
 }
+
+        /* ==== SPLASH AUTO-HIDE ==== */
+  document.addEventListener('DOMContentLoaded', function(){
+    var splash = document.getElementById('splash');
+    if (!splash) return;
+
+    // Temps d'affichage : 900 ms avant de commencer le fade-out
+    setTimeout(function(){
+      splash.classList.add('splash--hide');
+
+      // On retire complètement le splash après l'anim
+      setTimeout(function(){
+        if (splash && splash.parentNode){
+          splash.parentNode.removeChild(splash);
+        }
+      }, 600); // doit être un peu plus long que la transition CSS (.5s)
+    }, 900);
+  });
   </script>
 </body>
 </html>
