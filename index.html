@@ -68,14 +68,16 @@ body::after{
   -webkit-backdrop-filter: blur(4px);
 }
 
-/* zone scrollable : ton contenu principal */
+/* ==== CONTENU PRINCIPAL ==== */
 main {
   display: block;
-  height: 100vh;                   /* toute la hauteur de l’écran */
+  position: relative;
+  z-index: 1;                     /* ✅ reste au-dessus du voile */
+  height: 100vh;                  /* occupe toute la hauteur de l’écran */
   box-sizing: border-box;
-  padding-top: 160px;              /* laisse la bannière en haut */
-  padding-bottom: 110px;           /* laisse le menu en bas */
-  overflow-y: auto;                /* ✅ seul endroit qui scrolle */
+  padding-top: 160px;             /* laisse la bannière en haut */
+  padding-bottom: 110px;          /* laisse la place pour le menu bas */
+  overflow-y: auto;               /* ✅ seul endroit qui scrolle */
   -webkit-overflow-scrolling: touch; /* scroll fluide iOS */
 }
 
@@ -279,21 +281,6 @@ main {
       width: auto;
       object-fit: contain;
       filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.8));
-    }
-
-    /* ==== CONTENU PRINCIPAL ==== */
-    main {
-      display: block;
-      padding-top: 160px;     /* place pour la bannière */
-      padding-bottom: 110px;  /* place pour menu + panier */
-      box-sizing: border-box;
-    }
-
-    .tab-panel {
-      display: none;
-    }
-    .tab-panel.active {
-      display: block;
     }
 
     /* ===== GRILLE PRODUITS (onglet Menu) ===== */
