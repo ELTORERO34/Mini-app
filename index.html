@@ -21,34 +21,48 @@
       box-sizing: border-box;
     }
 
-    body {
-      margin: 0;
-      padding: 0;
-      background: radial-gradient(circle at 50% 30%,
-                  rgba(255, 215, 100, 0.15) 0%,
-                  rgba(0, 0, 0, 1) 80%);
-      background-attachment: fixed;
-      background-size: cover;
-      color: #fff;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-                   Roboto, sans-serif;
-    }
-    html, body {
+    html, body{
   margin: 0;
   padding: 0;
   height: 100%;
-  overflow-x: hidden; /* pas de décalage horizontal */
-  background: #050505; /* couleur de secours si l'image ne charge pas */
+  touch-action: manipulation;
+  overscroll-behavior-y: none;
+  color: #fff;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Roboto, sans-serif;
+  position: relative;
+  overflow-x: hidden;
 }
 
-/* ==== FOND D'ÉCRAN FIXE ==== */
-body::before {
+/* fond général de la mini-app */
+body{
+  background: #050505;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* grand fond avec le logo derrière tout */
+body::before{
   content: "";
   position: fixed;
   inset: 0;
-  z-index: -1; /* reste derrière tout le contenu */
+  z-index: -2;
   background: url("img/bgpss.png") center/cover no-repeat;
-  opacity: 1; /* 1 = image claire, tu peux descendre à 0.8 pour adoucir */
+  opacity: 1;
+}
+
+/* film visuel par-dessus le fond */
+body::after{
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 70% 80%, rgba(255,215,100,0.08), transparent 60%),
+    rgba(0,0,0,0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
     /* ==== SPLASH NOIR / DORÉ ==== */
