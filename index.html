@@ -30,25 +30,16 @@ html, body{
   height: 100%;
   touch-action: manipulation;
   overscroll-behavior-y: none;
-
-  /* fond de base + typo */
-  background: #050505;
   color: #fff;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
                Roboto, sans-serif;
-
   position: relative;
   overflow-x: hidden;
 }
 
 /* fond général de la mini-app */
 body{
-  margin: 0;
-  padding: 0;
-  color: #fff;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-               Roboto, sans-serif;
-  background: #050505;     /* fond de base au cas où */
+  background: #050505;     /* fond de secours */
   position: relative;
   overflow-x: hidden;
 }
@@ -61,6 +52,17 @@ body::before{
   z-index: -1;
   background: url("img/pochon11.png") center/cover no-repeat;
   opacity: 1;
+}
+
+/* zone scrollable : ton contenu principal */
+main {
+  display: block;
+  height: 100vh;
+  box-sizing: border-box;
+  padding-top: 160px;
+  padding-bottom: 110px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* zone scrollable : ton contenu principal */
