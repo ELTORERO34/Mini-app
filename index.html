@@ -21,64 +21,20 @@
       box-sizing: border-box;
     }
 
-    /* ===== LAYOUT PRINCIPAL + FOND DORÉ ===== */
-
-/* on contrôle le scroll global ici */
-html, body{
-  margin: 0;
-  padding: 0;
-  height: 100%;
+    body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(circle at 50% 30%,
+                  rgba(255, 215, 100, 0.15) 0%,
+                  rgba(0, 0, 0, 1) 80%);
+      background-attachment: fixed;
+      background-size: cover;
+      color: #fff;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+                   Roboto, sans-serif;
+    }
+    html, body {
   touch-action: manipulation;
-  overscroll-behavior-y: none;
-  color: #fff;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-               Roboto, sans-serif;
-  position: relative;
-  overflow-x: hidden;
-}
-
-/* fond général de la mini-app */
-body{
-  background: #050505;     /* fond de secours */
-  position: relative;
-  overflow-x: hidden;
-}
-
-/* grand fond avec le logo derrière tout */
-body::before{
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  background: url("img/bgpss.png") center/cover no-repeat;
-  opacity: 1;
-}
-
-/* --- film visuel par-dessus le fond, mais sous le contenu --- */
-body::after{
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1; /* ✅ juste sous le contenu (qui commence à 1 ou +) */
-  pointer-events: none; /* ✅ laisse les clics passer */
-  background:
-    radial-gradient(circle at 70% 80%, rgba(255,215,100,0.08), transparent 60%),
-    rgba(0,0,0,0.45);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-}
-
-/* ==== CONTENU PRINCIPAL ==== */
-main {
-  display: block;
-  position: relative;
-  z-index: 1;                     /* ✅ reste au-dessus du voile */
-  height: 100vh;                  /* occupe toute la hauteur de l’écran */
-  box-sizing: border-box;
-  padding-top: 160px;             /* laisse la bannière en haut */
-  padding-bottom: 110px;          /* laisse la place pour le menu bas */
-  overflow-y: auto;               /* ✅ seul endroit qui scrolle */
-  -webkit-overflow-scrolling: touch; /* scroll fluide iOS */
 }
 
     /* ==== SPLASH NOIR / DORÉ ==== */
@@ -281,6 +237,21 @@ main {
       width: auto;
       object-fit: contain;
       filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.8));
+    }
+
+    /* ==== CONTENU PRINCIPAL ==== */
+    main {
+      display: block;
+      padding-top: 160px;     /* place pour la bannière */
+      padding-bottom: 110px;  /* place pour menu + panier */
+      box-sizing: border-box;
+    }
+
+    .tab-panel {
+      display: none;
+    }
+    .tab-panel.active {
+      display: block;
     }
 
     /* ===== GRILLE PRODUITS (onglet Menu) ===== */
@@ -493,7 +464,7 @@ main {
   left: 0;
   right: 0;
   bottom: 0;
-  height: 82px; /* 🔼 Légèrement rehaussé (avant : 78px) */
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -502,10 +473,10 @@ main {
   -webkit-backdrop-filter: blur(16px);
   border-top: 1px solid rgba(255,255,255,0.06);
   z-index: 300;
-  overflow: visible; /* pour laisser dépasser la lueur */
+  overflow: visible;              /* pour laisser dépasser la lueur */
 }
 
-/* 🌟 petite lueur dorée qui se promène au-dessus du menu */
+/* petite lueur dorée qui se promène au-dessus du menu */
 .bottom-nav::before{
   content:"";
   position:absolute;
@@ -531,27 +502,25 @@ main {
   100% { transform: translateX(-40%); }
 }
 
-/* ======== BOUTONS DU MENU BAS (rebond doux doré) ======== */
+    /* ======== BOUTONS DU MENU BAS (rebond doux doré) ======== */
 .nav-btn{
   flex: 1;
   border: none;
   background: transparent;
   color: #bdbdbd;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  font-size: 0.85rem;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  font-size: 0.78rem;
   position: relative;
   transition: transform .25s ease-out, color .25s ease-out;
-  line-height: 1,2; /* 🔥 RAPPROCHE le texte de l’icône */
 }
 
-/* icônes */
 .nav-btn span.icon{
-  font-size: 1.35rem;
+  font-size: 1.2rem;
+  margin-bottom: 2px;
   position: relative;
-  top: -2px; /* monte un peu l’icône */
   transition: transform .25s ease-out, filter .25s ease-out;
 }
 
@@ -793,127 +762,72 @@ header img:hover {
   </header>
 
   <main id="main">
+    <!-- ONGLET MENU -->
+    <section id="tab-menu" class="tab-panel active">
+      <div class="product-grid" id="productGrid">
+        <!-- P1 : Pochons -->
+        <button class="product-thumb" onclick="openProduct('p1')">
+          <img src="img/pochons11.png" alt="Pochon personnalisé" />
+          <div class="product-thumb-body">
+            <div class="product-thumb-title">Pochon personnalisé</div>
+            <div class="product-thumb-sub">Flatbags et doypacks imprimés avec ton visuel</div>
+          </div>
+        </button>
 
-  <!-- ONGLET MENU -->
-  <section id="tab-menu" class="tab-panel active">
-    <div class="product-grid" id="productGrid">
+        <!-- P2 : Tableaux -->
+        <button class="product-thumb" onclick="openProduct('p2')">
+          <img src="img/tableau1.jpg" alt="Tableaux personnalisés" />
+          <div class="product-thumb-body">
+            <div class="product-thumb-title">Tableaux personnalisés</div>
+            <div class="product-thumb-sub">Panoramiques, populaires, carrés</div>
+          </div>
+        </button>
 
-      <!-- P1 : Pochons -->
-      <button class="product-thumb" onclick="openProduct('p1')">
-        <img src="img/pochons11.png" alt="Pochon personnalisé" />
-        <div class="product-thumb-body">
-          <div class="product-thumb-title">Pochon personnalisé</div>
-          <div class="product-thumb-sub">Flatbags et doypacks imprimés avec ton visuel</div>
-        </div>
-      </button>
+        <!-- P3 : Cartes -->
+        <button class="product-thumb" onclick="openProduct('p3')">
+          <img src="img/cartescata.png" alt="Cartes fidélité / visite" />
+          <div class="product-thumb-body">
+            <div class="product-thumb-title">Cartes fidélité / visite</div>
+            <div class="product-thumb-sub">Recto verso, 8,5cm x 5,4cm</div>
+          </div>
+        </button>
 
-      <!-- P2 : Tableaux -->
-      <button class="product-thumb" onclick="openProduct('p2')">
-        <img src="img/tableau1.jpg" alt="Tableaux personnalisés" />
-        <div class="product-thumb-body">
-          <div class="product-thumb-title">Tableaux personnalisés</div>
-          <div class="product-thumb-sub">Panoramiques, populaires, carrés</div>
-        </div>
-      </button>
+        <!-- P4 : Étiquettes -->
+        <button class="product-thumb" onclick="openProduct('p4')">
+          <img src="img/etiquettes1.jpg" alt="Étiquettes personnalisées" />
+          <div class="product-thumb-body">
+            <div class="product-thumb-title">Étiquettes personnalisées</div>
+            <div class="product-thumb-sub">Rondes, rectangles, tailles sur devis</div>
+          </div>
+        </button>
 
-      <!-- P3 : Cartes -->
-      <button class="product-thumb" onclick="openProduct('p3')">
-        <img src="img/cartescata.png" alt="Cartes fidélité / visite" />
-        <div class="product-thumb-body">
-          <div class="product-thumb-title">Cartes fidélité / visite</div>
-          <div class="product-thumb-sub">Recto verso, 8,5cm x 5,4cm</div>
-        </div>
-      </button>
+        <!-- P5 : Scelleuse -->
+        <button class="product-thumb" onclick="openProduct('p5')">
+          <img src="img/scelleuse.jpg" alt="Scelleuse" />
+          <div class="product-thumb-body">
+            <div class="product-thumb-title">Scelleuse</div>
+            <div class="product-thumb-sub">Scelleuse thermique pour fermer tes pochons</div>
+          </div>
+        </button>
 
-      <!-- P4 : Étiquettes -->
-      <button class="product-thumb" onclick="openProduct('p4')">
-        <img src="img/etiquettes1.jpg" alt="Étiquettes personnalisées" />
-        <div class="product-thumb-body">
-          <div class="product-thumb-title">Étiquettes personnalisées</div>
-          <div class="product-thumb-sub">Rondes, rectangles, tailles sur devis</div>
-        </div>
-      </button>
-
-      <!-- P5 : Scelleuse -->
-      <button class="product-thumb" onclick="openProduct('p5')">
-        <img src="img/scelleuse.jpg" alt="Scelleuse" />
-        <div class="product-thumb-body">
-          <div class="product-thumb-title">Scelleuse</div>
-          <div class="product-thumb-sub">Scelleuse thermique pour fermer tes pochons</div>
-        </div>
-      </button>
-
-      <!-- P6 : Fusées -->
-      <button class="product-thumb" onclick="openProduct('p6')">
-        <img src="img/fusées1.jpg" alt="Fusées 1,5 ml" />
-        <div class="product-thumb-body">
-          <div class="product-thumb-title">Fusées 1,5 ml</div>
-          <div class="product-thumb-sub">Capsules vides, tarifs selon quantité</div>
-        </div>
-      </button>
-      
-      <!-- P7 : Design personnalisé -->
-      <button class="product-thumb" onclick="openProduct('p7')">
-        <img src="img/design.jpg" alt="Design personnalisé" />
-        <div class="product-thumb-body">
-          <div class="product-thumb-title">Design personnalisé</div>
-          <div class="product-thumb-sub">Basique, Premium ou Pack identité</div>
-        </div>
-      </button>
-    </div>
-  </section> <!-- ✅ Fermeture du tab-menu -->
-
-  <!-- ONGLET INFOS -->
-  <section id="tab-infos" class="tab-panel">
-    <div class="info-card">
-      <h2>🧾 Informations – PSS</h2>
-
-      <p>💰 <strong>Paiement</strong><br>
-      Un acompte est demandé à la commande. Le solde est à régler avant l’expédition des produits.</p>
-
-      <p>⏱️ <strong>Délais de production</strong><br>
-      Les délais peuvent varier selon le type de produit et la quantité.
-      Une estimation est communiquée lors de la validation du devis.</p>
-
-      <p>📁 <strong>Formats de fichiers acceptés</strong><br>
-      (.png, .jpg, .pdf) Assure-toi que tes visuels soient en haute résolution
-      pour un rendu optimal.</p>
-
-      <p>🎨 <strong>Produits personnalisés</strong><br>
-      Les créations personnalisées ne sont ni échangeables ni remboursables, sauf en cas d’erreur
-      ou de défaut de fabrication constaté.</p>
-
-      <p>📦 <strong>Expédition</strong><br>
-      Les commandes sont soigneusement emballées et expédiées après validation du paiement complet.
-      Le numéro de suivi est communiqué dès l’envoi.</p>
-    </div>
-  </section> <!-- ✅ Fermeture du tab-infos -->
-
-  <!-- ONGLET CANAL -->
-  <section id="tab-canal" class="tab-panel">
-    <div class="info-card">
-      <h2>Rejoindre le canal</h2>
-      <p>Actus, promos, coulisses de Pochon Store.</p>
-      <button class="btn primary" type="button" onclick="openChannel()">Ouvrir le canal</button>
-    </div>
-
-    <div class="info-card">
-      <h2>Tous nos liens</h2>
-      <p>Retrouve l’ensemble de nos réseaux et liens utiles.</p>
-      <button class="btn primary" type="button" onclick="openLinksHub()">Voir tous les liens</button>
-    </div>
-  </section> <!-- ✅ Fermeture du tab-canal -->
-
-  <!-- ONGLET CONTACT -->
-  <section id="tab-contact" class="tab-panel">
-    <div class="info-card">
-      <h2>Contact</h2>
-      <p>Parle directement avec nous sur Telegram pour un devis, une question ou le suivi de commande.</p>
-      <button class="btn primary" type="button" onclick="openContact()">Écrire au compte</button>
-    </div>
-  </section> <!-- ✅ Fermeture du tab-contact -->
-
-</main> <!-- ✅ FIN DU MAIN -->
+        <!-- P6 : Fusées -->
+        <button class="product-thumb" onclick="openProduct('p6')">
+          <img src="img/fusées1.jpg" alt="Fusées 1,5 ml" />
+          <div class="product-thumb-body">
+            <div class="product-thumb-title">Fusées 1,5 ml</div>
+            <div class="product-thumb-sub">Capsules vides, tarifs selon quantité</div>
+          </div>
+        </button>
+        
+        <!-- P7 : Design personnalisé -->
+<button class="product-thumb" onclick="openProduct('p7')">
+  <img src="img/design.jpg" alt="Design personnalisé" />
+  <div class="product-thumb-body">
+    <div class="product-thumb-title">Design personnalisé</div>
+    <div class="product-thumb-sub">Basique, Premium ou Pack identité</div>
+  </div>
+</button>
+      </div>
 
       <!-- FICHE PRODUIT P1 -->
       <div id="productDetail_p1" class="product-detail hidden">
@@ -1171,6 +1085,56 @@ header img:hover {
     </div>
   </div>
 </div>
+    </section>
+
+        <!-- ONGLET INFOS -->
+    <section id="tab-infos" class="tab-panel">
+      <div class="info-card">
+        <h2>🧾 Informations – PSS</h2>
+
+        <p>💰 <strong>Paiement</strong><br>
+        Un acompte est demandé à la commande. Le solde est à régler avant l’expédition des produits.</p>
+
+        <p>⏱️ <strong>Délais de production</strong><br>
+        Les délais peuvent varier selon le type de produit et la quantité.
+        Une estimation est communiquée lors de la validation du devis.</p>
+
+        <p>📁 <strong>Formats de fichiers acceptés</strong><br>
+        (.png, .jpg, .pdf) Assure-toi que tes visuels soient en haute résolution
+        pour un rendu optimal.</p>
+
+        <p>🎨 <strong>Produits personnalisés</strong><br>
+        Les créations personnalisées ne sont ni échangeables ni remboursables, sauf en cas d’erreur
+        ou de défaut de fabrication constaté.</p>
+
+        <p>📦 <strong>Expédition</strong><br>
+        Les commandes sont soigneusement emballées et expédiées après validation du paiement complet.
+        Le numéro de suivi est communiqué dès l’envoi.</p>
+      </div>
+    </section>
+
+    <!-- ONGLET CANAL -->
+    <section id="tab-canal" class="tab-panel">
+      <div class="info-card">
+        <h2>Rejoindre le canal</h2>
+        <p>Actus, promos, coulisses de Pochon Store.</p>
+        <button class="btn primary" type="button" onclick="openChannel()">Ouvrir le canal</button>
+      </div>
+
+      <div class="info-card">
+        <h2>Tous nos liens</h2>
+        <p>Retrouve l’ensemble de nos réseaux et liens utiles.</p>
+        <button class="btn primary" type="button" onclick="openLinksHub()">Voir tous les liens</button>
+      </div>
+    </section>
+
+    <!-- ONGLET CONTACT -->
+    <section id="tab-contact" class="tab-panel">
+      <div class="info-card">
+        <h2>Contact</h2>
+        <p>Parle directement avec nous sur Telegram pour un devis, une question ou le suivi de commande.</p>
+        <button class="btn primary" type="button" onclick="openContact()">Écrire au compte</button>
+      </div>
     </section>
 
   <!-- BOUTON PANIER FLOTTANT -->
