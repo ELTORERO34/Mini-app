@@ -49,7 +49,7 @@ body::before{
   content: "";
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: -2;
   background: url("img/bgpss.png") center/cover no-repeat;
   opacity: 1;
 }
@@ -59,7 +59,7 @@ body::after{
   content: "";
   position: fixed;
   inset: 0;
-  z-index: 0; /* ✅ juste sous le contenu (qui commence à 1 ou +) */
+  z-index: -1; /* ✅ juste sous le contenu (qui commence à 1 ou +) */
   pointer-events: none; /* ✅ laisse les clics passer */
   background:
     radial-gradient(circle at 70% 80%, rgba(255,215,100,0.08), transparent 60%),
