@@ -26,12 +26,12 @@
   padding: 0;
   height: 100%;
   touch-action: manipulation;
-  overscroll-behavior-y: none;
+  overscroll-behavior-y: none;   /* empêche le gros rebond vers le haut/bas */
+  overflow-x: hidden;
   color: #fff;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
                Roboto, sans-serif;
   position: relative;
-  overflow-x: hidden;
 }
 
 /* fond général de la mini-app */
@@ -268,13 +268,16 @@ body::after{
     }
 
     /* ==== CONTENU PRINCIPAL ==== */
-    main {
-      display: block;
-      padding-top: 160px;     /* place pour la bannière */
-      padding-bottom: 110px;  /* place pour menu + panier */
-      box-sizing: border-box;
-    }
-
+main {
+  display: block;
+  height: 100vh;              /* prend toute la hauteur de l'écran */
+  padding-top: 160px;         /* place pour la bannière */
+  padding-bottom: 110px;      /* place pour le menu du bas */
+  box-sizing: border-box;
+  overflow-y: auto;           /* 👉 seul endroit qui scrolle */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+}
     .tab-panel {
       display: none;
     }
