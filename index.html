@@ -483,7 +483,7 @@ main {
   left: 0;
   right: 0;
   bottom: 0;
-  height: 64px;
+  height: 82px; /* 🔼 Légèrement rehaussé (avant : 78px) */
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -492,10 +492,10 @@ main {
   -webkit-backdrop-filter: blur(16px);
   border-top: 1px solid rgba(255,255,255,0.06);
   z-index: 300;
-  overflow: visible;              /* pour laisser dépasser la lueur */
+  overflow: visible; /* pour laisser dépasser la lueur */
 }
 
-/* petite lueur dorée qui se promène au-dessus du menu */
+/* 🌟 petite lueur dorée qui se promène au-dessus du menu */
 .bottom-nav::before{
   content:"";
   position:absolute;
@@ -521,7 +521,7 @@ main {
   100% { transform: translateX(-40%); }
 }
 
-    /* ======== BOUTONS DU MENU BAS (rebond doux doré) ======== */
+/* ======== BOUTONS DU MENU BAS (rebond doux doré) ======== */
 .nav-btn{
   flex: 1;
   border: none;
@@ -530,15 +530,17 @@ main {
   display:flex;
   flex-direction:column;
   align-items:center;
-  justify-content:center;
-  font-size: 0.78rem;
+  justify-content:flex-start; /* 🔼 pousse légèrement vers le haut */
+  font-size: 0.85rem; /* 🔼 lisibilité améliorée */
   position: relative;
   transition: transform .25s ease-out, color .25s ease-out;
+  padding-top: 4px; /* 🔼 petit espace en haut pour équilibrer */
 }
 
+/* icônes */
 .nav-btn span.icon{
-  font-size: 1.2rem;
-  margin-bottom: 2px;
+  font-size: 1.35rem; /* 🔼 icône un peu plus grande */
+  margin-bottom: 3px;
   position: relative;
   transition: transform .25s ease-out, filter .25s ease-out;
 }
