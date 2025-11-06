@@ -1703,35 +1703,33 @@ if (tg && tg.openTelegramLink){
   }
 }
 
-        <script>
-// ==== SPLASH ANIMATION PochonStore ====
-window.addEventListener('load', function(){
+<script>
+document.addEventListener('DOMContentLoaded', function(){
   var splash = document.getElementById('splash');
-  var dots   = document.getElementById('splashDots');
   if (!splash) return;
 
-  // Étape 1 : apparition du logo
+  // 1) on affiche le texte "Chargement de la boutique…"
   setTimeout(function(){
     splash.classList.add('splash--show-text');
-  }, 500); // après 0.5s
+  }, 400);
 
-  // Étape 2 : petits points qui apparaissent
+  // 2) on affiche les trois points
   setTimeout(function(){
-    if (dots) dots.classList.add('splash-dots--show');
-  }, 1100);
+    splash.classList.add('splash--show-dots');
+  }, 900);
 
-  // Étape 3 : disparition du splash
+  // 3) on cache le splash après ~2,5 secondes
   setTimeout(function(){
     splash.classList.add('splash--hide');
-  }, 2600);
 
-  // Étape 4 : suppression du splash du DOM
-  setTimeout(function(){
-    if (splash && splash.parentNode){
-      splash.parentNode.removeChild(splash);
-    }
-  }, 3200);
+    // on le retire du DOM après le fade-out
+    setTimeout(function(){
+      if (splash && splash.parentNode){
+        splash.parentNode.removeChild(splash);
+      }
+    }, 600);
+  }, 2500); // 👉 tu peux mettre 3000 si tu veux que ça reste plus longtemps
 });
-  </script>
+</script>
 </body>
 </html>
