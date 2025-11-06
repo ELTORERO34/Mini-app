@@ -270,13 +270,14 @@ body::after{
     /* ==== CONTENU PRINCIPAL ==== */
 main {
   display: block;
-  height: 100vh;              /* prend toute la hauteur de l'écran */
-  padding-top: 160px;         /* place pour la bannière */
-  padding-bottom: 110px;      /* place pour le menu du bas */
+  height: 100vh;
+  padding-top: 160px;
+  padding-bottom: 110px;
   box-sizing: border-box;
-  overflow-y: auto;           /* 👉 seul endroit qui scrolle */
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-y: contain;
+  overflow-y: auto;                /* seul endroit qui scrolle */
+  -webkit-overflow-scrolling: touch; /* ✅ scroll fluide iOS */
+  scroll-behavior: smooth;         /* ✅ transition douce */
+  overscroll-behavior-y: none;     /* bloque le “rebond” sans tout figer */
 }
     .tab-panel {
       display: none;
