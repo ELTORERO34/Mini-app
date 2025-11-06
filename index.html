@@ -58,14 +58,9 @@ body::before{
   content: "";
   position: fixed;
   inset: 0;
-  z-index: -1; /* reste derrière tout */
-  background:
-    radial-gradient(circle at 50% 25%, rgba(255,215,100,0.22), transparent 55%),
-    radial-gradient(circle at 0% 100%, rgba(0,0,0,0.85), transparent 60%),
-    radial-gradient(circle at 100% 100%, rgba(0,0,0,0.85), transparent 60%),
-    url("img/bg-pochonstore.jpg") center/cover no-repeat #000;
-  filter: saturate(1.05);
-  opacity: 0.55; /* tu peux monter à 0.6–0.7 si tu veux voir plus le logo */
+  z-index: -1;
+  background: url("img/bg-pochonstore.jpg") center/cover no-repeat;
+  opacity: 1;
 }
 
 /* zone scrollable : ton contenu principal */
