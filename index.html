@@ -54,15 +54,18 @@ body::before{
   opacity: 1;
 }
 
+/* --- film visuel par-dessus le fond, mais sous le contenu --- */
 body::after{
-  content:"";
+  content: "";
   position: fixed;
   inset: 0;
-  z-index: -0.5;
+  z-index: 0; /* ✅ juste sous le contenu (qui commence à 1 ou +) */
+  pointer-events: none; /* ✅ laisse les clics passer */
   background:
     radial-gradient(circle at 70% 80%, rgba(255,215,100,0.08), transparent 60%),
     rgba(0,0,0,0.45);
   backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 /* zone scrollable : ton contenu principal */
