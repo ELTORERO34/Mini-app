@@ -34,7 +34,21 @@
                    Roboto, sans-serif;
     }
     html, body {
-  touch-action: manipulation;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden; /* pas de décalage horizontal */
+  background: #050505; /* couleur de secours si l'image ne charge pas */
+}
+
+/* ==== FOND D'ÉCRAN FIXE ==== */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1; /* reste derrière tout le contenu */
+  background: url("img/bgpss.png") center/cover no-repeat;
+  opacity: 1; /* 1 = image claire, tu peux descendre à 0.8 pour adoucir */
 }
 
     /* ==== SPLASH NOIR / DORÉ ==== */
