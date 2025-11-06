@@ -59,6 +59,16 @@ body::before{
   opacity: 0.45;  /* tu peux monter à 0.6 si tu veux voir plus le logo */
 }
 
+/* ==== TEST TEMPORAIRE DU FOND ==== */
+body::before{
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: url("img/bg-pochonstore.jpg") center/contain no-repeat #000;
+  opacity: 1;
+}
+
 /* zone scrollable : ton contenu principal */
 main {
   display: block;
