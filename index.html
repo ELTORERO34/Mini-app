@@ -34,12 +34,7 @@
                    Roboto, sans-serif;
     }
     html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden; /* 🚫 empêche le scroll global */
-  touch-action: manipulation; /* évite les gestes “retour” ou zoom */
-  overscroll-behavior: none; /* empêche le rebond ou la fermeture sur iOS */
+  touch-action: manipulation;
 }
 
     /* ==== SPLASH NOIR / DORÉ ==== */
@@ -246,14 +241,18 @@
 
     /* ==== CONTENU PRINCIPAL ==== */
     main {
-  display: block;
-  height: 100vh;                   /* prend toute la hauteur de l’écran */
-  box-sizing: border-box;
-  padding-top: 160px;              /* espace pour la bannière */
-  padding-bottom: 110px;           /* espace pour le menu bas */
-  overflow-y: auto;                /* ✅ seul endroit scrollable */
-  -webkit-overflow-scrolling: touch; /* scroll fluide sur iPhone */
-}
+      display: block;
+      padding-top: 160px;     /* place pour la bannière */
+      padding-bottom: 110px;  /* place pour menu + panier */
+      box-sizing: border-box;
+    }
+
+    .tab-panel {
+      display: none;
+    }
+    .tab-panel.active {
+      display: block;
+    }
 
     /* ===== GRILLE PRODUITS (onglet Menu) ===== */
     .product-grid {
