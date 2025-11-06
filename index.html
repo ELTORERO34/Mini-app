@@ -44,21 +44,6 @@ body{
   overflow-x: hidden;
 }
 
-/* Fond global avec image + voile noir/doré */
-body::before{
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1; /* derrière toute l’app */
-  background:
-    radial-gradient(circle at 50% 25%, rgba(255,215,100,0.18), transparent 55%),
-    radial-gradient(circle at 10% 100%, rgba(0,0,0,0.9), transparent 55%),
-    radial-gradient(circle at 90% 100%, rgba(0,0,0,0.9), transparent 55%),
-    url("img/bg-pochonstore.jpg") center/cover no-repeat;
-  filter: saturate(1.1);
-  opacity: 0.45;  /* tu peux monter à 0.6 si tu veux voir plus le logo */
-}
-
 /* ==== TEST TEMPORAIRE DU FOND ==== */
 body::before{
   content: "";
