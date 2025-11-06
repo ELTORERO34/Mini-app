@@ -54,6 +54,17 @@ body::before{
   opacity: 1;
 }
 
+body::after{
+  content:"";
+  position: fixed;
+  inset: 0;
+  z-index: -0.5;
+  background:
+    radial-gradient(circle at 70% 80%, rgba(255,215,100,0.08), transparent 60%),
+    rgba(0,0,0,0.45);
+  backdrop-filter: blur(4px);
+}
+
 /* zone scrollable : ton contenu principal */
 main {
   display: block;
