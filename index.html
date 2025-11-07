@@ -99,67 +99,6 @@ body::after{
   }
 }
 
-/* ===== HERO CONTACT (NOUS CONTACTER) ===== */
-
-.contact-hero{
-  margin: 16px 16px 20px;
-  padding: 26px 20px 30px;
-  border-radius: 26px;
-  position: relative;
-  overflow: hidden;
-  background: radial-gradient(circle at 50% 0%,
-              rgba(255,215,100,0.25) 0%, rgba(0,0,0,0.85) 55%);
-  box-shadow:
-    0 14px 40px rgba(0,0,0,0.75),
-    0 0 16px rgba(0,0,0,0.9);
-}
-
-/* halo doré derrière le contenu, mais en-dessous du texte */
-.contact-hero::before{
-  content:"";
-  position:absolute;
-  inset:-40%;
-  background:
-    radial-gradient(circle at 50% 0%,
-      rgba(255,215,100,0.35) 0%, transparent 55%);
-  opacity:0.8;
-  z-index:1;
-}
-
-/* tout le contenu est AU-DESSUS du halo */
-.contact-hero-inner{
-  position: relative;
-  z-index: 3; /* ✅ le texte passe devant */
-  text-align: center;
-}
-
-/* ===== Animations ===== */
-
-@keyframes contactTitleLetter{
-  0%{
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  60%{
-    opacity: 1;
-    transform: translateY(0);
-  }
-  100%{
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes starFloat{
-  0%,100%{ transform: translateY(0); }
-  50%    { transform: translateY(-6px) scale(1.05); }
-}
-
-@keyframes taglinePulse{
-  0%,100%{ opacity: 0.55; }
-  50%    { opacity: 1; }
-}
-
     /* ==== SPLASH NOIR / DORÉ ==== */
 .splash{
   position: fixed;
