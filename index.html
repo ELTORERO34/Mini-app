@@ -359,7 +359,7 @@ main {
   position: absolute;
   inset: 0;
   border-radius: var(--radius); /* garde le même arrondi que ta carte */
-  padding: 1px;
+  padding: 3px;
 
   /* dégradé doré qui bouge */
   background: linear-gradient(
@@ -377,11 +377,9 @@ main {
     linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-
   pointer-events: none;
-  opacity: 0.55;
+  opacity: 0.7;
 }
-
 .product-thumb:active::before{
   opacity: 0.9;
 }
