@@ -950,24 +950,26 @@ header img:hover {
   z-index: 0;
 }
 
-/* titre principal NOUS CONTACTER */
+/* --- TITRE PRINCIPAL (version claire et renforcée) --- */
 .contact-hero-title {
-  position: relative;
-  z-index: 3; /* ✅ le texte passe devant le fond */
-  display: block; /* ✅ pour autoriser le retour à la ligne */
-  white-space: normal; /* ✅ on casse la ligne naturellement */
-  font-size: 2.1rem;
+  display: inline-block;
+  font-size: 3.2rem;              /* 🟡 plus grand */
   font-weight: 900;
-  line-height: 1.25;
-  text-align: center;
   text-transform: uppercase;
-  background: linear-gradient(90deg, #FFECAA, #FFF7D6, #FFD54A);
+  letter-spacing: 3px;
+  line-height: 1.15;
+  background: linear-gradient(90deg, #FFFBEA, #FFE278, #FFD54A);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow:
-    0 0 10px rgba(255,215,100,0.8),
-    0 0 18px rgba(0,0,0,0.9);
-  animation: textGlow 2.5s ease-in-out infinite;
+    0 0 10px rgba(255,215,100,0.9),
+    0 0 25px rgba(255,215,100,0.7),
+    0 0 40px rgba(255,215,100,0.3);
+  animation: heroTextGlow 3.5s ease-in-out infinite alternate;
+  position: relative;
+  z-index: 5;
+  isolation: isolate;
+  margin-bottom: 10px;
 }
 
 /* étoile au centre */
