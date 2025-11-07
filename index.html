@@ -1097,6 +1097,17 @@ header img:hover {
   50%  { background-position: 0% 0; opacity: 1; }
   100% { background-position: -200% 0; opacity: 0.8; }
 }
+
+/* Force le retour à la ligne du titre "NOUS CONTACTER" */
+.contact-hero-title {
+  display: flex;
+  flex-wrap: wrap;              /* ✅ permet d’aller à la ligne */
+  justify-content: center;      /* ✅ centre chaque mot */
+  text-align: center;
+  white-space: normal !important; /* ✅ autorise la coupure */
+  line-height: 1.15;
+  word-break: break-word;
+}
   </style>
 </head>
 <body>
