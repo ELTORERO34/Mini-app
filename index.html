@@ -65,6 +65,40 @@ body::after{
   -webkit-backdrop-filter: blur(4px);
 }
 
+/* === Séquence d'apparition pour la page Contact === */
+#tab-contact .contact-seq{
+  opacity: 0;
+  transform: translateY(12px) scale(0.96);
+  animation: contactPop 0.6s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+  animation-delay: var(--delay, 0s);  /* délai personnalisé par bloc */
+}
+
+/* petit survol sur chaque carte de contact */
+#tab-contact .info-card{
+  transition: transform .22s ease-out, box-shadow .22s ease-out;
+}
+
+#tab-contact .info-card:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.45);
+}
+
+/* animation "pop" douce */
+@keyframes contactPop{
+  0%{
+    opacity: 0;
+    transform: translateY(18px) scale(0.94);
+  }
+  70%{
+    opacity: 1;
+    transform: translateY(-3px) scale(1.02);
+  }
+  100%{
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
     /* ==== SPLASH NOIR / DORÉ ==== */
 .splash{
   position: fixed;
@@ -1355,32 +1389,18 @@ header img:hover {
       </div>
     </section>
 
-    <!-- ONGLET CONTACT -->
-<section id="tab-contact" class="tab-panel">
-  <!-- HÉRO CONTACT -->
-  <div class="contact-hero">
+    <section id="tab-contact" class="tab-panel">
+  <!-- Hero doré en haut -->
+  <div class="contact-hero contact-seq" style="--delay: 0s;">
     <h2 class="contact-hero-title">NOUS CONTACTER</h2>
     <div class="contact-hero-icon">✦</div>
     <p class="contact-hero-sub">
-      Choisis ta plateforme préférée.
+      Choisis ta plateforme préférée pour nous écrire.
     </p>
   </div>
-  
-  <!-- ONGLET CANAL -->
-      <div class="info-card">
-        <h2>Rejoindre le canal</h2>
-        <p>Actus, promos, coulisses de Pochon Store.</p>
-        <button class="btn primary" type="button" onclick="openChannel()">Ouvrir le canal</button>
-      </div>
 
-      <div class="info-card">
-        <h2>Tous nos liens</h2>
-        <p>Retrouve l’ensemble de nos réseaux et liens utiles.</p>
-        <button class="btn primary" type="button" onclick="openLinksHub()">Voir tous les liens</button>
-      </div>
-
-  <!-- Carte contact déjà existante -->
-  <div class="info-card">
+  <!-- 1) Bloc Contact Telegram -->
+  <div class="info-card contact-seq" style="--delay: 0.15s;">
     <h2>Contact</h2>
     <p>
       Parle directement avec nous sur Telegram pour un devis,
@@ -1391,8 +1411,26 @@ header img:hover {
     </button>
   </div>
 
-  <!-- Phrase tout en bas -->
-  <p class="contact-hero-tagline">
+  <!-- 2) Bloc Canal Telegram -->
+  <div class="info-card contact-seq" style="--delay: 0.3s;">
+    <h2>Rejoindre le canal</h2>
+    <p>Actus, promos, coulisses de Pochon Store.</p>
+    <button class="btn primary" type="button" onclick="openChannel()">
+      Ouvrir le canal
+    </button>
+  </div>
+
+  <!-- 3) Bloc tous les liens -->
+  <div class="info-card contact-seq" style="--delay: 0.45s;">
+    <h2>Tous nos liens</h2>
+    <p>Retrouve l’ensemble de nos réseaux et liens utiles.</p>
+    <button class="btn primary" type="button" onclick="openLinksHub()">
+      Voir tous les liens
+    </button>
+  </div>
+
+  <!-- 4) Phrase en bas -->
+  <p class="contact-hero-tagline contact-seq" style="--delay: 0.65s;">
     Nous sommes là pour t’aider 7j/7 ✨
   </p>
 </section>
