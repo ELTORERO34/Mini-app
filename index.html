@@ -950,7 +950,7 @@ header img:hover {
   z-index: 0;
 }
 
-/* --- TITRE PRINCIPAL --- */
+/* --- TITRE PRINCIPAL AVEC ANIMATION DORÉE --- */
 .contact-hero-title {
   display: inline-block;
   font-size: 3.2rem;
@@ -958,18 +958,22 @@ header img:hover {
   text-transform: uppercase;
   letter-spacing: 3px;
   line-height: 1.1;
-  background: linear-gradient(90deg, #FFFBEA, #FFE278, #FFD54A);
+  background: linear-gradient(270deg,
+    #FFFBEA,
+    #FFD766,
+    #FFB300,
+    #FFFBEA);
+  background-size: 400% 400%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow:
-    0 0 10px rgba(255,215,100,0.9),
-    0 0 25px rgba(255,215,100,0.7),
-    0 0 40px rgba(255,215,100,0.3);
-  animation: heroTextGlow 3.5s ease-in-out infinite alternate;
+    0 0 12px rgba(255,215,100,0.8),
+    0 0 24px rgba(255,215,100,0.4);
+  animation: goldShine 6s ease-in-out infinite, heroTextGlow 3s ease-in-out infinite alternate;
   position: relative;
   z-index: 5;
   isolation: isolate;
-  margin-bottom: 2px;     /* 🔥 beaucoup moins d’espace sous le titre */
+  margin-bottom: 2px;
 }
 
 /* --- ÉTOILE DORÉE --- */
@@ -1025,6 +1029,25 @@ header img:hover {
 @keyframes taglinePulse{
   0%,100% { opacity: 0.65; }
   50%     { opacity: 1; }
+}
+
+@keyframes goldShine {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes heroTextGlow {
+  0% {
+    text-shadow:
+      0 0 10px rgba(255,215,100,0.7),
+      0 0 20px rgba(255,215,100,0.4);
+  }
+  100% {
+    text-shadow:
+      0 0 20px rgba(255,215,100,1),
+      0 0 35px rgba(255,215,100,0.6);
+  }
 }
 
 /* lettres animées une par une */
