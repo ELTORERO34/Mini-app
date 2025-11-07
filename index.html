@@ -1033,27 +1033,117 @@ header img:hover {
   filter: drop-shadow(0 0 18px rgba(255, 230, 150, 0.8));
 }
 
-/* --- Ajustements et styles des blocs sous le héros --- */
-
-.contact-hero {
-  margin-top: 25px;
+/* ===== HERO "NOUS CONTACTER" ===== */
+.contact-hero{
+  margin: 10px 12px 20px;
+  padding: 22px 20px 26px;
+  border-radius: 26px;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(255,215,100,0.22), transparent 60%),
+    radial-gradient(circle at 100% 100%, rgba(255,215,100,0.20), transparent 60%),
+    rgba(0,0,0,0.78);
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.85),
+    0 0 18px rgba(255,215,100,0.25);
   text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
-.contact-links {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 0 16px;
-  margin-top: 10px;
+/* léger halo animé derrière le bloc */
+.contact-hero::before{
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: radial-gradient(circle, rgba(255,215,100,0.22), transparent 65%);
+  opacity: 0.0;
+  animation: heroGlow 5s ease-in-out infinite;
+  z-index: 0;
 }
 
-.info-card {
-  background: rgba(0, 0, 0, 0.75);
-  border-radius: 18px;
-  padding: 18px;
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+.contact-hero-title{
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  white-space: nowrap;
+  font-size: 2.1rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #FFECAA, #FFF7D6, #FFD54A);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow:
+    0 0 10px rgba(255,215,100,0.8),
+    0 0 18px rgba(0,0,0,0.9);
+}
+
+/* étoile au centre */
+.contact-hero-star{
+  margin: 10px 0 6px;
+  font-size: 1.4rem;
+  color: #FFECAA;
+  text-shadow:
+    0 0 8px rgba(255,215,150,0.9),
+    0 0 16px rgba(255,215,150,0.6);
+  animation: starFloat 2.4s ease-in-out infinite;
+}
+
+/* sous-titre bien lisible */
+.contact-hero-subtitle{
+  margin: 0;
+  font-size: 1rem;
+  color: rgba(255,255,240,0.96);
+  text-shadow: 0 0 6px rgba(0,0,0,0.85);
+  position: relative;
+  z-index: 1;
+}
+
+/* phrase du bas */
+.contact-hero-tagline{
+  margin: 24px 12px 18px;
+  text-align: center;
+  font-size: 0.95rem;
+  color: rgba(255,255,220,0.95);
+  text-shadow:
+    0 0 8px rgba(255,215,100,0.7),
+    0 0 20px rgba(0,0,0,0.85);
+  animation: taglinePulse 2.8s ease-in-out infinite;
+}
+
+/* animations */
+@keyframes heroGlow{
+  0%,100% { opacity: 0.25; transform: scale(1); }
+  50%     { opacity: 0.55; transform: scale(1.06); }
+}
+
+@keyframes starFloat{
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-5px) scale(1.08); }
+}
+
+@keyframes taglinePulse{
+  0%,100% { opacity: 0.65; }
+  50%     { opacity: 1; }
+}
+
+/* lettres animées une par une */
+.contact-hero-title span{
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: letterPop 0.5s forwards;
+}
+
+@keyframes letterPop{
+  0%{
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100%{
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
   </style>
 </head>
@@ -1434,55 +1524,45 @@ header img:hover {
       </div>
     </section>
 
-    <section id="tab-contact" class="tab-panel active">
-  <!-- HERO CONTACT -->
+    <section id="tab-contact" class="tab-panel">
+  <!-- HERO "NOUS CONTACTER" -->
   <div class="contact-hero">
-    <div class="contact-hero-inner">
-      <h2 class="contact-hero-title" id="contactHeroTitle">NOUS CONTACTER</h2>
-      <div class="contact-hero-star">✦</div>
-      <p class="contact-hero-sub">
-        Choisis ta plateforme préférée pour nous écrire.
-      </p>
-    </div>
+    <h2 id="contactHeroTitle" class="contact-hero-title">NOUS CONTACTER</h2>
+    <div class="contact-hero-star">✦</div>
+    <p class="contact-hero-subtitle">
+      Choisis ta plateforme préférée pour nous écrire.
+    </p>
   </div>
 
-  <!-- BLOCS CONTACT / CANAL / LIENS -->
-  <div class="contact-links">
-    <!-- 1. Contact direct -->
-    <div class="info-card">
-      <h2>Contact</h2>
-      <p>
-        Parle directement avec nous sur Telegram pour un devis,
-        une question ou le suivi de commande.
-      </p>
-      <button class="btn primary" type="button" onclick="openContact()">
-        Écrire au compte
-      </button>
-    </div>
-
-    <!-- 2. Rejoindre le canal -->
-    <div class="info-card">
-      <h2>Rejoindre le canal</h2>
-      <p>Actus, promos, coulisses de Pochon Store.</p>
-      <button class="btn primary" type="button" onclick="openChannel()">
-        Ouvrir le canal
-      </button>
-    </div>
-
-    <!-- 3. Tous nos liens -->
-    <div class="info-card">
-      <h2>Tous nos liens</h2>
-      <p>
-        Retrouve la boutique, les réseaux et tous les liens utiles
-        sur une seule page.
-      </p>
-      <button class="btn primary" type="button" onclick="openLinksHub()">
-        Voir tous nos liens
-      </button>
-    </div>
+  <!-- BLOC 1 : CONTACT -->
+  <div class="info-card">
+    <h2>Contact</h2>
+    <p>Parle directement avec nous sur Telegram pour un devis,
+      une question ou le suivi de commande.</p>
+    <button class="btn primary" type="button" onclick="openContact()">
+      Écrire au compte
+    </button>
   </div>
 
-  <!-- phrase du bas -->
+  <!-- BLOC 2 : CANAL -->
+  <div class="info-card">
+    <h2>Rejoindre le canal</h2>
+    <p>Actus, promos, coulisses de Pochon Store.</p>
+    <button class="btn primary" type="button" onclick="openChannel()">
+      Ouvrir le canal
+    </button>
+  </div>
+
+  <!-- BLOC 3 : TOUS NOS LIENS -->
+  <div class="info-card">
+    <h2>Tous nos liens</h2>
+    <p>Retrouve la boutique, les réseaux et tous les liens utiles sur une seule page.</p>
+    <button class="btn primary" type="button" onclick="openLinksHub()">
+      Voir tous nos liens
+    </button>
+  </div>
+
+  <!-- PHRASE DU BAS -->
   <p class="contact-hero-tagline">
     Nous sommes là pour t’aider 7j/7 ✨
   </p>
@@ -2145,14 +2225,13 @@ document.addEventListener('DOMContentLoaded', function () {
   var titleEl = document.getElementById('contactHeroTitle');
   if (!titleEl) return;
 
-  var txt = titleEl.textContent.trim();
+  var txt = titleEl.textContent;   // <== on garde TOUT, y compris l’espace
   titleEl.textContent = "";
 
-  // on crée un span par caractère
   txt.split("").forEach(function (ch, idx) {
     var span = document.createElement('span');
     span.textContent = ch;
-    span.style.animationDelay = (0.04 * idx) + "s"; // vitesse globale
+    span.style.animationDelay = (0.05 * idx) + "s";
     titleEl.appendChild(span);
   });
 });
