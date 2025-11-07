@@ -366,7 +366,36 @@ main {
     0 0 8px rgba(255,215,100,0.6),
     0 0 18px rgba(0,0,0,0.8);
   pointer-events: none;                    /* ne bloque jamais les clics */
-  z-index: 2;                              /* au-dessus du fond, sous le contenu */
+  z-index: 2;                               /* au-dessus du fond, sous le contenu */
+  animation: cardBorderGlow 3s ease-in-out infinite;
+  transition: transform .18s ease-out, box-shadow .18s ease-out;
+}
+
+/* petit “press” quand on clique la carte */
+.product-thumb:active{
+  transform: translateY(2px) scale(0.98);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.6);
+}
+
+@keyframes cardBorderGlow{
+  0%{
+    opacity: 0.9;
+    box-shadow:
+      0 0 6px rgba(255,215,100,0.4),
+      0 0 14px rgba(0,0,0,0.8);
+  }
+  50%{
+    opacity: 1;
+    box-shadow:
+      0 0 14px rgba(255,215,100,0.9),
+      0 0 22px rgba(0,0,0,0.9);
+  }
+  100%{
+    opacity: 0.9;
+    box-shadow:
+      0 0 6px rgba(255,215,100,0.4),
+      0 0 14px rgba(0,0,0,0.8);
+  }
 }
 
     /* ===== FICHES PRODUITS ===== */
