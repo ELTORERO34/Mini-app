@@ -134,16 +134,23 @@ body::after{
 }
 
 /* titre principal NOUS CONTACTER */
-.contact-hero-title{
+.contact-hero-title {
+  position: relative;
+  z-index: 3; /* ✅ le texte passe devant le fond */
+  display: block; /* ✅ pour autoriser le retour à la ligne */
+  white-space: normal; /* ✅ on casse la ligne naturellement */
   font-size: 2.1rem;
-  letter-spacing: .15em;
+  font-weight: 900;
+  line-height: 1.25;
+  text-align: center;
   text-transform: uppercase;
-  margin: 0 0 10px;
-  color: #fff6d5;
+  background: linear-gradient(90deg, #FFECAA, #FFF7D6, #FFD54A);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   text-shadow:
-    0 0 10px rgba(255,215,120,0.9),
-    0 0 25px rgba(0,0,0,0.9);
-  white-space: nowrap;
+    0 0 10px rgba(255,215,100,0.8),
+    0 0 18px rgba(0,0,0,0.9);
+  animation: textGlow 2.5s ease-in-out infinite;
 }
 
 /* chaque lettre animée */
@@ -1527,7 +1534,7 @@ header img:hover {
     <section id="tab-contact" class="tab-panel">
   <!-- HERO "NOUS CONTACTER" -->
   <div class="contact-hero">
-    <h2 id="contactHeroTitle" class="contact-hero-title">NOUS CONTACTER</h2>
+    <h2 id="contactHeroTitle" class="contact-hero-title">NOUS<br>CONTACTER</h2>
     <div class="contact-hero-star">✦</div>
     <p class="contact-hero-subtitle">
       Choisis ta plateforme préférée pour nous écrire.
