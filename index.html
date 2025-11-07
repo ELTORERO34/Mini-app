@@ -1032,6 +1032,29 @@ header img:hover {
   transform: scale(1.02);
   filter: drop-shadow(0 0 18px rgba(255, 230, 150, 0.8));
 }
+
+/* --- Ajustements et styles des blocs sous le héros --- */
+
+.contact-hero {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 16px;
+  margin-top: 10px;
+}
+
+.info-card {
+  background: rgba(0, 0, 0, 0.75);
+  border-radius: 18px;
+  padding: 18px;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
   </style>
 </head>
 <body>
@@ -1411,13 +1434,11 @@ header img:hover {
       </div>
     </section>
 
-    <section id="tab-contact" class="tab-panel">
+    <section id="tab-contact" class="tab-panel active">
   <!-- HERO CONTACT -->
   <div class="contact-hero">
     <div class="contact-hero-inner">
-      <h2 class="contact-hero-title" id="contactHeroTitle">
-        NOUS CONTACTER
-      </h2>
+      <h2 class="contact-hero-title" id="contactHeroTitle">NOUS CONTACTER</h2>
       <div class="contact-hero-star">✦</div>
       <p class="contact-hero-sub">
         Choisis ta plateforme préférée pour nous écrire.
@@ -1425,18 +1446,40 @@ header img:hover {
     </div>
   </div>
 
-  <!-- bloc Contact -->
-  <div class="info-card">
-    <h2>Contact</h2>
-    <p>Parle directement avec nous sur Telegram pour un devis, une question ou le suivi de commande.</p>
-    <button class="btn primary" type="button" onclick="openContact()">Écrire au compte</button>
-  </div>
+  <!-- BLOCS CONTACT / CANAL / LIENS -->
+  <div class="contact-links">
+    <!-- 1. Contact direct -->
+    <div class="info-card">
+      <h2>Contact</h2>
+      <p>
+        Parle directement avec nous sur Telegram pour un devis,
+        une question ou le suivi de commande.
+      </p>
+      <button class="btn primary" type="button" onclick="openContact()">
+        Écrire au compte
+      </button>
+    </div>
 
-  <!-- bloc Canal (si tu le gardes ici) -->
-  <div class="info-card">
-    <h2>Rejoindre le canal</h2>
-    <p>Actus, promos, coulisses de Pochon Store.</p>
-    <button class="btn primary" type="button" onclick="openChannel()">Ouvrir le canal</button>
+    <!-- 2. Rejoindre le canal -->
+    <div class="info-card">
+      <h2>Rejoindre le canal</h2>
+      <p>Actus, promos, coulisses de Pochon Store.</p>
+      <button class="btn primary" type="button" onclick="openChannel()">
+        Ouvrir le canal
+      </button>
+    </div>
+
+    <!-- 3. Tous nos liens -->
+    <div class="info-card">
+      <h2>Tous nos liens</h2>
+      <p>
+        Retrouve la boutique, les réseaux et tous les liens utiles
+        sur une seule page.
+      </p>
+      <button class="btn primary" type="button" onclick="openLinksHub()">
+        Voir tous nos liens
+      </button>
+    </div>
   </div>
 
   <!-- phrase du bas -->
