@@ -294,13 +294,14 @@ main {
       padding: 16px;
     }
 
-    /* Cartes produits du menu */
+    /* === CARTES PRODUITS AVEC CONTOUR DORÉ PROPRE === */
 .product-thumb{
-  border: 1px solid var(--border);
-  background: var(--card);
+  position: relative;                      /* important pour ::before */
   border-radius: var(--radius);
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.03);
   overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.35);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.5);
   color: var(--text);
   padding: 0;
   display: flex;
@@ -354,34 +355,18 @@ main {
   overflow: hidden;
 }
 
-/* Contour doré **extérieur** qui brille, sans colorer l’intérieur */
+/* contour doré autour de la carte */
 .product-thumb::before{
   content: "";
   position: absolute;
-  top: -3px;           /* sort un peu de la carte */
-  left: -3px;
-  right: -3px;
-  bottom: -3px;
-  border-radius: calc(var(--radius) + 3px);
-
-  border: 2px solid rgba(255,215,100,0.85);  /* contour doré */
-  box-shadow: 0 0 14px rgba(255,215,100,0.7); /* halo autour */
-
-  opacity: 0.0;
-  pointer-events: none;
-  animation: cardBorderGlow 2.8s ease-in-out infinite;
-  z-index: 2;
-}
-
-@keyframes cardBorderGlow{
-  0%, 100%{
-    opacity: 0.3;
-    box-shadow: 0 0 6px rgba(255,215,100,0.4);
-  }
-  50%{
-    opacity: 1;
-    box-shadow: 0 0 18px rgba(255,215,100,0.9);
-  }
+  inset: 0;                                /* colle au bord de la carte */
+  border-radius: inherit;
+  border: 2px solid rgba(255,215,100,0.9); /* bord doré bien visible   */
+  box-shadow:
+    0 0 8px rgba(255,215,100,0.6),
+    0 0 18px rgba(0,0,0,0.8);
+  pointer-events: none;                    /* ne bloque jamais les clics */
+  z-index: 2;                              /* au-dessus du fond, sous le contenu */
 }
 
     /* ===== FICHES PRODUITS ===== */
