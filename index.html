@@ -133,63 +133,6 @@ body::after{
   text-align: center;
 }
 
-/* titre principal NOUS CONTACTER */
-.contact-hero-title {
-  position: relative;
-  z-index: 3; /* ✅ le texte passe devant le fond */
-  display: block; /* ✅ pour autoriser le retour à la ligne */
-  white-space: normal; /* ✅ on casse la ligne naturellement */
-  font-size: 2.1rem;
-  font-weight: 900;
-  line-height: 1.25;
-  text-align: center;
-  text-transform: uppercase;
-  background: linear-gradient(90deg, #FFECAA, #FFF7D6, #FFD54A);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow:
-    0 0 10px rgba(255,215,100,0.8),
-    0 0 18px rgba(0,0,0,0.9);
-  animation: textGlow 2.5s ease-in-out infinite;
-}
-
-/* chaque lettre animée */
-.contact-hero-title span{
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(12px);
-  animation: contactTitleLetter 0.65s ease-out forwards;
-}
-
-/* petite étoile en dessous */
-.contact-hero-star{
-  font-size: 1.4rem;
-  margin-bottom: 10px;
-  color: #ffeaa7;
-  text-shadow: 0 0 10px rgba(255,215,100,0.95);
-  animation: starFloat 1.8s ease-in-out infinite;
-}
-
-/* sous-texte clair */
-.contact-hero-sub{
-  margin: 0;
-  font-size: 1rem;
-  line-height: 1.4;
-  color: #fdfdfd;
-}
-
-/* phrase du bas (en dehors du hero) */
-.contact-hero-tagline{
-  margin: 26px 0 0;
-  text-align: center;
-  font-size: 0.97rem;
-  color: rgba(255,255,230,0.94);
-  text-shadow:
-    0 0 10px rgba(255,215,100,0.9),
-    0 0 26px rgba(255,215,100,0.45);
-  animation: taglinePulse 2.8s ease-in-out infinite;
-}
-
 /* ===== Animations ===== */
 
 @keyframes contactTitleLetter{
@@ -1068,14 +1011,16 @@ header img:hover {
   z-index: 0;
 }
 
-.contact-hero-title{
+/* titre principal NOUS CONTACTER */
+.contact-hero-title {
   position: relative;
-  z-index: 1;
-  display: inline-block;
-  white-space: nowrap;
+  z-index: 3; /* ✅ le texte passe devant le fond */
+  display: block; /* ✅ pour autoriser le retour à la ligne */
+  white-space: normal; /* ✅ on casse la ligne naturellement */
   font-size: 2.1rem;
   font-weight: 900;
-  letter-spacing: 0.18em;
+  line-height: 1.25;
+  text-align: center;
   text-transform: uppercase;
   background: linear-gradient(90deg, #FFECAA, #FFF7D6, #FFD54A);
   -webkit-background-clip: text;
@@ -1083,6 +1028,7 @@ header img:hover {
   text-shadow:
     0 0 10px rgba(255,215,100,0.8),
     0 0 18px rgba(0,0,0,0.9);
+  animation: textGlow 2.5s ease-in-out infinite;
 }
 
 /* étoile au centre */
@@ -1534,11 +1480,11 @@ header img:hover {
     <section id="tab-contact" class="tab-panel">
   <!-- HERO "NOUS CONTACTER" -->
   <div class="contact-hero">
-    <h2 id="contactHeroTitle" class="contact-hero-title">NOUS<br>CONTACTER</h2>
+    <h2 id="contactHeroTitle" class="contact-hero-title">
+      NOUS<br>CONTACTER
+    </h2>
     <div class="contact-hero-star">✦</div>
-    <p class="contact-hero-subtitle">
-      Choisis ta plateforme préférée pour nous écrire.
-    </p>
+    <p class="contact-hero-tagline">Un message, un devis, une idée ? On vous répond vite ✨</p>
   </div>
 
   <!-- BLOC 1 : CONTACT -->
