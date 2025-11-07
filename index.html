@@ -2117,16 +2117,22 @@ document.addEventListener('DOMContentLoaded', function () {
   var titleEl = document.getElementById('contactHeroTitle');
   if (!titleEl) return;
 
-  var txt = titleEl.textContent;   // <== on garde TOUT, y compris l’espace
+  var txt = titleEl.textContent.trim();
   titleEl.textContent = "";
-
   txt.split("").forEach(function (ch, idx) {
     var span = document.createElement('span');
     span.textContent = ch;
+    span.style.animation = "letterPop 0.4s forwards";
     span.style.animationDelay = (0.05 * idx) + "s";
     titleEl.appendChild(span);
   });
 });
+
+@keyframes letterPop {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+</script>
 </script>
 </body>
 </html>
