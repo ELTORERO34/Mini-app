@@ -355,50 +355,50 @@ main {
   overflow: hidden;
 }
 
-/* === CONTOUR DORÉ AUTOUR DE LA CARTE === */
+/* === CONTOUR DORÉ ANIMÉ AUTOUR DE LA CARTE === */
 .product-thumb::before{
   content: "";
   position: absolute;
-  inset: 0;                                /* colle au bord de la carte */
+  inset: -2px;                          /* déborde un peu à l’extérieur */
   border-radius: inherit;
-  border: 2px solid rgba(255,215,100,0.9); /* bord doré bien visible   */
+  border: 2px solid rgba(255,215,100,0.9);
+  pointer-events: none;
+  z-index: 2;
   box-shadow:
-    0 0 8px rgba(255,215,100,0.6),
-    0 0 18px rgba(0,0,0,0.8);
-  pointer-events: none;                    /* ne bloque jamais les clics */
-  z-index: 2;                              /* au-dessus du fond, sous le contenu */
-  animation: cardBorderGlow 3s ease-in-out infinite;
+    0 0 12px rgba(255,215,100,0.8),
+    0 0 26px rgba(0,0,0,0.9);
+  opacity: 1;
+  animation: cardBorderGlow 1.8s ease-in-out infinite;
 }
 
 /* petit effet de “pression” quand on clique la carte */
-.product-thumb{
-  transition: transform .18s ease-out, box-shadow .18s ease-out;
-}
-
 .product-thumb:active{
-  transform: translateY(2px) scale(0.98);
-  box-shadow: 0 3px 10px rgba(0,0,0,0.6);
+  transform: translateY(2px) scale(0.97);
+  box-shadow: 0 3px 14px rgba(0,0,0,0.7);
 }
 
-/* === Animation de respiration du cadre doré === */
+/* === Animation très visible du cadre doré === */
 @keyframes cardBorderGlow{
   0%{
-    opacity: 0.9;
+    opacity: 0.6;
     box-shadow:
-      0 0 6px rgba(255,215,100,0.4),
-      0 0 14px rgba(0,0,0,0.8);
+      0 0 6px  rgba(255,215,100,0.4),
+      0 0 16px rgba(0,0,0,0.8);
+    transform: scale(0.99);
   }
-  50%{
+  40%{
     opacity: 1;
     box-shadow:
-      0 0 14px rgba(255,215,100,0.9),
-      0 0 22px rgba(0,0,0,0.9);
+      0 0 22px rgba(255,215,100,1),
+      0 0 30px rgba(0,0,0,1);
+    transform: scale(1.02);
   }
   100%{
-    opacity: 0.9;
+    opacity: 0.6;
     box-shadow:
-      0 0 6px rgba(255,215,100,0.4),
-      0 0 14px rgba(0,0,0,0.8);
+      0 0 6px  rgba(255,215,100,0.4),
+      0 0 16px rgba(0,0,0,0.8);
+    transform: scale(0.99);
   }
 }
 
