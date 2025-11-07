@@ -355,7 +355,7 @@ main {
   overflow: hidden;
 }
 
-/* contour doré autour de la carte */
+/* === CONTOUR DORÉ AUTOUR DE LA CARTE === */
 .product-thumb::before{
   content: "";
   position: absolute;
@@ -366,17 +366,21 @@ main {
     0 0 8px rgba(255,215,100,0.6),
     0 0 18px rgba(0,0,0,0.8);
   pointer-events: none;                    /* ne bloque jamais les clics */
-  z-index: 2;                               /* au-dessus du fond, sous le contenu */
+  z-index: 2;                              /* au-dessus du fond, sous le contenu */
   animation: cardBorderGlow 3s ease-in-out infinite;
+}
+
+/* petit effet de “pression” quand on clique la carte */
+.product-thumb{
   transition: transform .18s ease-out, box-shadow .18s ease-out;
 }
 
-/* petit “press” quand on clique la carte */
 .product-thumb:active{
   transform: translateY(2px) scale(0.98);
   box-shadow: 0 3px 10px rgba(0,0,0,0.6);
 }
 
+/* === Animation de respiration du cadre doré === */
 @keyframes cardBorderGlow{
   0%{
     opacity: 0.9;
