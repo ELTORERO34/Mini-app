@@ -99,8 +99,9 @@ body::after{
   }
 }
 
-/* === ANIMATION LETTRE PAR LETTRE === */
+/* Texte principal doré sans flou */
 .contact-hero-title {
+  position: relative;
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
@@ -111,7 +112,10 @@ body::after{
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 8px rgba(255,215,100,0.5);
-  animation: textGlow 3s ease-in-out infinite alternate;
+  filter: none !important;              /* ✅ désactive le flou hérité */
+  backdrop-filter: none !important;     /* ✅ supprime toute propagation de flou */
+  isolation: isolate;                   /* ✅ isole du fond */
+  z-index: 2;
 }
 
 /* animation du rayonnement du texte */
@@ -126,17 +130,39 @@ body::after{
   opacity: 0;
   transform: translateY(10px);
   animation: letterPop 0.5s forwards;
+  filter: none; /* sécurité anti-flou */
 }
 
 @keyframes letterPop {
   0% {
     opacity: 0;
     transform: translateY(10px);
+    text-shadow: none;
   }
   100% {
     opacity: 1;
     transform: translateY(0);
+    text-shadow: 0 0 12px rgba(255,215,100,0.7);
   }
+}
+
+.contact-hero-title::after {
+  content: "";
+  position: absolute;
+  top: 0; left: -50%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(120deg,
+    transparent 20%, rgba(255,230,120,0.6) 50%, transparent 80%);
+  animation: shineMove 5s infinite linear;
+  z-index: 1;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+@keyframes shineMove {
+  0% { left: -50%; }
+  100% { left: 100%; }
 }
 
     /* ==== SPLASH NOIR / DORÉ ==== */
