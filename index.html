@@ -2180,32 +2180,6 @@ document.addEventListener('DOMContentLoaded', function(){
   }, 2500); // 👉 tu peux mettre 3000 si tu veux que ça reste plus longtemps
 });
 </script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  var titleEl = document.getElementById('contactHeroTitle');
-  if (!titleEl) return;
-
-  var txt = titleEl.textContent.trim();
-  titleEl.textContent = "";
-
-  var delayIndex = 0;
-
-  txt.split("").forEach(function (ch) {
-    if (ch === "|") {
-      // ✅ retour à la ligne quand il rencontre |
-      var br = document.createElement("br");
-      titleEl.appendChild(br);
-      return;
-    }
-    var span = document.createElement("span");
-    span.textContent = ch;
-    span.style.animationDelay = (0.05 * delayIndex) + "s";
-    delayIndex++;
-    titleEl.appendChild(span);
-  });
-});
-</script>
 </script>
 </body>
 </html>
