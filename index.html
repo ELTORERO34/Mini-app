@@ -1108,6 +1108,31 @@ header img:hover {
   line-height: 1.15;
   word-break: break-word;
 }
+
+/* Reflet doré global qui balaye "NOUS CONTACTER" */
+.contact-hero-title::after{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 200, 0.75) 50%,
+    transparent 100%
+  );
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: heroShine 4.5s linear infinite;
+}
+
+/* Animation du reflet */
+@keyframes heroShine{
+  0%   { left: -150%; }
+  100% { left: 150%; }
+}
   </style>
 </head>
 <body>
