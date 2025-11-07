@@ -2191,34 +2191,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var txt = titleEl.textContent.trim();
   titleEl.textContent = "";
-  txt.split("").forEach(function (ch, idx) {
-    var span = document.createElement('span');
+
+  var delayIndex = 0;
+
+  txt.split("").forEach(function (ch) {
+    if (ch === "|") {
+      // ✅ retour à la ligne quand il rencontre |
+      var br = document.createElement("br");
+      titleEl.appendChild(br);
+      return;
+    }
+    var span = document.createElement("span");
     span.textContent = ch;
-    span.style.animation = "letterPop 0.4s forwards";
-    span.style.animationDelay = (0.05 * idx) + "s";
+    span.style.animationDelay = (0.05 * delayIndex) + "s";
+    delayIndex++;
     titleEl.appendChild(span);
-  });
-});
-
-@keyframes letterPop {
-  0% { opacity: 0; transform: translateY(10px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  const title = document.querySelector('.contact-hero-title');
-  if (!title) return;
-
-  const text = title.textContent.trim();
-  title.innerHTML = '';
-
-  [...text].forEach((char, i) => {
-    const span = document.createElement('span');
-    span.textContent = char;
-    span.style.setProperty('--i', i);
-    title.appendChild(span);
   });
 });
 </script>
