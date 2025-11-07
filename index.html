@@ -1078,6 +1078,25 @@ header img:hover {
     font-size: 2.2rem;
   }
 }
+
+/* === Reflet doré animé sur chaque lettre du titre === */
+.contact-hero-title span {
+  display: inline-block;
+  position: relative;
+  background: linear-gradient(90deg, #FFD54A 0%, #FFF6C3 50%, #FFD54A 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: goldSweep 2.8s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.15s);
+}
+
+/* Animation du balayage doré */
+@keyframes goldSweep {
+  0%   { background-position: 200% 0; opacity: 0.8; }
+  50%  { background-position: 0% 0; opacity: 1; }
+  100% { background-position: -200% 0; opacity: 0.8; }
+}
   </style>
 </head>
 <body>
@@ -2173,6 +2192,23 @@ document.addEventListener('DOMContentLoaded', function () {
   0% { opacity: 0; transform: translateY(10px); }
   100% { opacity: 1; transform: translateY(0); }
 }
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const title = document.querySelector('.contact-hero-title');
+  if (!title) return;
+
+  const text = title.textContent.trim();
+  title.innerHTML = '';
+
+  [...text].forEach((char, i) => {
+    const span = document.createElement('span');
+    span.textContent = char;
+    span.style.setProperty('--i', i);
+    title.appendChild(span);
+  });
+});
 </script>
 </script>
 </body>
