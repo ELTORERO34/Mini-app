@@ -950,30 +950,46 @@ header img:hover {
   z-index: 0;
 }
 
-/* --- TITRE PRINCIPAL AVEC ANIMATION DORÉE --- */
-.contact-hero-title {
+/* --- TITRE HERO SANS GROSSE BANDE, GLOW DORÉ DOUX --- */
+.contact-hero-title{
   display: inline-block;
-  font-size: 3.2rem;
+  font-size: 2.4rem;            /* tu peux monter à 2.6 si tu veux plus gros */
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   line-height: 1.1;
+  text-align: center;
+
+  /* dégradé doré fixe */
   background: linear-gradient(270deg,
     #FFFBEA,
     #FFD766,
     #FFB300,
     #FFFBEA);
-  background-size: 400% 400%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+
+  /* glow léger */
   text-shadow:
-    0 0 12px rgba(255,215,100,0.8),
-    0 0 24px rgba(255,215,100,0.4);
-  animation: goldShine 6s ease-in-out infinite, heroTextGlow 3s ease-in-out infinite alternate;
-  position: relative;
-  z-index: 5;
-  isolation: isolate;
-  margin-bottom: 2px;
+    0 0 10px rgba(255,215,100,0.7),
+    0 0 20px rgba(0,0,0,0.8);
+
+  /* petite respiration du glow */
+  animation: heroTextGlow 3s ease-in-out infinite alternate;
+}
+
+/* animation de glow douce */
+@keyframes heroTextGlow{
+  0%{
+    text-shadow:
+      0 0 8px rgba(255,215,100,0.6),
+      0 0 16px rgba(0,0,0,0.7);
+  }
+  100%{
+    text-shadow:
+      0 0 16px rgba(255,215,100,1),
+      0 0 26px rgba(0,0,0,0.9);
+  }
 }
 
 /* --- ÉTOILE DORÉE --- */
@@ -985,6 +1001,29 @@ header img:hover {
     0 0 14px rgba(255,215,100,0.9),
     0 0 28px rgba(255,215,100,0.5);
   animation: starFloat 2.6s ease-in-out infinite;
+}
+
+/* Colis qui rebondit pour la page Suivi */
+.contact-hero-parcel{
+  font-size: 2.6rem;  /* plus gros que l’étoile */
+  margin: 4px 0 6px;
+  text-shadow:
+    0 0 10px rgba(255,215,100,0.8),
+    0 0 22px rgba(0,0,0,0.9);
+  animation: parcelBounce 1.8s ease-in-out infinite;
+}
+
+/* animation de rebond */
+@keyframes parcelBounce{
+  0%,100%{
+    transform: translateY(0) scale(1);
+  }
+  30%{
+    transform: translateY(-6px) scale(1.05);
+  }
+  60%{
+    transform: translateY(2px) scale(0.98);
+  }
 }
 
 /* sous-titre bien lisible */
@@ -1107,31 +1146,6 @@ header img:hover {
   white-space: normal !important; /* ✅ autorise la coupure */
   line-height: 1.15;
   word-break: break-word;
-}
-
-/* Reflet doré global qui balaye "NOUS CONTACTER" */
-.contact-hero-title::after{
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -150%;
-  width: 60%;
-  height: 100%;
-  background: linear-gradient(
-    120deg,
-    transparent 0%,
-    rgba(255, 255, 200, 0.75) 50%,
-    transparent 100%
-  );
-  mix-blend-mode: screen;
-  pointer-events: none;
-  animation: heroShine 4.5s linear infinite;
-}
-
-/* Animation du reflet */
-@keyframes heroShine{
-  0%   { left: -150%; }
-  100% { left: 150%; }
 }
   </style>
 </head>
@@ -1516,7 +1530,7 @@ header img:hover {
   <!-- HERO SUIVI COLIS -->
   <div class="contact-hero">
     <h2 class="contact-hero-title">SUIVI COLIS</h2>
-    <div class="contact-hero-star">✦</div>
+    <div class="contact-hero-parcel">📦</div>
     <p class="contact-hero-subtitle">
       Suis ton colis facilement grâce à TrackBot sur Telegram.
     </p>
