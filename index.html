@@ -1268,54 +1268,50 @@ header img:hover {
   color: var(--muted);
 }
 
-/* === BADGES PRODUIT (populaire / nouveauté / premium) === */
+/* === BADGES PRODUIT VISIBLES ET EMPILABLES === */
 .product-badge {
   position: absolute;
   top: 10px;
   left: 10px;
-  background: rgba(255,215,100,0.15);
-  border: 1px solid rgba(255,215,100,0.65);
-  color: #ffd766;
-  font-weight: 600;
+  background: rgba(0, 0, 0, 0.55); /* fond sombre transparent */
+  border: 1px solid rgba(255,215,100,0.8);
+  color: #FFD766;
+  font-weight: 700;
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.03em;
-  padding: 4px 8px;
+  padding: 4px 10px 5px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(255,215,100,0.25);
-  animation: badgePulse 3s ease-in-out infinite;
+  box-shadow: 0 0 8px rgba(0,0,0,0.4);
   z-index: 3;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: transform 0.2s ease-out, opacity 0.2s ease-out;
 }
 
-/* variation "gold" */
+/* Si plusieurs badges : espace vertical automatique */
+.product-badge:nth-of-type(2) { top: 36px; }
+.product-badge:nth-of-type(3) { top: 62px; }
+
+/* Or variations */
 .product-badge.gold {
-  background: linear-gradient(90deg, rgba(255,215,100,0.25), rgba(255,230,150,0.35));
-  border-color: rgba(255,230,150,0.8);
-  color: #fff7c4;
+  background: rgba(255,215,100,0.15);
+  border: 1px solid rgba(255,215,100,0.9);
+  color: #FFF8C4;
 }
 
-/* variation "new" */
 .product-badge.new {
-  background: rgba(255,255,255,0.1);
-  border-color: rgba(255,255,255,0.3);
-  color: #fff;
-  text-shadow: 0 0 8px rgba(255,255,255,0.6);
-  animation: badgeGlow 3s ease-in-out infinite alternate;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.4);
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(255,255,255,0.5);
 }
 
-/* Animation douce du badge */
-@keyframes badgePulse {
-  0%,100% { transform: scale(1); opacity: 1; }
-  50%     { transform: scale(1.08); opacity: 0.95; }
+/* Animation douce */
+.product-badge:hover {
+  transform: scale(1.05);
+  opacity: 1;
 }
-
-/* Animation lumineuse pour les nouveautés */
-@keyframes badgeGlow {
-  0%   { box-shadow: 0 0 6px rgba(255,255,255,0.2); }
-  50%  { box-shadow: 0 0 14px rgba(255,255,255,0.6); }
-  100% { box-shadow: 0 0 6px rgba(255,255,255,0.2); }
-}
-
   </style>
 </head>
 <body>
