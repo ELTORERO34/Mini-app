@@ -1131,15 +1131,30 @@ header img:hover {
   100% { background-position: -200% 0; opacity: 0.8; }
 }
 
-/* Force le retour à la ligne du titre "NOUS CONTACTER" */
-.contact-hero-title {
-  display: flex;
-  flex-wrap: wrap;              /* ✅ permet d’aller à la ligne */
-  justify-content: center;      /* ✅ centre chaque mot */
-  text-align: center;
-  white-space: normal !important; /* ✅ autorise la coupure */
-  line-height: 1.15;
-  word-break: break-word;
+/* === COMPRESSION DU HERO CONTACT (override) === */
+#tab-contact .contact-hero {
+  margin: 4px 12px 4px;     /* moins d’air autour */
+  padding: 10px 16px 12px;  /* moins de hauteur dedans */
+  border-radius: 20px;
+}
+
+#tab-contact .contact-hero-title {
+  font-size: 2.2rem;        /* un peu plus petit = bloc moins haut */
+  line-height: 1.05;
+}
+
+#tab-contact .contact-hero-star {
+  font-size: 2.4rem;
+  margin: 2px 0 0;          /* colle un peu plus au texte */
+}
+
+#tab-contact .contact-hero-subtitle {
+  margin-top: 4px;          /* réduit l’espace sous l’étoile */
+}
+
+/* réduit l’espace entre le hero et le 1er bloc "Contact" */
+#tab-contact .info-card {
+  margin-top: 10px;
 }
   </style>
 </head>
