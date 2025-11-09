@@ -1238,19 +1238,20 @@ header img:hover {
   transform: scale(0.95);
 }
 
-/* Bulle compteur */
-.cart-count {
+/* Bulle compteur sur le panier */
+.cart-count{
   position: absolute;
   top: 6px;
   right: 8px;
+  min-width: 18px;
+  padding: 2px 5px;
+  border-radius: 999px;
   background: #ffd766;
   color: #000;
+  font-size: 0.75rem;
   font-weight: 700;
-  font-size: 0.8rem;
-  border-radius: 999px;
-  padding: 2px 6px;
+  text-align: center;
   box-shadow: 0 0 6px rgba(255,215,100,0.7);
-  animation: cartPulse 2s ease-in-out infinite;
 }
 
 @keyframes cartPulse {
@@ -1722,9 +1723,9 @@ header img:hover {
 </section>
 
   <!-- BOUTON PANIER FLOTTANT -->
-  <button id="cartFab" class="cart-fab" onclick="openCart()">
+  <button id="cartFab" class="cart-fab" type="button" onclick="openCart()">
   🛒
-  <span id="cartCount" class="cart-count">0</span>
+  <span id="cartCount" class="cart-count" style="display:none;"></span>
 </button>
 
 <!-- PAGE PANIER FULLSCREEN -->
@@ -2257,15 +2258,19 @@ function renderCart(){
       box.appendChild(row);
     });
 
-    // total déjà utilisé par sendQuote
-    var totalEl = document.getElementById('cartTotal');
-    if (totalEl) totalEl.textContent = euro(total);
+    // Total général
+var totalEl = document.getElementById('cartTotal');
+if (totalEl) totalEl.textContent = euro(total);
 
-    // compteur d’articles (toutes quantités confondues)
-    var countEl = document.getElementById('cartCount');
-    if (countEl) countEl.textContent = CART.length;
-  }catch(e){
-    console.error(e);
+// Compteur d’articles distincts dans le panier
+var countEl = document.getElementById('cartCount');
+if (countEl){
+  var distinct = CART.length;      // 1 pour pochons, 1 pour tableaux, etc
+  if (distinct > 0){
+    countEl.style.display = 'inline-block';
+    countEl.textContent = distinct;
+  } else {
+    countEl.style.display = 'none'; // cache la bulle si 0 produit
   }
 }
 
