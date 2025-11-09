@@ -752,29 +752,46 @@ main {
   100% { opacity: 0; transform: translateX(-50%) scaleX(1.3); }
 }
 
-    /* ===== BOUTON PANIER ===== */
-    .cart-fab {
-      position: fixed;
-      right: 18px;
-      bottom: 120px; /* juste au-dessus du menu bas */
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      border: 1px solid rgba(255,215,102,0.9);
-      background: radial-gradient(circle at 30% 20%, rgba(255,215,102,0.15), transparent 60%),
-                  linear-gradient(180deg,#151515,#050505);
-      box-shadow: 0 10px 26px rgba(0,0,0,0.55);
-      color: #fefefe;
-      font-size: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 310;
-    }
+    /* Bouton panier flottant – noir + contour doré */
+.cart-fab{
+  position: fixed;
+  right: 18px;
+  bottom: 84px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,215,102,0.9);
+  background: #050505;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.55);
+  color: #fefefe;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 310;
+}
+.cart-fab:active{
+  transform: translateY(1px);
+}
 
-    .cart-fab:active {
-      transform: translateY(1px);
-    }
+/* petit badge de compteur sur le panier */
+.cart-badge{
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: #ffd766;
+  color: #000;
+  font-size: 10px;
+  font-weight: 700;
+  display: none;              /* caché tant qu’il n’y a rien */
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 8px rgba(0,0,0,0.8);
+}
 
 /* ==== PAGE PANIER FULLSCREEN ==== */
 .cart-page{
@@ -1858,17 +1875,6 @@ header img:hover {
       el.value = v;
     }
 
-    /* ==== PANIER ==== */
-    var CART = [];
-
-    function euro(n){
-      try {
-        return new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR"}).format(n||0);
-      } catch(e){
-        return (n||0).toFixed(2) + " €";
-      }
-    }
-
     // P1 : Pochons (sur devis)
     function addP1(){
   try{
@@ -2148,9 +2154,18 @@ function addP7(){
   }catch(e){
     console.error(e);
   }
+      /* ==== PANIER ==== */
+var CART = [];
+
+function euro(n){
+  try {
+    return new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR"}).format(n||0);
+  } catch(e){
+    return (n||0).toFixed(2) + " €";
+  }
 }
 
-    function openCart(){
+function openCart(){
   renderCart();
   var modal = document.getElementById('cartModal');
   if (modal){
@@ -2171,6 +2186,12 @@ function closeCart(){
   if (fab) fab.style.display = 'block';  // on remet le bouton flottant
 }
 
+function clearCart(){
+  CART = [];
+  renderCart();
+}
+
+/* Rendu du panier + compteur sur le bouton */
 function renderCart(){
   try{
     var box   = document.getElementById('cartItems');
@@ -2258,26 +2279,24 @@ function renderCart(){
       box.appendChild(row);
     });
 
-    // Total général
-var totalEl = document.getElementById('cartTotal');
-if (totalEl) totalEl.textContent = euro(total);
+    // total déjà utilisé par sendQuote
+    var totalEl = document.getElementById('cartTotal');
+    if (totalEl) totalEl.textContent = euro(total);
 
-// Compteur d’articles distincts dans le panier
-var countEl = document.getElementById('cartCount');
-if (countEl){
-  var distinct = CART.length;      // 1 pour pochons, 1 pour tableaux, etc
-  if (distinct > 0){
-    countEl.style.display = 'inline-block';
-    countEl.textContent = distinct;
-  } else {
-    countEl.style.display = 'none'; // cache la bulle si 0 produit
+    // 🔢 compteur d’articles sur le bouton panier (sans montrer 0)
+    var countEl = document.getElementById('cartCount');
+    if (countEl){
+      if (count > 0){
+        countEl.textContent = count;
+        countEl.style.display = 'flex';
+      } else {
+        countEl.style.display = 'none';
+      }
+    }
+  }catch(e){
+    console.error(e);
   }
 }
-
-    function clearCart(){
-      CART = [];
-      renderCart();
-    }
 
     /* ==== ENVOI DU DEVIS VERS @pssv2 ==== */
     function sendQuote(){
