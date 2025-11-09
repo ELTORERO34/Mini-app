@@ -1319,6 +1319,27 @@ header img:hover {
   transform: scale(1.05);
   opacity: 1;
 }
+
+/* Bulle dorée qui vole vers le panier */
+.cart-flyer{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 400;
+  background: radial-gradient(circle at 30% 30%, #fff8d0, #ffd766, #d4af37);
+  box-shadow:
+    0 0 10px rgba(255,215,100,0.9),
+    0 0 18px rgba(0,0,0,0.9);
+  transform: translate(0,0) scale(1);
+  opacity: 1;
+  transition:
+    transform 0.55s cubic-bezier(0.18,0.89,0.32,1.28),
+    opacity   0.55s ease-out;
+}
   </style>
 </head>
 <body>
@@ -1482,7 +1503,7 @@ header img:hover {
             <button type="button" onclick="dec('p1_qty')">−</button>
             <input id="p1_qty" type="number" min="1" value="1" />
             <button type="button" onclick="inc('p1_qty')">+</button>
-            <button class="btn primary" type="button" onclick="addP1()">Ajouter</button>
+            <button class="btn primary" type="button" onclick="addP1(this)">Ajouter</button>
           </div>
         </div>
       </div>
@@ -1521,7 +1542,7 @@ header img:hover {
             <button type="button" onclick="dec('p2_qty')">−</button>
             <input id="p2_qty" type="number" min="1" value="1" />
             <button type="button" onclick="inc('p2_qty')">+</button>
-            <button class="btn primary" type="button" onclick="addP2()">Ajouter</button>
+            <button class="btn primary" type="button" onclick="addP2(this)">Ajouter</button>
           </div>
         </div>
       </div>
@@ -1551,7 +1572,7 @@ header img:hover {
             <button type="button" onclick="dec('p3_qty')">−</button>
             <input id="p3_qty" type="number" min="1" value="1" />
             <button type="button" onclick="inc('p3_qty')">+</button>
-            <button class="btn primary" type="button" onclick="addP3()">Ajouter</button>
+            <button class="btn primary" type="button" onclick="addP3(this)">Ajouter</button>
           </div>
         </div>
       </div>
@@ -1580,7 +1601,7 @@ header img:hover {
             <button type="button" onclick="dec('p4_qty')">−</button>
             <input id="p4_qty" type="number" min="1" value="1" />
             <button type="button" onclick="inc('p4_qty')">+</button>
-            <button class="btn primary" type="button" onclick="addP4()">Ajouter</button>
+            <button class="btn primary" type="button" onclick="addP4(this)">Ajouter</button>
           </div>
         </div>
       </div>
@@ -1604,7 +1625,7 @@ header img:hover {
             <button type="button" onclick="dec('p5_qty')">−</button>
             <input id="p5_qty" type="number" min="1" value="1" />
             <button type="button" onclick="inc('p5_qty')">+</button>
-            <button class="btn primary" type="button" onclick="addP5()">Ajouter</button>
+            <button class="btn primary" type="button" onclick="addP5(this)">Ajouter</button>
           </div>
         </div>
       </div>
@@ -1634,7 +1655,7 @@ header img:hover {
             <button type="button" onclick="dec('p6_qty')">−</button>
             <input id="p6_qty" type="number" min="1" value="1" />
             <button type="button" onclick="inc('p6_qty')">+</button>
-            <button class="btn primary" type="button" onclick="addP6()">Ajouter</button>
+            <button class="btn primary" type="button" onclick="addP6(this)">Ajouter</button>
           </div>
         </div>
       </div>
@@ -1682,7 +1703,7 @@ header img:hover {
       <button type="button" onclick="dec('p7_qty')">−</button>
       <input id="p7_qty" type="number" min="1" value="1" />
       <button type="button" onclick="inc('p7_qty')">+</button>
-      <button class="btn primary" type="button" onclick="addP7()">Ajouter</button>
+      <button class="btn primary" type="button" onclick="addP7(this)">Ajouter</button>
     </div>
   </div>
 </div>
@@ -1943,6 +1964,49 @@ header img:hover {
       if (v < 1) v = 1;
       el.value = v;
     }
+    
+    /* Petite bulle qui vole vers le bouton panier */
+function flyToCart(fromBtn){
+  try{
+    var fab = document.getElementById('cartFab');
+    if (!fab || !fromBtn) return;
+
+    // position départ (bouton "Ajouter")
+    var r1 = fromBtn.getBoundingClientRect();
+    var startX = r1.left + r1.width  / 2;
+    var startY = r1.top  + r1.height / 2;
+
+    // position arrivée (bouton panier flottant)
+    var r2 = fab.getBoundingClientRect();
+    var endX = r2.left + r2.width  / 2;
+    var endY = r2.top  + r2.height / 2;
+
+    var dx = endX - startX;
+    var dy = endY - startY;
+
+    // création de la bulle
+    var dot = document.createElement('div');
+    dot.className = 'cart-flyer';
+    dot.style.left = startX + 'px';
+    dot.style.top  = startY + 'px';
+    document.body.appendChild(dot);
+
+    // on lance l’animation au frame suivant
+    requestAnimationFrame(function(){
+      dot.style.transform = 'translate('+dx+'px,'+dy+'px) scale(0.3)';
+      dot.style.opacity   = '0';
+    });
+
+    // on nettoie après l’anim
+    setTimeout(function(){
+      if (dot && dot.parentNode){
+        dot.parentNode.removeChild(dot);
+      }
+    }, 650);
+  }catch(e){
+    console.error(e);
+  }
+}
 
     /* ==== PANIER ==== */
     var CART = [];
@@ -2000,6 +2064,7 @@ header img:hover {
 
     renderCart();
     toast('Pochons ajoutés');
+    flyToCart(btn);
   }catch(e){
     console.error(e);
   }
@@ -2040,6 +2105,7 @@ header img:hover {
 
         renderCart();
         toast('Tableaux ajoutés');
+        flyToCart(btn);
       }catch(e){
         console.error(e);
       }
@@ -2078,6 +2144,7 @@ header img:hover {
 
         renderCart();
         toast('Cartes ajoutées');
+        flyToCart(btn);
       }catch(e){
         console.error(e);
       }
@@ -2116,6 +2183,7 @@ header img:hover {
 
         renderCart();
         toast('Étiquettes ajoutées');
+        flyToCart(btn);
       }catch(e){
         console.error(e);
       }
@@ -2148,6 +2216,7 @@ header img:hover {
 
         renderCart();
         toast('Scelleuse ajoutée');
+        flyToCart(btn);
       }catch(e){
         console.error(e);
       }
@@ -2188,6 +2257,7 @@ header img:hover {
 
         renderCart();
         toast('Fusées ajoutées');
+        flyToCart(btn);
       }catch(e){
         console.error(e);
       }
@@ -2234,6 +2304,7 @@ function addP7(){
 
     renderCart();
     toast('Design ajouté au panier');
+    flyToCart(btn);
   }catch(e){
     console.error(e);
   }
