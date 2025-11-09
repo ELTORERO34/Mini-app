@@ -886,7 +886,6 @@ main {
 }
 
 /* ===== ANIMATIONS FLUIDES ===== */
-
 /* Effet d’apparition douce des blocs */
 .info-card, .product-card {
   opacity: 0;
@@ -924,8 +923,8 @@ header img:hover {
 
 /* ===== HERO "NOUS CONTACTER" ===== */
 .contact-hero {
-  margin: 4px 12px 8px;     /* espace extérieur réduit */
-  padding: 10px 16px 12px;   /* espace intérieur réduit */
+  margin: 4px 12px 4px;        /* espace extérieur réduit */
+  padding: 10px 16px 10px;     /* espace intérieur réduit */
   border-radius: 22px;
   background:
     radial-gradient(circle at 0% 0%, rgba(255,215,100,0.18), transparent 60%),
@@ -945,7 +944,7 @@ header img:hover {
   position: absolute;
   inset: -40%;
   background: radial-gradient(circle, rgba(255,215,100,0.22), transparent 65%);
-  opacity: 0.0;
+  opacity: 0;
   animation: heroGlow 5s ease-in-out infinite;
   z-index: 0;
 }
@@ -970,27 +969,37 @@ header img:hover {
     0 0 10px rgba(255,215,100,0.7),
     0 0 20px rgba(0,0,0,0.8);
   animation: heroTextGlow 3s ease-in-out infinite alternate;
+  position: relative;
+  z-index: 1;
 }
 
-/* animation de glow douce */
-@keyframes heroTextGlow{
-  0%{
-    text-shadow:
-      0 0 8px rgba(255,215,100,0.6),
-      0 0 16px rgba(0,0,0,0.7);
-  }
-  100%{
-    text-shadow:
-      0 0 16px rgba(255,215,100,1),
-      0 0 26px rgba(0,0,0,0.9);
-  }
+/* lettres animées une par une + reflet doré */
+.contact-hero-title span{
+  display: inline-block;
+  position: relative;
+  opacity: 0;
+  transform: translateY(10px);
+
+  background: linear-gradient(90deg, #FFD54A 0%, #FFF6C3 50%, #FFD54A 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* 2 animations : pop + balayage doré */
+  animation:
+    letterPop 0.5s forwards,
+    goldSweep 2.8s ease-in-out infinite;
+  /* premier délai = apparition lettre par lettre, deuxième = shift doré */
+  animation-delay:
+    0s,
+    calc(var(--i, 0) * 0.15s);
 }
 
 /* --- ÉTOILE DORÉE --- */
 .contact-hero-star {
-  font-size: 2,6rem;     /* ⭐ plus grande */
+  font-size: 2.6rem;      /* ✅ corrigé (2,6rem → 2.6rem) */
   color: #FFE066;
-  margin: 2px 0 0;   /* très peu d’espace autour */
+  margin: 2px 0 0;        /* très peu d’espace autour */
   text-shadow:
     0 0 14px rgba(255,215,100,0.9),
     0 0 28px rgba(255,215,100,0.5);
@@ -999,7 +1008,7 @@ header img:hover {
 
 /* Colis qui rebondit pour la page Suivi */
 .contact-hero-parcel{
-  font-size: 2.6rem;  /* plus gros que l’étoile */
+  font-size: 2.6rem;      /* plus gros que l’étoile */
   margin: 0 0 2px;
   text-shadow:
     0 0 10px rgba(255,215,100,0.8),
@@ -1020,7 +1029,7 @@ header img:hover {
   }
 }
 
-/* phrase du bas du HERO (pas celle tout en bas de la page) */
+/* phrase dans le bloc hero (sous l’étoile) */
 .contact-hero-subtitle{
   margin: 4px 0 0;      /* colle un peu plus au reste */
   font-size: 0.95rem;
@@ -1030,9 +1039,9 @@ header img:hover {
   z-index: 1;
 }
 
-/* phrase du bas */
+/* phrase du bas (celle que tu réutilises aussi en bas de la page) */
 .contact-hero-tagline{
-  margin: 24px 12px 18px;
+  margin: 18px 12px 14px;   /* un peu moins d’espace */
   text-align: center;
   font-size: 0.95rem;
   color: rgba(255,255,220,0.95);
@@ -1064,12 +1073,6 @@ header img:hover {
   50%     { opacity: 1; }
 }
 
-@keyframes goldShine {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
 @keyframes heroTextGlow {
   0% {
     text-shadow:
@@ -1083,14 +1086,6 @@ header img:hover {
   }
 }
 
-/* lettres animées une par une */
-.contact-hero-title span{
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(10px);
-  animation: letterPop 0.5s forwards;
-}
-
 @keyframes letterPop{
   0%{
     opacity: 0;
@@ -1102,54 +1097,32 @@ header img:hover {
   }
 }
 
-@media (max-width: 480px) {
-  .contact-hero-title {
-    font-size: 2.4rem;
-    letter-spacing: 2px;
-  }
-  .contact-hero-star {
-    font-size: 2.2rem;
-  }
-}
-
-/* === Reflet doré animé sur chaque lettre du titre === */
-.contact-hero-title span {
-  display: inline-block;
-  position: relative;
-  background: linear-gradient(90deg, #FFD54A 0%, #FFF6C3 50%, #FFD54A 100%);
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: goldSweep 2.8s ease-in-out infinite;
-  animation-delay: calc(var(--i) * 0.15s);
-}
-
-/* Animation du balayage doré */
+/* Animation du balayage doré sur les lettres */
 @keyframes goldSweep {
   0%   { background-position: 200% 0; opacity: 0.8; }
   50%  { background-position: 0% 0; opacity: 1; }
   100% { background-position: -200% 0; opacity: 0.8; }
 }
 
-/* === COMPRESSION DU HERO CONTACT (override) === */
+/* === COMPRESSION DU HERO CONTACT SPECIFIQUE À L’ONGLET CONTACT === */
 #tab-contact .contact-hero {
-  margin: 4px 12px 4px;     /* moins d’air autour */
-  padding: 10px 16px 12px;  /* moins de hauteur dedans */
+  margin: 4px 12px 4px;      /* moins d’air autour */
+  padding: 10px 16px 10px;   /* moins de hauteur dedans */
   border-radius: 20px;
 }
 
 #tab-contact .contact-hero-title {
-  font-size: 2.2rem;        /* un peu plus petit = bloc moins haut */
+  font-size: 2.2rem;         /* encore un tout petit peu plus compact */
   line-height: 1.05;
 }
 
 #tab-contact .contact-hero-star {
   font-size: 2.4rem;
-  margin: 2px 0 0;          /* colle un peu plus au texte */
+  margin: 2px 0 0;           /* colle un peu plus au texte */
 }
 
 #tab-contact .contact-hero-subtitle {
-  margin-top: 4px;          /* réduit l’espace sous l’étoile */
+  margin-top: 4px;           /* réduit l’espace sous l’étoile */
 }
 
 /* réduit l’espace entre le hero et le 1er bloc "Contact" */
