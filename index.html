@@ -1511,6 +1511,34 @@ header img:hover {
         Le numéro de suivi est communiqué dès l’envoi.</p>
       </div>
     </section>
+    
+    <section id="tab-canal" class="tab-panel">
+  <!-- HERO SUIVI COLIS -->
+  <div class="contact-hero">
+    <h2 class="contact-hero-title">SUIVI COLIS</h2>
+    <div class="contact-hero-star">✦</div>
+    <p class="contact-hero-subtitle">
+      Suis ton colis facilement grâce à TrackBot sur Telegram.
+    </p>
+  </div>
+
+  <!-- BLOC SUIVI / TRACKBOT -->
+  <div class="info-card">
+    <h2>Suivi de ta commande</h2>
+    <p>
+      Une fois ton colis expédié, tu reçois un numéro de suivi.<br>
+      Clique sur le bouton ci-dessous pour ouvrir TrackBot et entrer ton numéro.
+    </p>
+
+    <button class="btn primary" type="button" onclick="openTrackBot()">
+      Ouvrir TrackBot 📦
+    </button>
+
+    <p class="tracking-helper">
+      Astuce : garde ton numéro de suivi sous la main avant d’ouvrir TrackBot.
+    </p>
+  </div>
+</section>
 
     <section id="tab-contact" class="tab-panel">
   <!-- HERO "NOUS CONTACTER" -->
@@ -1588,8 +1616,8 @@ header img:hover {
       <span>Infos</span>
     </button>
     <button class="nav-btn" data-tab="canal" onclick="switchTab(this)">
-      <span class="icon">📣</span>
-      <span>Canal</span>
+      <span class="icon">📦</span>
+      <span>Suivi</span>
     </button>
     <button class="nav-btn" data-tab="contact" onclick="switchTab(this)">
       <span class="icon">✉️</span>
@@ -2165,6 +2193,16 @@ if (tg && tg.openTelegramLink){
         window.open(url,'_blank');
       }
     }
+    
+    function openTrackBot(){
+  var url = "https://t.me/TrackBot";
+
+  if (tg && tg.openTelegramLink){
+    tg.openTelegramLink(url);   // si lancé dans Telegram
+  } else {
+    window.open(url, "_blank"); // si ouvert dans un navigateur normal
+  }
+}
     
     function openLinksHub(){
   // 👉 Mets ici ton vrai lien Linktree
