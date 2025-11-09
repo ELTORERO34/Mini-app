@@ -924,8 +924,8 @@ header img:hover {
 
 /* ===== HERO "NOUS CONTACTER" ===== */
 .contact-hero {
-  margin: 8px 12px 14px;     /* espace extérieur réduit */
-  padding: 14px 16px 18px;   /* espace intérieur réduit */
+  margin: 4px 12px 8px;     /* espace extérieur réduit */
+  padding: 10px 16px 12px;   /* espace intérieur réduit */
   border-radius: 22px;
   background:
     radial-gradient(circle at 0% 0%, rgba(255,215,100,0.18), transparent 60%),
@@ -950,17 +950,15 @@ header img:hover {
   z-index: 0;
 }
 
-/* --- TITRE HERO SANS GROSSE BANDE, GLOW DORÉ DOUX --- */
+/* --- TITRE HERO --- */
 .contact-hero-title{
   display: inline-block;
-  font-size: 2.4rem;            /* tu peux monter à 2.6 si tu veux plus gros */
+  font-size: 2.3rem;          /* un chouïa plus petit donc moins haut */
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 2px;
   line-height: 1.1;
   text-align: center;
-
-  /* dégradé doré fixe */
   background: linear-gradient(270deg,
     #FFFBEA,
     #FFD766,
@@ -968,13 +966,9 @@ header img:hover {
     #FFFBEA);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-
-  /* glow léger */
   text-shadow:
     0 0 10px rgba(255,215,100,0.7),
     0 0 20px rgba(0,0,0,0.8);
-
-  /* petite respiration du glow */
   animation: heroTextGlow 3s ease-in-out infinite alternate;
 }
 
@@ -994,9 +988,9 @@ header img:hover {
 
 /* --- ÉTOILE DORÉE --- */
 .contact-hero-star {
-  font-size: 3rem;     /* ⭐ plus grande */
+  font-size: 2,6rem;     /* ⭐ plus grande */
   color: #FFE066;
-  margin: 0 0 4px;   /* très peu d’espace autour */
+  margin: 2px 0 0;   /* très peu d’espace autour */
   text-shadow:
     0 0 14px rgba(255,215,100,0.9),
     0 0 28px rgba(255,215,100,0.5);
@@ -1026,10 +1020,10 @@ header img:hover {
   }
 }
 
-/* sous-titre bien lisible */
+/* phrase du bas du HERO (pas celle tout en bas de la page) */
 .contact-hero-subtitle{
-  margin: 0;
-  font-size: 1rem;
+  margin: 4px 0 0;      /* colle un peu plus au reste */
+  font-size: 0.95rem;
   color: rgba(255,255,240,0.96);
   text-shadow: 0 0 6px rgba(0,0,0,0.85);
   position: relative;
