@@ -1862,7 +1862,7 @@ header img:hover {
     var taille     = document.getElementById('p1_taille').value;
     var finition   = document.getElementById('p1_finition').value;
     var impression = document.getElementById('p1_impression').value;
-    var impression = document.getElementById('p1_fenetre').value;
+    var fenetre = document.getElementById('p1_fenetre').value;
     var qty = parseInt(document.getElementById('p1_qty').value || '1',10);
     if (isNaN(qty) || qty < 1) qty = 1;
 
@@ -1874,6 +1874,7 @@ header img:hover {
           it.opts.quantitePack === pack &&
           it.opts.taille === taille &&
           it.opts.finition === finition &&
+          it.opts.fenetre === fenetre &&
           it.opts.impression === impression){
         it.qty += qty;
         merged = true;
@@ -1890,6 +1891,7 @@ header img:hover {
           quantitePack: pack,
           taille: taille,
           finition: finition,
+          fenetre: fenetre
           impression: impression,
           minPrice: 0.8
         }
