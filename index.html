@@ -1377,6 +1377,14 @@ header img:hover {
       <option>multi designs +40€</option>
     </select>
   </label>
+  
+  <label>
+    Fenêtre :
+    <select id="p1_fenetre">
+      <option>sans fenêtre</option>
+      <option>avec fenêtre +40€</option>
+    </select>
+  </label>
 </div>
           <div class="qty-row">
             <button type="button" onclick="dec('p1_qty')">−</button>
@@ -1854,6 +1862,7 @@ header img:hover {
     var taille     = document.getElementById('p1_taille').value;
     var finition   = document.getElementById('p1_finition').value;
     var impression = document.getElementById('p1_impression').value;
+    var impression = document.getElementById('p1_fenetre').value;
     var qty = parseInt(document.getElementById('p1_qty').value || '1',10);
     if (isNaN(qty) || qty < 1) qty = 1;
 
