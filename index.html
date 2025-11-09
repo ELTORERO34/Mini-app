@@ -1233,6 +1233,40 @@ header img:hover {
 #tab-contact .info-card {
   margin-top: 10px;
 }
+
+/* ==== Bloc suivi colis (champ + astuce) ==== */
+.tracking-input{
+  margin: 12px 0 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tracking-input label{
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.tracking-input input{
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #111;
+  color: #fff;
+  padding: 8px 10px;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.tracking-input input:focus{
+  border-color: rgba(255,215,100,0.8);
+  box-shadow: 0 0 10px rgba(255,215,100,0.4);
+}
+
+.tracking-helper{
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
   </style>
 </head>
 <body>
@@ -1637,15 +1671,23 @@ header img:hover {
     <h2>Suivi de ta commande</h2>
     <p>
       Une fois ton colis expédié, tu reçois un numéro de suivi.<br>
-      Clique sur le bouton ci-dessous pour ouvrir TrackBot et entrer ton numéro.
+      Entre-le ci-dessous puis clique sur le bouton pour ouvrir TrackBot.
     </p>
 
-    <button class="btn primary" type="button" onclick="openTrackBot()">
-      Ouvrir TrackBot 📦
-    </button>
+    <!-- Champ numéro de suivi -->
+    <div class="tracking-input">
+      <label for="trackingNumber">Numéro de suivi</label>
+      <input id="trackingNumber"
+             type="text"
+             placeholder="Ex : 6A1234567890" />
+    </div>
 
+    <button class="btn primary" type="button" onclick="openTrackBot()">
+      Suivre mon colis 📦
+    </button>
+    
     <p class="tracking-helper">
-      Astuce : garde ton numéro de suivi sous la main avant d’ouvrir TrackBot.
+      Astuce : si tu laisses le champ vide, TrackBot s’ouvre normalement et tu pourras saisir le numéro à la main.
     </p>
   </div>
 </section>
@@ -2379,12 +2421,22 @@ if (tg && tg.openTelegramLink){
     }
     
     function openTrackBot(){
-  var url = "https://t.me/TrackBot";
+  var baseUrl = "https://t.me/TrackBot";
+  var input   = document.getElementById('trackingNumber');
+  var url     = baseUrl;
+
+  if (input){
+    var num = input.value.trim();
+    if (num){
+      // On tente de passer le numéro en paramètre "start"
+      url = baseUrl + "?start=" + encodeURIComponent(num);
+    }
+  }
 
   if (tg && tg.openTelegramLink){
     tg.openTelegramLink(url);   // si lancé dans Telegram
   } else {
-    window.open(url, "_blank"); // si ouvert dans un navigateur normal
+    window.open(url, "_blank"); // si ouvert dans un navigateur classique
   }
 }
     
