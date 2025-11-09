@@ -775,6 +775,26 @@ main {
     .cart-fab:active {
       transform: translateY(1px);
     }
+    
+    /* petit badge compteur sur le bouton panier */
+.cart-badge{
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: #000;
+  border: 1px solid rgba(255,215,100,0.95);
+  color: #ffd766;
+  font-size: 0.7rem;
+  font-weight: 600;
+  display: none;              /* caché quand il n'y a rien */
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 8px rgba(0,0,0,0.7);
+}
 
     /* ==== PAGE PANIER FULLSCREEN ==== */
 
@@ -1678,7 +1698,10 @@ header img:hover {
 </section>
 
   <!-- BOUTON PANIER FLOTTANT -->
-  <button id="cartFab" class="cart-fab" type="button" onclick="openCart()">🛒</button>
+ <button id="cartFab" class="cart-fab" type="button" onclick="openCart()">
+  🛒
+  <span id="cartBadge" class="cart-badge"></span>
+</button>
 
   <!-- PAGE PANIER FULLSCREEN -->
 <div id="cartModal" class="cart-page hidden" aria-hidden="true">
@@ -2217,9 +2240,21 @@ function renderCart(){
     var totalEl = document.getElementById('cartTotal');
     if (totalEl) totalEl.textContent = euro(total);
 
-    // compteur d’articles (toutes quantités confondues)
+    // compteur d’articles (toutes quantités confondues) dans le récap du panier
     var countEl = document.getElementById('cartCount');
     if (countEl) countEl.textContent = count;
+
+    // 🔹 badge sur le bouton panier = nombre de lignes différentes
+    var badgeEl = document.getElementById('cartBadge');
+    if (badgeEl){
+      var distinctCount = CART.length;    // 2 lignes = 2, même si 2 tableaux + 1 carte
+      if (distinctCount > 0){
+        badgeEl.textContent = distinctCount;
+        badgeEl.style.display = 'flex';
+      } else {
+        badgeEl.style.display = 'none';   // pas de 0 moche
+      }
+    }
   }catch(e){
     console.error(e);
   }
@@ -2382,7 +2417,6 @@ document.addEventListener('DOMContentLoaded', function(){
     }, 600);
   }, 2500); // 👉 tu peux mettre 3000 si tu veux que ça reste plus longtemps
 });
-</script>
 </script>
 </body>
 </html>
