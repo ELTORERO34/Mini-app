@@ -1267,6 +1267,55 @@ header img:hover {
   font-size: 0.8rem;
   color: var(--muted);
 }
+
+/* === BADGES PRODUIT (populaire / nouveauté / premium) === */
+.product-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(255,215,100,0.15);
+  border: 1px solid rgba(255,215,100,0.65);
+  color: #ffd766;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 4px 8px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(255,215,100,0.25);
+  animation: badgePulse 3s ease-in-out infinite;
+  z-index: 3;
+}
+
+/* variation "gold" */
+.product-badge.gold {
+  background: linear-gradient(90deg, rgba(255,215,100,0.25), rgba(255,230,150,0.35));
+  border-color: rgba(255,230,150,0.8);
+  color: #fff7c4;
+}
+
+/* variation "new" */
+.product-badge.new {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.3);
+  color: #fff;
+  text-shadow: 0 0 8px rgba(255,255,255,0.6);
+  animation: badgeGlow 3s ease-in-out infinite alternate;
+}
+
+/* Animation douce du badge */
+@keyframes badgePulse {
+  0%,100% { transform: scale(1); opacity: 1; }
+  50%     { transform: scale(1.08); opacity: 0.95; }
+}
+
+/* Animation lumineuse pour les nouveautés */
+@keyframes badgeGlow {
+  0%   { box-shadow: 0 0 6px rgba(255,255,255,0.2); }
+  50%  { box-shadow: 0 0 14px rgba(255,255,255,0.6); }
+  100% { box-shadow: 0 0 6px rgba(255,255,255,0.2); }
+}
+
   </style>
 </head>
 <body>
@@ -1299,6 +1348,7 @@ header img:hover {
       <div class="product-grid" id="productGrid">
         <!-- P1 : Pochons -->
         <button class="product-thumb" onclick="openProduct('p1')">
+          <div class="product-badge">🔥 Populaire</div> <!-- badge ajouté ici -->
           <img src="img/pochons11.png" alt="Pochon personnalisé" />
           <div class="product-thumb-body">
             <div class="product-thumb-title">Pochon personnalisé</div>
@@ -1308,6 +1358,7 @@ header img:hover {
 
         <!-- P2 : Tableaux -->
         <button class="product-thumb" onclick="openProduct('p2')">
+          <div class="product-badge gold">💎 Premium</div>
           <img src="img/tableau1.jpg" alt="Tableaux personnalisés" />
           <div class="product-thumb-body">
             <div class="product-thumb-title">Tableaux personnalisés</div>
@@ -1317,6 +1368,7 @@ header img:hover {
 
         <!-- P3 : Cartes -->
         <button class="product-thumb" onclick="openProduct('p3')">
+          <div class="product-badge">⚡ Recommandé</div>
           <img src="img/cartescata.png" alt="Cartes fidélité / visite" />
           <div class="product-thumb-body">
             <div class="product-thumb-title">Cartes fidélité / visite</div>
@@ -1344,6 +1396,7 @@ header img:hover {
 
         <!-- P6 : Fusées -->
         <button class="product-thumb" onclick="openProduct('p6')">
+          <div class="product-badge new">✨ Coup de cœur</div>
           <img src="img/fusées1.jpg" alt="Fusées 1,5 ml" />
           <div class="product-thumb-body">
             <div class="product-thumb-title">Fusées 1,5 ml</div>
@@ -1353,6 +1406,7 @@ header img:hover {
         
         <!-- P7 : Design personnalisé -->
 <button class="product-thumb" onclick="openProduct('p7')">
+  <div class="product-badge gold">🪄 Sur mesure</div>
   <img src="img/design.jpg" alt="Design personnalisé" />
   <div class="product-thumb-body">
     <div class="product-thumb-title">Design personnalisé</div>
