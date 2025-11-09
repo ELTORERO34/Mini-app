@@ -776,89 +776,172 @@ main {
       transform: translateY(1px);
     }
 
-    /* ===== MODAL PANIER ===== */
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.6);
-      display: flex;
-      align-items: flex-end;
-      z-index: 320;
-    }
+/* ==== PAGE PANIER FULLSCREEN ==== */
+.cart-page{
+  position: fixed;
+  inset: 0;
+  z-index: 350;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 0 0, rgba(255,215,100,0.12), transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(255,215,100,0.10), transparent 55%),
+    rgba(0,0,0,0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
 
-    .modal.hidden {
-      display: none;
-    }
+.cart-page.show{
+  display: flex;
+  animation: cartFadeIn .35s ease-out;
+}
 
-    .modal-inner {
-      background: var(--bg);
-      border-top-left-radius: 18px;
-      border-top-right-radius: 18px;
-      box-shadow: 0 -10px 30px rgba(0,0,0,.6);
-      width: 100%;
-      max-height: 86vh;
-      display: flex;
-      flex-direction: column;
-    }
+.cart-page-inner{
+  width: 100%;
+  max-width: 520px;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  background: rgba(6,6,8,0.97);
+  border-radius: 22px;
+  border: 1px solid rgba(255,215,100,0.22);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.9);
+  overflow: hidden;
+  animation: cartSlideUp .35s ease-out;
+}
 
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 14px;
-      border-bottom: 1px solid var(--border);
-    }
+/* HEADER */
+.cart-page-header{
+  padding: 14px 16px 10px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
 
-    .icon-btn {
-      background: #121216;
-      border: 1px solid var(--border);
-      color: var(--text);
-      border-radius: 10px;
-      height: 34px;
-      width: 34px;
-    }
+.cart-page-title-block h2{
+  margin: 0;
+  font-size: 1.3rem;
+  background: linear-gradient(90deg,#FFD54A,#FFF6C3,#FFD54A);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-    .cart-items {
-      padding: 10px 12px;
-      overflow: auto;
-    }
+.cart-page-title-block p{
+  margin: 4px 0 0;
+  font-size: .85rem;
+  color: rgba(230,230,230,.85);
+}
 
-    .cart-item {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 6px;
-      padding: 10px 0;
-      border-bottom: 1px dashed var(--border);
-    }
+/* SUMMARY */
+.cart-page-summary{
+  padding: 10px 16px 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  background: radial-gradient(circle at 0 0, rgba(255,215,100,0.16), transparent 60%);
+}
 
-    .item-title {
-      font-weight: 700;
-    }
+.cart-summary-line{
+  display: flex;
+  justify-content: space-between;
+  font-size: .9rem;
+  margin-bottom: 4px;
+}
 
-    .item-sub {
-      color: var(--muted);
-      font-size: .95rem;
-    }
+.cart-summary-line span{
+  color: #bdbdbd;
+}
 
-    .item-right {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-    }
+.cart-summary-line strong{
+  font-weight: 600;
+}
 
-    .modal-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px;
-      border-top: 1px solid var(--border);
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+/* LISTE DES ARTICLES */
+.cart-items{
+  padding: 8px 12px 10px;
+  overflow-y: auto;
+  flex: 1;
+}
 
-    .total-line {
-      font-size: 1.05rem;
-    }
+.cart-item{
+  padding: 10px 10px 8px;
+  margin-bottom: 8px;
+  border-radius: 14px;
+  background: rgba(18,18,20,0.96);
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.6);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  animation: cartItemIn .25s ease-out;
+}
+
+.cart-item-index{
+  font-size: .78rem;
+  color: #FFD54A;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.item-title{
+  font-size: .95rem;
+  font-weight: 600;
+}
+
+.item-sub{
+  font-size: .8rem;
+  color: #bdbdbd;
+  margin-top: 3px;
+}
+
+.item-right{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.item-price{
+  font-size: .85rem;
+  color: #f5f5f5;
+}
+
+/* bouton supprimer */
+.btn-remove{
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,80,80,0.85);
+  background: rgba(60,12,12,0.92);
+  color: #ffdede;
+  font-size: .78rem;
+}
+
+/* FOOTER */
+.cart-page-footer{
+  padding: 10px 12px 12px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  gap: 10px;
+}
+
+.cart-page-footer .btn{
+  flex: 1;
+}
+
+/* Animations */
+@keyframes cartFadeIn{
+  from{ opacity: 0; }
+  to  { opacity: 1; }
+}
+@keyframes cartSlideUp{
+  from{ transform: translateY(12px); opacity: 0.95; }
+  to  { transform: translateY(0);    opacity: 1; }
+}
+@keyframes cartItemIn{
+  from{ transform: translateY(6px); opacity: 0; }
+  to  { transform: translateY(0);   opacity: 1; }
+}
 
     /* ===== TOAST ===== */
     #toast {
@@ -1596,23 +1679,37 @@ header img:hover {
   <!-- BOUTON PANIER FLOTTANT -->
   <button id="cartFab" class="cart-fab" type="button" onclick="openCart()">🛒</button>
 
-  <!-- MODAL PANIER -->
-  <div id="cartModal" class="modal hidden" aria-hidden="true">
-    <div class="modal-inner">
-      <header class="modal-header">
-        <h3>Votre panier</h3>
-        <button class="icon-btn" type="button" onclick="closeCart(true)">✕</button>
-      </header>
-      <div id="cartItems" class="cart-items"></div>
-      <footer class="modal-footer">
-        <div class="total-line">
-          Total estimé : <strong id="cartTotal">0,00 €</strong>
-        </div>
-        <button class="btn" type="button" onclick="clearCart()">Vider</button>
-        <button class="btn primary" type="button" onclick="sendQuote()">Demander un devis</button>
-      </footer>
-    </div>
+<!-- PAGE PANIER FULLSCREEN -->
+<div id="cartModal" class="cart-page hidden" aria-hidden="true">
+  <div class="cart-page-inner">
+    <!-- HEADER -->
+    <header class="cart-page-header">
+      <div class="cart-page-title-block">
+        <h2>Votre sélection</h2>
+        <p>Vérifie bien ta commande avant de demander ton devis.</p>
+      </div>
+      <button class="icon-btn" type="button" onclick="closeCart()">✕</button>
+    </header>
+    <!-- SUMMARY -->
+    <section class="cart-page-summary">
+      <div class="cart-summary-line">
+        <span>Articles</span>
+        <strong id="cartCount">0</strong>
+      </div>
+      <div class="cart-summary-line">
+        <span>Total estimé (min connu)</span>
+        <strong id="cartTotal">0,00 €</strong>
+      </div>
+    </section>
+    <!-- LISTE DES LIGNES PANIER -->
+    <section id="cartItems" class="cart-items"></section>
+    <!-- FOOTER -->
+    <footer class="cart-page-footer">
+      <button class="btn" type="button" onclick="clearCart()">Vider</button>
+      <button class="btn primary" type="button" onclick="sendQuote()">Demander un devis</button>
+    </footer>
   </div>
+</div>
 
   <!-- MENU BAS -->
   <nav class="bottom-nav">
@@ -2005,95 +2102,128 @@ function addP7(){
 }
 
     function openCart(){
-      renderCart();
-      document.getElementById('cartModal').classList.remove('hidden');
-      var fab = document.getElementById('cartFab');
-      if (fab) fab.style.display = 'none';
+  renderCart();
+  var modal = document.getElementById('cartModal');
+  if (modal){
+    modal.classList.remove('hidden');
+    modal.classList.add('show');
+  }
+  var fab = document.getElementById('cartFab');
+  if (fab) fab.style.display = 'none';   // on cache le bouton flottant
+}
+
+function closeCart(){
+  var modal = document.getElementById('cartModal');
+  if (modal){
+    modal.classList.remove('show');
+    modal.classList.add('hidden');
+  }
+  var fab = document.getElementById('cartFab');
+  if (fab) fab.style.display = 'block';  // on remet le bouton flottant
+}
+
+function renderCart(){
+  try{
+    var box   = document.getElementById('cartItems');
+    var total = 0;
+    var count = 0;
+    if (!box) return;
+
+    box.innerHTML = '';
+
+    if (!CART.length){
+      box.innerHTML =
+        '<p class="item-sub" style="text-align:center;margin-top:8px;">' +
+        'Votre panier est vide pour le moment.' +
+        '</p>';
     }
 
-    function closeCart(fromTab){
-      var modal = document.getElementById('cartModal');
-      if (modal) modal.classList.add('hidden');
-      var fab = document.getElementById('cartFab');
-      if (fab) fab.style.display = 'block';
-    }
+    CART.forEach(function(it, idx){
+      total += (it.unit || 0) * it.qty;
+      count += it.qty || 0;
+
+      var row = document.createElement('div');
+      row.className = 'cart-item';
+
+      var left = document.createElement('div');
+
+      var idxLabel = document.createElement('div');
+      idxLabel.className = 'cart-item-index';
+      idxLabel.textContent = '#' + (idx+1);
+
+      var title = document.createElement('div');
+      title.className = 'item-title';
+      title.textContent = it.title + ' × ' + it.qty;
+
+      var summaryParts = [];
+      if (it.opts){
+        if (it.opts.quantitePack) summaryParts.push('pack : ' + it.opts.quantitePack);
+        if (it.opts.impression)   summaryParts.push('impression : ' + it.opts.impression);
+        if (it.opts.type)         summaryParts.push('type : ' + it.opts.type);
+        if (it.opts.taille)       summaryParts.push('taille : ' + it.opts.taille);
+        if (it.opts.quantite)     summaryParts.push('quantité : ' + it.opts.quantite);
+        if (it.opts.format)       summaryParts.push('format : ' + it.opts.format);
+      }
+
+      var priceInfo;
+      if (it.unit && it.unit > 0){
+        priceInfo = euro(it.unit) + ' /u';
+      } else if (it.opts && it.opts.minPrice){
+        priceInfo = 'à partir de ' + euro(it.opts.minPrice) + ' (500 pcs)';
+      } else {
+        priceInfo = 'sur devis';
+      }
+
+      var sub = document.createElement('div');
+      sub.className = 'item-sub';
+      sub.textContent =
+        (summaryParts.length ? summaryParts.join(' • ') + ' | ' : '') +
+        priceInfo;
+
+      left.appendChild(idxLabel);
+      left.appendChild(title);
+      left.appendChild(sub);
+
+      var right = document.createElement('div');
+      right.className = 'item-right';
+
+      if (it.unit && it.unit > 0){
+        var itemTotal = document.createElement('div');
+        itemTotal.className = 'item-price';
+        itemTotal.textContent = euro((it.unit || 0) * it.qty);
+        right.appendChild(itemTotal);
+      }
+
+      var del = document.createElement('button');
+      del.className = 'btn-remove';
+      del.type = 'button';
+      del.textContent = 'Supprimer';
+      del.onclick = function(){
+        CART.splice(idx,1);
+        renderCart();
+      };
+
+      right.appendChild(del);
+      row.appendChild(left);
+      row.appendChild(right);
+      box.appendChild(row);
+    });
+
+    // total déjà utilisé par sendQuote
+    var totalEl = document.getElementById('cartTotal');
+    if (totalEl) totalEl.textContent = euro(total);
+
+    // compteur d’articles (toutes quantités confondues)
+    var countEl = document.getElementById('cartCount');
+    if (countEl) countEl.textContent = count;
+  }catch(e){
+    console.error(e);
+  }
+}
 
     function clearCart(){
       CART = [];
       renderCart();
-    }
-
-    function renderCart(){
-      try{
-        var box = document.getElementById('cartItems');
-        var total = 0;
-        box.innerHTML = '';
-
-        if (!CART.length){
-          box.innerHTML = '<p class="item-sub">Votre panier est vide.</p>';
-        }
-
-        for (var i=0;i<CART.length;i++){
-          (function(it,idx){
-            total += (it.unit || 0) * it.qty;
-
-            var row = document.createElement('div');
-            row.className = 'cart-item';
-
-            var left = document.createElement('div');
-            var t = document.createElement('div');
-            t.className = 'item-title';
-            t.textContent = it.title + ' × ' + it.qty;
-
-            var summaryParts = [];
-if (it.opts){
-  if (it.opts.quantitePack) summaryParts.push('pack: '+it.opts.quantitePack);
-  if (it.opts.impression)   summaryParts.push('impression: '+it.opts.impression);
-  if (it.opts.finition)     summaryParts.push('finition: '+it.opts.finition);
-  if (it.opts.type)         summaryParts.push('type: '+it.opts.type);
-  if (it.opts.taille)       summaryParts.push('taille: '+it.opts.taille);
-  if (it.opts.quantite)     summaryParts.push('quantité: '+it.opts.quantite);
-  if (it.opts.format)       summaryParts.push('format: '+it.opts.format);
-}
-            var summary = summaryParts.join(' • ');
-
-            var priceInfo;
-            if (it.unit && it.unit > 0){
-              priceInfo = 'min '+euro(it.unit)+'/u';
-            } else if (it.opts && it.opts.minPrice){
-              priceInfo = 'à partir de '+euro(it.opts.minPrice)+' (500 pcs)';
-            } else {
-              priceInfo = 'sur devis';
-            }
-
-            var s = document.createElement('div');
-            s.className = 'item-sub';
-            s.textContent = (summary ? summary+' | ' : '') + priceInfo;
-
-            left.appendChild(t);
-            left.appendChild(s);
-
-            var right = document.createElement('div');
-            right.className = 'item-right';
-            var btn = document.createElement('button');
-            btn.className = 'btn';
-            btn.textContent = 'Suppr.';
-            btn.onclick = function(){
-              CART.splice(idx,1);
-              renderCart();
-            };
-
-            right.appendChild(btn);
-            row.appendChild(left);
-            row.appendChild(right);
-            box.appendChild(row);
-          })(CART[i],i);
-        }
-
-        document.getElementById('cartTotal').textContent = euro(total);
-      }catch(e){
-        console.error(e);
-      }
     }
 
     /* ==== ENVOI DU DEVIS VERS @pssv2 ==== */
@@ -2163,7 +2293,7 @@ if (tg && tg.openTelegramLink){
   window.open(url, "_blank");
 }
 
-        closeCart(true);
+        closeCart();
         toast("Ouverture du chat avec PochonStore…");
       }catch(e){
         console.error(e);
