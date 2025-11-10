@@ -2020,7 +2020,7 @@ function flyToCart(fromBtn){
     }
 
     // P1 : Pochons (sur devis)
-    function addP1(){
+    function addP1(btn){
   try{
     var pack       = document.getElementById('p1_quantite').value;
     var taille     = document.getElementById('p1_taille').value;
@@ -2071,7 +2071,7 @@ function flyToCart(fromBtn){
 }
 
     // P2 : Tableaux
-    function addP2(){
+    function addP2(btn){
       try{
         var v = document.getElementById('p2_format').value; // type|taille|prix
         var parts = v.split('|');
@@ -2112,7 +2112,7 @@ function flyToCart(fromBtn){
     }
 
     // P3 : Cartes fidélité / visite
-    function addP3(){
+    function addP3(btn){
       try{
         var v = document.getElementById('p3_quantite').value; // "250|70"
         var parts = v.split('|');
@@ -2151,7 +2151,7 @@ function flyToCart(fromBtn){
     }
 
     // P4 : Étiquettes
-    function addP4(){
+    function addP4(btn){
       try{
         var v = document.getElementById('p4_format').value; // "label|prix"
         var parts = v.split('|');
@@ -2190,7 +2190,7 @@ function flyToCart(fromBtn){
     }
 
     // P5 : Scelleuse (10 €)
-    function addP5(){
+    function addP5(btn){
       try{
         var qty = parseInt(document.getElementById('p5_qty').value || '1', 10);
         if (isNaN(qty) || qty < 1) qty = 1;
@@ -2223,7 +2223,7 @@ function flyToCart(fromBtn){
     }
 
     // P6 : Fusées 1,5 ml
-    function addP6(){
+    function addP6(btn){
       try{
         var sel   = document.getElementById('p6_quantite');
         var opt   = sel.options[sel.selectedIndex];
@@ -2264,7 +2264,7 @@ function flyToCart(fromBtn){
     }
 
 // Design personnalisé
-function addP7(){
+function addP7(btn){
   try{
     // Récupère la formule choisie
     var v = document.getElementById('p7_formule').value; // "Basique|40|2–3 jours"
