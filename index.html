@@ -1248,6 +1248,159 @@
         transform: translateY(0) scale(1);
       }
     }
+    
+    /* ===== PAGE PACKS COMPLETS ===== */
+
+.packs-grid{
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* carte hero en haut */
+.pack-hero-card{
+  margin-bottom: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.pack-hero-card::after{
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: radial-gradient(circle, rgba(255,215,100,0.15), transparent 65%);
+  opacity: 0.4;
+  mix-blend-mode: screen;
+}
+
+/* cartes pack */
+.pack-card{
+  position: relative;
+  background: radial-gradient(circle at 0 0, rgba(255,215,100,0.12), transparent 55%),
+              rgba(12,12,14,0.96);
+  border-radius: 18px;
+  border: 1px solid rgba(255,215,100,0.25);
+  padding: 12px 14px 12px;
+  box-shadow: 0 12px 26px rgba(0,0,0,0.85);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(24px) scale(0.94);
+  animation: packEnter 0.7s cubic-bezier(0.18,0.89,0.32,1.28) forwards;
+}
+
+/* apparition en cascade */
+.packs-grid .pack-card:nth-child(1){ animation-delay: 0.10s; }
+.packs-grid .pack-card:nth-child(2){ animation-delay: 0.22s; }
+.packs-grid .pack-card:nth-child(3){ animation-delay: 0.34s; }
+.packs-grid .pack-card:nth-child(4){ animation-delay: 0.46s; }
+
+@keyframes packEnter{
+  0%{
+    opacity: 0;
+    transform: translateY(26px) scale(0.9);
+    filter: brightness(0.8);
+  }
+  60%{
+    opacity: 1;
+    transform: translateY(-3px) scale(1.02);
+    filter: brightness(1.05);
+  }
+  100%{
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: brightness(1);
+  }
+}
+
+/* hover / tap */
+.pack-card:active{
+  transform: translateY(2px) scale(0.97);
+}
+
+/* header pack */
+.pack-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.pack-name{
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.pack-badge{
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.35);
+  color: #fff;
+  background: rgba(0,0,0,0.4);
+}
+
+.pack-badge-hot{
+  border-color: rgba(255,120,80,0.9);
+  background: rgba(60,12,12,0.9);
+  color: #ffdede;
+}
+
+.pack-badge-elite{
+  border-color: rgba(255,215,100,0.95);
+  background: linear-gradient(120deg, #3b2b00, #6b4c00);
+  color: #fff8cf;
+}
+
+/* prix */
+.pack-price{
+  margin: 0 0 4px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #ffd766;
+}
+
+/* liste contenu */
+.pack-list{
+  margin: 0 0 10px;
+  padding-left: 16px;
+  font-size: 0.82rem;
+  color: #d0d0d0;
+}
+
+.pack-list li{
+  margin-bottom: 2px;
+}
+
+/* bouton */
+.pack-btn{
+  width: 100%;
+  justify-content: center;
+  display: inline-flex;
+}
+
+/* variations par pack (légère couleur) */
+.pack-starter{
+  border-color: rgba(255,255,255,0.18);
+}
+
+.pack-boost{
+  border-color: rgba(255,170,80,0.7);
+}
+
+.pack-pro{
+  border-color: rgba(120,200,255,0.7);
+}
+
+.pack-boss{
+  border-color: rgba(255,215,100,0.9);
+  box-shadow:
+    0 0 14px rgba(255,215,100,0.6),
+    0 12px 30px rgba(0,0,0,0.95);
+}
   </style>
 </head>
 
@@ -1350,7 +1503,16 @@
             <div class="product-thumb-sub">Basique, Premium ou Pack identité</div>
           </div>
         </button>
-      </div>
+                <!-- P8 : Packs complets -->
+<button class="product-thumb" onclick="openProduct('packs')">
+  <div class="product-badge gold">📦 Packs complets</div>
+  <div class="product-badge">🔥 Idéal pour commencer</div>
+  <img src="img/pack.jpg" alt="Packs complets" />
+  <div class="product-thumb-body">
+    <div class="product-thumb-title">Packs PochonStore</div>
+    <div class="product-thumb-sub">Starter, Boost, Pro, Boss – tout inclus</div>
+  </div>
+</button>
 
       <!-- ===== FICHE PRODUIT P1 ===== -->
       <div id="productDetail_p1" class="product-detail hidden">
@@ -1614,6 +1776,102 @@
           </div>
         </div>
       </div>
+      
+            <!-- FICHE PRODUIT P8 : PACKS COMPLETS -->
+<div id="productDetail_packs" class="product-detail hidden">
+  <button class="btn-back" onclick="closeProduct()">← Retour</button>
+
+  <div class="product-card pack-hero-card">
+    <h3 class="product-title">Packs complets PochonStore</h3>
+    <p class="product-desc">
+      Choisis un pack clé en main selon ton niveau : débutant, joueur sérieux ou gros shop.
+      Chaque pack inclut pochons, visuels et supports pour lancer ta marque.
+    </p>
+    <div class="product-meta">
+      <span class="pill">Sur devis personnalisé</span>
+      <span class="pill">Prix indicatifs ajustables</span>
+    </div>
+  </div>
+
+  <div class="packs-grid">
+    <!-- PACK STARTER -->
+    <div class="pack-card pack-starter">
+      <div class="pack-header">
+        <span class="pack-name">Pack Starter</span>
+        <span class="pack-badge">Pour débuter</span>
+      </div>
+      <p class="pack-price">≈ 120 €</p>
+      <ul class="pack-list">
+        <li>500 pochons personnalisés</li>
+        <li>1 design basique inclus</li>
+        <li>1 lot d’étiquettes simples</li>
+      </ul>
+      <button class="btn primary pack-btn" type="button"
+              onclick="addPack('starter', this)">
+        Ajouter ce pack
+      </button>
+    </div>
+
+    <!-- PACK BOOST -->
+    <div class="pack-card pack-boost">
+      <div class="pack-header">
+        <span class="pack-name">Pack Boost</span>
+        <span class="pack-badge pack-badge-hot">Best-seller</span>
+      </div>
+      <p class="pack-price">≈ 220 €</p>
+      <ul class="pack-list">
+        <li>1000 pochons personnalisés</li>
+        <li>Multi-design + option fenêtre</li>
+        <li>250 cartes fidélité / visite</li>
+        <li>Mini pack identité visuelle</li>
+      </ul>
+      <button class="btn primary pack-btn" type="button"
+              onclick="addPack('boost', this)">
+        Ajouter ce pack
+      </button>
+    </div>
+
+    <!-- PACK PRO -->
+    <div class="pack-card pack-pro">
+      <div class="pack-header">
+        <span class="pack-name">Pack Pro</span>
+        <span class="pack-badge">Pour les gros joueurs</span>
+      </div>
+      <p class="pack-price">≈ 399 €</p>
+      <ul class="pack-list">
+        <li>1500–2000 pochons premium</li>
+        <li>Multi design + fenêtre inclus</li>
+        <li>500 cartes fidélité / visite</li>
+        <li>Pack identité + étiquettes premium</li>
+        <li>Scelleuse offerte</li>
+      </ul>
+      <button class="btn primary pack-btn" type="button"
+              onclick="addPack('pro', this)">
+        Ajouter ce pack
+      </button>
+    </div>
+
+    <!-- PACK BOSS -->
+    <div class="pack-card pack-boss">
+      <div class="pack-header">
+        <span class="pack-name">Pack Boss</span>
+        <span class="pack-badge pack-badge-elite">Full branding</span>
+      </div>
+      <p class="pack-price">≈ 699–749 €</p>
+      <ul class="pack-list">
+        <li>2000+ pochons premium</li>
+        <li>Multi + fenêtre + options avancées</li>
+        <li>1000 cartes fidélité / visite</li>
+        <li>Pack identité complet (logo + flyers + stickers)</li>
+        <li>Étiquettes, scelleuse & 1 tableau pour le shop</li>
+      </ul>
+      <button class="btn primary pack-btn" type="button"
+              onclick="addPack('boss', this)">
+        Ajouter ce pack
+      </button>
+    </div>
+  </div>
+</div>
     </section>
 
     <!-- ========= ONGLET INFOS ========= -->
@@ -2217,6 +2475,65 @@
         console.error(e);
       }
     }
+    
+        // P8 : PACKS COMPLETS
+function addPack(kind, btn){
+  try{
+    var config = {
+      starter: {
+        title: 'Pack Starter',
+        price: 120,
+        contenu: '500 pochons • 1 design basique • 1 lot d’étiquettes'
+      },
+      boost: {
+        title: 'Pack Boost',
+        price: 220,
+        contenu: '1000 pochons • multi-design + fenêtre • 250 cartes • mini pack identité'
+      },
+      pro: {
+        title: 'Pack Pro',
+        price: 399,
+        contenu: '1500–2000 pochons premium • 500 cartes • pack identité + étiquettes premium • scelleuse'
+      },
+      boss: {
+        title: 'Pack Boss',
+        price: 699,
+        contenu: '2000+ pochons premium • 1000 cartes • full identité • étiquettes • scelleuse • tableau'
+      }
+    };
+
+    var c = config[kind];
+    if (!c) return;
+
+    var merged = false;
+    for (var i = 0; i < CART.length; i++){
+      var it = CART[i];
+      if (it.title === c.title){
+        it.qty += 1;
+        merged = true;
+        break;
+      }
+    }
+
+    if (!merged){
+      CART.push({
+        title: c.title,
+        qty: 1,
+        unit: c.price,   // tu ajusteras les prix si tu veux
+        opts: {
+          type: kind,
+          contenu: c.contenu
+        }
+      });
+    }
+
+    renderCart();
+    toast(c.title + ' ajouté au panier');
+    flyToCart(btn);
+  }catch(e){
+    console.error(e);
+  }
+}
 
     /* ===========================
        8) PANIER : OUVERTURE / RENDER
