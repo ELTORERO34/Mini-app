@@ -1844,6 +1844,19 @@
             <div class="product-thumb-sub">Basique, Premium ou Pack identité</div>
           </div>
         </button>
+        
+        <!-- P9 : Service – Développement mini-app -->
+<button class="product-thumb" onclick="openProduct('dev')">
+  <div class="product-badge gold">💻 Mini-App</div>
+  <div class="product-badge">⚙️ Sur mesure</div>
+  <img src="img/dev-miniapp.jpg" alt="Développement mini-app Telegram" />
+  <div class="product-thumb-body">
+    <div class="product-thumb-title">Mini-app Telegram / WebApp</div>
+    <div class="product-thumb-sub">
+      Je code ta mini-app sur mesure pour ton shop ou ton projet.
+    </div>
+  </div>
+</button>
         </div>
         
       <!-- ===== FICHE PRODUIT P1 ===== -->
@@ -2219,6 +2232,43 @@
       </button>
     </div>
   </div>
+  
+      <!-- ===== FICHE PRODUIT P9 : MINI-APP / DEV ===== -->
+<div id="productDetail_dev" class="product-detail hidden">
+  <button class="btn-back" onclick="closeProduct()">← Retour</button>
+
+  <div class="detail-media">
+    <img src="img/dev-miniapp.jpg" alt="Développement mini-app Telegram / WebApp" />
+  </div>
+
+  <div class="product-card">
+    <h3 class="product-title">Développement mini-app Telegram / WebApp</h3>
+    <p class="product-desc">
+      Tu veux la même expérience que PochonStore pour ton shop ou ton projet ?
+      Je développe pour toi une mini-app Telegram ou une WebApp sur mesure :
+      catalogue, panier, devis, animations, intégration Telegram… comme ici.
+    </p>
+
+    <div class="product-meta">
+      <span class="pill">Prestation sur devis</span>
+      <span class="pill">Code sur mesure</span>
+      <span class="pill">Livraison 5–10 jours selon projet</span>
+    </div>
+
+    <ul class="pack-list">
+      <li>Analyse de ton besoin (type de shop, produits, options).</li>
+      <li>Création de la mini-app (structure, design, animations).</li>
+      <li>Intégration Telegram (WebApp + bouton “Ouvrir la boutique”).</li>
+      <li>Adaptation mobile first (optimisée pour smartphone).</li>
+      <li>Accompagnement pour la mise en ligne et les tests.</li>
+    </ul>
+
+    <button class="btn primary pack-btn" type="button"
+            onclick="openDevService()">
+      Discuter de mon projet 💬
+    </button>
+  </div>
+</div>
 </div>
     </section>
 
@@ -2246,6 +2296,22 @@
         Les commandes sont soigneusement emballées et expédiées après validation du paiement complet.
         Le numéro de suivi est communiqué dès l’envoi.</p>
       </div>
+      
+        <div class="info-card">
+  <h2>💻 Développement de mini-apps</h2>
+  <p>
+    La boutique que tu utilises actuellement a été développée sur mesure.
+    Je peux créer la même chose pour ton shop, ta marque ou ton projet :
+    catalogue, panier, devis automatisé, intégration Telegram, etc.
+  </p>
+  <p>
+    Intéressé(e) par ta propre mini-app ? Clique ci-dessous pour m’expliquer
+    ton besoin, et on voit ensemble ce qui est possible.
+  </p>
+  <button class="btn primary" type="button" onclick="openDevService()">
+    Parler de mon projet mini-app 💬
+  </button>
+</div>
     </section>
 
     <!-- ========= ONGLET SUIVI COLIS ========= -->
@@ -3299,6 +3365,29 @@ function addPack(kind, btn){
         window.open(url, "_blank");
       }
     }
+    
+    function openDevService(){
+  var baseUrl = "https://t.me/" + QUOTE_USERNAME;
+
+  var intro =
+    "👋 Salut, je viens de ta boutique PochonStore.\n" +
+    "Je suis intéressé(e) par le développement d’une mini-app / WebApp sur mesure.\n\n" +
+    "Voici quelques infos sur mon projet :\n" +
+    "- Type d’activité : \n" +
+    "- Nombre de produits : \n" +
+    "- Fonctionnalités souhaitées (catalogue, panier, devis, etc.) : \n" +
+    "- Budget approximatif : \n";
+
+  var url = "https://t.me/share/url"
+    + "?url="  + encodeURIComponent(baseUrl)
+    + "&text=" + encodeURIComponent(intro);
+
+  if (tg && tg.openTelegramLink){
+    tg.openTelegramLink(url);
+  } else {
+    window.open(url, "_blank");
+  }
+}
 
     /* ===========================
        12) SPLASH FLOW
