@@ -1492,6 +1492,99 @@
     box-shadow: 0 0 12px rgba(255,80,80,0.8);
   }
 }
+
+    /* ===========================
+   HERO PACK – STYLE SPÉCIAL
+   =========================== */
+.product-thumb.pack-hero{
+  grid-column: span 2;                 /* pleine largeur */
+  height: 190px;                       /* plus grande */
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(180deg,#1a1a1a 0%,#0b0b0b 100%);
+  border: 1px solid rgba(255,215,100,0.35);
+  box-shadow:
+    0 0 20px rgba(255,215,100,0.25),
+    0 12px 24px rgba(0,0,0,0.8);
+  animation: heroPackEnter 1.2s ease forwards;
+}
+
+/* Effet d'apparition noble */
+@keyframes heroPackEnter{
+  0%{
+    opacity: 0;
+    transform: scale(0.85) translateY(18px);
+    filter: brightness(0.6);
+  }
+  60%{
+    opacity: 1;
+    transform: scale(1.03) translateY(-3px);
+    filter: brightness(1.05);
+  }
+  100%{
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: brightness(1);
+  }
+}
+
+/* Reflet doré qui glisse */
+.product-thumb.pack-hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: linear-gradient(120deg,
+    transparent 20%,
+    rgba(255,215,100,0.15) 50%,
+    transparent 80%
+  );
+  background-size: 200% 200%;
+  animation: heroPackShine 5s linear infinite;
+  pointer-events:none;
+}
+
+@keyframes heroPackShine{
+  0%   { background-position: -120% 0; }
+  100% { background-position: 120% 0; }
+}
+
+/* Bordure dorée plus nette */
+.product-thumb.pack-hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  border:1px solid rgba(255,215,80,0.7);
+  box-shadow:
+    0 0 12px rgba(255,215,100,0.4),
+    0 0 22px rgba(0,0,0,0.8);
+  pointer-events:none;
+}
+
+/* Titre plus grand & lisible */
+.product-thumb.pack-hero .product-thumb-title{
+  font-size:1.2rem;
+  font-weight:800;
+  letter-spacing:1px;
+  background: linear-gradient(90deg,#ffe8a0,#ffcc4a,#ffe8a0);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  text-shadow:0 0 8px rgba(255,215,100,0.4);
+}
+
+/* Sous-texte plus visible */
+.product-thumb.pack-hero .product-thumb-sub{
+  font-size:0.9rem;
+  color:#e7e7e7;
+  text-shadow:0 0 6px rgba(0,0,0,0.8);
+}
+
+/* Image plus grande */
+.product-thumb.pack-hero img{
+  height:120px;
+  object-fit:cover;
+}
   </style>
 </head>
 
@@ -1594,17 +1687,18 @@
             <div class="product-thumb-sub">Basique, Premium ou Pack identité</div>
           </div>
         </button>
-                <!-- P8 : Packs complets -->
-<button class="product-thumb" onclick="openProduct('packs')">
+                <!-- P8 HERO PACKS COMPLETS -->
+<button class="product-thumb pack-hero" onclick="openProduct('packs')">
   <div class="product-badge gold">📦 Packs complets</div>
-  <div class="product-badge">🔥 Idéal pour commencer</div>
+  <div class="product-badge">🔥 Meilleure offre</div>
   <img src="img/pack.jpg" alt="Packs complets" />
   <div class="product-thumb-body">
     <div class="product-thumb-title">Packs PochonStore</div>
-    <div class="product-thumb-sub">Starter, Boost, Pro, Boss – tout inclus</div>
+    <div class="product-thumb-sub">
+      Starter, Boost, Pro, Boss – tout pour lancer ton shop.
+    </div>
   </div>
 </button>
-</div>
 
       <!-- ===== FICHE PRODUIT P1 ===== -->
       <div id="productDetail_p1" class="product-detail hidden">
