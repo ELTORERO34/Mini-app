@@ -2844,11 +2844,18 @@ function addPack(kind, btn){
   var grandEl = document.getElementById('cartGrandTotal');
   if (!totalEl || !feesEl || !grandEl) return;
 
-  // on récupère le nombre depuis "cartTotal"
+  // récupère le total produits
   var raw = totalEl.textContent.replace(/\s/g,'').replace('€','').replace(',','.');
   var total = parseFloat(raw) || 0;
 
-  var fees  = computePaymentFees(total);
+  // récupère le mode de paiement via le bouton actif
+  var activeBtn = document.querySelector('.pay-btn.active');
+  var method = activeBtn ? activeBtn.getAttribute('data-method') : null;
+
+  // garde aussi la valeur dans la variable globale au cas où
+  selectedPaymentMethod = method;
+
+  var fees  = computePaymentFees(total, method);
   var grand = total + fees;
 
   feesEl.textContent  = euro(fees);
