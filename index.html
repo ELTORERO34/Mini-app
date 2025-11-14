@@ -957,10 +957,12 @@
     }
 
     .cart-items {
-      padding: 8px 12px 10px;
-      overflow-y: auto;
-      flex: 1;
-    }
+  padding: 8px 12px 10px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;                 /* ⬅️ important pour le scroll */
+  -webkit-overflow-scrolling: touch;
+}
 
     .cart-item {
       padding: 10px 10px 8px;
@@ -2234,16 +2236,16 @@
       </header>
 
       <section class="cart-page-summary">
+  <!-- ligne articles -->
   <div class="cart-summary-line">
     <span>Articles</span>
     <strong id="cartCount">0</strong>
   </div>
-  <div class="cart-summary-line">
-    <span>Total produits</span>
-    <strong id="cartTotal">0,00 €</strong>
-  </div>
 
-  <!-- BOUTONS MOYEN DE PAIEMENT -->
+  <!-- label + boutons paiement -->
+  <div class="cart-payment-label">
+    Choisis ton mode de paiement :
+  </div>
   <div class="cart-payment-methods">
     <button type="button" class="pay-btn" data-method="paypal"
             onclick="selectPayment('paypal')">🅿️</button>
@@ -2254,7 +2256,12 @@
     <button type="button" class="pay-btn" data-method="tickets"
             onclick="selectPayment('tickets')">🎟️</button>
   </div>
-  
+
+  <!-- totaux -->
+  <div class="cart-summary-line">
+    <span>Total produits</span>
+    <strong id="cartTotal">0,00 €</strong>
+  </div>
   <div class="cart-summary-line">
     <span>Frais paiement / envoi</span>
     <strong id="cartFees">0,00 €</strong>
@@ -2815,45 +2822,38 @@ function addPack(kind, btn){
       var fab = document.getElementById('cartFab');
       if (fab) fab.style.display = 'block';
     }
+    
+    var selectedPaymentMethod = null;
 
-    function selectPayment(method){
+function selectPayment(method){
   selectedPaymentMethod = method;
 
-  // met à jour le style des boutons
-  var btns = document.querySelectorAll('.pay-btn');
-  btns.forEach(function(b){
-    if (b.getAttribute('data-method') === method){
-      b.classList.add('active');
-    } else {
-      b.classList.remove('active');
-    }
+  // visuel : bouton actif
+  document.querySelectorAll('.pay-btn').forEach(function(btn){
+    btn.classList.remove('active');
   });
+  var active = document.querySelector('.pay-btn[data-method="'+method+'"]');
+  if (active) active.classList.add('active');
 
-  // recalcul des frais et totaux
-  renderCart();
+  // recalcul des frais + total avec frais
+  computeCurrentFees();
 }
 
-    function computePaymentFees(total, method){
-  if (!method || total <= 0) return 0;
+function computeCurrentFees(){
+  var totalEl = document.getElementById('cartTotal');
+  var feesEl  = document.getElementById('cartFees');
+  var grandEl = document.getElementById('cartGrandTotal');
+  if (!totalEl || !feesEl || !grandEl) return;
 
-  switch(method){
-    case 'paypal':
-    case 'crypto':
-      // PayPal ou crypto : +20 € de frais
-      return 20;
+  // on récupère le nombre depuis "cartTotal"
+  var raw = totalEl.textContent.replace(/\s/g,'').replace('€','').replace(',','.');
+  var total = parseFloat(raw) || 0;
 
-    case 'cash': // main propre
-      return 0;
+  var fees  = computePaymentFees(total);
+  var grand = total + fees;
 
-    case 'tickets':
-      // tickets : 20 / 40 / 60 € selon le montant
-      if (total <= 200) return 20;
-      if (total <= 450) return 40;
-      return 60;
-
-    default:
-      return 0;
-  }
+  feesEl.textContent  = euro(fees);
+  grandEl.textContent = euro(grand);
 }
 
     function renderCart(){
