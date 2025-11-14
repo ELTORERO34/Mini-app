@@ -903,6 +903,43 @@
       border-bottom: 1px solid rgba(255,255,255,0.06);
       background: radial-gradient(circle at 0 0, rgba(255,215,100,0.16), transparent 60%);
     }
+    
+    .cart-payments{
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pay-btn{
+  flex: 1;
+  min-width: calc(50% - 6px);
+  font-size: 0.78rem;
+  padding: 6px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: #111;
+  color: #e0e0e0;
+  cursor: pointer;
+  transition: all .18s ease-out;
+}
+
+.pay-btn:hover{
+  transform: translateY(-1px);
+}
+
+.pay-btn.active{
+  border-color: rgba(255,215,100,0.85);
+  background: #222;
+  color: #ffd766;
+  box-shadow: 0 0 10px rgba(255,215,100,0.5);
+}
+
+.cart-payment-note{
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: #bdbdbd;
+}
 
     .cart-summary-line {
       display: flex;
@@ -2197,15 +2234,36 @@
       </header>
 
       <section class="cart-page-summary">
-        <div class="cart-summary-line">
-          <span>Articles</span>
-          <strong id="cartCount">0</strong>
-        </div>
-        <div class="cart-summary-line">
-          <span>Total estimé</span>
-          <strong id="cartTotal">0,00 €</strong>
-        </div>
-      </section>
+  <div class="cart-summary-line">
+    <span>Articles</span>
+    <strong id="cartCount">0</strong>
+  </div>
+  <div class="cart-summary-line">
+    <span>Total produits</span>
+    <strong id="cartTotal">0,00 €</strong>
+  </div>
+
+  <!-- BOUTONS MOYEN DE PAIEMENT -->
+  <div class="cart-payment-methods">
+    <button type="button" class="pay-btn" data-method="paypal"
+            onclick="selectPayment('paypal')">🅿️</button>
+    <button type="button" class="pay-btn" data-method="cash"
+            onclick="selectPayment('cash')">💶</button>
+    <button type="button" class="pay-btn" data-method="crypto"
+            onclick="selectPayment('crypto')">₿</button>
+    <button type="button" class="pay-btn" data-method="tickets"
+            onclick="selectPayment('tickets')">🎟️</button>
+  </div>
+  
+  <div class="cart-summary-line">
+    <span>Frais paiement / envoi</span>
+    <strong id="cartFees">0,00 €</strong>
+  </div>
+  <div class="cart-summary-line">
+    <span>Total avec frais</span>
+    <strong id="cartGrandTotal">0,00 €</strong>
+  </div>
+</section>
 
       <section id="cartItems" class="cart-items"></section>
 
@@ -2252,6 +2310,8 @@
     var QUOTE_USERNAME = "pssv2";
     var CART = [];
     var toastTimer = null;
+    // moyen de paiement choisi dans le panier : "paypal" | "cash" | "crypto" | "tickets"
+    var selectedPaymentMethod = null;
 
     /* ===========================
        2) NAVIGATION TABS
@@ -2756,6 +2816,46 @@ function addPack(kind, btn){
       if (fab) fab.style.display = 'block';
     }
 
+    function selectPayment(method){
+  selectedPaymentMethod = method;
+
+  // met à jour le style des boutons
+  var btns = document.querySelectorAll('.pay-btn');
+  btns.forEach(function(b){
+    if (b.getAttribute('data-method') === method){
+      b.classList.add('active');
+    } else {
+      b.classList.remove('active');
+    }
+  });
+
+  // recalcul des frais et totaux
+  renderCart();
+}
+
+    function computePaymentFees(total, method){
+  if (!method || total <= 0) return 0;
+
+  switch(method){
+    case 'paypal':
+    case 'crypto':
+      // PayPal ou crypto : +20 € de frais
+      return 20;
+
+    case 'cash': // main propre
+      return 0;
+
+    case 'tickets':
+      // tickets : 20 / 40 / 60 € selon le montant
+      if (total <= 200) return 20;
+      if (total <= 450) return 40;
+      return 60;
+
+    default:
+      return 0;
+  }
+}
+
     function renderCart(){
       try{
         var box   = document.getElementById('cartItems');
@@ -2842,12 +2942,21 @@ function addPack(kind, btn){
           row.appendChild(right);
           box.appendChild(row);
         });
+        
+        var fees = computePaymentFees(total, selectedPaymentMethod);
+        var grandTotal = total + fees;
 
         var totalEl = document.getElementById('cartTotal');
         if (totalEl) totalEl.textContent = euro(total);
 
         var countEl = document.getElementById('cartCount');
         if (countEl) countEl.textContent = count;
+
+        var feesEl = document.getElementById('cartFees');
+        if (feesEl) feesEl.textContent = euro(fees);
+
+        var grandEl = document.getElementById('cartGrandTotal');
+        if (grandEl) grandEl.textContent = euro(grandTotal);
 
         var badgeEl = document.getElementById('cartBadge');
         if (badgeEl){
@@ -2873,77 +2982,107 @@ function addPack(kind, btn){
        9) ENVOI DU DEVIS
        =========================== */
     function sendQuote(){
-      if (!CART.length){
-        toast("Ajoutez des articles au panier.");
-        return;
+  if (!CART.length){
+    toast("Ajoutez des articles au panier.");
+    return;
+  }
+
+  if (!selectedPaymentMethod){
+    toast("Choisis un moyen de paiement dans le panier.");
+    return;
+  }
+
+  try{
+    var lines = [];
+    lines.push("🧾 Demande de devis – PochonStore");
+    lines.push("");
+    lines.push("Détail du panier :");
+    lines.push("");
+
+    var total = 0;
+
+    for (var i = 0; i < CART.length; i++){
+      var it = CART[i];
+      var index = i + 1;
+
+      var ligneTitre = index + ") " + it.title + " × " + it.qty;
+      if (it.unit){
+        ligneTitre += " — " + euro(it.unit) + " /u";
+      }
+      lines.push(ligneTitre);
+
+      if (it.opts){
+        var parts = [];
+        for (var key in it.opts){
+          if (!Object.prototype.hasOwnProperty.call(it.opts, key)) continue;
+          var value = it.opts[key];
+          if (value === undefined || value === null || value === "") continue;
+
+          var label = key.replace(/_/g," ").replace(/^\w/, function(c){return c.toUpperCase();});
+          parts.push(label + " : " + value);
+        }
+        if (parts.length){
+          lines.push("   • " + parts.join("\n   • "));
+        }
       }
 
-      try{
-        var lines = [];
-        lines.push("🧾 Demande de devis – PochonStore");
-        lines.push("");
-        lines.push("Détail du panier :");
-        lines.push("");
-
-        var total = 0;
-
-        for (var i = 0; i < CART.length; i++){
-          var it = CART[i];
-          var index = i + 1;
-
-          var ligneTitre = index + ") " + it.title + " × " + it.qty;
-          if (it.unit){
-            ligneTitre += " — " + euro(it.unit) + " /u";
-          }
-          lines.push(ligneTitre);
-
-          if (it.opts){
-            var parts = [];
-            for (var key in it.opts){
-              if (!Object.prototype.hasOwnProperty.call(it.opts, key)) continue;
-              var value = it.opts[key];
-              if (value === undefined || value === null || value === "") continue;
-
-              var label = key.replace(/_/g," ").replace(/^\w/, function(c){return c.toUpperCase();});
-              parts.push(label + " : " + value);
-            }
-            if (parts.length){
-              lines.push("   • " + parts.join("\n   • "));
-            }
-          }
-
-          if (it.unit){
-            var sousTotal = (it.unit || 0) * it.qty;
-            total += sousTotal;
-            lines.push("   Sous-total estimé : " + euro(sousTotal));
-          }
-
-          lines.push("");
-        }
-
-        lines.push("Total estimé (min connu) : " + euro(total));
-        lines.push("");
-        lines.push("Merci de vérifier les infos puis d’envoyer ce message à PochonStore pour finaliser le devis.");
-
-        var message = lines.join("\n");
-
-        var url = "https://t.me/share/url"
-          + "?url="  + encodeURIComponent("https://t.me/" + QUOTE_USERNAME)
-          + "&text=" + encodeURIComponent(message);
-
-        if (tg && tg.openTelegramLink){
-          tg.openTelegramLink(url);
-        } else {
-          window.open(url, "_blank");
-        }
-
-        closeCart(true);
-        toast("Ouverture du chat avec PochonStore…");
-      }catch(e){
-        console.error(e);
-        toast("Erreur lors de la préparation du devis.");
+      if (it.unit){
+        var sousTotal = (it.unit || 0) * it.qty;
+        total += sousTotal;
+        lines.push("   Sous-total estimé : " + euro(sousTotal));
       }
+
+      lines.push("");
     }
+
+    // === PARTIE FRAIS / MOYEN DE PAIEMENT ===
+    var fees = computePaymentFees(total, selectedPaymentMethod);
+    var grandTotal = total + fees;
+
+    var paymentLabel;
+    switch(selectedPaymentMethod){
+      case 'paypal':  paymentLabel = "PayPal"; break;
+      case 'cash':    paymentLabel = "Main propre"; break;
+      case 'crypto':  paymentLabel = "Crypto"; break;
+      case 'tickets': paymentLabel = "Tickets"; break;
+      default:        paymentLabel = "Non précisé"; break;
+    }
+
+    lines.push("Mode de paiement souhaité : " + paymentLabel);
+
+    if (fees > 0){
+      lines.push("Frais associés à ce mode : " + euro(fees));
+    } else {
+      lines.push("Frais associés à ce mode : 0,00 €");
+    }
+
+    lines.push("Total estimé avec frais : " + euro(grandTotal));
+    lines.push("");
+
+    // rappel du total produits seul
+    lines.push("Total estimé (produits seuls, min connu) : " + euro(total));
+    lines.push("");
+    lines.push("Merci de vérifier les informations puis d’envoyer ce message à PochonStore pour finaliser le devis.");
+
+    var message = lines.join("\n");
+
+    var url = "https://t.me/share/url"
+      + "?url="  + encodeURIComponent("https://t.me/" + QUOTE_USERNAME)
+      + "&text=" + encodeURIComponent(message);
+
+    if (tg && tg.openTelegramLink){
+      tg.openTelegramLink(url);
+    } else {
+      window.open(url, "_blank");
+    }
+
+    closeCart(true);
+    toast("Ouverture du chat avec PochonStore…");
+  }catch(e){
+    console.error(e);
+    toast("Erreur lors de la préparation du devis.");
+  }
+}
 
     /* ===========================
        10) TOAST
