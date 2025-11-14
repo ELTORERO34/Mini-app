@@ -165,15 +165,15 @@
       transform: translateY(0);
     }
     
-      /* LOGO SIMPLE – ANIMATION DOUCE */
+      /* LOGO SPLASH – GROS + ROTATION 3D LENTE */
 .splash-logo {
-  width: 220px;
-  max-width: 80vw;
-  margin: 0 auto 20px;
+  width: 260px;              /* ✅ plus gros */
+  max-width: 85vw;
+  margin: 0 auto 24px;
 
   opacity: 0;
-  transform: translateY(20px) scale(0.95);
-  animation: splashLogoFade .7s ease-out forwards;
+  transform: translateY(18px) scale(0.92);
+  animation: splashLogoIntro 1s ease-out forwards;
 }
 
 .splash-logo img {
@@ -181,22 +181,37 @@
   height: auto;
   display: block;
   object-fit: contain;
-  border-radius: 12px;
+
+  transform-origin: center center;
+  animation: logoSpin3D 10s linear infinite;  /* ✅ rotation 3D lente */
 }
 
-/* Animation d'arrivée élégante */
-@keyframes splashLogoFade {
+/* Animation d’arrivée (fade + petit pop) */
+@keyframes splashLogoIntro {
   0% {
     opacity: 0;
-    transform: translateY(20px) scale(0.95);
+    transform: translateY(24px) scale(0.9);
   }
-  70% {
+  60% {
     opacity: 1;
-    transform: translateY(-2px) scale(1.02);
+    transform: translateY(-3px) scale(1.03);
   }
   100% {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+/* Rotation 3D sur lui-même (effet pièce) */
+@keyframes logoSpin3D {
+  0% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(180deg);
+  }
+  100% {
+    transform: rotateY(360deg);
   }
 }
 
