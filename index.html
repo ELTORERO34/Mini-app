@@ -108,61 +108,6 @@
       animation: splash-pop 0.7s ease-out forwards;
     }
 
-    /* BANNIÈRE SPLASH – RECTANGLE AVEC GLOW */
-.splash-logo{
-  width: 260px;
-  max-width: 80vw;
-  margin: 0 auto 22px;
-  border-radius: 18px;
-  overflow: hidden;
-  position: relative;
-
-  background: radial-gradient(circle at 0 0, #3a2600, #050505);
-  border: 2px solid rgba(255,215,100,0.9);
-  box-shadow:
-    0 0 22px rgba(0,0,0,0.9),
-    0 0 16px rgba(255,215,100,0.45);
-
-  opacity: 0;
-  transform: translateY(14px) scale(0.9);
-  animation: splashBannerIn .8s ease-out forwards;
-}
-
-/* rayon qui balaye la bannière */
-.splash-logo::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background: linear-gradient(120deg,
-    rgba(255,255,255,0) 0%,
-    rgba(255,255,255,0.28) 40%,
-    rgba(255,255,255,0) 80%);
-  mix-blend-mode: screen;
-  transform: translateX(-120%);
-  animation: bannerShine 3.5s ease-in-out infinite 1s;
-}
-
-/* halo doux autour */
-.splash-logo::after{
-  content:"";
-  position:absolute;
-  inset:-16%;
-  border-radius:inherit;
-  background: radial-gradient(circle,
-    rgba(255,215,100,0.55),
-    transparent 65%);
-  opacity:0.5;
-  pointer-events:none;
-}
-
-/* image bannière */
-.splash-logo img{
-  width:100%;
-  height:auto;
-  display:block;
-  object-fit:contain;
-}
-
     .splash-title,
     .splash-sub {
       opacity: 0;
@@ -219,6 +164,41 @@
       opacity: 1;
       transform: translateY(0);
     }
+    
+      /* LOGO SIMPLE – ANIMATION DOUCE */
+.splash-logo {
+  width: 220px;
+  max-width: 80vw;
+  margin: 0 auto 20px;
+
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  animation: splashLogoFade .7s ease-out forwards;
+}
+
+.splash-logo img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+/* Animation d'arrivée élégante */
+@keyframes splashLogoFade {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-2px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
 
     @keyframes splash-pop {
       0%{
