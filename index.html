@@ -1580,7 +1580,6 @@
    =========================== */
 .product-thumb.pack-hero{
   grid-column: span 2;                 /* pleine largeur */
-  height: 210px;                       /* plus grande */
   border-radius: 24px;
   overflow: hidden;
   position: relative;
@@ -1665,9 +1664,10 @@
 /* L'image garde tout le logo PACKS, plus de zoom */
 .product-thumb.pack-hero img{
   width: 100%;
-  height: 130px;
+  height: auto;
+  display: block;
   object-fit: contain;      /* AVANT c'était cover */
-  background: #000;         /* bandes propres si besoin */
+  background: none;         /* bandes propres si besoin */
 }
 
 /* Plus de place pour le texte en dessous de l'image */
