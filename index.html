@@ -2825,8 +2825,7 @@ function addPack(kind, btn){
     
     var selectedPaymentMethod = null;
 
-function selectPayment(method){
-  selectedPaymentMethod = method;
+    function selectPayment(method){
 
   // visuel : bouton actif
   document.querySelectorAll('.pay-btn').forEach(function(btn){
@@ -2839,7 +2838,7 @@ function selectPayment(method){
   computeCurrentFees();
 }
 
-function computeCurrentFees(){
+    function computeCurrentFees(){
   var totalEl = document.getElementById('cartTotal');
   var feesEl  = document.getElementById('cartFees');
   var grandEl = document.getElementById('cartGrandTotal');
@@ -2854,6 +2853,32 @@ function computeCurrentFees(){
 
   feesEl.textContent  = euro(fees);
   grandEl.textContent = euro(grand);
+}
+
+    function computePaymentFees(total, method){
+  // si la méthode n'est pas passée en paramètre, on prend la globale
+  method = method || selectedPaymentMethod;
+
+  if (!method) return 0;
+
+  // PAYPAL ou CRYPTO → +20 €
+  if (method === 'paypal' || method === 'crypto'){
+    return 20;
+  }
+
+  // MAIN PROPRE → 0 €
+  if (method === 'cash'){
+    return 0;
+  }
+
+  // TICKETS → frais selon le total des produits
+  if (method === 'tickets'){
+    if (total <= 200) return 20;
+    if (total <= 450) return 40;
+    return 60;
+  }
+
+  return 0;
 }
 
     function renderCart(){
