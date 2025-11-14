@@ -110,9 +110,9 @@
 
     /* ROND LOGO – VERSION FINALE */
 .splash-logo {
-  width: 190px;
-  height: 190px;
-  padding: 10px;                     /* marge autour du logo */
+  width: 200px;
+  height: 200px;
+  padding: 5px;                     /* marge autour du logo */
   border-radius: 50%;
   position: relative;
   margin: 0 auto 24px;
@@ -144,7 +144,7 @@
     );
   mix-blend-mode: screen;
   opacity: 0.9;
-  animation: splashRing 12s linear infinite;
+  animation: splashRing 20s linear infinite;
   pointer-events: none;
 }
 
@@ -159,7 +159,7 @@
       rgba(255,215,100,0.45) 0%,
       rgba(255,215,100,0.0) 60%);
   opacity: 0;
-  animation: splashHalo 3s ease-in-out infinite;
+  animation: splashHalo 5s ease-in-out infinite;
   pointer-events: none;
 }
 
@@ -169,11 +169,12 @@
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
+  object-position: center 48%;
   box-shadow:
     0 0 12px rgba(0,0,0,0.9),
     0 0 20px rgba(0,0,0,0.9);
   transform-origin: center;
-  animation: splashLogoFloat 3s ease-in-out infinite;
+  animation: splashLogoFloat 5s ease-in-out infinite;
 }
 
     .splash-title,
@@ -222,7 +223,7 @@
       border-radius:50%;
       background:#ffd766;
       box-shadow:0 0 12px rgba(255,215,100,0.7);
-      animation:splash-dot 1s ease-in-out infinite;
+      animation:splash-dot 2.2s ease-in-out infinite;
     }
 
     .splash-dots span:nth-child(2){ animation-delay:.15s; }
