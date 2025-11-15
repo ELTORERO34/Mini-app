@@ -1730,65 +1730,194 @@
   padding: 8px 10px 16px;
 }
 
-    /* ===========================
-   PROFIL + HISTORIQUE
+/* ===========================
+   PAGE PROFIL – HERO + CARTES
    =========================== */
-.profile-card h2{
-  margin-bottom: 6px;
+
+#tab-profil{
+  padding: 12px 12px 18px;
 }
 
-.profile-username{
-  font-weight: 600;
+/* Hero en haut (avatar + nom) */
+.profile-hero{
+  margin: 4px 0 14px;
+  padding: 10px 14px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background:
+    radial-gradient(circle at 0 0, rgba(255,215,100,0.18), transparent 60%),
+    rgba(5,5,5,0.9);
+  border: 1px solid rgba(255,215,100,0.35);
+  box-shadow:
+    0 10px 26px rgba(0,0,0,0.85),
+    0 0 14px rgba(255,215,100,0.25);
+}
+
+.profile-avatar{
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,215,100,0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 30% 0, rgba(255,215,100,0.35), transparent 65%),
+    #111;
+  box-shadow:
+    0 0 10px rgba(255,215,100,0.8),
+    0 0 22px rgba(0,0,0,0.9);
+  font-weight: 800;
+  font-size: 1.3rem;
+}
+
+.profile-avatar span{
+  background: linear-gradient(120deg,#fffbe8,#ffd766,#ffb300);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.profile-hero-text{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.profile-hero-name{
+  font-weight: 800;
+  font-size: 1.05rem;
+}
+
+.profile-hero-handle{
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+
+/* Cartes principales */
+.profile-card{
+  margin: 0 0 14px;
+  padding: 12px 14px 12px;
+  border-radius: 18px;
+  background: rgba(12,12,14,0.96);
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.9);
+}
+
+.profile-card--user{
+  border-color: rgba(120,190,255,0.85);
+}
+
+.profile-card--history{
+  border-color: rgba(255,215,100,0.85);
+}
+
+.profile-card--app{
+  border-color: rgba(180,120,255,0.85);
+}
+
+.profile-card-header{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.profile-card-header h2{
+  margin: 0;
+  font-size: 1rem;
   color: #ffd766;
 }
 
-.profile-extra{
-  font-size: 0.85rem;
+.profile-card-header p{
+  margin: 2px 0 0;
+  font-size: 0.8rem;
   color: var(--muted);
 }
 
-/* cartes d’historique */
-.history-card{
-  margin-bottom: 8px;
-  padding: 10px 12px;
+.profile-card-icon{
+  width: 34px;
+  height: 34px;
   border-radius: 12px;
-  background: rgba(15,15,17,0.96);
-  border: 1px solid rgba(255,255,255,0.06);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.7);
-  font-size: 0.84rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  background: radial-gradient(circle at 0 0, rgba(255,215,100,0.22), transparent 60%),
+              #181818;
 }
 
-.history-title{
+/* Grille info (label / valeur) */
+.profile-info-grid{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.profile-row{
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.86rem;
+}
+
+.profile-label{
+  color: var(--muted);
+}
+
+.profile-value{
   font-weight: 600;
+}
+
+.profile-pill-ok{
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  background: rgba(40,130,60,0.35);
+  border: 1px solid rgba(90,220,120,0.8);
+  color: #c8ffd8;
+}
+
+/* Historique */
+.profile-history-list{
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.history-entry{
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: rgba(18,18,22,0.98);
+  border: 1px solid rgba(255,215,100,0.22);
+  font-size: 0.82rem;
+}
+
+.history-entry-header{
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 2px;
 }
 
-.history-summary{
-  color: #e0e0e0;
-  margin-bottom: 4px;
+.history-entry-title{
+  font-weight: 600;
 }
 
-.history-items{
+.history-entry-total{
+  color: #ffd766;
+}
+
+.history-entry-items{
   color: var(--muted);
 }
 
-.history-line{
-  line-height: 1.25;
-}
-
-.history-more{
-  margin-top: 2px;
-  font-style: italic;
-  color: #bdbdbd;
-}
-
-    .tab-panel {
-  display: none;
-  min-height: calc(100vh - 160px - 78px); /* hauteur écran – header – nav bas */
-}
-
-.tab-panel.active {
-  display: block;
+.profile-hint{
+  margin-top: 8px;
+  font-size: 0.76rem;
+  color: var(--muted);
 }
   </style>
 </head>
@@ -2461,24 +2590,97 @@
       </p>
     </section>
   
-          <!-- ========= ONGLET PROFIL ========= -->
-    <section id="tab-profil" class="tab-panel">
-      <div class="info-card profile-card">
-        <h2>👤 Mon profil</h2>
-        <p id="profileName">Connecté via Telegram</p>
-        <p id="profileUsername" class="profile-username"></p>
-        <p id="profileExtra" class="profile-extra"></p>
-      </div>
+          <section id="tab-profil" class="tab-panel">
+  <!-- HERO PROFIL -->
+  <div class="profile-hero">
+    <div class="profile-avatar">
+      <span id="profileAvatarLetter">P</span>
+    </div>
+    <div class="profile-hero-text">
+      <div id="profileDisplayName" class="profile-hero-name">PochonStore</div>
+      <div id="profileHandle" class="profile-hero-handle">@pssv2</div>
+    </div>
+  </div>
 
-      <div class="info-card">
-        <h2>🧾 Historique de mes devis</h2>
-        <div id="historyList"></div>
-        <p class="tracking-helper" style="margin-top:10px;">
-          L’historique est stocké uniquement sur ton appareil (localStorage).
-          Si tu changes de téléphone ou que tu effaces les données, il sera remis à zéro.
-        </p>
+  <!-- CARTE 1 : INFORMATIONS UTILISATEUR -->
+  <div class="profile-card profile-card--user">
+    <div class="profile-card-header">
+      <div class="profile-card-icon">👤</div>
+      <div>
+        <h2>Informations utilisateur</h2>
+        <p>Données Telegram utilisées dans la boutique.</p>
       </div>
-    </section>
+    </div>
+
+    <div class="profile-info-grid">
+      <div class="profile-row">
+        <span class="profile-label">ID Telegram</span>
+        <span id="profileId" class="profile-value">—</span>
+      </div>
+      <div class="profile-row">
+        <span class="profile-label">Prénom</span>
+        <span id="profileFirstName" class="profile-value">—</span>
+      </div>
+      <div class="profile-row">
+        <span class="profile-label">Nom</span>
+        <span id="profileLastName" class="profile-value">—</span>
+      </div>
+      <div class="profile-row">
+        <span class="profile-label">Nom d'utilisateur</span>
+        <span id="profileUsername" class="profile-value">—</span>
+      </div>
+      <div class="profile-row">
+        <span class="profile-label">Langue</span>
+        <span id="profileLang" class="profile-value">—</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARTE 2 : HISTORIQUE DE DEVIS (STATUT PLUG) -->
+  <div class="profile-card profile-card--history">
+    <div class="profile-card-header">
+      <div class="profile-card-icon">🧾</div>
+      <div>
+        <h2>Historique de devis</h2>
+        <p>Récap des demandes envoyées depuis cette mini-app.</p>
+      </div>
+    </div>
+
+    <div id="historyList" class="profile-history-list">
+      <!-- Rempli en JS via renderHistory() -->
+    </div>
+
+    <p class="profile-hint">
+      L’historique est enregistré uniquement sur ton appareil (localStorage).
+    </p>
+  </div>
+
+  <!-- CARTE 3 : INFOS APPLICATION -->
+  <div class="profile-card profile-card--app">
+    <div class="profile-card-header">
+      <div class="profile-card-icon">⚙️</div>
+      <div>
+        <h2>Informations de l’application</h2>
+        <p>Statut de la session et de la mini-app.</p>
+      </div>
+    </div>
+
+    <div class="profile-info-grid">
+      <div class="profile-row">
+        <span class="profile-label">Plateforme</span>
+        <span class="profile-value">Telegram Mini App</span>
+      </div>
+      <div class="profile-row">
+        <span class="profile-label">Session</span>
+        <span id="profileSession" class="profile-value profile-pill-ok">Connecté</span>
+      </div>
+      <div class="profile-row">
+        <span class="profile-label">Dernière connexion</span>
+        <span id="profileLastLogin" class="profile-value">—</span>
+      </div>
+    </div>
+  </div>
+</section>
     </main>
 
   <!-- ===========================
@@ -3227,35 +3429,44 @@ function saveHistoryToStorage(){
    =========================== */
 function initProfileFromTelegram(){
   try{
-    var nameEl = document.getElementById('profileName');
+    var avatarEl = document.getElementById('profileAvatarLetter');
+    var displayNameEl = document.getElementById('profileDisplayName');
+    var handleEl = document.getElementById('profileHandle');
+
+    var idEl = document.getElementById('profileId');
+    var fnEl = document.getElementById('profileFirstName');
+    var lnEl = document.getElementById('profileLastName');
     var userEl = document.getElementById('profileUsername');
-    var extraEl = document.getElementById('profileExtra');
+    var langEl = document.getElementById('profileLang');
 
     if (!tg || !tg.initDataUnsafe || !tg.initDataUnsafe.user){
-      if (nameEl) nameEl.textContent = "Utilisateur anonyme";
-      if (extraEl) extraEl.textContent = "Ouvre la mini-app depuis Telegram pour voir ton profil.";
+      if (displayNameEl) displayNameEl.textContent = "Utilisateur anonyme";
+      if (handleEl) handleEl.textContent = "Ouvre la mini-app depuis Telegram pour voir ton profil.";
+      if (avatarEl) avatarEl.textContent = "?";
       return;
     }
 
     var u = tg.initDataUnsafe.user;
-    var fullName = (u.first_name || '') + ' ' + (u.last_name || '');
-    fullName = fullName.trim() || "Utilisateur Telegram";
 
-    if (nameEl) nameEl.textContent = fullName;
-    if (userEl){
-      if (u.username){
-        userEl.textContent = '@' + u.username;
-      } else {
-        userEl.textContent = '(pas de pseudo Telegram public)';
-      }
+    var first = u.first_name || "";
+    var last  = u.last_name || "";
+    var full  = (first + " " + last).trim() || "Utilisateur Telegram";
+
+    if (displayNameEl) displayNameEl.textContent = full;
+    if (handleEl){
+      handleEl.textContent = u.username ? ("@" + u.username) : "(pas de pseudo public)";
     }
 
-    if (extraEl){
-      var parts = [];
-      if (u.language_code) parts.push('Langue : ' + u.language_code.toUpperCase());
-      parts.push('ID Telegram : ' + u.id);
-      extraEl.textContent = parts.join(' • ');
+    if (avatarEl){
+      var letter = (first || full).trim().charAt(0).toUpperCase() || "P";
+      avatarEl.textContent = letter;
     }
+
+    if (idEl)   idEl.textContent   = u.id || "—";
+    if (fnEl)   fnEl.textContent   = first || "—";
+    if (lnEl)   lnEl.textContent   = last || "—";
+    if (userEl) userEl.textContent = u.username ? ("@" + u.username) : "—";
+    if (langEl) langEl.textContent = (u.language_code || "—").toUpperCase();
   }catch(e){
     console.error('initProfileFromTelegram error', e);
   }
@@ -3270,7 +3481,7 @@ function renderHistory(){
 
   if (!ORDER_HISTORY.length){
     box.innerHTML =
-      '<p class="item-sub" style="margin-top:4px;">' +
+      '<p class="item-sub" style="margin:4px 0 0;">' +
       'Aucun devis enregistré pour le moment.' +
       '</p>';
     return;
@@ -3278,56 +3489,70 @@ function renderHistory(){
 
   box.innerHTML = '';
 
-  // On affiche du plus récent au plus ancien
+  // dernier devis en premier
   var items = ORDER_HISTORY.slice().reverse();
 
-  items.forEach(function(h){
-    var card = document.createElement('div');
-    card.className = 'history-card';
+  items.forEach(function(h, index){
+    var div = document.createElement('div');
+    div.className = 'history-entry';
 
     var d = new Date(h.date || Date.now());
 
-    var title = document.createElement('div');
-    title.className = 'history-title';
-    title.textContent = 'Devis du ' + d.toLocaleString('fr-FR', {
-      dateStyle: 'short',
-      timeStyle: 'short'
-    });
+    var header = document.createElement('div');
+    header.className = 'history-entry-header';
 
-    var summary = document.createElement('div');
-    summary.className = 'history-summary';
+    var title = document.createElement('div');
+    title.className = 'history-entry-title';
+    title.textContent = 'Devis #' + (items.length - index);
+
+    var total = document.createElement('div');
+    total.className = 'history-entry-total';
+    total.textContent = euro(h.totalWithFees || h.totalProducts || 0);
+
+    header.appendChild(title);
+    header.appendChild(total);
+
+    var sub = document.createElement('div');
+    sub.className = 'history-entry-items';
+
     var countItems = 0;
     if (Array.isArray(h.items)){
       h.items.forEach(function(it){ countItems += (it.qty || 0); });
     }
-    summary.textContent =
-      countItems + ' article(s) • ' +
-      euro(h.totalWithFees || h.totalProducts || 0);
 
-    var details = document.createElement('div');
-    details.className = 'history-items';
+    sub.textContent =
+      d.toLocaleString('fr-FR',{dateStyle:'short', timeStyle:'short'}) +
+      ' • ' + countItems + ' article(s)';
 
-    if (Array.isArray(h.items)){
-      h.items.slice(0,3).forEach(function(it){
-        var line = document.createElement('div');
-        line.className = 'history-line';
-        line.textContent = '• ' + it.title + ' × ' + it.qty;
-        details.appendChild(line);
+    div.appendChild(header);
+    div.appendChild(sub);
+    box.appendChild(div);
+  });
+}
+
+    function initAppInfo(){
+  try{
+    var lastLoginEl = document.getElementById('profileLastLogin');
+    var sessionEl   = document.getElementById('profileSession');
+
+    var now = new Date();
+    if (lastLoginEl){
+      lastLoginEl.textContent = now.toLocaleString('fr-FR',{
+        dateStyle:'long',
+        timeStyle:'short'
       });
-
-      if (h.items.length > 3){
-        var more = document.createElement('div');
-        more.className = 'history-more';
-        more.textContent = '+ ' + (h.items.length - 3) + ' article(s) supplémentaires…';
-        details.appendChild(more);
-      }
     }
 
-    card.appendChild(title);
-    card.appendChild(summary);
-    card.appendChild(details);
-    box.appendChild(card);
-  });
+    if (sessionEl){
+      // si pour une raison quelconque tg n’est pas dispo, on met "Hors ligne"
+      if (!tg){
+        sessionEl.textContent = "Hors ligne";
+        sessionEl.classList.remove('profile-pill-ok');
+      }
+    }
+  }catch(e){
+    console.error('initAppInfo error', e);
+  }
 }
 
     function renderCart(){
@@ -3702,7 +3927,8 @@ function renderHistory(){
   renderHistory();        // on va créer cette fonction juste après
 
   // 3) Hydrater le profil Telegram (si dispo)
-  initProfileFromTelegram();
+  initProfileFromTelegram();  // profil user
+  initAppInfo();              // carte infos appli
 });
   </script>
 </body>
