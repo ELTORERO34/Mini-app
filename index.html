@@ -327,12 +327,12 @@
 
     main {
   display: block;
-  min-height: 100vh;          /* au lieu de height: 100vh */
+  height: 100vh;
   padding-top: 160px;
   padding-bottom: 110px;
   box-sizing: border-box;
-  overflow-y: visible;         /* plus de scroll ici */
-  -webkit-overflow-scrolling: auto;
+  overflow-y: auto;              /* c’est bien main qui scrolle */
+  -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
   overscroll-behavior-y: none;
 }
@@ -2460,7 +2460,6 @@
         Nous sommes là pour t’aider 7j/7 ✨
       </p>
     </section>
-  </main>
   
           <!-- ========= ONGLET PROFIL ========= -->
     <section id="tab-profil" class="tab-panel">
@@ -2480,6 +2479,7 @@
         </p>
       </div>
     </section>
+    </main>
 
   <!-- ===========================
        BOUTON PANIER FLOTTANT
