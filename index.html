@@ -1781,6 +1781,15 @@
   font-style: italic;
   color: #bdbdbd;
 }
+
+    .tab-panel {
+  display: none;
+  min-height: calc(100vh - 160px - 78px); /* hauteur écran – header – nav bas */
+}
+
+.tab-panel.active {
+  display: block;
+}
   </style>
 </head>
 
@@ -2595,25 +2604,39 @@ var selectedPaymentMethod = null;
        2) NAVIGATION TABS
        =========================== */
     function switchTab(btn){
-      var tab = btn.getAttribute('data-tab'); // menu / infos / canal / contact
+  var tab = btn.getAttribute('data-tab'); // menu / infos / canal / contact / profil
 
-      var navs = document.querySelectorAll('.nav-btn');
-      navs.forEach(function(n){ n.classList.remove('active'); });
-      btn.classList.add('active');
+  // 1) état visuel des boutons
+  var navs = document.querySelectorAll('.nav-btn');
+  navs.forEach(function(n){ n.classList.remove('active'); });
+  btn.classList.add('active');
 
-      var panels = document.querySelectorAll('.tab-panel');
-      panels.forEach(function(p){ p.classList.remove('active'); });
+  // 2) afficher uniquement l’onglet ciblé
+  var panels = document.querySelectorAll('.tab-panel');
+  panels.forEach(function(p){ p.classList.remove('active'); });
 
-      var active = document.getElementById('tab-' + tab);
-      if (active) active.classList.add('active');
+  var active = document.getElementById('tab-' + tab);
+  if (active) active.classList.add('active');
 
-      if (tab !== 'menu'){
-        closeProduct(true);
-      }
+  // 3) fermer fiche produit si on n’est plus dans le menu
+  if (tab !== 'menu'){
+    closeProduct(true);
+  }
 
-      closeCart(true);
-      window.scrollTo(0,0);
-    }
+  // 4) fermer le panier
+  closeCart(true);
+
+  // 5) 🔥 remettre le conteneur qui scrolle VRAIMENT tout en haut
+  var main = document.getElementById('main');
+  if (main){
+    main.scrollTop = 0;
+  }
+
+  // 6) par sécurité, on remet aussi la fenêtre à 0
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+  window.scrollTo(0,0);
+}
 
     /* ===========================
        3) FICHES PRODUITS
