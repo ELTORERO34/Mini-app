@@ -1729,6 +1729,58 @@
 .product-thumb.pack-hero .product-thumb-body{
   padding: 8px 10px 16px;
 }
+
+    /* ===========================
+   PROFIL + HISTORIQUE
+   =========================== */
+.profile-card h2{
+  margin-bottom: 6px;
+}
+
+.profile-username{
+  font-weight: 600;
+  color: #ffd766;
+}
+
+.profile-extra{
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* cartes d’historique */
+.history-card{
+  margin-bottom: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(15,15,17,0.96);
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.7);
+  font-size: 0.84rem;
+}
+
+.history-title{
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.history-summary{
+  color: #e0e0e0;
+  margin-bottom: 4px;
+}
+
+.history-items{
+  color: var(--muted);
+}
+
+.history-line{
+  line-height: 1.25;
+}
+
+.history-more{
+  margin-top: 2px;
+  font-style: italic;
+  color: #bdbdbd;
+}
   </style>
 </head>
 
@@ -2400,6 +2452,25 @@
       </p>
     </section>
   </main>
+  
+          <!-- ========= ONGLET PROFIL ========= -->
+    <section id="tab-profil" class="tab-panel">
+      <div class="info-card profile-card">
+        <h2>👤 Mon profil</h2>
+        <p id="profileName">Connecté via Telegram</p>
+        <p id="profileUsername" class="profile-username"></p>
+        <p id="profileExtra" class="profile-extra"></p>
+      </div>
+
+      <div class="info-card">
+        <h2>🧾 Historique de mes devis</h2>
+        <div id="historyList"></div>
+        <p class="tracking-helper" style="margin-top:10px;">
+          L’historique est stocké uniquement sur ton appareil (localStorage).
+          Si tu changes de téléphone ou que tu effaces les données, il sera remis à zéro.
+        </p>
+      </div>
+    </section>
 
   <!-- ===========================
        BOUTON PANIER FLOTTANT
@@ -2488,6 +2559,11 @@
       <span class="icon">✉️</span>
       <span>Contact</span>
     </button>
+    <!-- 🔥 Nouveau bouton Profil -->
+  <button class="nav-btn" data-tab="profil" onclick="switchTab(this)">
+    <span class="icon">👤</span>
+    <span>Profil</span>
+  </button>
   </nav>
 
   <!-- TOAST -->
@@ -2501,11 +2577,19 @@
        1) TELEGRAM / GLOBALS
        =========================== */
     var tg = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
-    var QUOTE_USERNAME = "pssv2";
-    var CART = [];
-    var toastTimer = null;
-    // moyen de paiement choisi dans le panier : "paypal" | "cash" | "crypto" | "tickets"
-    var selectedPaymentMethod = null;
+var QUOTE_USERNAME = "pssv2";
+
+// Panier + historique
+var CART = [];
+var ORDER_HISTORY = [];
+
+// Clés de stockage local
+var STORAGE_CART_KEY = 'pss_cart_v1';
+var STORAGE_HISTORY_KEY = 'pss_history_v1';
+
+var toastTimer = null;
+// moyen de paiement choisi dans le panier : "paypal" | "cash" | "crypto" | "tickets"
+var selectedPaymentMethod = null;
 
     /* ===========================
        2) NAVIGATION TABS
@@ -3075,6 +3159,159 @@ function addPack(kind, btn){
   return 0;
 }
 
+    /* ===========================
+   PERSISTANCE PANIER / HISTORIQUE
+   =========================== */
+function loadCartFromStorage(){
+  try {
+    var raw = localStorage.getItem(STORAGE_CART_KEY);
+    if (!raw) return;
+    var data = JSON.parse(raw);
+    if (Array.isArray(data)) {
+      CART = data;
+    }
+  } catch(e){
+    console.error('Erreur loadCartFromStorage', e);
+  }
+}
+
+function saveCartToStorage(){
+  try {
+    localStorage.setItem(STORAGE_CART_KEY, JSON.stringify(CART));
+  } catch(e){
+    console.error('Erreur saveCartToStorage', e);
+  }
+}
+
+function loadHistoryFromStorage(){
+  try {
+    var raw = localStorage.getItem(STORAGE_HISTORY_KEY);
+    if (!raw) return;
+    var data = JSON.parse(raw);
+    if (Array.isArray(data)) {
+      ORDER_HISTORY = data;
+    }
+  } catch(e){
+    console.error('Erreur loadHistoryFromStorage', e);
+  }
+}
+
+function saveHistoryToStorage(){
+  try {
+    localStorage.setItem(STORAGE_HISTORY_KEY, JSON.stringify(ORDER_HISTORY));
+  } catch(e){
+    console.error('Erreur saveHistoryToStorage', e);
+  }
+}
+
+    /* ===========================
+   PROFIL TELEGRAM
+   =========================== */
+function initProfileFromTelegram(){
+  try{
+    var nameEl = document.getElementById('profileName');
+    var userEl = document.getElementById('profileUsername');
+    var extraEl = document.getElementById('profileExtra');
+
+    if (!tg || !tg.initDataUnsafe || !tg.initDataUnsafe.user){
+      if (nameEl) nameEl.textContent = "Utilisateur anonyme";
+      if (extraEl) extraEl.textContent = "Ouvre la mini-app depuis Telegram pour voir ton profil.";
+      return;
+    }
+
+    var u = tg.initDataUnsafe.user;
+    var fullName = (u.first_name || '') + ' ' + (u.last_name || '');
+    fullName = fullName.trim() || "Utilisateur Telegram";
+
+    if (nameEl) nameEl.textContent = fullName;
+    if (userEl){
+      if (u.username){
+        userEl.textContent = '@' + u.username;
+      } else {
+        userEl.textContent = '(pas de pseudo Telegram public)';
+      }
+    }
+
+    if (extraEl){
+      var parts = [];
+      if (u.language_code) parts.push('Langue : ' + u.language_code.toUpperCase());
+      parts.push('ID Telegram : ' + u.id);
+      extraEl.textContent = parts.join(' • ');
+    }
+  }catch(e){
+    console.error('initProfileFromTelegram error', e);
+  }
+}
+
+/* ===========================
+   RENDU HISTORIQUE
+   =========================== */
+function renderHistory(){
+  var box = document.getElementById('historyList');
+  if (!box) return;
+
+  if (!ORDER_HISTORY.length){
+    box.innerHTML =
+      '<p class="item-sub" style="margin-top:4px;">' +
+      'Aucun devis enregistré pour le moment.' +
+      '</p>';
+    return;
+  }
+
+  box.innerHTML = '';
+
+  // On affiche du plus récent au plus ancien
+  var items = ORDER_HISTORY.slice().reverse();
+
+  items.forEach(function(h){
+    var card = document.createElement('div');
+    card.className = 'history-card';
+
+    var d = new Date(h.date || Date.now());
+
+    var title = document.createElement('div');
+    title.className = 'history-title';
+    title.textContent = 'Devis du ' + d.toLocaleString('fr-FR', {
+      dateStyle: 'short',
+      timeStyle: 'short'
+    });
+
+    var summary = document.createElement('div');
+    summary.className = 'history-summary';
+    var countItems = 0;
+    if (Array.isArray(h.items)){
+      h.items.forEach(function(it){ countItems += (it.qty || 0); });
+    }
+    summary.textContent =
+      countItems + ' article(s) • ' +
+      euro(h.totalWithFees || h.totalProducts || 0);
+
+    var details = document.createElement('div');
+    details.className = 'history-items';
+
+    if (Array.isArray(h.items)){
+      h.items.slice(0,3).forEach(function(it){
+        var line = document.createElement('div');
+        line.className = 'history-line';
+        line.textContent = '• ' + it.title + ' × ' + it.qty;
+        details.appendChild(line);
+      });
+
+      if (h.items.length > 3){
+        var more = document.createElement('div');
+        more.className = 'history-more';
+        more.textContent = '+ ' + (h.items.length - 3) + ' article(s) supplémentaires…';
+        details.appendChild(more);
+      }
+    }
+
+    card.appendChild(title);
+    card.appendChild(summary);
+    card.appendChild(details);
+    box.appendChild(card);
+  });
+}
+
     function renderCart(){
       try{
         var box   = document.getElementById('cartItems');
@@ -3187,15 +3424,18 @@ function addPack(kind, btn){
             badgeEl.style.display = 'none';
           }
         }
+              // --- Sauvegarde du panier après rendu ---
+      saveCartToStorage();
       }catch(e){
         console.error(e);
       }
     }
 
     function clearCart(){
-      CART = [];
-      renderCart();
-    }
+  CART = [];
+  renderCart();
+  saveCartToStorage();
+}
 
     /* ===========================
        9) ENVOI DU DEVIS
@@ -3257,6 +3497,26 @@ function addPack(kind, btn){
     // === PARTIE FRAIS / MOYEN DE PAIEMENT ===
     var fees = computePaymentFees(total, selectedPaymentMethod);
     var grandTotal = total + fees;
+    
+        // === Sauvegarde dans l’historique local ===
+    var snapshot = {
+      date: new Date().toISOString(),
+      items: CART.map(function(it){
+        return {
+          title: it.title,
+          qty: it.qty,
+          unit: it.unit || 0,
+          opts: it.opts || {}
+        };
+      }),
+      paymentMethod: selectedPaymentMethod || null,
+      totalProducts: total,
+      fees: fees,
+      totalWithFees: grandTotal
+    };
+
+    ORDER_HISTORY.push(snapshot);
+    saveHistoryToStorage();
 
     var paymentLabel;
     switch(selectedPaymentMethod){
@@ -3297,6 +3557,8 @@ function addPack(kind, btn){
 
     closeCart(true);
     toast("Ouverture du chat avec PochonStore…");
+        // Mettre à jour le rendu de l’historique dans l’onglet Profil
+    renderHistory();
   }catch(e){
     console.error(e);
     toast("Erreur lors de la préparation du devis.");
@@ -3393,26 +3655,37 @@ function addPack(kind, btn){
        12) SPLASH FLOW
        =========================== */
     document.addEventListener('DOMContentLoaded', function(){
-      var splash = document.getElementById('splash');
-      if (!splash) return;
+  // 1) Splash
+  var splash = document.getElementById('splash');
+  if (splash){
+    setTimeout(function(){
+      splash.classList.add('splash--show-text');
+    }, 400);
 
-      setTimeout(function(){
-        splash.classList.add('splash--show-text');
-      }, 400);
+    setTimeout(function(){
+      splash.classList.add('splash--show-dots');
+    }, 900);
 
+    setTimeout(function(){
+      splash.classList.add('splash--hide');
       setTimeout(function(){
-        splash.classList.add('splash--show-dots');
-      }, 900);
+        if (splash && splash.parentNode){
+          splash.parentNode.removeChild(splash);
+        }
+      }, 600);
+    }, 4500);
+  }
 
-      setTimeout(function(){
-        splash.classList.add('splash--hide');
-        setTimeout(function(){
-          if (splash && splash.parentNode){
-            splash.parentNode.removeChild(splash);
-          }
-        }, 600);
-      }, 4500);
-    });
+  // 2) Charger le panier et l’historique depuis le stockage local
+  loadCartFromStorage();
+  renderCart();           // met à jour les totaux + badge
+
+  loadHistoryFromStorage();
+  renderHistory();        // on va créer cette fonction juste après
+
+  // 3) Hydrater le profil Telegram (si dispo)
+  initProfileFromTelegram();
+});
   </script>
 </body>
 </html>
