@@ -326,16 +326,16 @@
     }
 
     main {
-      display: block;
-      height: 100vh;
-      padding-top: 160px;
-      padding-bottom: 110px;
-      box-sizing: border-box;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      scroll-behavior: smooth;
-      overscroll-behavior-y: none;
-    }
+  display: block;
+  min-height: 100vh;          /* au lieu de height: 100vh */
+  padding-top: 160px;
+  padding-bottom: 110px;
+  box-sizing: border-box;
+  overflow-y: visible;         /* plus de scroll ici */
+  -webkit-overflow-scrolling: auto;
+  scroll-behavior: smooth;
+  overscroll-behavior-y: none;
+}
 
     .tab-panel {
       display: none;
@@ -2606,36 +2606,31 @@ var selectedPaymentMethod = null;
     function switchTab(btn){
   var tab = btn.getAttribute('data-tab'); // menu / infos / canal / contact / profil
 
-  // 1) état visuel des boutons
+  // boutons nav
   var navs = document.querySelectorAll('.nav-btn');
   navs.forEach(function(n){ n.classList.remove('active'); });
   btn.classList.add('active');
 
-  // 2) afficher uniquement l’onglet ciblé
-  var panels = document.querySelectorAll('.tab-panel');
-  panels.forEach(function(p){ p.classList.remove('active'); });
+  // onglets
+  var targetId = 'tab-' + tab;
+  document.querySelectorAll('.tab-panel').forEach(function(p){
+    if (p.id === targetId){
+      p.classList.add('active');
+    } else {
+      p.classList.remove('active');
+    }
+  });
 
-  var active = document.getElementById('tab-' + tab);
-  if (active) active.classList.add('active');
-
-  // 3) fermer fiche produit si on n’est plus dans le menu
   if (tab !== 'menu'){
     closeProduct(true);
   }
 
-  // 4) fermer le panier
   closeCart(true);
 
-  // 5) 🔥 remettre le conteneur qui scrolle VRAIMENT tout en haut
-  var main = document.getElementById('main');
-  if (main){
-    main.scrollTop = 0;
-  }
-
-  // 6) par sécurité, on remet aussi la fenêtre à 0
+  // on remonte simplement la page
+  window.scrollTo(0, 0);
   document.documentElement.scrollTop = 0;
   document.body.scrollTop = 0;
-  window.scrollTo(0,0);
 }
 
     /* ===========================
