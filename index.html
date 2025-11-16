@@ -42,6 +42,49 @@
                    Roboto, sans-serif;
       position: relative;
     }
+    
+    /* ===========================
+   THEMES JOUR / NUIT
+   =========================== */
+body.theme-night {
+  background: #050505;
+}
+
+body.theme-day {
+  background: #111318;
+}
+
+/* Header + nav plus clairs en mode jour */
+body.theme-day .header {
+  background: rgba(10, 10, 15, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+body.theme-day .bottom-nav {
+  background: rgba(12, 12, 18, 0.97);
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+/* Cartes un peu plus claires */
+body.theme-day .product-card,
+body.theme-day .info-card,
+body.theme-day .profile-card {
+  background: rgba(24, 24, 30, 0.96);
+}
+
+/* Texte un poil plus lumineux */
+body.theme-day .product-desc,
+body.theme-day .info-card p,
+body.theme-day .profile-label {
+  color: #e0e0e0;
+}
+
+/* Fond global moins sombre */
+body.theme-day::after {
+  background:
+    radial-gradient(circle at 70% 80%, rgba(255,215,100,0.12), transparent 60%),
+    rgba(0,0,0,0.30);
+}
 
     body {
       background: #050505;
@@ -665,12 +708,16 @@
       margin-bottom: 12px;
     }
 
+    .detail-media {
+  position: relative;
+  overflow: hidden;
+}
+
     .detail-media img {
-      width: 100%;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      display: block;
-    }
+  will-change: transform;
+  transform: translate3d(0,0,0);
+  transition: transform 0.08s linear;
+}
 
     .product-card {
       background: rgba(20, 20, 20, 0.85);
@@ -3004,7 +3051,15 @@
         <span class="profile-label">Dernière connexion</span>
         <span id="profileLastLogin" class="profile-value">—</span>
       </div>
-    </div>
+    
+     <div class="profile-row">
+  <span class="profile-label">Thème</span>
+  <span class="profile-value">
+    <button type="button" id="themeToggle" class="btn" style="padding:4px 10px;font-size:0.8rem;">
+      🌙 Mode nuit
+    </button>
+  </span>
+</div>
   </div>
 </section>
     </main>
@@ -4537,6 +4592,93 @@ function renderHistory(){
 }
 
     /* ===========================
+   THEME JOUR / NUIT
+   =========================== */
+var THEME_STORAGE_KEY = 'pss_theme_v1';
+
+function applyTheme(theme){
+  var body = document.body;
+  if (!body) return;
+
+  body.classList.remove('theme-day', 'theme-night');
+
+  if (theme !== 'day' && theme !== 'night'){
+    theme = 'night';
+  }
+  body.classList.add('theme-' + theme);
+
+  try {
+    localStorage.setItem(THEME_STORAGE_KEY, theme);
+  } catch(e){
+    console.error('Erreur save theme', e);
+  }
+
+  // Met à jour le texte du bouton
+  var btn = document.getElementById('themeToggle');
+  if (btn){
+    if (theme === 'night'){
+      btn.textContent = '🌙 Mode nuit';
+    } else {
+      btn.textContent = '☀️ Mode jour';
+    }
+  }
+}
+
+function initTheme(){
+  var saved = null;
+  try {
+    saved = localStorage.getItem(THEME_STORAGE_KEY);
+  } catch(e){
+    console.error('Erreur load theme', e);
+  }
+  if (!saved){
+    saved = 'night'; // thème par défaut
+  }
+  applyTheme(saved);
+
+  // Click sur le bouton
+  var btn = document.getElementById('themeToggle');
+  if (btn){
+    btn.addEventListener('click', function(){
+      var current = (document.body.classList.contains('theme-day')) ? 'day' : 'night';
+      var next = (current === 'day') ? 'night' : 'day';
+      applyTheme(next);
+    });
+  }
+}
+
+    /* ===========================
+   PARALLAX SUR IMAGES PRODUIT
+   =========================== */
+function updateParallax(){
+  var imgs = document.querySelectorAll('.product-detail .detail-media img');
+  if (!imgs.length) return;
+
+  var viewportH = window.innerHeight || document.documentElement.clientHeight || 800;
+
+  imgs.forEach(function(img){
+    var rect = img.getBoundingClientRect();
+    var center = rect.top + rect.height / 2;
+    var dist = center - viewportH / 2;     // distance par rapport au centre de l'écran
+    var maxShift = 18;                     // intensité max du déplacement (pixels)
+    var ratio = dist / (viewportH / 2);
+    if (ratio < -1) ratio = -1;
+    if (ratio > 1)  ratio = 1;
+
+    var translateY = -ratio * maxShift;
+    img.style.transform = 'translate3d(0,' + translateY.toFixed(1) + 'px,0)';
+  });
+}
+
+function initParallax(){
+  // Mise à jour au scroll
+  window.addEventListener('scroll', updateParallax, { passive: true });
+  // Mise à jour à l'ouverture / resize
+  window.addEventListener('resize', updateParallax);
+  setTimeout(updateParallax, 200);
+}
+
+    /* ===========================
        12) SPLASH FLOW
        =========================== */
     document.addEventListener('DOMContentLoaded', function(){
@@ -4572,6 +4714,15 @@ function renderHistory(){
   // 4) Profil / appli
   initProfileFromTelegram();
   initAppInfo();
+  
+  // 5) Thème jour/nuit
+  initTheme();
+
+  // 6) Recherche catalogue (si pas déjà ajouté)
+  initProductSearch();
+
+  // 7) Parallax (juste après, voir plus bas)
+  initParallax();
 });
   </script>
 </body>
