@@ -295,69 +295,70 @@
   100% { transform: translateX(120%); }
 }
 
-    /* ===========================
-       3) HEADER FLOU + MAIN
-       =========================== */
-    .header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 140px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      background: rgba(0, 0, 0, 0.04);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      box-shadow: none;
-    }
+/* ===================================
+   HEADER PochonStore qui recouvre Telegram
+   =================================== */
 
-    .header-logo {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      max-height: 80px;
-      width: auto;
-      object-fit: contain;
-    }
-    
-        /* Bouton retour perso dans le header */
-    .pss-back-btn{
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 1100;
+.pss-header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 180px;                           /* Hauteur augmentée */
+  z-index: 5000;                            /* Passe au-dessus de Telegram */
+  
+  background: linear-gradient(
+      to bottom,
+      rgba(3, 3, 3, 0.95),
+      rgba(8, 8, 12, 0.85),
+      rgba(0, 0, 0, 0.0)
+  );
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-      padding: 8px 14px;
-      font-size: 0.9rem;
-      font-weight: 700;
-      border-radius: 12px;
+/* Bouton retour */
+.pss-header-back{
+  position: absolute;
+  top: 22px;                      /* dans la zone qui recouvre Telegram */
+  left: 18px;
 
-      color: #ffd766;
-      background: rgba(10,10,10,0.85);
-      border: 1px solid rgba(255,215,102,0.5);
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  padding: 7px 14px;
+  font-size: 0.9rem;
+  font-weight: 700;
 
-      cursor: pointer;
-      outline: none;
-      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
-    }
+  border-radius: 12px;
+  border: 1px solid rgba(255,215,102,0.55);
 
-    .pss-back-btn:active{
-      transform: translateY(-50%) scale(0.96);
-      background: rgba(30,30,30,0.9);
-      box-shadow: 0 0 4px rgba(0,0,0,0.8);
-    }
+  background: rgba(15,15,15,0.85);
+  color: #ffd766;
+
+  box-shadow: 0 0 10px rgba(0,0,0,0.6);
+  backdrop-filter: blur(5px);
+  cursor: pointer;
+}
+
+/* Ton logo */
+.pss-header-logo{
+  position: absolute;
+  bottom: 14px;       /* descend un peu ton logo pour qu’il respire */
+  left: 50%;
+  transform: translateX(-50%);
+  
+  max-height: 80px;
+  width: auto;
+  object-fit: contain;
+}
 
     main {
   display: block;
   height: 100vh;
-  padding-top: 160px;
+  padding-top: 200px;
   padding-bottom: 110px;
   box-sizing: border-box;
   overflow-y: auto;              /* c’est bien main qui scrolle */
@@ -1971,14 +1972,11 @@
   <!-- ===========================
        HEADER
        =========================== -->
-  <header class="header">
-    <!-- Bouton retour perso -->
-    <button class="pss-back-btn" type="button" onclick="goBack()">
-      ← Retour
-    </button>
+<header class="pss-header">
+    <button class="pss-header-back" onclick="goBack()">← Retour</button>
 
-    <img src="img/banner.png" alt="PochonStore" class="header-logo" />
-  </header>
+    <img src="img/banner.png" alt="PochonStore" class="pss-header-logo" />
+</header>
 
   <!-- ===========================
        MAIN – TABS
@@ -3978,6 +3976,15 @@ function renderHistory(){
   initProfileFromTelegram();  // profil user
   initAppInfo();              // carte infos appli
 });
+
+// Bouton retour
+    function goBack(){
+  if (tg && tg.close){
+    tg.close();
+  } else {
+    window.history.back();
+  }
+}
   </script>
 </body>
 </html>
