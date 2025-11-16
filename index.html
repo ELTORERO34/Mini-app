@@ -343,6 +343,71 @@
     .tab-panel.active {
       display: block;
     }
+    
+    /* ===========================
+   RECHERCHE CATALOGUE
+   =========================== */
+.search-wrapper{
+  padding: 10px 16px 0;
+}
+
+.search-bar{
+  position: relative;
+  border-radius: 999px;
+  background: rgba(10,10,10,0.92);
+  border: 1px solid rgba(255,215,100,0.35);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.8);
+  padding: 6px 12px 6px 34px;
+  display: flex;
+  align-items: center;
+}
+
+.search-bar::before{
+  content: "🔎";
+  position: absolute;
+  left: 10px;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.search-input{
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.search-input::placeholder{
+  color: rgba(255,255,255,0.55);
+}
+
+/* petits filtres par tags */
+.search-chips{
+  margin: 8px 0 4px;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.search-chip{
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(5,5,5,0.8);
+  color: #d0d0d0;
+  font-size: 0.78rem;
+  padding: 4px 10px;
+  white-space: nowrap;
+}
+
+.search-chip.active{
+  border-color: rgba(255,215,100,0.9);
+  color: #ffd766;
+  box-shadow: 0 0 10px rgba(255,215,100,0.6);
+}
 
     /* ===========================
        4) GRILLE PRODUITS (MENU)
@@ -1952,8 +2017,32 @@
   <main id="main">
     <!-- ========= ONGLET MENU ========= -->
     <section id="tab-menu" class="tab-panel active">
+            <!-- BARRE DE RECHERCHE CATALOGUE -->
+      <div class="search-wrapper">
+        <div class="search-bar">
+          <input
+            id="productSearch"
+            class="search-input"
+            type="text"
+            placeholder="Rechercher un produit ou un type (pochon, étiquettes, mini-app…)">
+        </div>
+        <div class="search-chips">
+          <button type="button" class="search-chip active" data-tag="all">Tous</button>
+          <button type="button" class="search-chip" data-tag="pochons">Pochons</button>
+          <button type="button" class="search-chip" data-tag="tableaux">Tableaux</button>
+          <button type="button" class="search-chip" data-tag="cartes">Cartes</button>
+          <button type="button" class="search-chip" data-tag="etiquettes">Étiquettes</button>
+          <button type="button" class="search-chip" data-tag="fusées">Fusées</button>
+          <button type="button" class="search-chip" data-tag="design">Design</button>
+          <button type="button" class="search-chip" data-tag="packs">Packs</button>
+          <button type="button" class="search-chip" data-tag="miniapp">Mini-App Dev</button>
+        </div>
+      </div>
+      
       <div class="product-grid" id="productGrid">
         <!-- P8 HERO PACKS COMPLETS -->
+        <button class="product-thumb pack-hero" onclick="openProduct('packs')"
+        data-tags="packs,pack,offres,pochons,starter,boost,pro,boss">
 <button class="product-thumb pack-hero" onclick="openProduct('packs')">
   <div class="product-badge gold">📦 Packs complets</div>
   <div class="product-badge">🔥 Meilleure offre</div>
@@ -1967,6 +2056,8 @@
 </button>
 
         <!-- P1 : Pochons -->
+        <button class="product-thumb" onclick="openProduct('p1')"
+        data-tags="pochons,packaging,sachets,personnalisé,flatbag,doypack">
         <button class="product-thumb" onclick="openProduct('p1')">
           <div class="product-badge">🔥 Populaire</div>
           <div class="product-badge">🧾 Sur devis</div>
@@ -1978,6 +2069,8 @@
         </button>
 
         <!-- P2 : Tableaux -->
+        <button class="product-thumb" onclick="openProduct('p2')"
+        data-tags="tableaux,decoration,art,panoramique,carré">
         <button class="product-thumb" onclick="openProduct('p2')">
           <div class="product-badge gold">💎 Premium</div>
           <img src="img/tableau1.jpg" alt="Tableaux personnalisés" />
@@ -1988,6 +2081,8 @@
         </button>
 
         <!-- P3 : Cartes -->
+        <button class="product-thumb" onclick="openProduct('p3')"
+        data-tags="cartes,visite,fidelite,flyer,impression">
         <button class="product-thumb" onclick="openProduct('p3')">
           <div class="product-badge">⚡ Recommandé</div>
           <img src="img/cartescata.png" alt="Cartes fidélité / visite" />
@@ -1998,6 +2093,8 @@
         </button>
 
         <!-- P4 : Étiquettes -->
+        <button class="product-thumb" onclick="openProduct('p4')"
+        data-tags="etiquettes,stickers,autocollants,packaging">
         <button class="product-thumb" onclick="openProduct('p4')">
           <img src="img/etiquettes1.jpg" alt="Étiquettes personnalisées" />
           <div class="product-thumb-body">
@@ -2007,6 +2104,8 @@
         </button>
 
         <!-- P5 : Scelleuse -->
+        <button class="product-thumb" onclick="openProduct('p5')"
+        data-tags="scelleuse,machine,soudure,pochons,accessoires">
         <button class="product-thumb" onclick="openProduct('p5')">
           <img src="img/scelleuse.jpg" alt="Scelleuse" />
           <div class="product-thumb-body">
@@ -2016,6 +2115,8 @@
         </button>
 
         <!-- P6 : Fusées -->
+        <button class="product-thumb" onclick="openProduct('p6')"
+        data-tags="fusées,contenants,capsules,grammage">
         <button class="product-thumb" onclick="openProduct('p6')">
           <div class="product-badge new">✨ Coup de cœur</div>
           <img src="img/fusées1.jpg" alt="Fusées 1,5 ml" />
@@ -2026,6 +2127,8 @@
         </button>
 
         <!-- P7 : Design personnalisé -->
+        <button class="product-thumb" onclick="openProduct('p7')"
+        data-tags="design,graphisme,logo,visuel,identité,stickers">
         <button class="product-thumb" onclick="openProduct('p7')">
           <div class="product-badge gold">🪄 Sur mesure</div>
           <img src="img/design.jpg" alt="Design personnalisé" />
@@ -2036,6 +2139,8 @@
         </button>
         
         <!-- P9 : Service – Développement mini-app -->
+        <button class="product-thumb" onclick="openProduct('dev')"
+        data-tags="miniapp,dev,code,site,boutique,webapp,telegram">
 <button class="product-thumb" onclick="openProduct('dev')">
   <div class="product-badge gold">💻 Mini-App</div>
   <div class="product-badge">⚙️ Sur mesure</div>
@@ -2833,6 +2938,77 @@ var selectedPaymentMethod = null;
   window.scrollTo(0, 0);
   document.documentElement.scrollTop = 0;
   document.body.scrollTop = 0;
+}
+
+    /* ===========================
+   RECHERCHE CATALOGUE
+   =========================== */
+
+function normalizeText(str){
+  return (str || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, ""); // enlève accents
+}
+
+function applyProductFilter(){
+  var input = document.getElementById('productSearch');
+  if (!input) return;
+
+  var term = normalizeText(input.value.trim());
+
+  var activeChip = document.querySelector('.search-chip.active');
+  var activeTag = activeChip ? activeChip.getAttribute('data-tag') : 'all';
+
+  var cards = document.querySelectorAll('#productGrid .product-thumb');
+  cards.forEach(function(card){
+    var titleEl = card.querySelector('.product-thumb-title');
+    var subEl   = card.querySelector('.product-thumb-sub');
+
+    var text = normalizeText(
+      (titleEl ? titleEl.textContent : "") + " " +
+      (subEl   ? subEl.textContent   : "")
+    );
+
+    var tags = normalizeText(card.getAttribute('data-tags') || "");
+    var tagList = tags.split(',').map(function(t){ return t.trim(); }).filter(Boolean);
+
+    var matchesText =
+      !term ||
+      text.indexOf(term) !== -1 ||
+      tags.indexOf(term) !== -1;
+
+    var matchesTag =
+      activeTag === 'all' ||
+      tagList.indexOf(activeTag) !== -1;
+
+    if (matchesText && matchesTag){
+      card.style.display = 'flex';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+function initProductSearch(){
+  var input = document.getElementById('productSearch');
+  if (!input) return;
+
+  // saisie en temps réel
+  input.addEventListener('input', function(){
+    applyProductFilter();
+  });
+
+  // clic sur les petits boutons de tags
+  document.querySelectorAll('.search-chip').forEach(function(chip){
+    chip.addEventListener('click', function(){
+      document.querySelectorAll('.search-chip').forEach(function(c){
+        c.classList.remove('active');
+      });
+      this.classList.add('active');
+      applyProductFilter();
+    });
+  });
 }
 
     /* ===========================
@@ -3929,6 +4105,10 @@ function renderHistory(){
   // 3) Hydrater le profil Telegram (si dispo)
   initProfileFromTelegram();  // profil user
   initAppInfo();              // carte infos appli
+
+    // 4) Recherche catalogue
+  initProductSearch();
+  applyProductFilter(); // pour initialiser (tout visible)
 });
 
 // Bouton retour
