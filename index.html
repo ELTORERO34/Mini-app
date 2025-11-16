@@ -3674,6 +3674,17 @@ function initProductSearch(){
             }
           });
         }
+        
+        function updateCartFabVisibility() {
+  var fab = document.getElementById('cartFab');
+  if (!fab) return;
+  
+  if (CART.length > 0) {
+    fab.style.display = 'flex';
+  } else {
+    fab.style.display = 'none';
+  }
+}
 
         renderCart();
         toast('Pochons ajoutés');
@@ -4541,6 +4552,7 @@ function renderHistory(){
           del.onclick = function(){
             CART.splice(idx,1);
             renderCart();
+            updateCartFabVisibility();
           };
 
           right.appendChild(del);
@@ -4583,8 +4595,9 @@ function renderHistory(){
 
     function clearCart(){
   CART = [];
-  renderCart();
-  saveCartToStorage();
+renderCart();
+saveCartToStorage();
+updateCartFabVisibility();
 }
 
     /* ===========================
@@ -4864,6 +4877,8 @@ function initTheme(){
   // 2) Panier + historique
   loadCartFromStorage();
   renderCart();
+  updateCartFabVisibility();
+  
   loadHistoryFromStorage();
   renderHistory();
   // 3) Favoris
