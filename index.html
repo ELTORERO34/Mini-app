@@ -2149,6 +2149,31 @@
   margin-top: 6px;
 }
 
+  .theme-switcher {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.theme-pill {
+  border: 1px solid var(--border-soft);
+  background: rgba(0,0,0,0.25);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  color: var(--text-soft);
+  transition: background 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
+}
+
+.theme-pill--active {
+  background: var(--accent-soft);
+  color: var(--text-main);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
 .profile-row{
   display: flex;
   justify-content: space-between;
@@ -3232,13 +3257,20 @@ body[data-theme="neon"] .btn.primary {
     
      <div class="profile-row">
   <span class="profile-label">Thème</span>
-  <span class="profile-value profile-theme-buttons">
-    <button type="button" class="theme-btn" data-theme="dark">🌙</button>
-    <button type="button" class="theme-btn" data-theme="gold">🏆</button>
-    <button type="button" class="theme-btn" data-theme="neon">🧬</button>
+  <span class="profile-value">
+    <div class="theme-switcher">
+      <button type="button" class="theme-pill" data-theme="gold">
+        🥇 Gold
+      </button>
+      <button type="button" class="theme-pill" data-theme="night">
+        🌙 Nuit
+      </button>
+      <button type="button" class="theme-pill" data-theme="neon">
+        🧬 Néon
+      </button>
+    </div>
   </span>
 </div>
-  </div>
 </section>
     </main>
 
@@ -4769,56 +4801,42 @@ function renderHistory(){
   }
 }
 
-/* ===========================
-   THEMES : LOGIQUE JS
-   =========================== */
+// ===========================
+// THEMES (Gold / Nuit / Neon)
+// ===========================
 var THEME_KEY = 'pss_theme_v1';
-var CURRENT_THEME = 'gold';
 
 function applyTheme(theme){
-  CURRENT_THEME = theme;
-  document.body.setAttribute('data-theme', theme);
+  var b = document.body;
+  if (!b) return;
 
-  var btn = document.getElementById('themeToggle');
-  if (!btn) return;
+  // applique l'attribut sur le body
+  b.setAttribute('data-theme', theme);
 
-  // texte du bouton selon le thème actuel
-  if (theme === 'gold'){
-    btn.textContent = '🌙 Mode nuit';
-  } else if (theme === 'night'){
-    btn.textContent = '⚡ Mode néon';
-  } else if (theme === 'neon'){
-    btn.textContent = '⭐ Mode gold';
-  }
-}
+  // sauvegarde dans le localStorage
+  try {
+    localStorage.setItem(THEME_KEY, theme);
+  } catch(e){}
 
-function cycleTheme(){
-  var next;
-  if (CURRENT_THEME === 'gold')      next = 'night';
-  else if (CURRENT_THEME === 'night') next = 'neon';
-  else                                next = 'gold';
-
-  applyTheme(next);
-  try{
-    localStorage.setItem(THEME_KEY, next);
-  }catch(e){}
+  // met à jour le visuel des boutons
+  document.querySelectorAll('.theme-pill').forEach(function(btn){
+    var isActive = (btn.getAttribute('data-theme') === theme);
+    if (isActive){
+      btn.classList.add('theme-pill--active');
+    } else {
+      btn.classList.remove('theme-pill--active');
+    }
+  });
 }
 
 function initTheme(){
-  try{
-    var saved = localStorage.getItem(THEME_KEY);
-    if (!saved){
-      saved = 'gold';
-    }
-    applyTheme(saved);
-  }catch(e){
-    applyTheme('gold');
-  }
+  var stored = null;
+  try {
+    stored = localStorage.getItem(THEME_KEY);
+  } catch(e){}
 
-  var btn = document.getElementById('themeToggle');
-  if (btn){
-    btn.addEventListener('click', cycleTheme);
-  }
+  var initial = stored || 'gold'; // thème par défaut
+  applyTheme(initial);
 }
 
     /* ===========================
@@ -4854,15 +4872,15 @@ function initTheme(){
   // 4) Profil / appli
   initProfileFromTelegram();
   initAppInfo();
-  // 5) Thème (jour / nuit)
-  applyThemeFromStorage();
-  var themeBtn = document.getElementById('themeToggle');
-  if (themeBtn){
-    themeBtn.addEventListener('click', toggleTheme);
-  }
   // 6) Recherche catalogue (si pas déjà ajouté)
   initProductSearch();
-  //CHANGELENT DE THÈME 
+    // 5) Thèmes
+  document.querySelectorAll('.theme-pill').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var t = this.getAttribute('data-theme');
+      applyTheme(t);
+    });
+  });
   initTheme();
 });
   </script>
