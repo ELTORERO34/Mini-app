@@ -4540,6 +4540,9 @@ function renderHistory(){
        12) SPLASH FLOW
        =========================== */
     document.addEventListener('DOMContentLoaded', function(){
+  // 0) Init recherche/catalogue
+  initProductSearch();   // ✅ active barre + tags
+
   // 1) Splash (inchangé)
   var splash = document.getElementById('splash');
   if (splash){
@@ -4570,15 +4573,6 @@ function renderHistory(){
   initProfileFromTelegram();
   initAppInfo();
 });
-
-// Bouton retour
-    function goBack(){
-  if (tg && tg.close){
-    tg.close();
-  } else {
-    window.history.back();
-  }
-}
   </script>
 </body>
 </html>
