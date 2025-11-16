@@ -2263,6 +2263,98 @@
   background: var(--accent-soft);
   border-color: var(--accent);
 }
+
+      /* ===========================
+   THEMES : GOLD / NUIT / NEON
+   =========================== */
+
+/* Thème appliqué via body[data-theme="xxx"] */
+
+/* 🌟 GOLD (par défaut) */
+body[data-theme="gold"] {
+  background: #050505;
+}
+
+body[data-theme="gold"]::after {
+  background:
+    radial-gradient(circle at 70% 80%, rgba(255,215,100,0.08), transparent 60%),
+    rgba(0,0,0,0.45);
+}
+
+/* 🌙 NUIT */
+body[data-theme="night"] {
+  background: #02030a;
+}
+
+body[data-theme="night"]::before {
+  /* fond plus sombre bleu/noir */
+  background: radial-gradient(circle at 30% 0%, rgba(40,80,180,0.25), transparent 55%),
+              radial-gradient(circle at 70% 100%, rgba(20,40,90,0.20), transparent 55%),
+              #02030a;
+  opacity: 1;
+}
+
+body[data-theme="night"]::after {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(120,150,255,0.06), transparent 55%),
+    rgba(0,0,0,0.6);
+}
+
+/* cartes + nav plus froides */
+body[data-theme="night"] .info-card,
+body[data-theme="night"] .product-card,
+body[data-theme="night"] .profile-card {
+  background: rgba(8,10,22,0.96);
+  border-color: rgba(120,150,255,0.35);
+}
+
+body[data-theme="night"] .bottom-nav {
+  background: rgba(3,5,15,0.97);
+}
+
+/* boutons primaires bleutés */
+body[data-theme="night"] .btn.primary {
+  background: #7aa0ff;
+  color: #02030a;
+}
+
+/* ⚡ NEON */
+body[data-theme="neon"] {
+  background:
+    radial-gradient(circle at 0 0, #220024, transparent 55%),
+    radial-gradient(circle at 100% 100%, #001a33, transparent 55%),
+    #050505;
+}
+
+body[data-theme="neon"]::after {
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255,0,180,0.24), transparent 55%),
+    radial-gradient(circle at 80% 90%, rgba(0,255,200,0.18), transparent 55%),
+    rgba(0,0,0,0.55);
+}
+
+/* cartes flashy */
+body[data-theme="neon"] .info-card,
+body[data-theme="neon"] .product-card,
+body[data-theme="neon"] .profile-card {
+  background: radial-gradient(circle at 0 0, rgba(255,0,180,0.16), transparent 60%),
+              rgba(5,5,10,0.95);
+  border-color: rgba(0,255,200,0.45);
+  box-shadow: 0 0 16px rgba(0,255,200,0.3);
+}
+
+/* nav néon */
+body[data-theme="neon"] .bottom-nav {
+  background: radial-gradient(circle at 50% 0, rgba(255,0,180,0.24), transparent 60%),
+              rgba(2,2,8,0.98);
+}
+
+/* boutons primaires néon */
+body[data-theme="neon"] .btn.primary {
+  background: linear-gradient(120deg, #00ffd5, #ff00e6);
+  color: #050505;
+  box-shadow: 0 0 14px rgba(255,0,230,0.6);
+}
   </style>
 </head>
 
@@ -4677,78 +4769,56 @@ function renderHistory(){
   }
 }
 
-    /* ===========================
-   THEME TOGGLE (nuit / jour)
+/* ===========================
+   THEMES : LOGIQUE JS
    =========================== */
+var THEME_KEY = 'pss_theme_v1';
+var CURRENT_THEME = 'gold';
 
-var THEME_STORAGE_KEY = 'pss_theme_mode'; // 'day' ou 'night'
+function applyTheme(theme){
+  CURRENT_THEME = theme;
+  document.body.setAttribute('data-theme', theme);
 
-function applyThemeFromStorage(){
-  try{
-    var saved = localStorage.getItem(THEME_STORAGE_KEY);
-    if (saved === 'day'){
-      document.body.classList.add('theme-day');
-    } else {
-      document.body.classList.remove('theme-day');
-    }
-    updateThemeToggleLabel();
-  }catch(e){
-    console.error('applyThemeFromStorage error', e);
-  }
-}
-
-function updateThemeToggleLabel(){
   var btn = document.getElementById('themeToggle');
   if (!btn) return;
 
-  var isDay = document.body.classList.contains('theme-day');
-  if (isDay){
-    // si on est en mode jour, on propose de repasser en nuit
+  // texte du bouton selon le thème actuel
+  if (theme === 'gold'){
     btn.textContent = '🌙 Mode nuit';
-  } else {
-    // si on est en mode nuit, on propose le mode jour
-    btn.textContent = '☀️ Mode jour';
+  } else if (theme === 'night'){
+    btn.textContent = '⚡ Mode néon';
+  } else if (theme === 'neon'){
+    btn.textContent = '⭐ Mode gold';
   }
 }
 
-function toggleTheme(){
-  var body = document.body;
-  var isNowDay = body.classList.toggle('theme-day'); // ajoute/enlève la classe
+function cycleTheme(){
+  var next;
+  if (CURRENT_THEME === 'gold')      next = 'night';
+  else if (CURRENT_THEME === 'night') next = 'neon';
+  else                                next = 'gold';
 
+  applyTheme(next);
   try{
-    localStorage.setItem(THEME_STORAGE_KEY, isNowDay ? 'day' : 'night');
-  }catch(e){
-    console.error('toggleTheme storage error', e);
-  }
-
-  updateThemeToggleLabel();
-}
-
-    var THEME_STORAGE_KEY = 'POCHON_THEME_V1';
-
-function applyTheme(theme){
-  if (!theme) theme = 'dark';
-  document.documentElement.setAttribute('data-theme', theme);
-  try { localStorage.setItem(THEME_STORAGE_KEY, theme); } catch(e){}
-
-  document.querySelectorAll('.theme-btn').forEach(function(btn){
-    if (btn.getAttribute('data-theme') === theme){
-      btn.classList.add('theme-btn--active');
-    } else {
-      btn.classList.remove('theme-btn--active');
-    }
-  });
+    localStorage.setItem(THEME_KEY, next);
+  }catch(e){}
 }
 
 function initTheme(){
-  var current = localStorage.getItem(THEME_STORAGE_KEY) || 'dark';
-  applyTheme(current);
+  try{
+    var saved = localStorage.getItem(THEME_KEY);
+    if (!saved){
+      saved = 'gold';
+    }
+    applyTheme(saved);
+  }catch(e){
+    applyTheme('gold');
+  }
 
-  document.querySelectorAll('.theme-btn').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      applyTheme(this.getAttribute('data-theme'));
-    });
-  });
+  var btn = document.getElementById('themeToggle');
+  if (btn){
+    btn.addEventListener('click', cycleTheme);
+  }
 }
 
     /* ===========================
