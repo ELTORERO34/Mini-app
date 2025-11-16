@@ -5,7 +5,6 @@
   <meta name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>PochonStore</title>
-
   <!-- SDK Telegram -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
@@ -13,6 +12,69 @@
        CSS GLOBAL – STYLE APP
        =========================== -->
   <style>
+    /* ===========================
+   THEMES GLOBALS
+   =========================== */
+:root {
+  /* thème par défaut (dark) – valeurs fallback */
+  --bg-body: #050508;
+  --bg-header: rgba(10,10,12,0.96);
+  --bg-card: #111216;
+  --bg-modal: #14151b;
+  --bg-tabbar: #050508;
+  --text-main: #ffffff;
+  --text-soft: #b3b6c3;
+  --accent: #ffcc33;
+  --accent-soft: rgba(255,204,51,0.18);
+  --border-soft: rgba(255,255,255,0.06);
+  --badge-bg: #ffcc33;
+}
+
+/* 🌙 DARK (Pochon actuel) */
+:root[data-theme="dark"] {
+  --bg-body: #050508;
+  --bg-header: rgba(10,10,12,0.96);
+  --bg-card: #111216;
+  --bg-modal: #14151b;
+  --bg-tabbar: #050508;
+  --text-main: #ffffff;
+  --text-soft: #b3b6c3;
+  --accent: #ffcc33;
+  --accent-soft: rgba(255,204,51,0.18);
+  --border-soft: rgba(255,255,255,0.06);
+  --badge-bg: #ffcc33;
+}
+
+/* 🏆 GOLD PREMIUM */
+:root[data-theme="gold"] {
+  --bg-body: #090806;
+  --bg-header: rgba(12,10,8,0.96);
+  --bg-card: #15120d;
+  --bg-modal: #18130c;
+  --bg-tabbar: #090806;
+  --text-main: #fef7e8;
+  --text-soft: #cbb99a;
+  --accent: #f6d366;
+  --accent-soft: rgba(246,211,102,0.22);
+  --border-soft: rgba(246,211,102,0.35);
+  --badge-bg: #f6d366;
+}
+
+/* 🧬 NEON DEV (bleu / violet) */
+:root[data-theme="neon"] {
+  --bg-body: radial-gradient(circle at top,#1c2753,#05010a 55%);
+  --bg-header: rgba(8,6,26,0.95);
+  --bg-card: #0c0b22;
+  --bg-modal: #0e0c28;
+  --bg-tabbar: #05000a;
+  --text-main: #f5f3ff;
+  --text-soft: #b4b0ff;
+  --accent: #52e3ff;
+  --accent-soft: rgba(82,227,255,0.22);
+  --border-soft: rgba(82,227,255,0.35);
+  --badge-bg: #ff4dff;
+}
+
     /* ===========================
        1) VARIABLES + RESET
        =========================== */
@@ -42,161 +104,6 @@
                    Roboto, sans-serif;
       position: relative;
     }
-    
-    /* ===========================
-   THEME JOUR (body.theme-day)
-   =========================== */
-
-body.theme-day {
-  --bg: #f5f5f5;
-  --card: #ffffff;
-  --text: #111111;
-  --muted: #555555;
-  --border: #dddddd;
-
-  background: #f5f5f5;
-  color: var(--text);
-}
-
-/* Fond global plus clair */
-body.theme-day::before {
-  opacity: 0.12;
-  filter: grayscale(1) brightness(1.3);
-}
-body.theme-day::after {
-  background:
-    radial-gradient(circle at 70% 80%, rgba(255,215,100,0.15), transparent 60%),
-    rgba(255,255,255,0.75);
-}
-
-/* HEADER plus clair */
-body.theme-day .header {
-  background: rgba(255,255,255,0.92);
-  border-bottom: 1px solid rgba(0,0,0,0.06);
-}
-
-/* Bouton favoris header en mode clair */
-body.theme-day .header-fav-btn {
-  background: #ffffff;
-  border-color: rgba(0,0,0,0.08);
-  color: #b8860b;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-}
-
-/* Cartes produits plus "blanches" et moins néon */
-body.theme-day .product-thumb {
-  background: #ffffff;
-  border-color: rgba(0,0,0,0.06);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-}
-body.theme-day .product-thumb::before {
-  border-color: rgba(0,0,0,0.08);
-  box-shadow: none;
-  animation: none;
-}
-body.theme-day .product-thumb::after {
-  display: none;
-}
-
-/* Badges en jour un peu plus soft */
-body.theme-day .product-badge {
-  background: rgba(255,255,255,0.9);
-  border-color: rgba(0,0,0,0.1);
-  color: #444;
-}
-body.theme-day .product-badge.gold {
-  background: rgba(255,215,100,0.18);
-  border-color: rgba(180,140,40,0.9);
-  color: #5c4410;
-}
-
-/* Cartes infos / profil / suivi en blanc */
-body.theme-day .info-card,
-body.theme-day .profile-card,
-body.theme-day .product-card,
-body.theme-day .pack-card,
-body.theme-day .pack-hero-card {
-  background: #ffffff;
-  border-color: rgba(0,0,0,0.06);
-  box-shadow: 0 8px 22px rgba(0,0,0,0.06);
-}
-
-/* Texte dans les cartes */
-body.theme-day .info-card p,
-body.theme-day .product-desc,
-body.theme-day .profile-hint,
-body.theme-day .history-entry-items {
-  color: var(--muted);
-}
-
-/* Bottom nav clair */
-body.theme-day .bottom-nav {
-  background: rgba(255,255,255,0.96);
-  border-top: 1px solid rgba(0,0,0,0.06);
-}
-body.theme-day .bottom-nav::before {
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(212,175,55,0.9),
-    transparent
-  );
-}
-body.theme-day .nav-btn {
-  color: #777;
-}
-body.theme-day .nav-btn.active {
-  color: #b8860b;
-}
-
-/* Panier & favoris en mode clair */
-body.theme-day .cart-page,
-body.theme-day .fav-page {
-  background:
-    radial-gradient(circle at 0 0, rgba(255,215,100,0.15), transparent 55%),
-    rgba(255,255,255,0.85);
-}
-body.theme-day .cart-page-inner,
-body.theme-day .fav-page-inner {
-  background: #ffffff;
-  border-color: rgba(0,0,0,0.08);
-}
-
-/* Cartes panier / favoris */
-body.theme-day .cart-item,
-body.theme-day .fav-row,
-body.theme-day .history-entry {
-  background: #fafafa;
-  border-color: rgba(0,0,0,0.06);
-}
-
-/* Bouton panier flottant en clair */
-body.theme-day .cart-fab {
-  background: radial-gradient(circle at 30% 20%, rgba(255,215,102,0.25), transparent 60%),
-              #ffffff;
-  color: #222;
-  box-shadow: 0 8px 18px rgba(0,0,0,0.15);
-}
-
-/* Search bar plus claire */
-body.theme-day .search-bar {
-  background: #ffffff;
-  border-color: rgba(0,0,0,0.08);
-}
-body.theme-day .search-input {
-  color: #222;
-}
-body.theme-day .search-input::placeholder {
-  color: #999;
-}
-
-/* Cartes profil hero en clair */
-body.theme-day .profile-hero {
-  background:
-    radial-gradient(circle at 0 0, rgba(255,215,100,0.2), transparent 60%),
-    #ffffff;
-  border-color: rgba(0,0,0,0.06);
-}
 
     body {
       background: #050505;
@@ -448,6 +355,39 @@ body.theme-day .profile-hero {
 @keyframes bannerShine{
   0%   { transform: translateX(-120%); }
   100% { transform: translateX(120%); }
+}
+
+  /* Shine logo */
+.header-logo-animated {
+  position: relative;
+  display: inline-block;
+  padding: 6px 14px;
+}
+
+.header-logo-animated::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -130%;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255,255,255,0.75) 50%,
+    transparent 100%
+  );
+  opacity: 0.8;
+  pointer-events: none;
+  transform: skewX(-12deg);
+  animation: logo-shine 5s infinite ease-in-out;
+}
+
+@keyframes logo-shine {
+  0%   { left: -130%; opacity: 0; }
+  5%   { left: -80%;  opacity: 0.8; }
+  15%  { left: 130%;  opacity: 0; }
+  100% { left: 130%;  opacity: 0; }
 }
 
 /* ===========================
@@ -821,14 +761,22 @@ body.theme-day .profile-hero {
     }
 
     .detail-media {
-  position: relative;
+  width: 100%;
+  max-height: 260px;          /* ajuste la hauteur si tu veux plus / moins */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
 }
 
-    .detail-media img {
-  will-change: transform;
-  transform: translate3d(0,0,0);
-  transition: transform 0.08s linear;
+.detail-media img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  border-radius: 18px;
+  display: block;
+  object-fit: contain;        /* surtout PAS "cover" ici */
 }
 
     .product-card {
@@ -2290,6 +2238,31 @@ body.theme-day .profile-hero {
   color: #ffd766;
   box-shadow: 0 0 10px rgba(255,215,100,0.7);
 }
+
+    .profile-theme-buttons {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.theme-btn {
+  border: 1px solid var(--border-soft);
+  background: rgba(255,255,255,0.04);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  outline: none;
+  transition: background 0.2s, transform 0.15s, border-color 0.2s;
+}
+
+.theme-btn:active {
+  transform: scale(0.94);
+}
+
+.theme-btn--active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
   </style>
 </head>
 
@@ -2314,8 +2287,9 @@ body.theme-day .profile-hero {
      HEADER
      =========================== -->
 <header class="header">
-  <img src="img/banner.png" alt="PochonStore" class="header-logo" />
-
+  <div class="header-logo-animated">
+    <img src="img/banner.png" alt="PochonStore" class="header-logo">
+  </div>
   <!-- ⭐ Bouton favoris dans le header -->
   <button class="header-fav-btn" type="button" onclick="openFavorites()">
     ⭐
@@ -3166,10 +3140,10 @@ body.theme-day .profile-hero {
     
      <div class="profile-row">
   <span class="profile-label">Thème</span>
-  <span class="profile-value">
-    <button type="button" id="themeToggle" class="btn" style="padding:4px 10px;font-size:0.8rem;">
-      🌙 Mode nuit
-    </button>
+  <span class="profile-value profile-theme-buttons">
+    <button type="button" class="theme-btn" data-theme="dark">🌙</button>
+    <button type="button" class="theme-btn" data-theme="gold">🏆</button>
+    <button type="button" class="theme-btn" data-theme="neon">🧬</button>
   </span>
 </div>
   </div>
@@ -4750,35 +4724,31 @@ function toggleTheme(){
   updateThemeToggleLabel();
 }
 
-    /* ===========================
-   PARALLAX SUR IMAGES PRODUIT
-   =========================== */
-function updateParallax(){
-  var imgs = document.querySelectorAll('.product-detail .detail-media img');
-  if (!imgs.length) return;
+    var THEME_STORAGE_KEY = 'POCHON_THEME_V1';
 
-  var viewportH = window.innerHeight || document.documentElement.clientHeight || 800;
+function applyTheme(theme){
+  if (!theme) theme = 'dark';
+  document.documentElement.setAttribute('data-theme', theme);
+  try { localStorage.setItem(THEME_STORAGE_KEY, theme); } catch(e){}
 
-  imgs.forEach(function(img){
-    var rect = img.getBoundingClientRect();
-    var center = rect.top + rect.height / 2;
-    var dist = center - viewportH / 2;     // distance par rapport au centre de l'écran
-    var maxShift = 18;                     // intensité max du déplacement (pixels)
-    var ratio = dist / (viewportH / 2);
-    if (ratio < -1) ratio = -1;
-    if (ratio > 1)  ratio = 1;
-
-    var translateY = -ratio * maxShift;
-    img.style.transform = 'translate3d(0,' + translateY.toFixed(1) + 'px,0)';
+  document.querySelectorAll('.theme-btn').forEach(function(btn){
+    if (btn.getAttribute('data-theme') === theme){
+      btn.classList.add('theme-btn--active');
+    } else {
+      btn.classList.remove('theme-btn--active');
+    }
   });
 }
 
-function initParallax(){
-  // Mise à jour au scroll
-  window.addEventListener('scroll', updateParallax, { passive: true });
-  // Mise à jour à l'ouverture / resize
-  window.addEventListener('resize', updateParallax);
-  setTimeout(updateParallax, 200);
+function initTheme(){
+  var current = localStorage.getItem(THEME_STORAGE_KEY) || 'dark';
+  applyTheme(current);
+
+  document.querySelectorAll('.theme-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      applyTheme(this.getAttribute('data-theme'));
+    });
+  });
 }
 
     /* ===========================
@@ -4806,30 +4776,24 @@ function initParallax(){
   // 2) Panier + historique
   loadCartFromStorage();
   renderCart();
-
   loadHistoryFromStorage();
   renderHistory();
-
   // 3) Favoris
   loadFavoritesFromStorage();
   refreshFavoriteUI();
-
   // 4) Profil / appli
   initProfileFromTelegram();
   initAppInfo();
-  
   // 5) Thème (jour / nuit)
   applyThemeFromStorage();
   var themeBtn = document.getElementById('themeToggle');
   if (themeBtn){
     themeBtn.addEventListener('click', toggleTheme);
   }
-
   // 6) Recherche catalogue (si pas déjà ajouté)
   initProductSearch();
-
-  // 7) Parallax (juste après, voir plus bas)
-  initParallax();
+  //CHANGELENT DE THÈME 
+  initTheme();
 });
   </script>
 </body>
