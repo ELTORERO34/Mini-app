@@ -324,6 +324,35 @@
       width: auto;
       object-fit: contain;
     }
+    
+        /* Bouton retour perso dans le header */
+    .pss-back-btn{
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 1100;
+
+      padding: 8px 14px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      border-radius: 12px;
+
+      color: #ffd766;
+      background: rgba(10,10,10,0.85);
+      border: 1px solid rgba(255,215,102,0.5);
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+
+      cursor: pointer;
+      outline: none;
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+
+    .pss-back-btn:active{
+      transform: translateY(-50%) scale(0.96);
+      background: rgba(30,30,30,0.9);
+      box-shadow: 0 0 4px rgba(0,0,0,0.8);
+    }
 
     main {
   display: block;
@@ -1943,6 +1972,11 @@
        HEADER
        =========================== -->
   <header class="header">
+    <!-- Bouton retour perso -->
+    <button class="pss-back-btn" type="button" onclick="goBack()">
+      ← Retour
+    </button>
+
     <img src="img/banner.png" alt="PochonStore" class="header-logo" />
   </header>
 
@@ -2834,6 +2868,20 @@ var selectedPaymentMethod = null;
   document.documentElement.scrollTop = 0;
   document.body.scrollTop = 0;
 }
+
+        /* ===========================
+       BOUTON RETOUR HEADER
+       =========================== */
+    function goBack(){
+      // Si Telegram WebApp est dispo, on ferme la mini-app
+      if (tg && tg.close){
+        tg.close();
+        return;
+      }
+
+      // Sinon, fallback : revenir en arrière dans l’historique du navigateur
+      window.history.back();
+    }
 
     /* ===========================
        3) FICHES PRODUITS
