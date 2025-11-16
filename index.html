@@ -3202,11 +3202,9 @@ body[data-theme="neon"] .btn.primary {
         <p>Récap des demandes envoyées depuis cette mini-app.</p>
       </div>
     </div>
-
     <div id="historyList" class="profile-history-list">
       <!-- Rempli en JS via renderHistory() -->
     </div>
-
     <p class="profile-hint">
       L’historique est enregistré uniquement sur ton appareil (localStorage).
     </p>
@@ -3221,11 +3219,9 @@ body[data-theme="neon"] .btn.primary {
         <p>Récapitulatif de tes produits mis en favoris.</p>
       </div>
     </div>
-
     <div id="profileFavSummary" class="profile-history-list">
       <!-- rempli en JS par renderFavoritesSummary() -->
     </div>
-
     <p class="profile-hint">
       Gestion des favoris depuis le catalogue ou la page dédiée. Ce bloc est un simple récap.
     </p>
@@ -4327,27 +4323,6 @@ function closeFavorites(fromNav){
   modal.classList.add('hidden');
 }
 
-function loadHistoryFromStorage(){
-  try {
-    var raw = localStorage.getItem(STORAGE_HISTORY_KEY);
-    if (!raw) return;
-    var data = JSON.parse(raw);
-    if (Array.isArray(data)) {
-      ORDER_HISTORY = data;
-    }
-  } catch(e){
-    console.error('Erreur loadHistoryFromStorage', e);
-  }
-}
-
-function saveHistoryToStorage(){
-  try {
-    localStorage.setItem(STORAGE_HISTORY_KEY, JSON.stringify(ORDER_HISTORY));
-  } catch(e){
-    console.error('Erreur saveHistoryToStorage', e);
-  }
-}
-
     /* ===========================
    PROFIL TELEGRAM
    =========================== */
@@ -4396,9 +4371,30 @@ function initProfileFromTelegram(){
   }
 }
 
-/* ===========================
-   RENDU HISTORIQUE
+    /* ===========================
+   HISTORIQUE DE DEVIS
    =========================== */
+function loadHistoryFromStorage(){
+  try {
+    var raw = localStorage.getItem(STORAGE_HISTORY_KEY);
+    if (!raw) return;
+    var data = JSON.parse(raw);
+    if (Array.isArray(data)) {
+      ORDER_HISTORY = data;
+    }
+  } catch(e){
+    console.error('Erreur loadHistoryFromStorage', e);
+  }
+}
+
+function saveHistoryToStorage(){
+  try {
+    localStorage.setItem(STORAGE_HISTORY_KEY, JSON.stringify(ORDER_HISTORY));
+  } catch(e){
+    console.error('Erreur saveHistoryToStorage', e);
+  }
+}
+
 function renderHistory(){
   var box = document.getElementById('historyList');
   if (!box) return;
@@ -4896,7 +4892,6 @@ function initTheme(){
   loadCartFromStorage();
   renderCart();
   updateCartFabVisibility();
-  
   loadHistoryFromStorage();
   renderHistory();
   // 3) Favoris
