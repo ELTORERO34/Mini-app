@@ -325,6 +325,28 @@
   object-fit: contain;
 }
 
+    /* Bouton favoris dans le header */
+.header-fav-btn {
+  position: absolute;
+  bottom: 8px;              /* plus bas que le logo */
+  left: 50%;
+  transform: translateX(-50%);
+  border: 1px solid rgba(255,215,100,0.8);
+  background: radial-gradient(circle at 30% 0, rgba(255,215,100,0.3), transparent 60%), #111;
+  color: #ffd766;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.7);
+}
+
+.header-fav-btn:active {
+  transform: translateX(-50%) translateY(1px) scale(0.97);
+}
+
     main {
   display: block;
   height: 100vh;
@@ -1169,6 +1191,94 @@
       from{ transform: translateY(6px); opacity: 0; }
       to  { transform: translateY(0);   opacity: 1; }
     }
+    
+    /* FAVORIS
+    .fav-page {
+  position: fixed;
+  inset: 0;
+  z-index: 345;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 0 0, rgba(255,215,100,0.12), transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(255,215,100,0.10), transparent 55%),
+    rgba(0,0,0,0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.fav-page.show {
+  display: flex;
+  animation: cartFadeIn .35s ease-out;
+}
+
+.fav-page-inner {
+  width: 100%;
+  max-width: 520px;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  background: rgba(6,6,8,0.97);
+  border-radius: 22px;
+  border: 1px solid rgba(255,215,100,0.22);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.9);
+  overflow: hidden;
+  animation: cartSlideUp .35s ease-out;
+}
+
+/* liste favoris dans la modale */
+.fav-grid {
+  padding: 10px 12px 12px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fav-row {
+  padding: 8px 10px;
+  border-radius: 14px;
+  background: rgba(18,18,22,0.96);
+  border: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.86rem;
+}
+
+.fav-row-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.fav-row-title {
+  font-weight: 600;
+}
+
+.fav-row-sub {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.fav-row-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.fav-row-btn {
+  border-radius: 999px;
+  border: 1px solid rgba(255,215,100,0.6);
+  background: #111;
+  color: #ffd766;
+  font-size: 0.78rem;
+  padding: 4px 10px;
+}
 
     /* ===========================
        10) TOAST
@@ -1994,6 +2104,32 @@
   font-size: 0.76rem;
   color: var(--muted);
 }
+
+    /* Etoile favoris sur les cartes produits */
+.product-fav-toggle {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.35);
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  color: #bbbbbb;
+  z-index: 5;
+}
+
+/* Quand le produit est en favoris */
+.product-thumb.is-favorite .product-fav-toggle {
+  border-color: rgba(255,215,100,0.95);
+  background: radial-gradient(circle at 30% 0, rgba(255,215,100,0.4), #111);
+  color: #ffd766;
+  box-shadow: 0 0 10px rgba(255,215,100,0.7);
+}
   </style>
 </head>
 
@@ -2019,6 +2155,11 @@
      =========================== -->
 <header class="header">
   <img src="img/banner.png" alt="PochonStore" class="header-logo" />
+
+  <!-- ⭐ Bouton favoris dans le header -->
+  <button class="header-fav-btn" type="button" onclick="openFavorites()">
+    ⭐
+  </button>
 </header>
 
   <!-- ===========================
@@ -2056,6 +2197,7 @@
   <!-- P8 HERO PACKS COMPLETS -->
   <button class="product-thumb pack-hero"
           onclick="openProduct('packs')"
+          data-product-id="packs"
           data-tags="packs,pack,offres,pochons,starter,boost,pro,boss">
     <div class="product-badge gold">📦 Packs complets</div>
     <div class="product-badge">🔥 Meilleure offre</div>
@@ -2066,108 +2208,136 @@
         Starter, Boost, Pro, Boss – tout pour lancer ton shop.
       </div>
     </div>
+
+    <!-- ⭐ toggle favoris -->
+    <div class="product-fav-toggle"
+         onclick="toggleFavorite(event, 'packs')">
+      ★
+    </div>
   </button>
 
   <!-- P1 : Pochons -->
   <button class="product-thumb"
           onclick="openProduct('p1')"
-          data-tags="pochons,packaging,sachets,personnalise,flatbag,doypack">
+          data-product-id="p1"
+          data-tags="pochons,packaging,sachets,personnalisé,flatbag,doypack">
     <div class="product-badge">🔥 Populaire</div>
     <div class="product-badge">🧾 Sur devis</div>
     <img src="img/pochons11.png" alt="Pochon personnalisé" />
     <div class="product-thumb-body">
       <div class="product-thumb-title">Pochon personnalisé</div>
-      <div class="product-thumb-sub">
-        Flatbags et doypacks imprimés avec ton visuel
-      </div>
+      <div class="product-thumb-sub">Flatbags et doypacks imprimés avec ton visuel</div>
+    </div>
+    <div class="product-fav-toggle"
+         onclick="toggleFavorite(event, 'p1')">
+      ★
     </div>
   </button>
 
   <!-- P2 : Tableaux -->
   <button class="product-thumb"
           onclick="openProduct('p2')"
-          data-tags="tableaux,decoration,art,panoramique,carre">
+          data-product-id="p2"
+          data-tags="tableaux,decoration,art,panoramique,carré">
     <div class="product-badge gold">💎 Premium</div>
     <img src="img/tableau1.jpg" alt="Tableaux personnalisés" />
     <div class="product-thumb-body">
       <div class="product-thumb-title">Tableaux personnalisés</div>
-      <div class="product-thumb-sub">
-        Panoramiques, populaires, carrés
-      </div>
+      <div class="product-thumb-sub">Panoramiques, populaires, carrés</div>
+    </div>
+    <div class="product-fav-toggle"
+         onclick="toggleFavorite(event, 'p2')">
+      ★
     </div>
   </button>
 
   <!-- P3 : Cartes -->
   <button class="product-thumb"
           onclick="openProduct('p3')"
+          data-product-id="p3"
           data-tags="cartes,visite,fidelite,flyer,impression">
     <div class="product-badge">⚡ Recommandé</div>
     <img src="img/cartescata.png" alt="Cartes fidélité / visite" />
     <div class="product-thumb-body">
       <div class="product-thumb-title">Cartes fidélité / visite</div>
-      <div class="product-thumb-sub">
-        Recto verso, 8,5cm x 5,4cm
-      </div>
+      <div class="product-thumb-sub">Recto verso, 8,5cm x 5,4cm</div>
+    </div>
+    <div class="product-fav-toggle"
+         onclick="toggleFavorite(event, 'p3')">
+      ★
     </div>
   </button>
 
   <!-- P4 : Étiquettes -->
   <button class="product-thumb"
           onclick="openProduct('p4')"
+          data-product-id="p4"
           data-tags="etiquettes,stickers,autocollants,packaging">
     <img src="img/etiquettes1.jpg" alt="Étiquettes personnalisées" />
     <div class="product-thumb-body">
       <div class="product-thumb-title">Étiquettes personnalisées</div>
-      <div class="product-thumb-sub">
-        Rondes, rectangles, tailles sur devis
-      </div>
+      <div class="product-thumb-sub">Rondes, rectangles, tailles sur devis</div>
+    </div>
+    <div class="product-fav-toggle"
+         onclick="toggleFavorite(event, 'p4')">
+      ★
     </div>
   </button>
 
   <!-- P5 : Scelleuse -->
   <button class="product-thumb"
           onclick="openProduct('p5')"
+          data-product-id="p5"
           data-tags="scelleuse,machine,soudure,pochons,accessoires">
     <img src="img/scelleuse.jpg" alt="Scelleuse" />
     <div class="product-thumb-body">
       <div class="product-thumb-title">Scelleuse</div>
-      <div class="product-thumb-sub">
-        Scelleuse thermique pour fermer tes pochons
-      </div>
+      <div class="product-thumb-sub">Scelleuse thermique pour fermer tes pochons</div>
+    </div>
+    <div class="product-fav-toggle"
+         onclick="toggleFavorite(event, 'p5')">
+      ★
     </div>
   </button>
 
   <!-- P6 : Fusées -->
   <button class="product-thumb"
           onclick="openProduct('p6')"
-          data-tags="fusees,contenants,capsules,grammage">
+          data-product-id="p6"
+          data-tags="fusées,contenants,capsules,grammage">
     <div class="product-badge new">✨ Coup de cœur</div>
     <img src="img/fusées1.jpg" alt="Fusées 1,5 ml" />
     <div class="product-thumb-body">
       <div class="product-thumb-title">Fusées 1,5 ml</div>
-      <div class="product-thumb-sub">
-        Capsules vides, tarifs selon quantité
-      </div>
+      <div class="product-thumb-sub">Capsules vides, tarifs selon quantité</div>
+    </div>
+    <div class="product-fav-toggle"
+         onclick="toggleFavorite(event, 'p6')">
+      ★
     </div>
   </button>
 
   <!-- P7 : Design personnalisé -->
   <button class="product-thumb"
           onclick="openProduct('p7')"
-          data-tags="design,graphisme,logo,visuel,identite,stickers">
+          data-product-id="p7"
+          data-tags="design,graphisme,logo,visuel,identité,stickers">
     <div class="product-badge gold">🪄 Sur mesure</div>
     <img src="img/design.jpg" alt="Design personnalisé" />
     <div class="product-thumb-body">
       <div class="product-thumb-title">Design personnalisé</div>
-      <div class="product-thumb-sub">
-        Basique, Premium ou Pack identité
-      </div>
+      <div class="product-thumb-sub">Basique, Premium ou Pack identité</div>
+    </div>
+    <div class="product-fav-toggle"
+         onclick="toggleFavorite(event, 'p7')">
+      ★
     </div>
   </button>
 
   <!-- P9 : Service – Développement mini-app -->
   <button class="product-thumb"
           onclick="openProduct('dev')"
+          data-product-id="dev"
           data-tags="miniapp,dev,code,site,boutique,webapp,telegram">
     <div class="product-badge gold">💻 Mini-App</div>
     <div class="product-badge">⚙️ Sur mesure</div>
@@ -2177,6 +2347,10 @@
       <div class="product-thumb-sub">
         Je code ta mini-app sur mesure pour ton shop ou ton projet.
       </div>
+    </div>
+    <div class="product-fav-toggle"
+         onclick="toggleFavorite(event, 'dev')">
+      ★
     </div>
   </button>
 </div>
@@ -2786,6 +2960,25 @@
       L’historique est enregistré uniquement sur ton appareil (localStorage).
     </p>
   </div>
+  
+      <!-- CARTE 2BIS : RÉCAP FAVORIS -->
+  <div class="profile-card profile-card--history">
+    <div class="profile-card-header">
+      <div class="profile-card-icon">⭐</div>
+      <div>
+        <h2>Favoris</h2>
+        <p>Récapitulatif de tes produits mis en favoris.</p>
+      </div>
+    </div>
+
+    <div id="profileFavSummary" class="profile-history-list">
+      <!-- rempli en JS par renderFavoritesSummary() -->
+    </div>
+
+    <p class="profile-hint">
+      Gestion des favoris depuis le catalogue ou la page dédiée. Ce bloc est un simple récap.
+    </p>
+  </div>
 
   <!-- CARTE 3 : INFOS APPLICATION -->
   <div class="profile-card profile-card--app">
@@ -2881,6 +3074,31 @@
       </footer>
     </div>
   </div>
+  
+      <!-- ===========================
+     PAGE FAVORIS FULLSCREEN
+     =========================== -->
+<div id="favModal" class="fav-page hidden" aria-hidden="true">
+  <div class="fav-page-inner">
+    <header class="cart-page-header">
+      <div class="cart-page-title-block">
+        <h2>Vos favoris</h2>
+        <p>Retrouve ici les produits que tu as marqués en ⭐.</p>
+      </div>
+      <button class="btn" type="button" onclick="closeFavorites()">✕</button>
+    </header>
+
+    <section id="favGrid" class="fav-grid">
+      <!-- rempli en JS -->
+    </section>
+
+    <footer class="cart-page-footer">
+      <button class="btn primary" type="button" onclick="switchToMenuFromFavs()">
+        Aller au menu
+      </button>
+    </footer>
+  </div>
+</div>
 
   <!-- ===========================
        MENU BAS
@@ -2929,6 +3147,9 @@ var ORDER_HISTORY = [];
 // Clés de stockage local
 var STORAGE_CART_KEY = 'pss_cart_v1';
 var STORAGE_HISTORY_KEY = 'pss_history_v1';
+// Favoris
+var FAVORITES = [];
+var STORAGE_FAV_KEY = 'pss_favorites_v1';
 
 var toastTimer = null;
 // moyen de paiement choisi dans le panier : "paypal" | "cash" | "crypto" | "tickets"
@@ -3615,6 +3836,214 @@ function saveCartToStorage(){
   }
 }
 
+function loadFavoritesFromStorage(){
+  try {
+    var raw = localStorage.getItem(STORAGE_FAV_KEY);
+    if (!raw) return;
+    var data = JSON.parse(raw);
+    if (Array.isArray(data)) {
+      FAVORITES = data;
+    }
+  } catch(e){
+    console.error('Erreur loadFavoritesFromStorage', e);
+  }
+}
+
+function saveFavoritesToStorage(){
+  try {
+    localStorage.setItem(STORAGE_FAV_KEY, JSON.stringify(FAVORITES));
+  } catch(e){
+    console.error('Erreur saveFavoritesToStorage', e);
+  }
+}
+
+function isFavorite(pid){
+  return FAVORITES.indexOf(pid) !== -1;
+}
+
+function toggleFavorite(evt, pid){
+  if (evt && evt.stopPropagation) evt.stopPropagation();
+
+  var idx = FAVORITES.indexOf(pid);
+  if (idx === -1){
+    FAVORITES.push(pid);
+    toast('Ajouté aux favoris');
+  } else {
+    FAVORITES.splice(idx, 1);
+    toast('Retiré des favoris');
+  }
+
+  saveFavoritesToStorage();
+  refreshFavoriteUI();
+}
+
+function refreshFavoriteUI(){
+  // 1) étoile sur les cartes produits
+  document.querySelectorAll('.product-thumb[data-product-id]').forEach(function(btn){
+    var pid = btn.getAttribute('data-product-id');
+    if (isFavorite(pid)){
+      btn.classList.add('is-favorite');
+    } else {
+      btn.classList.remove('is-favorite');
+    }
+  });
+
+  // 2) modale favoris
+  renderFavoritesGrid();
+
+  // 3) recap favoris dans profil
+  renderFavoritesSummary();
+}
+
+function renderFavoritesGrid(){
+  var box = document.getElementById('favGrid');
+  if (!box) return;
+
+  if (!FAVORITES.length){
+    box.innerHTML =
+      '<p class="item-sub" style="text-align:center;margin-top:8px;">' +
+      'Aucun produit en favoris pour le moment.' +
+      '</p>';
+    return;
+  }
+
+  box.innerHTML = '';
+
+  FAVORITES.forEach(function(pid){
+    var btn = document.querySelector('.product-thumb[data-product-id="'+pid+'"]');
+    var title = 'Produit';
+    var sub   = '';
+
+    if (btn){
+      var tEl = btn.querySelector('.product-thumb-title');
+      var sEl = btn.querySelector('.product-thumb-sub');
+      if (tEl) title = tEl.textContent.trim();
+      if (sEl) sub   = sEl.textContent.trim();
+    }
+
+    var row = document.createElement('div');
+    row.className = 'fav-row';
+
+    var main = document.createElement('div');
+    main.className = 'fav-row-main';
+
+    var t = document.createElement('div');
+    t.className = 'fav-row-title';
+    t.textContent = title;
+
+    var s = document.createElement('div');
+    s.className = 'fav-row-sub';
+    s.textContent = sub || 'Produit du catalogue';
+
+    main.appendChild(t);
+    main.appendChild(s);
+
+    var actions = document.createElement('div');
+    actions.className = 'fav-row-actions';
+
+    var btnOpen = document.createElement('button');
+    btnOpen.type = 'button';
+    btnOpen.className = 'fav-row-btn';
+    btnOpen.textContent = 'Voir la fiche';
+    btnOpen.onclick = function(){
+      closeFavorites(true);
+      // bascule sur l’onglet Menu
+      var menuBtn = document.querySelector('.nav-btn[data-tab="menu"]');
+      if (menuBtn) switchTab(menuBtn);
+      openProduct(pid === 'packs' ? 'packs' : pid);
+    };
+
+    var btnRemove = document.createElement('button');
+    btnRemove.type = 'button';
+    btnRemove.className = 'fav-row-btn';
+    btnRemove.textContent = 'Retirer ⭐';
+    btnRemove.onclick = function(){
+      toggleFavorite(null, pid);
+    };
+
+    actions.appendChild(btnOpen);
+    actions.appendChild(btnRemove);
+
+    row.appendChild(main);
+    row.appendChild(actions);
+    box.appendChild(row);
+  });
+}
+
+function switchToMenuFromFavs(){
+  var menuBtn = document.querySelector('.nav-btn[data-tab="menu"]');
+  if (menuBtn) switchTab(menuBtn);
+  closeFavorites(true);
+}
+
+function renderFavoritesSummary(){
+  var box = document.getElementById('profileFavSummary');
+  if (!box) return;
+
+  if (!FAVORITES.length){
+    box.innerHTML =
+      '<p class="item-sub" style="margin:4px 0 0;">' +
+      'Aucun favori enregistré pour le moment.' +
+      '</p>';
+    return;
+  }
+
+  box.innerHTML = '';
+
+  FAVORITES.forEach(function(pid, index){
+    var btn = document.querySelector('.product-thumb[data-product-id="'+pid+'"]');
+    var title = 'Produit';
+    var sub   = '';
+
+    if (btn){
+      var tEl = btn.querySelector('.product-thumb-title');
+      var sEl = btn.querySelector('.product-thumb-sub');
+      if (tEl) title = tEl.textContent.trim();
+      if (sEl) sub   = sEl.textContent.trim();
+    }
+
+    var div = document.createElement('div');
+    div.className = 'history-entry';
+
+    var header = document.createElement('div');
+    header.className = 'history-entry-header';
+
+    var hTitle = document.createElement('div');
+    hTitle.className = 'history-entry-title';
+    hTitle.textContent = '⭐ ' + title;
+
+    var idx = document.createElement('div');
+    idx.className = 'history-entry-total';
+    idx.textContent = '#' + (index + 1);
+
+    header.appendChild(hTitle);
+    header.appendChild(idx);
+
+    var subEl = document.createElement('div');
+    subEl.className = 'history-entry-items';
+    subEl.textContent = sub || 'Produit du catalogue';
+
+    div.appendChild(header);
+    div.appendChild(subEl);
+    box.appendChild(div);
+  });
+}
+
+function openFavorites(){
+  renderFavoritesGrid();
+  var modal = document.getElementById('favModal');
+  if (!modal) return;
+  modal.classList.remove('hidden');
+  modal.classList.add('show');
+}
+
+function closeFavorites(fromNav){
+  var modal = document.getElementById('favModal');
+  if (!modal) return;
+  modal.classList.remove('show');
+  modal.classList.add('hidden');
+}
+
 function loadHistoryFromStorage(){
   try {
     var raw = localStorage.getItem(STORAGE_HISTORY_KEY);
@@ -4110,17 +4539,11 @@ function renderHistory(){
        12) SPLASH FLOW
        =========================== */
     document.addEventListener('DOMContentLoaded', function(){
-  // 1) Splash
+  // 1) Splash (inchangé)
   var splash = document.getElementById('splash');
   if (splash){
-    setTimeout(function(){
-      splash.classList.add('splash--show-text');
-    }, 400);
-
-    setTimeout(function(){
-      splash.classList.add('splash--show-dots');
-    }, 900);
-
+    setTimeout(function(){ splash.classList.add('splash--show-text'); }, 400);
+    setTimeout(function(){ splash.classList.add('splash--show-dots'); }, 900);
     setTimeout(function(){
       splash.classList.add('splash--hide');
       setTimeout(function(){
@@ -4131,20 +4554,20 @@ function renderHistory(){
     }, 4500);
   }
 
-  // 2) Charger le panier et l’historique depuis le stockage local
+  // 2) Panier + historique
   loadCartFromStorage();
-  renderCart();           // met à jour les totaux + badge
+  renderCart();
 
   loadHistoryFromStorage();
-  renderHistory();        // on va créer cette fonction juste après
+  renderHistory();
 
-  // 3) Hydrater le profil Telegram (si dispo)
-  initProfileFromTelegram();  // profil user
-  initAppInfo();              // carte infos appli
+  // 3) Favoris
+  loadFavoritesFromStorage();
+  refreshFavoriteUI();
 
-    // 4) Recherche catalogue
-  initProductSearch();
-  applyProductFilter(); // pour initialiser (tout visible)
+  // 4) Profil / appli
+  initProfileFromTelegram();
+  initAppInfo();
 });
 
 // Bouton retour
