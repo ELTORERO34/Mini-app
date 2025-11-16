@@ -3277,7 +3277,7 @@ body[data-theme="neon"] .btn.primary {
   <!-- ===========================
        BOUTON PANIER FLOTTANT
        =========================== -->
-  <button id="cartFab" class="cart-fab" type="button" onclick="openCart()">
+  <button id="cartFab" class="cart-fab" type="button" onclick="openCart()" style="display:none;">
     🛒
     <span id="cartBadge" class="cart-badge"></span>
   </button>
@@ -4015,26 +4015,32 @@ function addPack(kind, btn){
     }
 
     function closeCart(){
-      var modal = document.getElementById('cartModal');
-      if (modal){
-        modal.classList.remove('show');
-        modal.classList.add('hidden');
-      }
-      var fab = document.getElementById('cartFab');
-      if (fab) fab.style.display = 'block';
+  var modal = document.getElementById('cartModal');
+  if (modal){
+    modal.classList.remove('show');
+    modal.classList.add('hidden');
+  }
+
+  var fab = document.getElementById('cartFab');
+  if (fab){
+    // On affiche le bouton seulement s’il y a au moins 1 article dans le panier
+    if (CART && CART.length > 0){
+      fab.style.display = 'block';   // ou 'flex' selon ton CSS
+    } else {
+      fab.style.display = 'none';
     }
-    
+  }
+}
     var selectedPaymentMethod = null;
-
+    
+    
     function selectPayment(method){
-
   // visuel : bouton actif
   document.querySelectorAll('.pay-btn').forEach(function(btn){
     btn.classList.remove('active');
   });
   var active = document.querySelector('.pay-btn[data-method="'+method+'"]');
   if (active) active.classList.add('active');
-
   // recalcul des frais + total avec frais
   computeCurrentFees();
 }
@@ -4586,8 +4592,20 @@ function renderHistory(){
             badgeEl.style.display = 'none';
           }
         }
-              // --- Sauvegarde du panier après rendu ---
-      saveCartToStorage();
+          // 👉 Afficher / cacher le bouton panier flottant
+        var fab = document.getElementById('cartFab');
+        if (fab){
+          if (CART.length > 0){
+            // On ne l’affiche que si le panier n’est pas vide ET si la modale n’est pas ouverte
+            var modal = document.getElementById('cartModal');
+            var isCartOpen = modal && modal.classList.contains('show');
+            fab.style.display = isCartOpen ? 'none' : 'block';
+          } else {
+            fab.style.display = 'none';
+          }
+        }
+        // --- Sauvegarde du panier après rendu ---
+        saveCartToStorage();
       }catch(e){
         console.error(e);
       }
