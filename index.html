@@ -344,7 +344,7 @@
       display: block;
     }
     
-    /* ===========================
+/* ===========================
    RECHERCHE CATALOGUE
    =========================== */
 .search-wrapper{
@@ -381,6 +381,16 @@
 
 .search-input::placeholder{
   color: rgba(255,255,255,0.55);
+}
+
+/* bouton X pour vider */
+.search-clear{
+  border: none;
+  background: transparent;
+  color: rgba(255,255,255,0.7);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0 4px;
 }
 
 /* petits filtres par tags */
@@ -2017,22 +2027,25 @@
   <main id="main">
     <!-- ========= ONGLET MENU ========= -->
     <section id="tab-menu" class="tab-panel active">
-            <!-- BARRE DE RECHERCHE CATALOGUE -->
+                  <!-- BARRE DE RECHERCHE CATALOGUE -->
       <div class="search-wrapper">
         <div class="search-bar">
           <input
             id="productSearch"
             class="search-input"
             type="text"
-            placeholder="Rechercher un produit ou un type (pochon, étiquettes, mini-app…)">
+            placeholder="Rechercher un produit ou un type (pochon, étiquettes, mini-app…)"
+          >
+          <button type="button" id="searchClear" class="search-clear">✕</button>
         </div>
+
         <div class="search-chips">
           <button type="button" class="search-chip active" data-tag="all">Tous</button>
           <button type="button" class="search-chip" data-tag="pochons">Pochons</button>
           <button type="button" class="search-chip" data-tag="tableaux">Tableaux</button>
           <button type="button" class="search-chip" data-tag="cartes">Cartes</button>
           <button type="button" class="search-chip" data-tag="etiquettes">Étiquettes</button>
-          <button type="button" class="search-chip" data-tag="fusées">Fusées</button>
+          <button type="button" class="search-chip" data-tag="fusees">Fusées</button>
           <button type="button" class="search-chip" data-tag="design">Design</button>
           <button type="button" class="search-chip" data-tag="packs">Packs</button>
           <button type="button" class="search-chip" data-tag="miniapp">Mini-App Dev</button>
@@ -2040,119 +2053,133 @@
       </div>
       
       <div class="product-grid" id="productGrid">
-        <!-- P8 HERO PACKS COMPLETS -->
-        <button class="product-thumb pack-hero" onclick="openProduct('packs')"
-        data-tags="packs,pack,offres,pochons,starter,boost,pro,boss">
-<button class="product-thumb pack-hero" onclick="openProduct('packs')">
-  <div class="product-badge gold">📦 Packs complets</div>
-  <div class="product-badge">🔥 Meilleure offre</div>
-  <img src="img/pack-menu.jpg" alt="Packs complets" />
-  <div class="product-thumb-body">
-    <div class="product-thumb-title">Packs PochonStore</div>
-    <div class="product-thumb-sub">
-      Starter, Boost, Pro, Boss – tout pour lancer ton shop.
+  <!-- P8 HERO PACKS COMPLETS -->
+  <button class="product-thumb pack-hero"
+          onclick="openProduct('packs')"
+          data-tags="packs,pack,offres,pochons,starter,boost,pro,boss">
+    <div class="product-badge gold">📦 Packs complets</div>
+    <div class="product-badge">🔥 Meilleure offre</div>
+    <img src="img/pack-menu.jpg" alt="Packs complets" />
+    <div class="product-thumb-body">
+      <div class="product-thumb-title">Packs PochonStore</div>
+      <div class="product-thumb-sub">
+        Starter, Boost, Pro, Boss – tout pour lancer ton shop.
+      </div>
     </div>
-  </div>
-</button>
+  </button>
 
-        <!-- P1 : Pochons -->
-        <button class="product-thumb" onclick="openProduct('p1')"
-        data-tags="pochons,packaging,sachets,personnalisé,flatbag,doypack">
-        <button class="product-thumb" onclick="openProduct('p1')">
-          <div class="product-badge">🔥 Populaire</div>
-          <div class="product-badge">🧾 Sur devis</div>
-          <img src="img/pochons11.png" alt="Pochon personnalisé" />
-          <div class="product-thumb-body">
-            <div class="product-thumb-title">Pochon personnalisé</div>
-            <div class="product-thumb-sub">Flatbags et doypacks imprimés avec ton visuel</div>
-          </div>
-        </button>
-
-        <!-- P2 : Tableaux -->
-        <button class="product-thumb" onclick="openProduct('p2')"
-        data-tags="tableaux,decoration,art,panoramique,carré">
-        <button class="product-thumb" onclick="openProduct('p2')">
-          <div class="product-badge gold">💎 Premium</div>
-          <img src="img/tableau1.jpg" alt="Tableaux personnalisés" />
-          <div class="product-thumb-body">
-            <div class="product-thumb-title">Tableaux personnalisés</div>
-            <div class="product-thumb-sub">Panoramiques, populaires, carrés</div>
-          </div>
-        </button>
-
-        <!-- P3 : Cartes -->
-        <button class="product-thumb" onclick="openProduct('p3')"
-        data-tags="cartes,visite,fidelite,flyer,impression">
-        <button class="product-thumb" onclick="openProduct('p3')">
-          <div class="product-badge">⚡ Recommandé</div>
-          <img src="img/cartescata.png" alt="Cartes fidélité / visite" />
-          <div class="product-thumb-body">
-            <div class="product-thumb-title">Cartes fidélité / visite</div>
-            <div class="product-thumb-sub">Recto verso, 8,5cm x 5,4cm</div>
-          </div>
-        </button>
-
-        <!-- P4 : Étiquettes -->
-        <button class="product-thumb" onclick="openProduct('p4')"
-        data-tags="etiquettes,stickers,autocollants,packaging">
-        <button class="product-thumb" onclick="openProduct('p4')">
-          <img src="img/etiquettes1.jpg" alt="Étiquettes personnalisées" />
-          <div class="product-thumb-body">
-            <div class="product-thumb-title">Étiquettes personnalisées</div>
-            <div class="product-thumb-sub">Rondes, rectangles, tailles sur devis</div>
-          </div>
-        </button>
-
-        <!-- P5 : Scelleuse -->
-        <button class="product-thumb" onclick="openProduct('p5')"
-        data-tags="scelleuse,machine,soudure,pochons,accessoires">
-        <button class="product-thumb" onclick="openProduct('p5')">
-          <img src="img/scelleuse.jpg" alt="Scelleuse" />
-          <div class="product-thumb-body">
-            <div class="product-thumb-title">Scelleuse</div>
-            <div class="product-thumb-sub">Scelleuse thermique pour fermer tes pochons</div>
-          </div>
-        </button>
-
-        <!-- P6 : Fusées -->
-        <button class="product-thumb" onclick="openProduct('p6')"
-        data-tags="fusées,contenants,capsules,grammage">
-        <button class="product-thumb" onclick="openProduct('p6')">
-          <div class="product-badge new">✨ Coup de cœur</div>
-          <img src="img/fusées1.jpg" alt="Fusées 1,5 ml" />
-          <div class="product-thumb-body">
-            <div class="product-thumb-title">Fusées 1,5 ml</div>
-            <div class="product-thumb-sub">Capsules vides, tarifs selon quantité</div>
-          </div>
-        </button>
-
-        <!-- P7 : Design personnalisé -->
-        <button class="product-thumb" onclick="openProduct('p7')"
-        data-tags="design,graphisme,logo,visuel,identité,stickers">
-        <button class="product-thumb" onclick="openProduct('p7')">
-          <div class="product-badge gold">🪄 Sur mesure</div>
-          <img src="img/design.jpg" alt="Design personnalisé" />
-          <div class="product-thumb-body">
-            <div class="product-thumb-title">Design personnalisé</div>
-            <div class="product-thumb-sub">Basique, Premium ou Pack identité</div>
-          </div>
-        </button>
-        
-        <!-- P9 : Service – Développement mini-app -->
-        <button class="product-thumb" onclick="openProduct('dev')"
-        data-tags="miniapp,dev,code,site,boutique,webapp,telegram">
-<button class="product-thumb" onclick="openProduct('dev')">
-  <div class="product-badge gold">💻 Mini-App</div>
-  <div class="product-badge">⚙️ Sur mesure</div>
-  <img src="img/dev-miniapp.jpg" alt="Développement mini-app Telegram" />
-  <div class="product-thumb-body">
-    <div class="product-thumb-title">Mini-app Telegram / WebApp</div>
-    <div class="product-thumb-sub">
-      Je code ta mini-app sur mesure pour ton shop ou ton projet.
+  <!-- P1 : Pochons -->
+  <button class="product-thumb"
+          onclick="openProduct('p1')"
+          data-tags="pochons,packaging,sachets,personnalise,flatbag,doypack">
+    <div class="product-badge">🔥 Populaire</div>
+    <div class="product-badge">🧾 Sur devis</div>
+    <img src="img/pochons11.png" alt="Pochon personnalisé" />
+    <div class="product-thumb-body">
+      <div class="product-thumb-title">Pochon personnalisé</div>
+      <div class="product-thumb-sub">
+        Flatbags et doypacks imprimés avec ton visuel
+      </div>
     </div>
-  </div>
-</button>
-        </div>
+  </button>
+
+  <!-- P2 : Tableaux -->
+  <button class="product-thumb"
+          onclick="openProduct('p2')"
+          data-tags="tableaux,decoration,art,panoramique,carre">
+    <div class="product-badge gold">💎 Premium</div>
+    <img src="img/tableau1.jpg" alt="Tableaux personnalisés" />
+    <div class="product-thumb-body">
+      <div class="product-thumb-title">Tableaux personnalisés</div>
+      <div class="product-thumb-sub">
+        Panoramiques, populaires, carrés
+      </div>
+    </div>
+  </button>
+
+  <!-- P3 : Cartes -->
+  <button class="product-thumb"
+          onclick="openProduct('p3')"
+          data-tags="cartes,visite,fidelite,flyer,impression">
+    <div class="product-badge">⚡ Recommandé</div>
+    <img src="img/cartescata.png" alt="Cartes fidélité / visite" />
+    <div class="product-thumb-body">
+      <div class="product-thumb-title">Cartes fidélité / visite</div>
+      <div class="product-thumb-sub">
+        Recto verso, 8,5cm x 5,4cm
+      </div>
+    </div>
+  </button>
+
+  <!-- P4 : Étiquettes -->
+  <button class="product-thumb"
+          onclick="openProduct('p4')"
+          data-tags="etiquettes,stickers,autocollants,packaging">
+    <img src="img/etiquettes1.jpg" alt="Étiquettes personnalisées" />
+    <div class="product-thumb-body">
+      <div class="product-thumb-title">Étiquettes personnalisées</div>
+      <div class="product-thumb-sub">
+        Rondes, rectangles, tailles sur devis
+      </div>
+    </div>
+  </button>
+
+  <!-- P5 : Scelleuse -->
+  <button class="product-thumb"
+          onclick="openProduct('p5')"
+          data-tags="scelleuse,machine,soudure,pochons,accessoires">
+    <img src="img/scelleuse.jpg" alt="Scelleuse" />
+    <div class="product-thumb-body">
+      <div class="product-thumb-title">Scelleuse</div>
+      <div class="product-thumb-sub">
+        Scelleuse thermique pour fermer tes pochons
+      </div>
+    </div>
+  </button>
+
+  <!-- P6 : Fusées -->
+  <button class="product-thumb"
+          onclick="openProduct('p6')"
+          data-tags="fusees,contenants,capsules,grammage">
+    <div class="product-badge new">✨ Coup de cœur</div>
+    <img src="img/fusées1.jpg" alt="Fusées 1,5 ml" />
+    <div class="product-thumb-body">
+      <div class="product-thumb-title">Fusées 1,5 ml</div>
+      <div class="product-thumb-sub">
+        Capsules vides, tarifs selon quantité
+      </div>
+    </div>
+  </button>
+
+  <!-- P7 : Design personnalisé -->
+  <button class="product-thumb"
+          onclick="openProduct('p7')"
+          data-tags="design,graphisme,logo,visuel,identite,stickers">
+    <div class="product-badge gold">🪄 Sur mesure</div>
+    <img src="img/design.jpg" alt="Design personnalisé" />
+    <div class="product-thumb-body">
+      <div class="product-thumb-title">Design personnalisé</div>
+      <div class="product-thumb-sub">
+        Basique, Premium ou Pack identité
+      </div>
+    </div>
+  </button>
+
+  <!-- P9 : Service – Développement mini-app -->
+  <button class="product-thumb"
+          onclick="openProduct('dev')"
+          data-tags="miniapp,dev,code,site,boutique,webapp,telegram">
+    <div class="product-badge gold">💻 Mini-App</div>
+    <div class="product-badge">⚙️ Sur mesure</div>
+    <img src="img/dev-miniapp.jpg" alt="Développement mini-app Telegram" />
+    <div class="product-thumb-body">
+      <div class="product-thumb-title">Mini-app Telegram / WebApp</div>
+      <div class="product-thumb-sub">
+        Je code ta mini-app sur mesure pour ton shop ou ton projet.
+      </div>
+    </div>
+  </button>
+</div>
         
       <!-- ===== FICHE PRODUIT P1 ===== -->
       <div id="productDetail_p1" class="product-detail hidden">
@@ -2940,15 +2967,17 @@ var selectedPaymentMethod = null;
   document.body.scrollTop = 0;
 }
 
-    /* ===========================
+/* ===========================
    RECHERCHE CATALOGUE
    =========================== */
+
+var currentTagFilter = 'all';
 
 function normalizeText(str){
   return (str || "")
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, ""); // enlève accents
+    .replace(/[\u0300-\u036f]/g, ""); // enlève les accents
 }
 
 function applyProductFilter(){
@@ -2957,11 +2986,9 @@ function applyProductFilter(){
 
   var term = normalizeText(input.value.trim());
 
-  var activeChip = document.querySelector('.search-chip.active');
-  var activeTag = activeChip ? activeChip.getAttribute('data-tag') : 'all';
-
   var cards = document.querySelectorAll('#productGrid .product-thumb');
   cards.forEach(function(card){
+    // texte (titre + sous-titre)
     var titleEl = card.querySelector('.product-thumb-title');
     var subEl   = card.querySelector('.product-thumb-sub');
 
@@ -2970,28 +2997,27 @@ function applyProductFilter(){
       (subEl   ? subEl.textContent   : "")
     );
 
-    var tags = normalizeText(card.getAttribute('data-tags') || "");
-    var tagList = tags.split(',').map(function(t){ return t.trim(); }).filter(Boolean);
+    // tags
+    var tagsAttr = (card.getAttribute('data-tags') || "").toLowerCase();
+    var tagList  = tagsAttr.split(',').map(function(t){ return t.trim(); }).filter(Boolean);
 
-    var matchesText =
+    var matchesTerm =
       !term ||
       text.indexOf(term) !== -1 ||
-      tags.indexOf(term) !== -1;
+      tagsAttr.indexOf(term) !== -1;
 
     var matchesTag =
-      activeTag === 'all' ||
-      tagList.indexOf(activeTag) !== -1;
+      currentTagFilter === 'all' ||
+      tagList.indexOf(currentTagFilter) !== -1;
 
-    if (matchesText && matchesTag){
-      card.style.display = 'flex';
-    } else {
-      card.style.display = 'none';
-    }
+    // afficher / cacher
+    card.style.display = (matchesTerm && matchesTag) ? '' : 'none';
   });
 }
 
 function initProductSearch(){
   var input = document.getElementById('productSearch');
+  var clearBtn = document.getElementById('searchClear');
   if (!input) return;
 
   // saisie en temps réel
@@ -2999,13 +3025,23 @@ function initProductSearch(){
     applyProductFilter();
   });
 
-  // clic sur les petits boutons de tags
+  // bouton X pour vider
+  if (clearBtn){
+    clearBtn.addEventListener('click', function(){
+      input.value = '';
+      applyProductFilter();
+      input.focus();
+    });
+  }
+
+  // clic sur les tags
   document.querySelectorAll('.search-chip').forEach(function(chip){
     chip.addEventListener('click', function(){
       document.querySelectorAll('.search-chip').forEach(function(c){
         c.classList.remove('active');
       });
       this.classList.add('active');
+      currentTagFilter = this.getAttribute('data-tag') || 'all';
       applyProductFilter();
     });
   });
