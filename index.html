@@ -508,7 +508,7 @@
     }
 
     .product-thumb-body {
-      padding: 10px;
+      padding: 10px 10px 16px;
       text-align: left;
       flex: 1;
       display: flex;
@@ -1192,8 +1192,9 @@
       to  { transform: translateY(0);   opacity: 1; }
     }
     
-    /* FAVORIS
-    .fav-page {
+    /* FAVORIS =========================== */
+
+.fav-page {
   position: fixed;
   inset: 0;
   z-index: 345;
@@ -2108,7 +2109,7 @@
     /* Etoile favoris sur les cartes produits */
 .product-fav-toggle {
   position: absolute;
-  top: 8px;
+  bottom: 10px;     /* ✅ on la met en bas */
   right: 10px;
   width: 26px;
   height: 26px;
