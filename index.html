@@ -4869,7 +4869,7 @@ function initTheme(){
     /* ===========================
        12) SPLASH FLOW
        =========================== */
-    document.addEventListener('DOMContentLoaded', function(){
+document.addEventListener('DOMContentLoaded', function(){
   // 0) Init recherche/catalogue
   initProductSearch();   // ✅ active barre + tags
 
@@ -4891,25 +4891,34 @@ function initTheme(){
   // 2) Panier + historique
   loadCartFromStorage();
   renderCart();
-  updateCartFabVisibility();
+  // ❌ SUPPRIMER cette ligne si la fonction n’existe plus :
+  // updateCartFabVisibility();
   loadHistoryFromStorage();
   renderHistory();
+
   // 3) Favoris
   loadFavoritesFromStorage();
   refreshFavoriteUI();
+
   // 4) Profil / appli
   initProfileFromTelegram();
   initAppInfo();
-  // 6) Recherche catalogue (si pas déjà ajouté)
-  initProductSearch();
-    // 5) Thèmes
+
+  // 6) Recherche catalogue (doublon, tu peux l’enlever si tu veux)
+  // initProductSearch();
+
+  // 5) Thèmes
   document.querySelectorAll('.theme-pill').forEach(function(btn){
     btn.addEventListener('click', function(){
       var t = this.getAttribute('data-theme');
       applyTheme(t);
     });
   });
-  initTheme();
+
+  // ⬇️ ICI on remplace initTheme() par la version avec le localStorage
+  if (typeof initThemeFromStorage === 'function'){
+    initThemeFromStorage();
+  }
 });
   </script>
 </body>
