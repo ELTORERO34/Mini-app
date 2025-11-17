@@ -4832,61 +4832,49 @@ updateCartFabVisibility();
 // ===========================
 // THEMES (Gold / Nuit / Neon)
 // ===========================
-var THEME_STORAGE_KEY = 'pochon_theme';
+var THEME_KEY = 'pss_theme_v1';
 
-/**
- * Applique un thème et le sauvegarde en localStorage.
- * themeName : "dark" | "gold" | "neon"
- */
-function applyTheme(themeName){
-  if (!themeName) themeName = 'dark';
+function applyTheme(theme, fromInit){
+  if (!theme) return;
 
-  // 1) Attribut sur <html>
-  document.documentElement.setAttribute('data-theme', themeName);
+  // 1) applique l'attribut sur <html>
+  document.documentElement.setAttribute('data-theme', theme);
 
-  // 2) Sauvegarde en localStorage
-  try{
-    localStorage.setItem(THEME_STORAGE_KEY, themeName);
-  }catch(e){
-    console.error('Erreur en sauvegardant le thème', e);
-  }
-
-  // 3) Met à jour l’état visuel des boutons (pills)
+  // 2) met à jour l'état visuel des boutons
   document.querySelectorAll('.theme-pill').forEach(function(btn){
     var t = btn.getAttribute('data-theme');
-    if (t === themeName){
+    if (t === theme){
       btn.classList.add('theme-pill--active');
     } else {
       btn.classList.remove('theme-pill--active');
     }
   });
+
+  // 3) sauvegarde en localStorage (sauf à l'init)
+  if (!fromInit){
+    try{
+      localStorage.setItem(THEME_KEY, theme);
+    }catch(e){}
+  }
 }
 
-/**
- * Initialise le thème au chargement :
- *  - lit le thème sauvegardé
- *  - applique ce thème
- *  - branche les clics sur les pills
- */
 function initTheme(){
-  var saved = 'dark';
+  var stored = null;
   try{
-    var fromStorage = localStorage.getItem(THEME_STORAGE_KEY);
-    if (fromStorage){
-      saved = fromStorage;
-    }
-  }catch(e){
-    console.error('Erreur en lisant le thème', e);
-  }
+    stored = localStorage.getItem(THEME_KEY);
+  }catch(e){}
 
-  // applique le thème sauvegardé (ou dark)
-  applyTheme(saved);
+  // thème par défaut si rien en mémoire
+  var initialTheme = stored || 'dark';
 
-  // branche les clics sur les pills (une seule fois)
+  // applique sans réécrire dans le localStorage
+  applyTheme(initialTheme, true);
+
+  // branche les clics UNE seule fois
   document.querySelectorAll('.theme-pill').forEach(function(btn){
     btn.addEventListener('click', function(){
       var t = this.getAttribute('data-theme');
-      applyTheme(t);
+      applyTheme(t, false);
     });
   });
 }
@@ -4895,9 +4883,9 @@ function initTheme(){
    12) SPLASH FLOW & INIT APP
    =========================== */
 document.addEventListener('DOMContentLoaded', function(){
-  // 0) Init recherche/catalogue
+  // 0) Recherche / catalogue
   if (typeof initProductSearch === 'function'){
-    initProductSearch();   // ✅ active barre + tags
+    initProductSearch();
   }
 
   // 1) Splash
@@ -4918,7 +4906,7 @@ document.addEventListener('DOMContentLoaded', function(){
   // 2) Panier + historique
   if (typeof loadCartFromStorage === 'function') loadCartFromStorage();
   if (typeof renderCart === 'function') renderCart();
-  if (typeof updateCartFabVisibility === 'function') updateCartFabVisibility?.();
+  if (typeof updateCartFabVisibility === 'function') updateCartFabVisibility();
 
   if (typeof loadHistoryFromStorage === 'function') loadHistoryFromStorage();
   if (typeof renderHistory === 'function') renderHistory();
@@ -4931,7 +4919,7 @@ document.addEventListener('DOMContentLoaded', function(){
   if (typeof initProfileFromTelegram === 'function') initProfileFromTelegram();
   if (typeof initAppInfo === 'function') initAppInfo();
 
-  // 5) Thèmes
+  // 5) Thèmes (après tout le reste)
   initTheme();
 });
   </script>
