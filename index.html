@@ -4832,15 +4832,15 @@ updateCartFabVisibility();
 // ===========================
 // THEMES (Gold / Nuit / Neon)
 // ===========================
-var THEME_KEY = 'pss_theme_v1';
+var THEME_STORAGE_KEY = 'pss_theme_v1';
 
 function applyTheme(theme, fromInit){
   if (!theme) return;
 
-  // 1) applique l'attribut sur <html>
+  // 1) pose l'attribut data-theme sur <html>
   document.documentElement.setAttribute('data-theme', theme);
 
-  // 2) met à jour l'état visuel des boutons
+  // 2) met à jour visuellement les boutons .theme-pill
   document.querySelectorAll('.theme-pill').forEach(function(btn){
     var t = btn.getAttribute('data-theme');
     if (t === theme){
@@ -4850,27 +4850,27 @@ function applyTheme(theme, fromInit){
     }
   });
 
-  // 3) sauvegarde en localStorage (sauf à l'init)
+  // 3) sauvegarde en localStorage (sauf lors de l'init)
   if (!fromInit){
-    try{
-      localStorage.setItem(THEME_KEY, theme);
-    }catch(e){}
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, theme);
+    } catch(e){}
   }
 }
 
 function initTheme(){
   var stored = null;
-  try{
-    stored = localStorage.getItem(THEME_KEY);
-  }catch(e){}
+  try {
+    stored = localStorage.getItem(THEME_STORAGE_KEY);
+  } catch(e){}
 
   // thème par défaut si rien en mémoire
   var initialTheme = stored || 'dark';
 
-  // applique sans réécrire dans le localStorage
+  // applique le thème sans réécrire tout de suite le localStorage
   applyTheme(initialTheme, true);
 
-  // branche les clics UNE seule fois
+  // branche les clics sur les boutons UNE SEULE FOIS
   document.querySelectorAll('.theme-pill').forEach(function(btn){
     btn.addEventListener('click', function(){
       var t = this.getAttribute('data-theme');
