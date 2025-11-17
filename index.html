@@ -3412,6 +3412,7 @@ var STORAGE_HISTORY_KEY = 'pss_history_v1';
 // Favoris
 var FAVORITES = [];
 var STORAGE_FAV_KEY = 'pss_favorites_v1';
+var THEME_STORAGE_KEY = 'pochon_theme';
 
 var toastTimer = null;
 // moyen de paiement choisi dans le panier : "paypal" | "cash" | "crypto" | "tickets"
@@ -4833,22 +4834,24 @@ updateCartFabVisibility();
 // ===========================
 var THEME_KEY = 'pss_theme_v1';
 
-function applyTheme(theme){
-  var b = document.body;
-  if (!b) return;
 
-  // applique l'attribut sur le body
-  b.setAttribute('data-theme', theme);
+function applyTheme(themeName){
+  if (!themeName) themeName = 'dark';
 
-  // sauvegarde dans le localStorage
-  try {
-    localStorage.setItem(THEME_KEY, theme);
-  } catch(e){}
+  // applique l’attribut sur <html>
+  document.documentElement.setAttribute('data-theme', themeName);
 
-  // met à jour le visuel des boutons
+  // sauvegarde en localStorage
+  try{
+    localStorage.setItem(THEME_STORAGE_KEY, themeName);
+  }catch(e){
+    console.error('Erreur en sauvegardant le thème', e);
+  }
+
+  // met à jour l’état visuel des boutons (pills)
   document.querySelectorAll('.theme-pill').forEach(function(btn){
-    var isActive = (btn.getAttribute('data-theme') === theme);
-    if (isActive){
+    var t = btn.getAttribute('data-theme');
+    if (t === themeName){
       btn.classList.add('theme-pill--active');
     } else {
       btn.classList.remove('theme-pill--active');
@@ -4857,13 +4860,18 @@ function applyTheme(theme){
 }
 
 function initTheme(){
-  var stored = null;
-  try {
-    stored = localStorage.getItem(THEME_KEY);
-  } catch(e){}
+  var saved = null;
+  try{
+    saved = localStorage.getItem(THEME_STORAGE_KEY);
+  }catch(e){
+    console.error('Erreur en lisant le thème', e);
+  }
 
-  var initial = stored || 'gold'; // thème par défaut
-  applyTheme(initial);
+  if (!saved){
+    saved = 'dark'; // thème par défaut
+  }
+
+  applyTheme(saved);
 }
 
     /* ===========================
