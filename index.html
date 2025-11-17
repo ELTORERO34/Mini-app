@@ -3258,7 +3258,7 @@ body[data-theme="neon"] .btn.primary {
       <button type="button" class="theme-pill" data-theme="gold">
         🥇 Gold
       </button>
-      <button type="button" class="theme-pill" data-theme="dark">
+      <button type="button" class="theme-pill" data-theme="night">
         🌙 Nuit
       </button>
       <button type="button" class="theme-pill" data-theme="neon">
@@ -4837,7 +4837,7 @@ function applyTheme(theme, fromInit){
   if (!theme) return;
 
   // 1) pose l'attribut data-theme sur <html>
-  document.documentElement.setAttribute('data-theme', theme);
+  document.body.setAttribute('data-theme', theme);
 
   // 2) met à jour visuellement les boutons .theme-pill
   document.querySelectorAll('.theme-pill').forEach(function(btn){
@@ -4863,13 +4863,11 @@ function initTheme(){
     stored = localStorage.getItem(THEME_STORAGE_KEY);
   } catch(e){}
 
-  // thème par défaut si rien en mémoire
-  var initialTheme = stored || 'dark';
+  // par défaut → gold ou night, comme tu préfères
+  var initialTheme = stored || 'gold';
 
-  // applique le thème sans réécrire tout de suite le localStorage
   applyTheme(initialTheme, true);
 
-  // branche les clics sur les boutons UNE SEULE FOIS
   document.querySelectorAll('.theme-pill').forEach(function(btn){
     btn.addEventListener('click', function(){
       var t = this.getAttribute('data-theme');
