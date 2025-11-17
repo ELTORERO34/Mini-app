@@ -4835,43 +4835,49 @@ updateCartFabVisibility();
 var THEME_KEY = 'pss_theme_v1';
 
 
-function applyTheme(themeName){
-  if (!themeName) themeName = 'dark';
+function applyTheme(theme, fromInit){
+  if (!theme) return;
 
-  // applique l’attribut sur <html>
-  document.documentElement.setAttribute('data-theme', themeName);
+  // 1) on pose l'attribut data-theme sur <html>
+  document.documentElement.setAttribute('data-theme', theme);
 
-  // sauvegarde en localStorage
-  try{
-    localStorage.setItem(THEME_STORAGE_KEY, themeName);
-  }catch(e){
-    console.error('Erreur en sauvegardant le thème', e);
-  }
-
-  // met à jour l’état visuel des boutons (pills)
+  // 2) on met à jour l'état visuel des boutons .theme-pill
   document.querySelectorAll('.theme-pill').forEach(function(btn){
     var t = btn.getAttribute('data-theme');
-    if (t === themeName){
+    if (t === theme){
       btn.classList.add('theme-pill--active');
     } else {
       btn.classList.remove('theme-pill--active');
     }
   });
+
+  // 3) on sauvegarde en localStorage sauf quand on est en init
+  if (!fromInit){
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, theme);
+    } catch(e){}
+  }
 }
 
 function initTheme(){
-  var saved = null;
-  try{
-    saved = localStorage.getItem(THEME_STORAGE_KEY);
-  }catch(e){
-    console.error('Erreur en lisant le thème', e);
-  }
+  var stored = null;
+  try {
+    stored = localStorage.getItem(THEME_STORAGE_KEY);
+  } catch(e){}
 
-  if (!saved){
-    saved = 'dark'; // thème par défaut
-  }
+  // thème par défaut si rien en mémoire
+  var initialTheme = stored || 'dark';
 
-  applyTheme(saved);
+  // applique le thème sans réécrire encore le localStorage
+  applyTheme(initialTheme, true);
+
+  // branche les clics sur les boutons UNE SEULE FOIS
+  document.querySelectorAll('.theme-pill').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var t = this.getAttribute('data-theme');
+      applyTheme(t, false);
+    });
+  });
 }
 
     /* ===========================
@@ -4922,6 +4928,8 @@ document.addEventListener('DOMContentLoaded', function(){
       applyTheme(t);
     });
   });
+  initTheme();
+});
 
   // ⬇️ ICI on remplace initTheme() par la version avec le localStorage
   if (typeof initThemeFromStorage === 'function'){
