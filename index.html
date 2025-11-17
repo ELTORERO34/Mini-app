@@ -4834,14 +4834,13 @@ updateCartFabVisibility();
 // ===========================
 var THEME_KEY = 'pss_theme_v1';
 
-
 function applyTheme(theme, fromInit){
   if (!theme) return;
 
-  // 1) on pose l'attribut data-theme sur <html>
+  // 1) Applique le thème sur <html>
   document.documentElement.setAttribute('data-theme', theme);
 
-  // 2) on met à jour l'état visuel des boutons .theme-pill
+  // 2) Active / désactive visuellement les boutons
   document.querySelectorAll('.theme-pill').forEach(function(btn){
     var t = btn.getAttribute('data-theme');
     if (t === theme){
@@ -4851,10 +4850,10 @@ function applyTheme(theme, fromInit){
     }
   });
 
-  // 3) on sauvegarde en localStorage sauf quand on est en init
+  // 3) Sauvegarde en localStorage (sauf pendant l'init)
   if (!fromInit){
     try {
-      localStorage.setItem(THEME_STORAGE_KEY, theme);
+      localStorage.setItem(THEME_KEY, theme);
     } catch(e){}
   }
 }
@@ -4862,16 +4861,16 @@ function applyTheme(theme, fromInit){
 function initTheme(){
   var stored = null;
   try {
-    stored = localStorage.getItem(THEME_STORAGE_KEY);
+    stored = localStorage.getItem(THEME_KEY);
   } catch(e){}
 
-  // thème par défaut si rien en mémoire
+  // Thème par défaut si rien en mémoire
   var initialTheme = stored || 'dark';
 
-  // applique le thème sans réécrire encore le localStorage
+  // Applique le thème sans réécrire le localStorage
   applyTheme(initialTheme, true);
 
-  // branche les clics sur les boutons UNE SEULE FOIS
+  // Écouteurs sur les boutons UNE SEULE FOIS
   document.querySelectorAll('.theme-pill').forEach(function(btn){
     btn.addEventListener('click', function(){
       var t = this.getAttribute('data-theme');
@@ -4880,14 +4879,16 @@ function initTheme(){
   });
 }
 
-    /* ===========================
-       12) SPLASH FLOW
-       =========================== */
+/* ===========================
+   12) SPLASH FLOW & INIT APP
+   =========================== */
 document.addEventListener('DOMContentLoaded', function(){
   // 0) Init recherche/catalogue
-  initProductSearch();   // ✅ active barre + tags
+  if (typeof initProductSearch === 'function'){
+    initProductSearch();   // ✅ active barre + tags
+  }
 
-  // 1) Splash (inchangé)
+  // 1) Splash
   var splash = document.getElementById('splash');
   if (splash){
     setTimeout(function(){ splash.classList.add('splash--show-text'); }, 400);
@@ -4903,38 +4904,23 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   // 2) Panier + historique
-  loadCartFromStorage();
-  renderCart();
-  // ❌ SUPPRIMER cette ligne si la fonction n’existe plus :
-  // updateCartFabVisibility();
-  loadHistoryFromStorage();
-  renderHistory();
+  if (typeof loadCartFromStorage === 'function') loadCartFromStorage();
+  if (typeof renderCart === 'function') renderCart();
+  if (typeof updateCartFabVisibility === 'function') updateCartFabVisibility?.();
+
+  if (typeof loadHistoryFromStorage === 'function') loadHistoryFromStorage();
+  if (typeof renderHistory === 'function') renderHistory();
 
   // 3) Favoris
-  loadFavoritesFromStorage();
-  refreshFavoriteUI();
+  if (typeof loadFavoritesFromStorage === 'function') loadFavoritesFromStorage();
+  if (typeof refreshFavoriteUI === 'function') refreshFavoriteUI();
 
   // 4) Profil / appli
-  initProfileFromTelegram();
-  initAppInfo();
-
-  // 6) Recherche catalogue (doublon, tu peux l’enlever si tu veux)
-  // initProductSearch();
+  if (typeof initProfileFromTelegram === 'function') initProfileFromTelegram();
+  if (typeof initAppInfo === 'function') initAppInfo();
 
   // 5) Thèmes
-  document.querySelectorAll('.theme-pill').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var t = this.getAttribute('data-theme');
-      applyTheme(t);
-    });
-  });
   initTheme();
-});
-
-  // ⬇️ ICI on remplace initTheme() par la version avec le localStorage
-  if (typeof initThemeFromStorage === 'function'){
-    initThemeFromStorage();
-  }
 });
   </script>
 </body>
