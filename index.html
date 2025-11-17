@@ -4832,49 +4832,61 @@ updateCartFabVisibility();
 // ===========================
 // THEMES (Gold / Nuit / Neon)
 // ===========================
-var THEME_KEY = 'pss_theme_v1';
+var THEME_STORAGE_KEY = 'pochon_theme';
 
-function applyTheme(theme, fromInit){
-  if (!theme) return;
+/**
+ * Applique un thème et le sauvegarde en localStorage.
+ * themeName : "dark" | "gold" | "neon"
+ */
+function applyTheme(themeName){
+  if (!themeName) themeName = 'dark';
 
-  // 1) Applique le thème sur <html>
-  document.documentElement.setAttribute('data-theme', theme);
+  // 1) Attribut sur <html>
+  document.documentElement.setAttribute('data-theme', themeName);
 
-  // 2) Active / désactive visuellement les boutons
+  // 2) Sauvegarde en localStorage
+  try{
+    localStorage.setItem(THEME_STORAGE_KEY, themeName);
+  }catch(e){
+    console.error('Erreur en sauvegardant le thème', e);
+  }
+
+  // 3) Met à jour l’état visuel des boutons (pills)
   document.querySelectorAll('.theme-pill').forEach(function(btn){
     var t = btn.getAttribute('data-theme');
-    if (t === theme){
+    if (t === themeName){
       btn.classList.add('theme-pill--active');
     } else {
       btn.classList.remove('theme-pill--active');
     }
   });
-
-  // 3) Sauvegarde en localStorage (sauf pendant l'init)
-  if (!fromInit){
-    try {
-      localStorage.setItem(THEME_KEY, theme);
-    } catch(e){}
-  }
 }
 
+/**
+ * Initialise le thème au chargement :
+ *  - lit le thème sauvegardé
+ *  - applique ce thème
+ *  - branche les clics sur les pills
+ */
 function initTheme(){
-  var stored = null;
-  try {
-    stored = localStorage.getItem(THEME_KEY);
-  } catch(e){}
+  var saved = 'dark';
+  try{
+    var fromStorage = localStorage.getItem(THEME_STORAGE_KEY);
+    if (fromStorage){
+      saved = fromStorage;
+    }
+  }catch(e){
+    console.error('Erreur en lisant le thème', e);
+  }
 
-  // Thème par défaut si rien en mémoire
-  var initialTheme = stored || 'dark';
+  // applique le thème sauvegardé (ou dark)
+  applyTheme(saved);
 
-  // Applique le thème sans réécrire le localStorage
-  applyTheme(initialTheme, true);
-
-  // Écouteurs sur les boutons UNE SEULE FOIS
+  // branche les clics sur les pills (une seule fois)
   document.querySelectorAll('.theme-pill').forEach(function(btn){
     btn.addEventListener('click', function(){
       var t = this.getAttribute('data-theme');
-      applyTheme(t, false);
+      applyTheme(t);
     });
   });
 }
