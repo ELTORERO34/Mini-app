@@ -2206,6 +2206,31 @@
   gap: 6px;
 }
 
+.profile-history-actions{
+  display:flex;
+  justify-content:flex-end;
+  margin-top:8px;
+}
+
+.history-entry-actions{
+  margin-top:6px;
+  display:flex;
+  justify-content:flex-end;
+}
+
+.history-entry-btn{
+  border:none;
+  background:none;
+  font-size:0.78rem;
+  color: var(--text-soft);
+  cursor:pointer;
+  text-decoration: underline;
+}
+
+.history-entry-btn:hover{
+  color: var(--accent);
+}
+
 .history-entry{
   padding: 8px 10px;
   border-radius: 12px;
@@ -3205,6 +3230,11 @@ body[data-theme="neon"] .btn.primary {
     <div id="historyList" class="profile-history-list">
       <!-- Rempli en JS via renderHistory() -->
     </div>
+    <div class="profile-history-actions">
+    <button type="button" class="btn secondary" onclick="clearHistory()">
+      🗑️ Supprimer tout l’historique
+    </button>
+  </div>
     <p class="profile-hint">
       L’historique est enregistré uniquement sur ton appareil (localStorage).
     </p>
@@ -4395,6 +4425,32 @@ function saveHistoryToStorage(){
   }
 }
 
+function deleteHistoryEntry(idx){
+  // supprime 1 devis de l'historique
+  if (idx < 0 || idx >= ORDER_HISTORY.length) return;
+  ORDER_HISTORY.splice(idx, 1);
+  saveHistoryToStorage();
+  renderHistory();
+  toast("Devis supprimé de l’historique.");
+}
+
+function clearHistory(){
+  if (!ORDER_HISTORY.length){
+    toast("Aucun devis à supprimer.");
+    return;
+  }
+
+  // si tu veux éviter la popup, enlève ce bloc if
+  if (!confirm("Supprimer tous les devis enregistrés ?")){
+    return;
+  }
+
+  ORDER_HISTORY = [];
+  saveHistoryToStorage();
+  renderHistory();
+  toast("Historique de devis vidé.");
+}
+
 function renderHistory(){
   var box = document.getElementById('historyList');
   if (!box) return;
@@ -4446,6 +4502,25 @@ function renderHistory(){
 
     div.appendChild(header);
     div.appendChild(sub);
+
+    // 🔥 Bouton "Supprimer ce devis"
+    var actions = document.createElement('div');
+    actions.className = 'history-entry-actions';
+
+    var delBtn = document.createElement('button');
+    delBtn.type = 'button';
+    delBtn.className = 'history-entry-btn';
+    delBtn.textContent = 'Supprimer ce devis';
+
+    // index réel dans ORDER_HISTORY (car on a inversé avec reverse)
+    var originalIndex = ORDER_HISTORY.length - 1 - index;
+    delBtn.onclick = function(){
+      deleteHistoryEntry(originalIndex);
+    };
+
+    actions.appendChild(delBtn);
+    div.appendChild(actions);
+
     box.appendChild(div);
   });
 }
