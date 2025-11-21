@@ -537,6 +537,28 @@
 }
 
     /* ===========================
+   IMAGE PRINCIPALE FICHE PRODUIT
+   =========================== */
+
+.product-hero {
+  width: 100%;
+  aspect-ratio: 4 / 3;        /* même forme pour toutes les photos */
+  border-radius: 24px;
+  overflow: hidden;
+  background: #000;           /* fond derrière si l’image ne remplit pas tout */
+}
+
+/* si ton <img> a une autre classe, remplace .product-hero-img par la tienne */
+.product-hero img,
+.product-hero-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;          /* remplit le cadre sans déformation */
+  object-position: center;    /* bien centré */
+}
+
+    /* ===========================
        4) GRILLE PRODUITS (MENU)
        =========================== */
     .product-grid {
