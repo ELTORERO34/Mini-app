@@ -542,21 +542,19 @@
 
 .product-hero {
   width: 100%;
-  aspect-ratio: 4 / 3;        /* même forme pour toutes les photos */
-  border-radius: 24px;
+  border-radius: 22px;
   overflow: hidden;
-  background: #000;           /* fond derrière si l’image ne remplit pas tout */
+  margin: 14px 0 18px;
+  background: #000;
 }
 
-/* si ton <img> a une autre classe, remplace .product-hero-img par la tienne */
-.product-hero img,
 .product-hero-img {
   width: 100%;
-  height: 100%;
+  height: auto;
   display: block;
-  object-fit: contain;
-  background: #000;  /* garde le fond sombre autour */
-  object-position: center;    /* bien centré */
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center;
 }
 
     /* ===========================
@@ -2655,272 +2653,293 @@ body[data-theme="neon"] .btn.primary {
 </div>
         
       <!-- ===== FICHE PRODUIT P1 ===== -->
-      <div id="productDetail_p1" class="product-detail hidden">
-        <button class="btn-back" onclick="closeProduct()">← Retour</button>
-        <div class="detail-media">
-          <img src="img/pochons22.png" alt="Pochon personnalisé" />
-        </div>
-        <div class="product-card">
-          <h3 class="product-title">Pochon personnalisé</h3>
-          <p class="product-desc">
-            Pochons flatbag et doypacks imprimés avec votre design.
-          </p>
-          <div class="product-meta">
-            <span class="pill">Min : 500 pièces</span>
-            <span class="pill">Délai : 12–13 jours ouvrables</span>
-          </div>
-          <div class="product-options">
-            <label>
-              Quantité (pack) :
-              <select id="p1_quantite">
-                <option>500</option>
-                <option>1000</option>
-                <option>1500</option>
-                <option>2000</option>
-                <option>+ de quantité (sur devis)</option>
-              </select>
-            </label>
-
-            <label>
-              Taille :
-              <select id="p1_taille">
-                <option>8×11 cm</option>
-                <option>8×13 cm</option>
-              </select>
-            </label>
-
-            <label>
-              Finition :
-              <select id="p1_finition">
-                <option>Mat</option>
-                <option>Brillant</option>
-              </select>
-            </label>
-
-            <label>
-              Impression :
-              <select id="p1_impression">
-                <option>1 design</option>
-                <option>multi designs +40€</option>
-              </select>
-            </label>
-
-            <label>
-              Fenêtre :
-              <select id="p1_fenetre">
-                <option>sans fenêtre</option>
-                <option>avec fenêtre +40€</option>
-              </select>
-            </label>
-          </div>
-          <div class="qty-row">
-            <button type="button" onclick="dec('p1_qty')">−</button>
-            <input id="p1_qty" type="number" min="1" value="1" />
-            <button type="button" onclick="inc('p1_qty')">+</button>
-            <button class="btn primary" type="button" onclick="addP1(this)">Ajouter</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ===== FICHE PRODUIT P2 ===== -->
-      <div id="productDetail_p2" class="product-detail hidden">
-        <button class="btn-back" onclick="closeProduct()">← Retour</button>
-        <div class="detail-media">
-          <img src="img/tableau1.jpg" alt="Tableaux personnalisés" />
-        </div>
-        <div class="product-card">
-          <h3 class="product-title">Tableaux personnalisés</h3>
-          <p class="product-desc">
-            Impression haute qualité sur toile, formats panoramiques, populaires et carrés.
-          </p>
-          <div class="product-options">
-            <label>Format :
-              <select id="p2_format">
-                <!-- Panoramiques -->
-                <option value="Panoramique|60×20|50">Panoramique 60×20 — 50 €</option>
-                <option value="Panoramique|60×30|60">Panoramique 60×30 — 60 €</option>
-                <option value="Panoramique|80×40|80">Panoramique 80×40 — 80 €</option>
-                <option value="Panoramique|100×50|100">Panoramique 100×50 — 100 €</option>
-                <option value="Panoramique|120×60|120">Panoramique 120×60 — 120 €</option>
-                <!-- Populaires -->
-                <option value="Populaire|60×40|70">Populaire 60×40 — 70 €</option>
-                <option value="Populaire|80×60|90">Populaire 80×60 — 90 €</option>
-                <option value="Populaire|90×60|100">Populaire 90×60 — 100 €</option>
-                <!-- Carrés -->
-                <option value="Carré|60×60|70">Carré 60×60 — 70 €</option>
-                <option value="Carré|80×80|90">Carré 80×80 — 90 €</option>
-              </select>
-            </label>
-          </div>
-          <div class="qty-row">
-            <button type="button" onclick="dec('p2_qty')">−</button>
-            <input id="p2_qty" type="number" min="1" value="1" />
-            <button type="button" onclick="inc('p2_qty')">+</button>
-            <button class="btn primary" type="button" onclick="addP2(this)">Ajouter</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ===== FICHE PRODUIT P3 ===== -->
-      <div id="productDetail_p3" class="product-detail hidden">
-        <button class="btn-back" onclick="closeProduct()">← Retour</button>
-        <div class="detail-media">
-          <img src="img/cartes.mp4" alt="Cartes fidélité / visite" />
-        </div>
-        <div class="product-card">
-          <h3 class="product-title">Cartes de fidélité / visite</h3>
-          <p class="product-desc">
-            Cartes professionnelles recto verso, papier 350g, impression couleur.
-          </p>
-          <div class="product-options">
-            <label>Quantité :
-              <select id="p3_quantite">
-                <option value="250|70">250 cartes — 70 €</option>
-                <option value="500|140">500 cartes — 140 €</option>
-                <option value="1000|180">1000 cartes — 180 €</option>
-                <option value="+1000|0">+ 1000 cartes — sur devis</option>
-              </select>
-            </label>
-          </div>
-          <div class="qty-row">
-            <button type="button" onclick="dec('p3_qty')">−</button>
-            <input id="p3_qty" type="number" min="1" value="1" />
-            <button type="button" onclick="inc('p3_qty')">+</button>
-            <button class="btn primary" type="button" onclick="addP3(this)">Ajouter</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ===== FICHE PRODUIT P4 ===== -->
-      <div id="productDetail_p4" class="product-detail hidden">
-        <button class="btn-back" onclick="closeProduct()">← Retour</button>
-        <div class="detail-media">
-          <img src="img/etiquettes1.jpg" alt="Étiquettes personnalisées" />
-        </div>
-        <div class="product-card">
-          <h3 class="product-title">Étiquettes personnalisées</h3>
-          <p class="product-desc">
-            Étiquettes adhésives pour packaging, pochons, produits… Formats au choix.
-          </p>
-          <div class="product-options">
-            <label>Format :
-              <select id="p4_format">
-                <option value="200 étiquettes 7×4 cm|70">200 étiquettes 7×4 cm — 70 €</option>
-                <option value="400 étiquettes rondes 0–3 cm|60">400 étiquettes rondes 0–3 cm — 60 €</option>
-                <option value="Taille personnalisée (sur devis)|0">Taille personnalisée — sur devis</option>
-              </select>
-            </label>
-          </div>
-          <div class="qty-row">
-            <button type="button" onclick="dec('p4_qty')">−</button>
-            <input id="p4_qty" type="number" min="1" value="1" />
-            <button type="button" onclick="inc('p4_qty')">+</button>
-            <button class="btn primary" type="button" onclick="addP4(this)">Ajouter</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ===== FICHE PRODUIT P5 ===== -->
-      <div id="productDetail_p5" class="product-detail hidden">
-        <button class="btn-back" onclick="closeProduct()">← Retour</button>
-        <div class="detail-media">
-          <img src="img/scelleuse.jpg" alt="Scelleuse" />
-        </div>
-        <div class="product-card">
-          <h3 class="product-title">Scelleuse</h3>
-          <p class="product-desc">
-            Appareil de soudure thermique idéal pour fermer vos pochons.
-          </p>
-          <div class="product-meta">
-            <span class="pill">Prix : 10 €</span>
-            <span class="pill">Délai : 2–3 jours</span>
-          </div>
-          <div class="qty-row">
-            <button type="button" onclick="dec('p5_qty')">−</button>
-            <input id="p5_qty" type="number" min="1" value="1" />
-            <button type="button" onclick="inc('p5_qty')">+</button>
-            <button class="btn primary" type="button" onclick="addP5(this)">Ajouter</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ===== FICHE PRODUIT P6 ===== -->
-      <div id="productDetail_p6" class="product-detail hidden">
-        <button class="btn-back" onclick="closeProduct()">← Retour</button>
-        <div class="detail-media">
-          <img src="img/fusées1.jpg" alt="Fusées 1,5 ml" />
-        </div>
-        <div class="product-card">
-          <h3 class="product-title">Fusées 1,5 ml</h3>
-          <p class="product-desc">
-            Capsules vides prêtes à remplir. Tarifs dégressifs selon la quantité.
-          </p>
-          <div class="product-options">
-            <label>Quantité :
-              <select id="p6_quantite">
-                <option data-price="20">100 — 20 €</option>
-                <option data-price="50">500 — 50 €</option>
-                <option data-price="100">1000 — 100 €</option>
-                <option data-price="0">+ sur devis</option>
-              </select>
-            </label>
-          </div>
-          <div class="qty-row">
-            <button type="button" onclick="dec('p6_qty')">−</button>
-            <input id="p6_qty" type="number" min="1" value="1" />
-            <button type="button" onclick="inc('p6_qty')">+</button>
-            <button class="btn primary" type="button" onclick="addP6(this)">Ajouter</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ===== FICHE PRODUIT P7 : DESIGN ===== -->
-      <div id="productDetail_p7" class="product-detail hidden">
-        <button class="btn-back" onclick="closeProduct()">← Retour</button>
-        <div class="detail-media">
-          <img src="img/design.jpg" alt="Design personnalisé" />
-        </div>
-        <div class="product-card">
-          <h3 class="product-title">Design personnalisé</h3>
-          <p class="product-desc">
-            Tu n’as pas encore de visuel ? On s’occupe du design pour tes pochons, cartes, étiquettes, etc.
-            Choisis la formule qui correspond à ton besoin.
-          </p>
-          <div class="product-meta">
-            <span class="pill">Fichier livrable : PNG/JPG haute qualité</span>
-            <span class="pill">Révisions possibles selon la formule</span>
-          </div>
-          <div class="product-options">
-            <label>Formule :
-              <select id="p7_formule">
-                <option value="Basique|40|2–3 jours">
-                  Formule basique 40€ (2–3 jours)
-                </option>
-                <option value="Premium (dessin fait main)|180|4–5 jours">
-                  Formule premium (dessin fait main) 180€ (4–5 jours)
-                </option>
-                <option value="Pack identité (1 logo + 1 flyer + 2 stickers)|80|3–4 jours">
-                  Pack identité (1 logo + 1 flyer + 2 stickers) 80€ (3–4 jours)
-                </option>
-                <option value="Stickers Telegram/Potato|40|2–3 jours">
-                  Stickers Telegram ou potato 40€ (2–3 jours)
-                </option>
-              </select>
-            </label>
-          </div>
-          <div class="qty-row">
-            <button type="button" onclick="dec('p7_qty')">−</button>
-            <input id="p7_qty" type="number" min="1" value="1" />
-            <button type="button" onclick="inc('p7_qty')">+</button>
-            <button class="btn primary" type="button" onclick="addP7(this)">Ajouter</button>
-          </div>
-        </div>
-      </div>
-      
-            <!-- FICHE PRODUIT P8 : PACKS COMPLETS -->
-<div id="productDetail_packs" class="product-detail hidden">
+<div id="productDetail_p1" class="product-detail hidden">
   <button class="btn-back" onclick="closeProduct()">← Retour</button>
 
+  <div class="product-hero">
+    <img src="img/pochons22.png" alt="Pochon personnalisé" class="product-hero-img" />
+  </div>
+
+  <div class="product-card">
+    <h3 class="product-title">Pochon personnalisé</h3>
+    <p class="product-desc">
+      Pochons flatbag et doypacks imprimés avec votre design.
+    </p>
+    <div class="product-meta">
+      <span class="pill">Min : 500 pièces</span>
+      <span class="pill">Délai : 12–13 jours ouvrables</span>
+    </div>
+    <div class="product-options">
+      <label>
+        Quantité (pack) :
+        <select id="p1_quantite">
+          <option>500</option>
+          <option>1000</option>
+          <option>1500</option>
+          <option>2000</option>
+          <option>+ de quantité (sur devis)</option>
+        </select>
+      </label>
+
+      <label>
+        Taille :
+        <select id="p1_taille">
+          <option>8×11 cm</option>
+          <option>8×13 cm</option>
+        </select>
+      </label>
+
+      <label>
+        Finition :
+        <select id="p1_finition">
+          <option>Mat</option>
+          <option>Brillant</option>
+        </select>
+      </label>
+
+      <label>
+        Impression :
+        <select id="p1_impression">
+          <option>1 design</option>
+          <option>multi designs +40€</option>
+        </select>
+      </label>
+
+      <label>
+        Fenêtre :
+        <select id="p1_fenetre">
+          <option>sans fenêtre</option>
+          <option>avec fenêtre +40€</option>
+        </select>
+      </label>
+    </div>
+    <div class="qty-row">
+      <button type="button" onclick="dec('p1_qty')">−</button>
+      <input id="p1_qty" type="number" min="1" value="1" />
+      <button type="button" onclick="inc('p1_qty')">+</button>
+      <button class="btn primary" type="button" onclick="addP1(this)">Ajouter</button>
+    </div>
+  </div>
+</div>
+
+      <!-- ===== FICHE PRODUIT P2 ===== -->
+<div id="productDetail_p2" class="product-detail hidden">
+  <button class="btn-back" onclick="closeProduct()">← Retour</button>
+
+  <div class="product-hero">
+    <img src="img/tableau1.jpg" alt="Tableaux personnalisés" class="product-hero-img" />
+  </div>
+
+  <div class="product-card">
+    <h3 class="product-title">Tableaux personnalisés</h3>
+    <p class="product-desc">
+      Impression haute qualité sur toile, formats panoramiques, populaires et carrés.
+    </p>
+    <div class="product-options">
+      <label>Format :
+        <select id="p2_format">
+          <!-- Panoramiques -->
+          <option value="Panoramique|60×20|50">Panoramique 60×20 — 50 €</option>
+          <option value="Panoramique|60×30|60">Panoramique 60×30 — 60 €</option>
+          <option value="Panoramique|80×40|80">Panoramique 80×40 — 80 €</option>
+          <option value="Panoramique|100×50|100">Panoramique 100×50 — 100 €</option>
+          <option value="Panoramique|120×60|120">Panoramique 120×60 — 120 €</option>
+          <!-- Populaires -->
+          <option value="Populaire|60×40|70">Populaire 60×40 — 70 €</option>
+          <option value="Populaire|80×60|90">Populaire 80×60 — 90 €</option>
+          <option value="Populaire|90×60|100">Populaire 90×60 — 100 €</option>
+          <!-- Carrés -->
+          <option value="Carré|60×60|70">Carré 60×60 — 70 €</option>
+          <option value="Carré|80×80|90">Carré 80×80 — 90 €</option>
+        </select>
+      </label>
+    </div>
+    <div class="qty-row">
+      <button type="button" onclick="dec('p2_qty')">−</button>
+      <input id="p2_qty" type="number" min="1" value="1" />
+      <button type="button" onclick="inc('p2_qty')">+</button>
+      <button class="btn primary" type="button" onclick="addP2(this)">Ajouter</button>
+    </div>
+  </div>
+</div>
+
+      <!-- ===== FICHE PRODUIT P3 ===== -->
+<div id="productDetail_p3" class="product-detail hidden">
+  <button class="btn-back" onclick="closeProduct()">← Retour</button>
+
+  <div class="product-hero">
+    <img src="img/cartes.jpg" alt="Cartes fidélité / visite" class="product-hero-img" />
+  </div>
+
+  <div class="product-card">
+    <h3 class="product-title">Cartes de fidélité / visite</h3>
+    <p class="product-desc">
+      Cartes professionnelles recto verso, papier 350g, impression couleur.
+    </p>
+    <div class="product-options">
+      <label>Quantité :
+        <select id="p3_quantite">
+          <option value="250|70">250 cartes — 70 €</option>
+          <option value="500|140">500 cartes — 140 €</option>
+          <option value="1000|180">1000 cartes — 180 €</option>
+          <option value="+1000|0">+ 1000 cartes — sur devis</option>
+        </select>
+      </label>
+    </div>
+    <div class="qty-row">
+      <button type="button" onclick="dec('p3_qty')">−</button>
+      <input id="p3_qty" type="number" min="1" value="1" />
+      <button type="button" onclick="inc('p3_qty')">+</button>
+      <button class="btn primary" type="button" onclick="addP3(this)">Ajouter</button>
+    </div>
+  </div>
+</div>
+
+      <!-- ===== FICHE PRODUIT P4 ===== -->
+<div id="productDetail_p4" class="product-detail hidden">
+  <button class="btn-back" onclick="closeProduct()">← Retour</button>
+
+  <div class="product-hero">
+    <img src="img/etiquettes1.jpg" alt="Étiquettes personnalisées" class="product-hero-img" />
+  </div>
+
+  <div class="product-card">
+    <h3 class="product-title">Étiquettes personnalisées</h3>
+    <p class="product-desc">
+      Étiquettes adhésives pour packaging, pochons, produits… Formats au choix.
+    </p>
+    <div class="product-options">
+      <label>Format :
+        <select id="p4_format">
+          <option value="200 étiquettes 7×4 cm|70">200 étiquettes 7×4 cm — 70 €</option>
+          <option value="400 étiquettes rondes 0–3 cm|60">400 étiquettes rondes 0–3 cm — 60 €</option>
+          <option value="Taille personnalisée (sur devis)|0">Taille personnalisée — sur devis</option>
+        </select>
+      </label>
+    </div>
+    <div class="qty-row">
+      <button type="button" onclick="dec('p4_qty')">−</button>
+      <input id="p4_qty" type="number" min="1" value="1" />
+      <button type="button" onclick="inc('p4_qty')">+</button>
+      <button class="btn primary" type="button" onclick="addP4(this)">Ajouter</button>
+    </div>
+  </div>
+</div>
+
+      <!-- ===== FICHE PRODUIT P5 ===== -->
+<div id="productDetail_p5" class="product-detail hidden">
+  <button class="btn-back" onclick="closeProduct()">← Retour</button>
+
+  <div class="product-hero">
+    <img src="img/scelleuse.jpg" alt="Scelleuse" class="product-hero-img" />
+  </div>
+
+  <div class="product-card">
+    <h3 class="product-title">Scelleuse</h3>
+    <p class="product-desc">
+      Appareil de soudure thermique idéal pour fermer vos pochons.
+    </p>
+    <div class="product-meta">
+      <span class="pill">Prix : 10 €</span>
+      <span class="pill">Délai : 2–3 jours</span>
+    </div>
+    <div class="qty-row">
+      <button type="button" onclick="dec('p5_qty')">−</button>
+      <input id="p5_qty" type="number" min="1" value="1" />
+      <button type="button" onclick="inc('p5_qty')">+</button>
+      <button class="btn primary" type="button" onclick="addP5(this)">Ajouter</button>
+    </div>
+  </div>
+</div>
+
+      <!-- ===== FICHE PRODUIT P6 ===== -->
+<div id="productDetail_p6" class="product-detail hidden">
+  <button class="btn-back" onclick="closeProduct()">← Retour</button>
+
+  <div class="product-hero">
+    <img src="img/fusées1.jpg" alt="Fusées 1,5 ml" class="product-hero-img" />
+  </div>
+
+  <div class="product-card">
+    <h3 class="product-title">Fusées 1,5 ml</h3>
+    <p class="product-desc">
+      Capsules vides prêtes à remplir. Tarifs dégressifs selon la quantité.
+    </p>
+    <div class="product-options">
+      <label>Quantité :
+        <select id="p6_quantite">
+          <option data-price="20">100 — 20 €</option>
+          <option data-price="50">500 — 50 €</option>
+          <option data-price="100">1000 — 100 €</option>
+          <option data-price="0">+ sur devis</option>
+        </select>
+      </label>
+    </div>
+    <div class="qty-row">
+      <button type="button" onclick="dec('p6_qty')">−</button>
+      <input id="p6_qty" type="number" min="1" value="1" />
+      <button type="button" onclick="inc('p6_qty')">+</button>
+      <button class="btn primary" type="button" onclick="addP6(this)">Ajouter</button>
+    </div>
+  </div>
+</div>
+
+      <!-- ===== FICHE PRODUIT P7 : DESIGN ===== -->
+<div id="productDetail_p7" class="product-detail hidden">
+  <button class="btn-back" onclick="closeProduct()">← Retour</button>
+
+  <div class="product-hero">
+    <img src="img/design.jpg" alt="Design personnalisé" class="product-hero-img" />
+  </div>
+
+  <div class="product-card">
+    <h3 class="product-title">Design personnalisé</h3>
+    <p class="product-desc">
+      Tu n’as pas encore de visuel ? On s’occupe du design pour tes pochons, cartes, étiquettes, etc.
+      Choisis la formule qui correspond à ton besoin.
+    </p>
+    <div class="product-meta">
+      <span class="pill">Fichier livrable : PNG/JPG haute qualité</span>
+      <span class="pill">Révisions possibles selon la formule</span>
+    </div>
+    <div class="product-options">
+      <label>Formule :
+        <select id="p7_formule">
+          <option value="Basique|40|2–3 jours">
+            Formule basique 40€ (2–3 jours)
+          </option>
+          <option value="Premium (dessin fait main)|180|4–5 jours">
+            Formule premium (dessin fait main) 180€ (4–5 jours)
+          </option>
+          <option value="Pack identité (1 logo + 1 flyer + 2 stickers)|80|3–4 jours">
+            Pack identité (1 logo + 1 flyer + 2 stickers) 80€ (3–4 jours)
+          </option>
+          <option value="Stickers Telegram/Potato|40|2–3 jours">
+            Stickers Telegram ou potato 40€ (2–3 jours)
+          </option>
+        </select>
+      </label>
+    </div>
+    <div class="qty-row">
+      <button type="button" onclick="dec('p7_qty')">−</button>
+      <input id="p7_qty" type="number" min="1" value="1" />
+      <button type="button" onclick="inc('p7_qty')">+</button>
+      <button class="btn primary" type="button" onclick="addP7(this)">Ajouter</button>
+    </div>
+  </div>
+</div>
+      
+            <!-- ===== FICHE PRODUIT P8 : PACKS COMPLETS ===== -->
+<div id="productDetail_packs" class="product-detail hidden">
+  
+  <button class="btn-back" onclick="closeProduct()">← Retour</button>
+
+  <!-- 🆕 HERO IMAGE AJOUTÉ POUR ALIGNEMENT AVEC LES AUTRES FICHES -->
+  <div class="product-hero">
+    <img src="img/packs.jpg" alt="Packs complets PochonStore" class="product-hero-img" />
+  </div>
+
+  <!-- INTRODUCTION PACK -->
   <div class="product-card pack-hero-card">
     <h3 class="product-title">Packs complets PochonStore</h3>
     <p class="product-desc">
@@ -2933,25 +2952,30 @@ body[data-theme="neon"] .btn.primary {
     </div>
   </div>
 
+  <!-- GRILLE DES PACKS -->
   <div class="packs-grid">
+
     <!-- PACK STARTER -->
     <div class="pack-card pack-starter">
       <div class="pack-header">
         <span class="pack-name">Pack Starter</span>
         <span class="pack-badge">Pour débuter</span>
       </div>
+
       <div class="pack-price-row">
-  <span class="pack-old-price">520,00€</span>
-  <span class="pack-price">480,00€</span>
-</div>
-<div class="pack-save">Tu économises 40€</div>
+        <span class="pack-old-price">520,00€</span>
+        <span class="pack-price">480,00€</span>
+      </div>
+
+      <div class="pack-save">Tu économises 40€</div>
+
       <ul class="pack-list">
         <li>500 pochons personnalisés</li>
         <li>1 design basique inclus</li>
         <li>1 lot d’étiquettes simples</li>
       </ul>
-      <button class="btn primary pack-btn" type="button"
-              onclick="addPack('starter', this)">
+
+      <button class="btn primary pack-btn" type="button" onclick="addPack('starter', this)">
         Ajouter ce pack
       </button>
     </div>
@@ -2962,19 +2986,22 @@ body[data-theme="neon"] .btn.primary {
         <span class="pack-name">Pack Boost</span>
         <span class="pack-badge pack-badge-hot">Best-seller</span>
       </div>
+
       <div class="pack-price-row">
-  <span class="pack-old-price">830,00€</span>
-  <span class="pack-price">700,00€</span>
-</div>
-<div class="pack-save">Tu économises 130€</div>
+        <span class="pack-old-price">830,00€</span>
+        <span class="pack-price">700,00€</span>
+      </div>
+
+      <div class="pack-save">Tu économises 130€</div>
+
       <ul class="pack-list">
         <li>1000 pochons personnalisés</li>
         <li>Multi-design + option fenêtre</li>
         <li>250 cartes fidélité / visite</li>
         <li>Mini pack identité visuelle</li>
       </ul>
-      <button class="btn primary pack-btn" type="button"
-              onclick="addPack('boost', this)">
+
+      <button class="btn primary pack-btn" type="button" onclick="addPack('boost', this)">
         Ajouter ce pack
       </button>
     </div>
@@ -2985,11 +3012,14 @@ body[data-theme="neon"] .btn.primary {
         <span class="pack-name">Pack Pro</span>
         <span class="pack-badge">Pour les gros joueurs</span>
       </div>
+
       <div class="pack-price-row">
-  <span class="pack-old-price">1270,00€</span>
-  <span class="pack-price">1140,00€</span>
-</div>
-<div class="pack-save">Tu économises 130€</div>
+        <span class="pack-old-price">1270,00€</span>
+        <span class="pack-price">1140,00€</span>
+      </div>
+
+      <div class="pack-save">Tu économises 130€</div>
+
       <ul class="pack-list">
         <li>1500–2000 pochons premium</li>
         <li>Multi design + fenêtre inclus</li>
@@ -2997,8 +3027,8 @@ body[data-theme="neon"] .btn.primary {
         <li>Pack identité + 400 étiquettes premium</li>
         <li>Scelleuse offerte</li>
       </ul>
-      <button class="btn primary pack-btn" type="button"
-              onclick="addPack('pro', this)">
+
+      <button class="btn primary pack-btn" type="button" onclick="addPack('pro', this)">
         Ajouter ce pack
       </button>
     </div>
@@ -3009,11 +3039,14 @@ body[data-theme="neon"] .btn.primary {
         <span class="pack-name">Pack Boss</span>
         <span class="pack-badge pack-badge-elite">Full branding</span>
       </div>
+
       <div class="pack-price-row">
-  <span class="pack-old-price">1650-1700,00€</span>
-  <span class="pack-price">1500-1600,00€</span>
-</div>
-<div class="pack-save">Tu économises +100€</div>
+        <span class="pack-old-price">1650-1700,00€</span>
+        <span class="pack-price">1500-1600,00€</span>
+      </div>
+
+      <div class="pack-save">Tu économises +100€</div>
+
       <ul class="pack-list">
         <li>2000+ pochons premium</li>
         <li>Multi + fenêtre</li>
@@ -3021,20 +3054,22 @@ body[data-theme="neon"] .btn.primary {
         <li>Pack identité complet (logo + flyers + stickers)</li>
         <li>400 Étiquettes, scelleuse & 1 tableau 60x40cm</li>
       </ul>
-      <button class="btn primary pack-btn" type="button"
-              onclick="addPack('boss', this)">
+
+      <button class="btn primary pack-btn" type="button" onclick="addPack('boss', this)">
         Ajouter ce pack
       </button>
     </div>
   </div>
-  </div>
+</div>
   
       <!-- ===== FICHE PRODUIT P9 : MINI-APP / DEV ===== -->
 <div id="productDetail_dev" class="product-detail hidden">
   <button class="btn-back" onclick="closeProduct()">← Retour</button>
 
-  <div class="detail-media">
-    <img src="img/dev-miniapp.jpg" alt="Développement mini-app Telegram / WebApp" />
+  <div class="product-hero">
+    <img src="img/dev-miniapp.jpg"
+         alt="Développement mini-app Telegram / WebApp"
+         class="product-hero-img" />
   </div>
 
   <div class="product-card">
