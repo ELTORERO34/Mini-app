@@ -3488,6 +3488,14 @@ body[data-theme="neon"] .btn.primary {
        1) TELEGRAM / GLOBALS
        =========================== */
     var tg = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
+
+if (tg) {
+  try {
+    tg.expand(); // 🔥 force le plein écran quand c’est possible
+  } catch(e){
+    console.error('Erreur expand', e);
+  }
+}
 var QUOTE_USERNAME = "pssv2";
 
 // Panier + historique
