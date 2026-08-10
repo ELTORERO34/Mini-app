@@ -31,7 +31,7 @@
 }
 
 /* 🌙 DARK (Pochon actuel) */
-:root[data-theme="dark"] {
+:root[data-theme="night"] {
   --bg-body: #050508;
   --bg-header: rgba(10,10,12,0.96);
   --bg-card: #111216;
@@ -1188,39 +1188,98 @@
     
     .cart-payments{
   margin-top: 8px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+}
+
+.cart-payment-label{
+  margin: 12px 0 8px;
+  font-size: .84rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.cart-payment-methods{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
 }
 
 .pay-btn{
-  flex: 1;
-  min-width: calc(50% - 6px);
-  font-size: 0.78rem;
-  padding: 6px 8px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.15);
-  background: #111;
-  color: #e0e0e0;
+  min-height: 52px;
+  padding: 9px 10px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(17,17,20,.92);
+  color: var(--text-main);
   cursor: pointer;
-  transition: all .18s ease-out;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  text-align: left;
+  transition: transform .16s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
 }
 
-.pay-btn:hover{
-  transform: translateY(-1px);
+.pay-btn .pay-icon{
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: rgba(255,255,255,.06);
+  font-size: 1rem;
+}
+
+.pay-btn .pay-copy{
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.pay-btn .pay-name{
+  font-size: .82rem;
+  font-weight: 800;
+}
+
+.pay-btn .pay-status{
+  font-size: .68rem;
+  color: var(--text-soft);
+}
+
+.pay-btn:active{
+  transform: scale(.98);
 }
 
 .pay-btn.active{
-  border-color: rgba(255,215,100,0.85);
-  background: #222;
-  color: #ffd766;
-  box-shadow: 0 0 10px rgba(255,215,100,0.5);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: 0 0 0 1px var(--accent), 0 8px 20px rgba(0,0,0,.35);
+}
+
+.pay-btn.active .pay-icon{
+  background: var(--accent);
+  color: #050505;
+}
+
+.pay-btn.active .pay-status{
+  color: var(--text-main);
+}
+
+.cart-payment-selected{
+  margin: 2px 0 12px;
+  padding: 9px 11px;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  font-size: .8rem;
+  color: var(--text-main);
 }
 
 .cart-payment-note{
   margin-top: 6px;
   font-size: 0.8rem;
-  color: #bdbdbd;
+  color: var(--text-soft);
 }
 
     .cart-summary-line {
@@ -2428,7 +2487,82 @@ body[data-theme="neon"] .btn.primary {
   color: #050505;
   box-shadow: 0 0 14px rgba(255,0,230,0.6);
 }
-  
+
+/* Les thèmes pilotent aussi les éléments très visibles de l'app */
+:root[data-theme="gold"] {
+  --accent: #f6d366;
+  --accent-soft: rgba(246,211,102,.20);
+  --text-main: #fff9ea;
+  --text-soft: #cdbf9e;
+  --border-soft: rgba(246,211,102,.30);
+}
+
+:root[data-theme="night"] {
+  --accent: #7aa0ff;
+  --accent-soft: rgba(122,160,255,.18);
+  --text-main: #f4f7ff;
+  --text-soft: #aebbdc;
+  --border-soft: rgba(122,160,255,.28);
+}
+
+:root[data-theme="neon"] {
+  --accent: #45f5d0;
+  --accent-soft: rgba(69,245,208,.16);
+  --text-main: #f8ffff;
+  --text-soft: #b2dcd7;
+  --border-soft: rgba(69,245,208,.34);
+}
+
+body[data-theme="gold"] .header,
+body[data-theme="gold"] .bottom-nav {
+  border-color: rgba(246,211,102,.22);
+}
+
+body[data-theme="night"] .header {
+  background: rgba(4,7,20,.58);
+  border-bottom-color: rgba(122,160,255,.22);
+}
+body[data-theme="night"] .product-thumb {
+  background: #090d1c;
+  border-color: rgba(122,160,255,.42);
+}
+body[data-theme="night"] .product-thumb::before {
+  border-color: rgba(122,160,255,.78);
+  box-shadow: 0 0 10px rgba(122,160,255,.38);
+}
+body[data-theme="night"] .product-thumb-title,
+body[data-theme="night"] .product-title,
+body[data-theme="night"] .info-card h2,
+body[data-theme="night"] .history-entry-total {
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  color: #9ab7ff;
+}
+body[data-theme="night"] .nav-btn.active { color: #9ab7ff; }
+
+body[data-theme="neon"] .header {
+  background: rgba(7,2,14,.62);
+  border-bottom-color: rgba(69,245,208,.25);
+}
+body[data-theme="neon"] .product-thumb {
+  background: linear-gradient(145deg, rgba(35,4,43,.96), rgba(2,22,28,.96));
+  border-color: rgba(69,245,208,.48);
+}
+body[data-theme="neon"] .product-thumb::before {
+  border-color: rgba(69,245,208,.88);
+  box-shadow: 0 0 12px rgba(69,245,208,.48), 0 0 22px rgba(255,0,230,.18);
+}
+body[data-theme="neon"] .product-thumb-title,
+body[data-theme="neon"] .product-title,
+body[data-theme="neon"] .info-card h2,
+body[data-theme="neon"] .history-entry-total {
+  background: linear-gradient(90deg,#45f5d0,#ff66f5);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+body[data-theme="neon"] .nav-btn.active { color: #45f5d0; }
+
     /* Accessibilité : respecte le réglage système « réduire les animations ». */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
@@ -3410,33 +3544,36 @@ body[data-theme="neon"] .btn.primary {
     <strong id="cartCount">0</strong>
   </div>
 
-  <!-- label + boutons paiement -->
-  <div class="cart-payment-label">
-    Choisis ton mode de paiement :
+  <!-- choix direct du paiement -->
+  <div class="cart-payment-label">Mode de paiement</div>
+  <div class="cart-payment-methods" role="group" aria-label="Mode de paiement">
+    <button type="button" class="pay-btn" data-method="cash" aria-pressed="false" onclick="selectPayment('cash')">
+      <span class="pay-icon">💶</span><span class="pay-copy"><span class="pay-name">Main propre</span><span class="pay-status">Sélectionner</span></span>
+    </button>
+    <button type="button" class="pay-btn" data-method="paypal" aria-pressed="false" onclick="selectPayment('paypal')">
+      <span class="pay-icon">P</span><span class="pay-copy"><span class="pay-name">PayPal</span><span class="pay-status">Sélectionner</span></span>
+    </button>
+    <button type="button" class="pay-btn" data-method="crypto" aria-pressed="false" onclick="selectPayment('crypto')">
+      <span class="pay-icon">₿</span><span class="pay-copy"><span class="pay-name">Crypto</span><span class="pay-status">Sélectionner</span></span>
+    </button>
+    <button type="button" class="pay-btn" data-method="tickets" aria-pressed="false" onclick="selectPayment('tickets')">
+      <span class="pay-icon">🎟️</span><span class="pay-copy"><span class="pay-name">Ticket tabac</span><span class="pay-status">Sélectionner</span></span>
+    </button>
   </div>
-  <div class="cart-payment-methods">
-    <button type="button" class="pay-btn" data-method="paypal"
-            onclick="selectPayment('paypal')">🅿️</button>
-    <button type="button" class="pay-btn" data-method="cash"
-            onclick="selectPayment('cash')">💶</button>
-    <button type="button" class="pay-btn" data-method="crypto"
-            onclick="selectPayment('crypto')">₿</button>
-    <button type="button" class="pay-btn" data-method="tickets"
-            onclick="selectPayment('tickets')">🎟️</button>
-  </div>
+  <div id="cartPaymentSelected" class="cart-payment-selected hidden">Aucun mode sélectionné</div>
 
-  <!-- totaux -->
+  <!-- récapitulatif du total selon le moyen de paiement -->
   <div class="cart-summary-line">
-    <span>Total produits</span>
-    <strong id="cartTotal">0,00 €</strong>
+    <span>Sous-total produits</span>
+    <strong id="cartSubtotal">0,00 €</strong>
   </div>
-  <div class="cart-summary-line">
-    <span>Frais paiement / envoi</span>
+  <div class="cart-summary-line hidden" id="cartFeesRow">
+    <span id="cartFeesLabel">Frais de paiement</span>
     <strong id="cartFees">0,00 €</strong>
   </div>
-  <div class="cart-summary-line">
-    <span>Total avec frais</span>
-    <strong id="cartGrandTotal">0,00 €</strong>
+  <div class="cart-summary-line" style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.10);font-size:1rem;">
+    <span><strong>Total à payer</strong></span>
+    <strong id="cartTotal">0,00 €</strong>
   </div>
 </section>
 
@@ -4151,65 +4288,60 @@ function addPack(kind, btn){
     }
   }
 }
-    function selectPayment(method){
-  // visuel : bouton actif
-  document.querySelectorAll('.pay-btn').forEach(function(btn){
-    btn.classList.remove('active');
-  });
-  var active = document.querySelector('.pay-btn[data-method="'+method+'"]');
-  if (active) active.classList.add('active');
-  // recalcul des frais + total avec frais
-  computeCurrentFees();
+    function paymentLabel(method){
+  switch(method){
+    case 'cash': return 'Main propre';
+    case 'paypal': return 'PayPal';
+    case 'crypto': return 'Crypto';
+    case 'tickets': return 'Ticket tabac';
+    default: return 'Non précisé';
+  }
 }
 
-    function computeCurrentFees(){
-  var totalEl = document.getElementById('cartTotal');
-  var feesEl  = document.getElementById('cartFees');
-  var grandEl = document.getElementById('cartGrandTotal');
-  if (!totalEl || !feesEl || !grandEl) return;
+    function selectPayment(method){
+  var allowed = ['cash', 'paypal', 'crypto', 'tickets'];
+  if (allowed.indexOf(method) === -1) return;
 
-  // récupère le total produits
-  var raw = totalEl.textContent.replace(/\s/g,'').replace('€','').replace(',','.');
-  var total = parseFloat(raw) || 0;
-
-  // récupère le mode de paiement via le bouton actif
-  var activeBtn = document.querySelector('.pay-btn.active');
-  var method = activeBtn ? activeBtn.getAttribute('data-method') : null;
-
-  // garde aussi la valeur dans la variable globale au cas où
   selectedPaymentMethod = method;
 
-  var fees  = computePaymentFees(total, method);
-  var grand = total + fees;
+  document.querySelectorAll('.pay-btn').forEach(function(btn){
+    var isActive = btn.getAttribute('data-method') === method;
+    btn.classList.toggle('active', isActive);
+    btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    var status = btn.querySelector('.pay-status');
+    if (status) status.textContent = isActive ? '✓ Sélectionné' : 'Sélectionner';
+  });
 
-  feesEl.textContent  = euro(fees);
-  grandEl.textContent = euro(grand);
+  var selectedEl = document.getElementById('cartPaymentSelected');
+  if (selectedEl){
+    var rate = paymentFeeRate(method);
+    selectedEl.textContent = rate > 0
+      ? '✓ Paiement choisi : ' + paymentLabel(method) + ' • frais 7 % (minimum 20 €, arrondis à la dizaine supérieure)'
+      : '✓ Paiement choisi : ' + paymentLabel(method) + ' • aucun frais de paiement';
+    selectedEl.classList.remove('hidden');
+  }
+
+  renderCart();
 }
 
-    function computePaymentFees(total, method){
-  // si la méthode n'est pas passée en paramètre, on prend la globale
-  method = method || selectedPaymentMethod;
+function paymentFeeRate(method){
+  return (method === 'crypto' || method === 'tickets') ? 0.07 : 0;
+}
 
-  if (!method) return 0;
+function computePaymentFees(total, method){
+  var amount = Number(total) || 0;
+  var rate = paymentFeeRate(method);
+  if (rate <= 0 || amount <= 0) return 0;
 
-  // PAYPAL ou CRYPTO → +20 €
-  if (method === 'paypal' || method === 'crypto'){
-    return 20;
-  }
+  // Crypto / Ticket tabac : 7 % du panier, avec 20 € minimum.
+  // Si les 7 % dépassent 20 €, on arrondit à la dizaine supérieure.
+  var rawFee = amount * rate;
+  if (rawFee <= 20) return 20;
+  return Math.ceil(rawFee / 10) * 10;
+}
 
-  // MAIN PROPRE → 0 €
-  if (method === 'cash'){
-    return 0;
-  }
-
-  // TICKETS → frais selon le total des produits
-  if (method === 'tickets'){
-    if (total <= 200) return 20;
-    if (total <= 450) return 40;
-    return 60;
-  }
-
-  return 0;
+function computeCurrentFees(total){
+  return computePaymentFees(total, selectedPaymentMethod);
 }
 
     /* ===========================
@@ -4749,17 +4881,19 @@ function renderHistory(){
         var fees = computePaymentFees(total, selectedPaymentMethod);
         var grandTotal = total + fees;
 
+        var subtotalEl = document.getElementById('cartSubtotal');
+        if (subtotalEl) subtotalEl.textContent = euro(total);
+
+        var feesRow = document.getElementById('cartFeesRow');
+        var feesEl = document.getElementById('cartFees');
+        if (feesEl) feesEl.textContent = euro(fees);
+        if (feesRow) feesRow.classList.toggle('hidden', fees <= 0);
+
         var totalEl = document.getElementById('cartTotal');
-        if (totalEl) totalEl.textContent = euro(total);
+        if (totalEl) totalEl.textContent = euro(grandTotal);
 
         var countEl = document.getElementById('cartCount');
         if (countEl) countEl.textContent = count;
-
-        var feesEl = document.getElementById('cartFees');
-        if (feesEl) feesEl.textContent = euro(fees);
-
-        var grandEl = document.getElementById('cartGrandTotal');
-        if (grandEl) grandEl.textContent = euro(grandTotal);
 
         var badgeEl = document.getElementById('cartBadge');
         if (badgeEl){
@@ -4854,7 +4988,9 @@ updateCartFabVisibility();
       lines.push("");
     }
 
-    // === PARTIE FRAIS / MOYEN DE PAIEMENT ===
+    // === MOYEN DE PAIEMENT ===
+    // PayPal / Main propre : 0 €. Crypto / Ticket tabac : 7 % du sous-total, minimum 20 €, puis arrondi à la dizaine supérieure.
+    // Aucun frais de livraison n'est ajouté automatiquement.
     var fees = computePaymentFees(total, selectedPaymentMethod);
     var grandTotal = total + fees;
     
@@ -4878,28 +5014,17 @@ updateCartFabVisibility();
     ORDER_HISTORY.push(snapshot);
     saveHistoryToStorage();
 
-    var paymentLabel;
-    switch(selectedPaymentMethod){
-      case 'paypal':  paymentLabel = "PayPal"; break;
-      case 'cash':    paymentLabel = "Main propre"; break;
-      case 'crypto':  paymentLabel = "Crypto"; break;
-      case 'tickets': paymentLabel = "Tickets"; break;
-      default:        paymentLabel = "Non précisé"; break;
-    }
+    var chosenPaymentLabel = paymentLabel(selectedPaymentMethod);
 
-    lines.push("Mode de paiement souhaité : " + paymentLabel);
-
+    lines.push("Mode de paiement souhaité : " + chosenPaymentLabel);
+    lines.push("Sous-total produits : " + euro(total));
     if (fees > 0){
-      lines.push("Frais associés à ce mode : " + euro(fees));
+      lines.push("Frais de paiement (7 %, min. 20 €, arrondis à la dizaine supérieure) : " + euro(fees));
     } else {
-      lines.push("Frais associés à ce mode : 0,00 €");
+      lines.push("Frais de paiement : 0,00 €");
     }
-
-    lines.push("Total estimé avec frais : " + euro(grandTotal));
-    lines.push("");
-
-    // rappel du total produits seul
-    lines.push("Total estimé (produits seuls, min connu) : " + euro(total));
+    lines.push("Frais de livraison ajoutés automatiquement : 0,00 €");
+    lines.push("TOTAL À PAYER : " + euro(grandTotal));
     lines.push("");
     lines.push("Merci de vérifier les informations puis d’envoyer ce message à PochonStore pour finaliser le devis.");
 
@@ -5017,13 +5142,17 @@ updateCartFabVisibility();
 var THEME_STORAGE_KEY = 'pss_theme_v1';
 
 function applyTheme(theme, fromInit){
-  var allowedThemes = ['dark', 'gold', 'neon'];
+  // Migration de l'ancienne valeur "dark" vers le nouveau nom "night".
+  if (theme === 'dark') theme = 'night';
+
+  var allowedThemes = ['night', 'gold', 'neon'];
   if (allowedThemes.indexOf(theme) === -1) theme = 'gold';
 
-  // Les sélecteurs CSS utilisent :root[data-theme="..."].
+  // Certaines règles ciblent :root et d'autres body : on synchronise les deux.
   document.documentElement.setAttribute('data-theme', theme);
+  document.body.setAttribute('data-theme', theme);
 
-  // 2) met à jour visuellement les boutons .theme-pill
+  // met à jour visuellement les boutons .theme-pill
   document.querySelectorAll('.theme-pill').forEach(function(btn){
     var t = btn.getAttribute('data-theme');
     if (t === theme){
