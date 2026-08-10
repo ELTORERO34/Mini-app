@@ -31,7 +31,7 @@
 }
 
 /* 🌙 DARK (Pochon actuel) */
-:root[data-theme="night"] {
+:root[data-theme="dark"] {
   --bg-body: #050508;
   --bg-header: rgba(10,10,12,0.96);
   --bg-card: #111216;
@@ -445,9 +445,8 @@
     main {
   display: block;
   height: 100vh;
-  height: 100dvh;
-  padding-top: calc(160px + env(safe-area-inset-top, 0px));
-  padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px));
+  padding-top: 160px;
+  padding-bottom: 110px;
   box-sizing: border-box;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -954,8 +953,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      height: calc(78px + env(safe-area-inset-bottom, 0px));
-      padding-bottom: env(safe-area-inset-bottom, 0px);
+      height: 78px;
       display: flex;
       align-items: center;
       justify-content: space-around;
@@ -1186,100 +1184,115 @@
       background: radial-gradient(circle at 0 0, rgba(255,215,100,0.16), transparent 60%);
     }
     
-    .cart-payments{
-  margin-top: 8px;
-}
-
-.cart-payment-label{
+    .cart-payment-label {
   margin: 12px 0 8px;
-  font-size: .84rem;
+  font-size: .82rem;
   font-weight: 700;
   color: var(--text-main);
 }
 
-.cart-payment-methods{
+.cart-payment-methods {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
   margin-bottom: 12px;
 }
 
-.pay-btn{
-  min-height: 52px;
-  padding: 9px 10px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(17,17,20,.92);
-  color: var(--text-main);
-  cursor: pointer;
+.pay-btn {
+  position: relative;
+  min-height: 58px;
   display: flex;
   align-items: center;
   gap: 9px;
+  padding: 9px 10px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(15,15,18,.92);
+  color: var(--text-main);
   text-align: left;
-  transition: transform .16s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
+  cursor: pointer;
+  transition: transform .16s ease, border-color .16s ease, background .16s ease, box-shadow .16s ease;
 }
 
-.pay-btn .pay-icon{
-  width: 30px;
-  height: 30px;
-  flex: 0 0 30px;
-  display: grid;
-  place-items: center;
-  border-radius: 10px;
-  background: rgba(255,255,255,.06);
-  font-size: 1rem;
-}
-
-.pay-btn .pay-copy{
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-
-.pay-btn .pay-name{
-  font-size: .82rem;
-  font-weight: 800;
-}
-
-.pay-btn .pay-status{
-  font-size: .68rem;
-  color: var(--text-soft);
-}
-
-.pay-btn:active{
+.pay-btn:active {
   transform: scale(.98);
 }
 
-.pay-btn.active{
+.pay-btn-icon {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: rgba(255,255,255,.06);
+  font-size: 1.05rem;
+}
+
+.pay-btn-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pay-btn-title {
+  font-size: .82rem;
+  font-weight: 800;
+  line-height: 1.05;
+}
+
+.pay-btn-fee {
+  font-size: .68rem;
+  color: var(--text-soft);
+  line-height: 1.1;
+}
+
+.pay-btn.active {
   border-color: var(--accent);
   background: var(--accent-soft);
-  box-shadow: 0 0 0 1px var(--accent), 0 8px 20px rgba(0,0,0,.35);
+  box-shadow: 0 0 0 1px var(--accent-soft), 0 8px 20px rgba(0,0,0,.35);
 }
 
-.pay-btn.active .pay-icon{
+.pay-btn.active .pay-btn-title {
+  color: var(--accent);
+}
+
+.pay-btn.active::after {
+  content: "✓";
+  position: absolute;
+  top: 7px;
+  right: 8px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
   background: var(--accent);
-  color: #050505;
+  color: #080808;
+  font-size: .68rem;
+  font-weight: 900;
 }
 
-.pay-btn.active .pay-status{
-  color: var(--text-main);
-}
-
-.cart-payment-selected{
-  margin: 2px 0 12px;
-  padding: 9px 11px;
-  border-radius: 12px;
-  background: var(--accent-soft);
-  border: 1px solid var(--accent);
-  font-size: .8rem;
-  color: var(--text-main);
-}
-
-.cart-payment-note{
-  margin-top: 6px;
-  font-size: 0.8rem;
+.cart-payment-note {
+  margin: 6px 0 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.07);
+  font-size: .76rem;
   color: var(--text-soft);
+}
+
+.cart-summary-line--grand {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,.1);
+  font-size: 1rem;
+}
+
+.cart-summary-line--grand strong {
+  color: var(--accent);
 }
 
     .cart-summary-line {
@@ -2400,190 +2413,139 @@
    THEMES : GOLD / NUIT / NEON
    =========================== */
 
-/* Thème appliqué via body[data-theme="xxx"] */
-
-/* 🌟 GOLD (par défaut) */
+/* Variables réellement utilisées par l’interface */
 body[data-theme="gold"] {
-  background: #050505;
+  --bg-body: #080704;
+  --bg-header: rgba(12,10,6,.84);
+  --bg-card: rgba(24,20,12,.92);
+  --bg-modal: #15110a;
+  --bg-tabbar: rgba(8,7,4,.96);
+  --text-main: #fff8e8;
+  --text-soft: #ccb98e;
+  --accent: #ffd766;
+  --accent-soft: rgba(255,215,102,.17);
+  --border-soft: rgba(255,215,102,.28);
+  --card: rgba(24,20,12,.92);
+  --text: #fff8e8;
+  --muted: #ccb98e;
+  --border: rgba(255,215,102,.28);
+  background: #080704;
 }
 
 body[data-theme="gold"]::after {
-  background:
-    radial-gradient(circle at 70% 80%, rgba(255,215,100,0.08), transparent 60%),
-    rgba(0,0,0,0.45);
+  background: radial-gradient(circle at 72% 18%, rgba(255,204,51,.16), transparent 38%), rgba(0,0,0,.48);
 }
 
-/* 🌙 NUIT */
 body[data-theme="night"] {
-  background: #02030a;
+  --bg-body: #02050d;
+  --bg-header: rgba(3,8,20,.88);
+  --bg-card: rgba(7,14,31,.94);
+  --bg-modal: #070e1f;
+  --bg-tabbar: rgba(2,5,13,.97);
+  --text-main: #f2f6ff;
+  --text-soft: #9eadd0;
+  --accent: #7aa7ff;
+  --accent-soft: rgba(122,167,255,.18);
+  --border-soft: rgba(122,167,255,.30);
+  --card: rgba(7,14,31,.94);
+  --text: #f2f6ff;
+  --muted: #9eadd0;
+  --border: rgba(122,167,255,.30);
+  background: #02050d;
 }
 
 body[data-theme="night"]::before {
-  /* fond plus sombre bleu/noir */
-  background: radial-gradient(circle at 30% 0%, rgba(40,80,180,0.25), transparent 55%),
-              radial-gradient(circle at 70% 100%, rgba(20,40,90,0.20), transparent 55%),
-              #02030a;
-  opacity: 1;
+  background: radial-gradient(circle at 18% 0%, rgba(56,94,190,.28), transparent 46%), radial-gradient(circle at 88% 92%, rgba(29,66,145,.22), transparent 48%), #02050d;
 }
 
 body[data-theme="night"]::after {
-  background:
-    radial-gradient(circle at 50% 0%, rgba(120,150,255,0.06), transparent 55%),
-    rgba(0,0,0,0.6);
+  background: radial-gradient(circle at 52% 6%, rgba(122,167,255,.10), transparent 48%), rgba(0,0,0,.56);
 }
 
-/* cartes + nav plus froides */
-body[data-theme="night"] .info-card,
-body[data-theme="night"] .product-card,
-body[data-theme="night"] .profile-card {
-  background: rgba(8,10,22,0.96);
-  border-color: rgba(120,150,255,0.35);
-}
-
-body[data-theme="night"] .bottom-nav {
-  background: rgba(3,5,15,0.97);
-}
-
-/* boutons primaires bleutés */
-body[data-theme="night"] .btn.primary {
-  background: #7aa0ff;
-  color: #02030a;
-}
-
-/* ⚡ NEON */
 body[data-theme="neon"] {
-  background:
-    radial-gradient(circle at 0 0, #220024, transparent 55%),
-    radial-gradient(circle at 100% 100%, #001a33, transparent 55%),
-    #050505;
+  --bg-body: #05020b;
+  --bg-header: rgba(11,3,22,.88);
+  --bg-card: rgba(14,5,25,.94);
+  --bg-modal: #10051d;
+  --bg-tabbar: rgba(7,2,13,.97);
+  --text-main: #fff7ff;
+  --text-soft: #c6a9dd;
+  --accent: #39f6dc;
+  --accent-soft: rgba(57,246,220,.16);
+  --border-soft: rgba(57,246,220,.34);
+  --card: rgba(14,5,25,.94);
+  --text: #fff7ff;
+  --muted: #c6a9dd;
+  --border: rgba(57,246,220,.34);
+  background: #05020b;
+}
+
+body[data-theme="neon"]::before {
+  background: radial-gradient(circle at 10% 8%, rgba(255,0,214,.30), transparent 42%), radial-gradient(circle at 90% 90%, rgba(0,255,213,.24), transparent 44%), #05020b;
 }
 
 body[data-theme="neon"]::after {
-  background:
-    radial-gradient(circle at 20% 10%, rgba(255,0,180,0.24), transparent 55%),
-    radial-gradient(circle at 80% 90%, rgba(0,255,200,0.18), transparent 55%),
-    rgba(0,0,0,0.55);
+  background: radial-gradient(circle at 78% 12%, rgba(116,69,255,.18), transparent 38%), rgba(0,0,0,.48);
 }
 
-/* cartes flashy */
+/* Les éléments principaux suivent maintenant vraiment le thème */
+body[data-theme] .header {
+  background: var(--bg-header);
+  border-bottom-color: var(--border-soft);
+}
+body[data-theme] .bottom-nav {
+  background: var(--bg-tabbar);
+  border-top-color: var(--border-soft);
+}
+body[data-theme] .info-card,
+body[data-theme] .product-card,
+body[data-theme] .profile-card,
+body[data-theme] .product-thumb,
+body[data-theme] .search-bar {
+  background: var(--bg-card);
+  border-color: var(--border-soft);
+}
+body[data-theme] .cart-page-inner,
+body[data-theme] .fav-page-inner {
+  background: var(--bg-modal);
+  border-color: var(--border-soft);
+}
+body[data-theme] .product-title,
+body[data-theme] .info-card h2,
+body[data-theme] .history-entry-total,
+body[data-theme] .nav-btn.active {
+  color: var(--accent);
+}
+body[data-theme] .btn.primary {
+  background: var(--accent);
+  color: #060606;
+  box-shadow: 0 0 14px var(--accent-soft);
+}
+body[data-theme] .theme-pill--active {
+  background: var(--accent-soft);
+  color: var(--text-main);
+  border-color: var(--accent);
+  box-shadow: 0 0 12px var(--accent-soft);
+}
+body[data-theme] .search-chip.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 10px var(--accent-soft);
+}
+body[data-theme] .product-thumb::before {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent-soft);
+}
+body[data-theme="neon"] .product-thumb,
 body[data-theme="neon"] .info-card,
-body[data-theme="neon"] .product-card,
-body[data-theme="neon"] .profile-card {
-  background: radial-gradient(circle at 0 0, rgba(255,0,180,0.16), transparent 60%),
-              rgba(5,5,10,0.95);
-  border-color: rgba(0,255,200,0.45);
-  box-shadow: 0 0 16px rgba(0,255,200,0.3);
+body[data-theme="neon"] .product-card {
+  box-shadow: 0 0 18px rgba(57,246,220,.12), inset 0 0 18px rgba(255,0,214,.04);
 }
-
-/* nav néon */
-body[data-theme="neon"] .bottom-nav {
-  background: radial-gradient(circle at 50% 0, rgba(255,0,180,0.24), transparent 60%),
-              rgba(2,2,8,0.98);
+body[data-theme="night"] .product-thumb,
+body[data-theme="night"] .info-card,
+body[data-theme="night"] .product-card {
+  box-shadow: 0 8px 22px rgba(0,12,40,.50);
 }
-
-/* boutons primaires néon */
-body[data-theme="neon"] .btn.primary {
-  background: linear-gradient(120deg, #00ffd5, #ff00e6);
-  color: #050505;
-  box-shadow: 0 0 14px rgba(255,0,230,0.6);
-}
-
-/* Les thèmes pilotent aussi les éléments très visibles de l'app */
-:root[data-theme="gold"] {
-  --accent: #f6d366;
-  --accent-soft: rgba(246,211,102,.20);
-  --text-main: #fff9ea;
-  --text-soft: #cdbf9e;
-  --border-soft: rgba(246,211,102,.30);
-}
-
-:root[data-theme="night"] {
-  --accent: #7aa0ff;
-  --accent-soft: rgba(122,160,255,.18);
-  --text-main: #f4f7ff;
-  --text-soft: #aebbdc;
-  --border-soft: rgba(122,160,255,.28);
-}
-
-:root[data-theme="neon"] {
-  --accent: #45f5d0;
-  --accent-soft: rgba(69,245,208,.16);
-  --text-main: #f8ffff;
-  --text-soft: #b2dcd7;
-  --border-soft: rgba(69,245,208,.34);
-}
-
-body[data-theme="gold"] .header,
-body[data-theme="gold"] .bottom-nav {
-  border-color: rgba(246,211,102,.22);
-}
-
-body[data-theme="night"] .header {
-  background: rgba(4,7,20,.58);
-  border-bottom-color: rgba(122,160,255,.22);
-}
-body[data-theme="night"] .product-thumb {
-  background: #090d1c;
-  border-color: rgba(122,160,255,.42);
-}
-body[data-theme="night"] .product-thumb::before {
-  border-color: rgba(122,160,255,.78);
-  box-shadow: 0 0 10px rgba(122,160,255,.38);
-}
-body[data-theme="night"] .product-thumb-title,
-body[data-theme="night"] .product-title,
-body[data-theme="night"] .info-card h2,
-body[data-theme="night"] .history-entry-total {
-  background: none;
-  -webkit-text-fill-color: currentColor;
-  color: #9ab7ff;
-}
-body[data-theme="night"] .nav-btn.active { color: #9ab7ff; }
-
-body[data-theme="neon"] .header {
-  background: rgba(7,2,14,.62);
-  border-bottom-color: rgba(69,245,208,.25);
-}
-body[data-theme="neon"] .product-thumb {
-  background: linear-gradient(145deg, rgba(35,4,43,.96), rgba(2,22,28,.96));
-  border-color: rgba(69,245,208,.48);
-}
-body[data-theme="neon"] .product-thumb::before {
-  border-color: rgba(69,245,208,.88);
-  box-shadow: 0 0 12px rgba(69,245,208,.48), 0 0 22px rgba(255,0,230,.18);
-}
-body[data-theme="neon"] .product-thumb-title,
-body[data-theme="neon"] .product-title,
-body[data-theme="neon"] .info-card h2,
-body[data-theme="neon"] .history-entry-total {
-  background: linear-gradient(90deg,#45f5d0,#ff66f5);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-body[data-theme="neon"] .nav-btn.active { color: #45f5d0; }
-
-    /* Accessibilité : respecte le réglage système « réduire les animations ». */
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        scroll-behavior: auto !important;
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-
-    button, select, input {
-      font: inherit;
-    }
-
-    button:focus-visible,
-    input:focus-visible,
-    select:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
-
   </style>
 </head>
 
@@ -3544,36 +3506,40 @@ body[data-theme="neon"] .nav-btn.active { color: #45f5d0; }
     <strong id="cartCount">0</strong>
   </div>
 
-  <!-- choix direct du paiement -->
+  <!-- choix du paiement -->
   <div class="cart-payment-label">Mode de paiement</div>
   <div class="cart-payment-methods" role="group" aria-label="Mode de paiement">
-    <button type="button" class="pay-btn" data-method="cash" aria-pressed="false" onclick="selectPayment('cash')">
-      <span class="pay-icon">💶</span><span class="pay-copy"><span class="pay-name">Main propre</span><span class="pay-status">Sélectionner</span></span>
+    <button type="button" class="pay-btn" data-method="cash" onclick="selectPayment('cash')">
+      <span class="pay-btn-icon">💶</span>
+      <span class="pay-btn-copy"><span class="pay-btn-title">Main propre</span><span class="pay-btn-fee">0 € de frais</span></span>
     </button>
-    <button type="button" class="pay-btn" data-method="paypal" aria-pressed="false" onclick="selectPayment('paypal')">
-      <span class="pay-icon">P</span><span class="pay-copy"><span class="pay-name">PayPal</span><span class="pay-status">Sélectionner</span></span>
+    <button type="button" class="pay-btn" data-method="paypal" onclick="selectPayment('paypal')">
+      <span class="pay-btn-icon">🅿️</span>
+      <span class="pay-btn-copy"><span class="pay-btn-title">PayPal</span><span class="pay-btn-fee">0 € de frais</span></span>
     </button>
-    <button type="button" class="pay-btn" data-method="crypto" aria-pressed="false" onclick="selectPayment('crypto')">
-      <span class="pay-icon">₿</span><span class="pay-copy"><span class="pay-name">Crypto</span><span class="pay-status">Sélectionner</span></span>
+    <button type="button" class="pay-btn" data-method="crypto" onclick="selectPayment('crypto')">
+      <span class="pay-btn-icon">₿</span>
+      <span class="pay-btn-copy"><span class="pay-btn-title">Crypto</span><span class="pay-btn-fee">7 % · min. 20 €</span></span>
     </button>
-    <button type="button" class="pay-btn" data-method="tickets" aria-pressed="false" onclick="selectPayment('tickets')">
-      <span class="pay-icon">🎟️</span><span class="pay-copy"><span class="pay-name">Ticket tabac</span><span class="pay-status">Sélectionner</span></span>
+    <button type="button" class="pay-btn" data-method="tickets" onclick="selectPayment('tickets')">
+      <span class="pay-btn-icon">🎟️</span>
+      <span class="pay-btn-copy"><span class="pay-btn-title">Ticket tabac</span><span class="pay-btn-fee">7 % · min. 20 €</span></span>
     </button>
   </div>
-  <div id="cartPaymentSelected" class="cart-payment-selected hidden">Aucun mode sélectionné</div>
+  <div id="cartPaymentNote" class="cart-payment-note">Sélectionne un moyen de paiement. Aucun frais d’envoi n’est ajouté automatiquement.</div>
 
-  <!-- récapitulatif du total selon le moyen de paiement -->
+  <!-- totaux -->
   <div class="cart-summary-line">
     <span>Sous-total produits</span>
-    <strong id="cartSubtotal">0,00 €</strong>
+    <strong id="cartTotal">0,00 €</strong>
   </div>
-  <div class="cart-summary-line hidden" id="cartFeesRow">
-    <span id="cartFeesLabel">Frais de paiement</span>
+  <div class="cart-summary-line">
+    <span>Frais de paiement</span>
     <strong id="cartFees">0,00 €</strong>
   </div>
-  <div class="cart-summary-line" style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.10);font-size:1rem;">
-    <span><strong>Total à payer</strong></span>
-    <strong id="cartTotal">0,00 €</strong>
+  <div class="cart-summary-line cart-summary-line--grand">
+    <span>Total à payer</span>
+    <strong id="cartGrandTotal">0,00 €</strong>
   </div>
 </section>
 
@@ -3652,10 +3618,9 @@ body[data-theme="neon"] .nav-btn.active { color: #45f5d0; }
 
 if (tg) {
   try {
-    tg.ready();
-    tg.expand();
+    tg.expand(); // 🔥 force le plein écran quand c’est possible
   } catch(e){
-    console.error('Erreur initialisation Telegram', e);
+    console.error('Erreur expand', e);
   }
 }
 var QUOTE_USERNAME = "pssv2";
@@ -3702,13 +3667,10 @@ var selectedPaymentMethod = null;
 
   closeCart(true);
 
-  // Le scroll réel est porté par <main>, pas par window.
-  var mainEl = document.querySelector('main');
-  if (mainEl && typeof mainEl.scrollTo === 'function'){
-    mainEl.scrollTo({ top: 0, behavior: 'auto' });
-  } else if (mainEl){
-    mainEl.scrollTop = 0;
-  }
+  // on remonte simplement la page
+  window.scrollTo(0, 0);
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
 }
 
 /* ===========================
@@ -4282,66 +4244,78 @@ function addPack(kind, btn){
   if (fab){
     // On affiche le bouton seulement s’il y a au moins 1 article dans le panier
     if (CART && CART.length > 0){
-      fab.style.display = 'flex';
+      fab.style.display = 'block';   // ou 'flex' selon ton CSS
     } else {
       fab.style.display = 'none';
     }
   }
 }
-    function paymentLabel(method){
+
+    function getPaymentLabel(method){
   switch(method){
     case 'cash': return 'Main propre';
     case 'paypal': return 'PayPal';
     case 'crypto': return 'Crypto';
     case 'tickets': return 'Ticket tabac';
-    default: return 'Non précisé';
+    default: return 'Non sélectionné';
   }
 }
 
-    function selectPayment(method){
-  var allowed = ['cash', 'paypal', 'crypto', 'tickets'];
-  if (allowed.indexOf(method) === -1) return;
+function selectPayment(method){
+  if (['cash','paypal','crypto','tickets'].indexOf(method) === -1) return;
 
   selectedPaymentMethod = method;
-
   document.querySelectorAll('.pay-btn').forEach(function(btn){
     var isActive = btn.getAttribute('data-method') === method;
     btn.classList.toggle('active', isActive);
     btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-    var status = btn.querySelector('.pay-status');
-    if (status) status.textContent = isActive ? '✓ Sélectionné' : 'Sélectionner';
   });
 
-  var selectedEl = document.getElementById('cartPaymentSelected');
-  if (selectedEl){
-    var rate = paymentFeeRate(method);
-    selectedEl.textContent = rate > 0
-      ? '✓ Paiement choisi : ' + paymentLabel(method) + ' • frais 7 % (minimum 20 €, arrondis à la dizaine supérieure)'
-      : '✓ Paiement choisi : ' + paymentLabel(method) + ' • aucun frais de paiement';
-    selectedEl.classList.remove('hidden');
-  }
-
-  renderCart();
+  try { localStorage.setItem('pss_payment_v1', method); } catch(e){}
+  computeCurrentFees();
 }
 
-function paymentFeeRate(method){
-  return (method === 'crypto' || method === 'tickets') ? 0.07 : 0;
+function computeCurrentFees(){
+  var totalEl = document.getElementById('cartTotal');
+  var feesEl  = document.getElementById('cartFees');
+  var grandEl = document.getElementById('cartGrandTotal');
+  var noteEl  = document.getElementById('cartPaymentNote');
+  if (!totalEl || !feesEl || !grandEl) return;
+
+  var raw = totalEl.textContent.replace(/\s/g,'').replace('€','').replace(',','.');
+  var total = parseFloat(raw) || 0;
+  var fees = computePaymentFees(total, selectedPaymentMethod);
+  var grand = total + fees;
+
+  feesEl.textContent = euro(fees);
+  grandEl.textContent = euro(grand);
+
+  if (noteEl){
+    if (!selectedPaymentMethod){
+      noteEl.textContent = 'Sélectionne un moyen de paiement. Aucun frais d’envoi n’est ajouté automatiquement.';
+    } else if (selectedPaymentMethod === 'crypto' || selectedPaymentMethod === 'tickets'){
+      noteEl.textContent = getPaymentLabel(selectedPaymentMethod) + ' sélectionné · frais = 7 % du sous-total, minimum 20 €, puis arrondis à la dizaine supérieure. Aucun frais d’envoi ajouté.';
+    } else {
+      noteEl.textContent = getPaymentLabel(selectedPaymentMethod) + ' sélectionné · 0 € de frais de paiement et aucun frais d’envoi ajouté.';
+    }
+  }
 }
 
 function computePaymentFees(total, method){
-  var amount = Number(total) || 0;
-  var rate = paymentFeeRate(method);
-  if (rate <= 0 || amount <= 0) return 0;
+  method = method || selectedPaymentMethod;
+  total = Number(total) || 0;
 
-  // Crypto / Ticket tabac : 7 % du panier, avec 20 € minimum.
-  // Si les 7 % dépassent 20 €, on arrondit à la dizaine supérieure.
-  var rawFee = amount * rate;
-  if (rawFee <= 20) return 20;
-  return Math.ceil(rawFee / 10) * 10;
-}
+  // Main propre et PayPal : aucun frais.
+  if (method === 'cash' || method === 'paypal' || !method) return 0;
 
-function computeCurrentFees(total){
-  return computePaymentFees(total, selectedPaymentMethod);
+  // Crypto et Ticket tabac : 7 %, minimum 20 €, puis dizaine supérieure.
+  if (method === 'crypto' || method === 'tickets') {
+    var sevenPercent = total * 0.07;
+    if (sevenPercent <= 20) return 20;
+    return Math.ceil(sevenPercent / 10) * 10;
+  }
+
+  return 0;
 }
 
     /* ===========================
@@ -4351,26 +4325,11 @@ function loadCartFromStorage(){
   try {
     var raw = localStorage.getItem(STORAGE_CART_KEY);
     if (!raw) return;
-
     var data = JSON.parse(raw);
-    if (!Array.isArray(data)) return;
-
-    // Évite qu'une donnée locale corrompue casse le panier ou les calculs.
-    CART = data.filter(function(item){
-      return item &&
-        typeof item.title === 'string' &&
-        Number.isFinite(Number(item.qty)) &&
-        Number(item.qty) > 0;
-    }).map(function(item){
-      return {
-        title: item.title,
-        qty: Math.max(1, parseInt(item.qty, 10) || 1),
-        unit: Math.max(0, Number(item.unit) || 0),
-        opts: (item.opts && typeof item.opts === 'object') ? item.opts : {}
-      };
-    });
+    if (Array.isArray(data)) {
+      CART = data;
+    }
   } catch(e){
-    CART = [];
     console.error('Erreur loadCartFromStorage', e);
   }
 }
@@ -4389,9 +4348,7 @@ function loadFavoritesFromStorage(){
     if (!raw) return;
     var data = JSON.parse(raw);
     if (Array.isArray(data)) {
-      FAVORITES = data
-        .filter(function(pid){ return typeof pid === 'string' && pid.trim(); })
-        .filter(function(pid, index, arr){ return arr.indexOf(pid) === index; });
+      FAVORITES = data;
     }
   } catch(e){
     console.error('Erreur loadFavoritesFromStorage', e);
@@ -4881,19 +4838,17 @@ function renderHistory(){
         var fees = computePaymentFees(total, selectedPaymentMethod);
         var grandTotal = total + fees;
 
-        var subtotalEl = document.getElementById('cartSubtotal');
-        if (subtotalEl) subtotalEl.textContent = euro(total);
-
-        var feesRow = document.getElementById('cartFeesRow');
-        var feesEl = document.getElementById('cartFees');
-        if (feesEl) feesEl.textContent = euro(fees);
-        if (feesRow) feesRow.classList.toggle('hidden', fees <= 0);
-
         var totalEl = document.getElementById('cartTotal');
-        if (totalEl) totalEl.textContent = euro(grandTotal);
+        if (totalEl) totalEl.textContent = euro(total);
 
         var countEl = document.getElementById('cartCount');
         if (countEl) countEl.textContent = count;
+
+        var feesEl = document.getElementById('cartFees');
+        if (feesEl) feesEl.textContent = euro(fees);
+
+        var grandEl = document.getElementById('cartGrandTotal');
+        if (grandEl) grandEl.textContent = euro(grandTotal);
 
         var badgeEl = document.getElementById('cartBadge');
         if (badgeEl){
@@ -4912,7 +4867,7 @@ function renderHistory(){
             // On ne l’affiche que si le panier n’est pas vide ET si la modale n’est pas ouverte
             var modal = document.getElementById('cartModal');
             var isCartOpen = modal && modal.classList.contains('show');
-            fab.style.display = isCartOpen ? 'none' : 'flex';
+            fab.style.display = isCartOpen ? 'none' : 'block';
           } else {
             fab.style.display = 'none';
           }
@@ -4988,9 +4943,7 @@ updateCartFabVisibility();
       lines.push("");
     }
 
-    // === MOYEN DE PAIEMENT ===
-    // PayPal / Main propre : 0 €. Crypto / Ticket tabac : 7 % du sous-total, minimum 20 €, puis arrondi à la dizaine supérieure.
-    // Aucun frais de livraison n'est ajouté automatiquement.
+    // === PARTIE FRAIS / MOYEN DE PAIEMENT ===
     var fees = computePaymentFees(total, selectedPaymentMethod);
     var grandTotal = total + fees;
     
@@ -5014,17 +4967,29 @@ updateCartFabVisibility();
     ORDER_HISTORY.push(snapshot);
     saveHistoryToStorage();
 
-    var chosenPaymentLabel = paymentLabel(selectedPaymentMethod);
+    var paymentLabel;
+    switch(selectedPaymentMethod){
+      case 'paypal':  paymentLabel = "PayPal"; break;
+      case 'cash':    paymentLabel = "Main propre"; break;
+      case 'crypto':  paymentLabel = "Crypto"; break;
+      case 'tickets': paymentLabel = "Ticket tabac"; break;
+      default:        paymentLabel = "Non précisé"; break;
+    }
 
-    lines.push("Mode de paiement souhaité : " + chosenPaymentLabel);
-    lines.push("Sous-total produits : " + euro(total));
+    lines.push("Mode de paiement souhaité : " + paymentLabel);
+    lines.push("Frais d’envoi automatiques : 0,00 €");
+
     if (fees > 0){
-      lines.push("Frais de paiement (7 %, min. 20 €, arrondis à la dizaine supérieure) : " + euro(fees));
+      lines.push("Frais de paiement : " + euro(fees));
     } else {
       lines.push("Frais de paiement : 0,00 €");
     }
-    lines.push("Frais de livraison ajoutés automatiquement : 0,00 €");
-    lines.push("TOTAL À PAYER : " + euro(grandTotal));
+
+    lines.push("Total à payer estimé : " + euro(grandTotal));
+    lines.push("");
+
+    // rappel du total produits seul
+    lines.push("Total estimé (produits seuls, min connu) : " + euro(total));
     lines.push("");
     lines.push("Merci de vérifier les informations puis d’envoyer ce message à PochonStore pour finaliser le devis.");
 
@@ -5142,13 +5107,10 @@ updateCartFabVisibility();
 var THEME_STORAGE_KEY = 'pss_theme_v1';
 
 function applyTheme(theme, fromInit){
-  // Migration de l'ancienne valeur "dark" vers le nouveau nom "night".
-  if (theme === 'dark') theme = 'night';
+  if (theme === 'dark') theme = 'night'; // compat ancienne valeur stockée
+  if (['gold','night','neon'].indexOf(theme) === -1) theme = 'gold';
 
-  var allowedThemes = ['night', 'gold', 'neon'];
-  if (allowedThemes.indexOf(theme) === -1) theme = 'gold';
-
-  // Certaines règles ciblent :root et d'autres body : on synchronise les deux.
+  // Le thème est posé sur <html> ET <body> pour couvrir toutes les règles CSS.
   document.documentElement.setAttribute('data-theme', theme);
   document.body.setAttribute('data-theme', theme);
 
@@ -5231,6 +5193,14 @@ document.addEventListener('DOMContentLoaded', function(){
 
   // 5) Thèmes (après tout le reste)
   initTheme();
+
+  // 6) Restaure le dernier moyen de paiement choisi
+  try {
+    var savedPayment = localStorage.getItem('pss_payment_v1');
+    if (savedPayment && ['cash','paypal','crypto','tickets'].indexOf(savedPayment) !== -1){
+      selectPayment(savedPayment);
+    }
+  } catch(e){}
 });
   </script>
 </body>
