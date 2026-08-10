@@ -445,8 +445,9 @@
     main {
   display: block;
   height: 100vh;
-  padding-top: 160px;
-  padding-bottom: 110px;
+  height: 100dvh;
+  padding-top: calc(160px + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px));
   box-sizing: border-box;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -953,7 +954,8 @@
       left: 0;
       right: 0;
       bottom: 0;
-      height: 78px;
+      height: calc(78px + env(safe-area-inset-bottom, 0px));
+      padding-bottom: env(safe-area-inset-bottom, 0px);
       display: flex;
       align-items: center;
       justify-content: space-around;
@@ -2426,6 +2428,28 @@ body[data-theme="neon"] .btn.primary {
   color: #050505;
   box-shadow: 0 0 14px rgba(255,0,230,0.6);
 }
+  
+    /* Accessibilité : respecte le réglage système « réduire les animations ». */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    button, select, input {
+      font: inherit;
+    }
+
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
   </style>
 </head>
 
@@ -3491,9 +3515,10 @@ body[data-theme="neon"] .btn.primary {
 
 if (tg) {
   try {
-    tg.expand(); // 🔥 force le plein écran quand c’est possible
+    tg.ready();
+    tg.expand();
   } catch(e){
-    console.error('Erreur expand', e);
+    console.error('Erreur initialisation Telegram', e);
   }
 }
 var QUOTE_USERNAME = "pssv2";
@@ -3540,10 +3565,13 @@ var selectedPaymentMethod = null;
 
   closeCart(true);
 
-  // on remonte simplement la page
-  window.scrollTo(0, 0);
-  document.documentElement.scrollTop = 0;
-  document.body.scrollTop = 0;
+  // Le scroll réel est porté par <main>, pas par window.
+  var mainEl = document.querySelector('main');
+  if (mainEl && typeof mainEl.scrollTo === 'function'){
+    mainEl.scrollTo({ top: 0, behavior: 'auto' });
+  } else if (mainEl){
+    mainEl.scrollTop = 0;
+  }
 }
 
 /* ===========================
@@ -4117,15 +4145,12 @@ function addPack(kind, btn){
   if (fab){
     // On affiche le bouton seulement s’il y a au moins 1 article dans le panier
     if (CART && CART.length > 0){
-      fab.style.display = 'block';   // ou 'flex' selon ton CSS
+      fab.style.display = 'flex';
     } else {
       fab.style.display = 'none';
     }
   }
 }
-    var selectedPaymentMethod = null;
-    
-    
     function selectPayment(method){
   // visuel : bouton actif
   document.querySelectorAll('.pay-btn').forEach(function(btn){
@@ -4194,11 +4219,26 @@ function loadCartFromStorage(){
   try {
     var raw = localStorage.getItem(STORAGE_CART_KEY);
     if (!raw) return;
+
     var data = JSON.parse(raw);
-    if (Array.isArray(data)) {
-      CART = data;
-    }
+    if (!Array.isArray(data)) return;
+
+    // Évite qu'une donnée locale corrompue casse le panier ou les calculs.
+    CART = data.filter(function(item){
+      return item &&
+        typeof item.title === 'string' &&
+        Number.isFinite(Number(item.qty)) &&
+        Number(item.qty) > 0;
+    }).map(function(item){
+      return {
+        title: item.title,
+        qty: Math.max(1, parseInt(item.qty, 10) || 1),
+        unit: Math.max(0, Number(item.unit) || 0),
+        opts: (item.opts && typeof item.opts === 'object') ? item.opts : {}
+      };
+    });
   } catch(e){
+    CART = [];
     console.error('Erreur loadCartFromStorage', e);
   }
 }
@@ -4217,7 +4257,9 @@ function loadFavoritesFromStorage(){
     if (!raw) return;
     var data = JSON.parse(raw);
     if (Array.isArray(data)) {
-      FAVORITES = data;
+      FAVORITES = data
+        .filter(function(pid){ return typeof pid === 'string' && pid.trim(); })
+        .filter(function(pid, index, arr){ return arr.indexOf(pid) === index; });
     }
   } catch(e){
     console.error('Erreur loadFavoritesFromStorage', e);
@@ -4736,7 +4778,7 @@ function renderHistory(){
             // On ne l’affiche que si le panier n’est pas vide ET si la modale n’est pas ouverte
             var modal = document.getElementById('cartModal');
             var isCartOpen = modal && modal.classList.contains('show');
-            fab.style.display = isCartOpen ? 'none' : 'block';
+            fab.style.display = isCartOpen ? 'none' : 'flex';
           } else {
             fab.style.display = 'none';
           }
@@ -4975,10 +5017,11 @@ updateCartFabVisibility();
 var THEME_STORAGE_KEY = 'pss_theme_v1';
 
 function applyTheme(theme, fromInit){
-  if (!theme) return;
+  var allowedThemes = ['dark', 'gold', 'neon'];
+  if (allowedThemes.indexOf(theme) === -1) theme = 'gold';
 
-  // 1) pose l'attribut data-theme sur <html>
-  document.body.setAttribute('data-theme', theme);
+  // Les sélecteurs CSS utilisent :root[data-theme="..."].
+  document.documentElement.setAttribute('data-theme', theme);
 
   // 2) met à jour visuellement les boutons .theme-pill
   document.querySelectorAll('.theme-pill').forEach(function(btn){
