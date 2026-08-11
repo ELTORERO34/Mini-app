@@ -906,6 +906,16 @@
       box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
     }
 
+    .btn.secondary {
+      background: rgba(60,12,12,0.55);
+      color: #ffdede;
+      border-color: rgba(255,80,80,0.5);
+    }
+
+    .btn.secondary:hover {
+      box-shadow: 0 0 10px rgba(255,80,80,0.5);
+    }
+
     @keyframes fadeUp {
       to {
         opacity: 1;
@@ -2888,7 +2898,8 @@ body[data-theme="night"] .product-card {
   <button class="btn-back" onclick="closeProduct()">← Retour</button>
 
   <div class="product-hero">
-    <img src="img/cartes.mp4" alt="Cartes fidélité / visite" class="product-hero-img" />
+    <video src="img/cartes.mp4" class="product-hero-img" poster="img/cartescata.png"
+           autoplay muted loop playsinline></video>
   </div>
 
   <div class="product-card">
@@ -3475,6 +3486,8 @@ body[data-theme="night"] .product-card {
     </div>
   </span>
 </div>
+    </div>
+  </div>
 </section>
     </main>
 
@@ -3893,17 +3906,6 @@ function initProductSearch(){
             }
           });
         }
-        
-        function updateCartFabVisibility() {
-  var fab = document.getElementById('cartFab');
-  if (!fab) return;
-  
-  if (CART.length > 0) {
-    fab.style.display = 'flex';
-  } else {
-    fab.style.display = 'none';
-  }
-}
 
         renderCart();
         toast('Pochons ajoutés');
@@ -4250,6 +4252,19 @@ function addPack(kind, btn){
     }
   }
 }
+
+    function updateCartFabVisibility(){
+      var fab = document.getElementById('cartFab');
+      if (!fab) return;
+
+      if (CART.length > 0){
+        var modal = document.getElementById('cartModal');
+        var isCartOpen = modal && modal.classList.contains('show');
+        fab.style.display = isCartOpen ? 'none' : 'block';
+      } else {
+        fab.style.display = 'none';
+      }
+    }
 
     function getPaymentLabel(method){
   switch(method){
@@ -5155,12 +5170,16 @@ function initTheme(){
    12) SPLASH FLOW & INIT APP
    =========================== */
 document.addEventListener('DOMContentLoaded', function(){
-  // 0) Recherche / catalogue
-  if (typeof initProductSearch === 'function'){
-    initProductSearch();
-  }
+  // 0) Thèmes en tout premier : les boutons Gold/Nuit/Néon doivent rester
+  //    cliquables même si une étape suivante (historique, favoris...) plante.
+  try { initTheme(); } catch(e){ console.error('initTheme error', e); }
 
-  // 1) Splash
+  // 1) Recherche / catalogue
+  try {
+    if (typeof initProductSearch === 'function') initProductSearch();
+  } catch(e){ console.error('initProductSearch error', e); }
+
+  // 2) Splash
   var splash = document.getElementById('splash');
   if (splash){
     setTimeout(function(){ splash.classList.add('splash--show-text'); }, 400);
@@ -5175,24 +5194,29 @@ document.addEventListener('DOMContentLoaded', function(){
     }, 4500);
   }
 
-  // 2) Panier + historique
-  if (typeof loadCartFromStorage === 'function') loadCartFromStorage();
-  if (typeof renderCart === 'function') renderCart();
-  if (typeof updateCartFabVisibility === 'function') updateCartFabVisibility();
+  // 3) Panier + historique
+  try {
+    if (typeof loadCartFromStorage === 'function') loadCartFromStorage();
+    if (typeof renderCart === 'function') renderCart();
+    if (typeof updateCartFabVisibility === 'function') updateCartFabVisibility();
+  } catch(e){ console.error('init panier error', e); }
 
-  if (typeof loadHistoryFromStorage === 'function') loadHistoryFromStorage();
-  if (typeof renderHistory === 'function') renderHistory();
+  try {
+    if (typeof loadHistoryFromStorage === 'function') loadHistoryFromStorage();
+    if (typeof renderHistory === 'function') renderHistory();
+  } catch(e){ console.error('init historique error', e); }
 
-  // 3) Favoris
-  if (typeof loadFavoritesFromStorage === 'function') loadFavoritesFromStorage();
-  if (typeof refreshFavoriteUI === 'function') refreshFavoriteUI();
+  // 4) Favoris
+  try {
+    if (typeof loadFavoritesFromStorage === 'function') loadFavoritesFromStorage();
+    if (typeof refreshFavoriteUI === 'function') refreshFavoriteUI();
+  } catch(e){ console.error('init favoris error', e); }
 
-  // 4) Profil / appli
-  if (typeof initProfileFromTelegram === 'function') initProfileFromTelegram();
-  if (typeof initAppInfo === 'function') initAppInfo();
-
-  // 5) Thèmes (après tout le reste)
-  initTheme();
+  // 5) Profil / appli
+  try {
+    if (typeof initProfileFromTelegram === 'function') initProfileFromTelegram();
+    if (typeof initAppInfo === 'function') initAppInfo();
+  } catch(e){ console.error('init profil error', e); }
 
   // 6) Restaure le dernier moyen de paiement choisi
   try {
