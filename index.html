@@ -117,7 +117,7 @@
       position: fixed;
       inset: 0;
       z-index: -2;
-      background: url("img/bgpss.png") center/cover no-repeat;
+      background: url("img/bgpss.jpg") center/cover no-repeat;
       opacity: 1;
     }
 
@@ -534,6 +534,32 @@
   border-color: rgba(255,215,100,0.9);
   color: #ffd766;
   box-shadow: 0 0 10px rgba(255,215,100,0.6);
+}
+
+/* état "aucun résultat" dans le catalogue */
+.search-empty-state{
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+  padding: 36px 20px;
+  color: #d0d0d0;
+}
+
+.search-empty-icon{
+  font-size: 1.8rem;
+  margin-bottom: 6px;
+  opacity: 0.8;
+}
+
+.search-empty-state p{
+  margin: 0;
+}
+
+.search-empty-hint{
+  font-size: 0.82rem;
+  color: #8f8f8f;
 }
 
     /* ===========================
@@ -2650,7 +2676,7 @@ body[data-theme="night"] .product-card {
           data-tags="pochons,packaging,sachets,personnalisé,flatbag,doypack">
     <div class="product-badge">🔥 Populaire</div>
     <div class="product-badge">🧾 Sur devis</div>
-    <img src="img/pochons11.png" alt="Pochon personnalisé" />
+    <img src="img/pochons11.jpg" alt="Pochon personnalisé" />
     <div class="product-thumb-body">
       <div class="product-thumb-title">Pochon personnalisé</div>
       <div class="product-thumb-sub">Flatbags et doypacks imprimés avec ton visuel</div>
@@ -2684,7 +2710,7 @@ body[data-theme="night"] .product-card {
           data-product-id="p3"
           data-tags="cartes,visite,fidelite,flyer,impression">
     <div class="product-badge">⚡ Recommandé</div>
-    <img src="img/cartescata.png" alt="Cartes fidélité / visite" />
+    <img src="img/cartescata.jpg" alt="Cartes fidélité / visite" />
     <div class="product-thumb-body">
       <div class="product-thumb-title">Cartes fidélité / visite</div>
       <div class="product-thumb-sub">Recto verso, 8,5cm x 5,4cm</div>
@@ -2733,7 +2759,7 @@ body[data-theme="night"] .product-card {
           data-product-id="p6"
           data-tags="fusées,contenants,capsules,grammage">
     <div class="product-badge new">✨ Coup de cœur</div>
-    <img src="img/fusées1.jpg" alt="Fusées 1,5 ml" />
+    <img src="img/fusees1.jpg" alt="Fusées 1,5 ml" />
     <div class="product-thumb-body">
       <div class="product-thumb-title">Fusées 1,5 ml</div>
       <div class="product-thumb-sub">Capsules vides, tarifs selon quantité</div>
@@ -2781,13 +2807,20 @@ body[data-theme="night"] .product-card {
     </div>
   </button>
 </div>
-        
+
+  <!-- État vide : affiché en JS quand la recherche/le filtre ne retourne rien -->
+  <div id="searchEmptyState" class="search-empty-state">
+    <div class="search-empty-icon">🔍</div>
+    <p>Aucun résultat pour cette recherche.</p>
+    <p class="search-empty-hint">Essaie un autre mot-clé ou choisis « Tous » dans les filtres.</p>
+  </div>
+
       <!-- ===== FICHE PRODUIT P1 ===== -->
 <div id="productDetail_p1" class="product-detail hidden">
   <button class="btn-back" onclick="closeProduct()">← Retour</button>
 
   <div class="product-hero">
-    <img src="img/pochons22.png" alt="Pochon personnalisé" class="product-hero-img" />
+    <img src="img/pochons22.jpg" alt="Pochon personnalisé" class="product-hero-img" />
   </div>
 
   <div class="product-card">
@@ -2898,8 +2931,8 @@ body[data-theme="night"] .product-card {
   <button class="btn-back" onclick="closeProduct()">← Retour</button>
 
   <div class="product-hero">
-    <video src="img/cartes.mp4" class="product-hero-img" poster="img/cartescata.png"
-           autoplay muted loop playsinline></video>
+    <video id="p3Video" src="img/cartes.mp4" class="product-hero-img" poster="img/cartescata.jpg"
+           preload="none" muted loop playsinline></video>
   </div>
 
   <div class="product-card">
@@ -2988,7 +3021,7 @@ body[data-theme="night"] .product-card {
   <button class="btn-back" onclick="closeProduct()">← Retour</button>
 
   <div class="product-hero">
-    <img src="img/fusées1.jpg" alt="Fusées 1,5 ml" class="product-hero-img" />
+    <img src="img/fusees1.jpg" alt="Fusées 1,5 ml" class="product-hero-img" />
   </div>
 
   <div class="product-card">
@@ -3369,7 +3402,7 @@ body[data-theme="night"] .product-card {
     </div>
     <div class="profile-hero-text">
       <div id="profileDisplayName" class="profile-hero-name">PochonStore</div>
-      <div id="profileHandle" class="profile-hero-handle">@pssv2</div>
+      <div id="profileHandle" class="profile-hero-handle">@offpss</div>
     </div>
   </div>
 
@@ -3636,7 +3669,7 @@ if (tg) {
     console.error('Erreur expand', e);
   }
 }
-var QUOTE_USERNAME = "pssv2";
+var QUOTE_USERNAME = "offpss";
 
 // Panier + historique
 var CART = [];
@@ -3703,35 +3736,43 @@ function applyProductFilter(){
   var input = document.getElementById('productSearch');
   if (!input) return;
 
-  var term = normalizeText(input.value.trim());
+  // recherche par mots-clés : "pochon prix" doit matcher même si les mots
+  // ne sont pas côte à côte dans le titre
+  var tokens = normalizeText(input.value.trim()).split(/\s+/).filter(Boolean);
 
   var cards = document.querySelectorAll('#productGrid .product-thumb');
+  var visibleCount = 0;
+
   cards.forEach(function(card){
-    // texte (titre + sous-titre)
     var titleEl = card.querySelector('.product-thumb-title');
     var subEl   = card.querySelector('.product-thumb-sub');
+    var tagsAttr = card.getAttribute('data-tags') || "";
 
-    var text = normalizeText(
+    // texte + tags fusionnés et normalisés (accents retirés des deux côtés,
+    // sinon "fusees" ne retrouve jamais un tag écrit "fusées")
+    var haystack = normalizeText(
       (titleEl ? titleEl.textContent : "") + " " +
-      (subEl   ? subEl.textContent   : "")
+      (subEl   ? subEl.textContent   : "") + " " +
+      tagsAttr
     );
 
-    // tags
-    var tagsAttr = (card.getAttribute('data-tags') || "").toLowerCase();
-    var tagList  = tagsAttr.split(',').map(function(t){ return t.trim(); }).filter(Boolean);
+    var tagList = normalizeText(tagsAttr).split(',').map(function(t){ return t.trim(); }).filter(Boolean);
 
-    var matchesTerm =
-      !term ||
-      text.indexOf(term) !== -1 ||
-      tagsAttr.indexOf(term) !== -1;
+    var matchesTerm = tokens.every(function(tok){ return haystack.indexOf(tok) !== -1; });
 
     var matchesTag =
       currentTagFilter === 'all' ||
       tagList.indexOf(currentTagFilter) !== -1;
 
-    // afficher / cacher
-    card.style.display = (matchesTerm && matchesTag) ? '' : 'none';
+    var visible = matchesTerm && matchesTag;
+    card.style.display = visible ? '' : 'none';
+    if (visible) visibleCount++;
   });
+
+  var emptyState = document.getElementById('searchEmptyState');
+  if (emptyState){
+    emptyState.style.display = visibleCount === 0 ? 'flex' : 'none';
+  }
 }
 
 function initProductSearch(){
@@ -3760,7 +3801,7 @@ function initProductSearch(){
         c.classList.remove('active');
       });
       this.classList.add('active');
-      currentTagFilter = this.getAttribute('data-tag') || 'all';
+      currentTagFilter = normalizeText(this.getAttribute('data-tag') || 'all');
       applyProductFilter();
     });
   });
@@ -3773,12 +3814,29 @@ function initProductSearch(){
       var grid = document.getElementById('productGrid');
       if (grid) grid.style.display = 'none';
 
+      var emptyState = document.getElementById('searchEmptyState');
+      if (emptyState) emptyState.style.display = 'none';
+
       document.querySelectorAll('[id^="productDetail_"]').forEach(function(e){
         e.classList.add('hidden');
       });
 
       var el = document.getElementById('productDetail_' + id);
       if (el) el.classList.remove('hidden');
+
+      // La vidéo de la fiche "Cartes" (5+ Mo) ne se charge/joue que si on ouvre vraiment cette fiche.
+      if (id === 'p3'){
+        var video = document.getElementById('p3Video');
+        if (video){
+          try{
+            if (video.getAttribute('preload') === 'none'){
+              video.setAttribute('preload', 'auto');
+              video.load();
+            }
+            video.play().catch(function(){ /* autoplay bloqué : l'utilisateur pourra taper play */ });
+          }catch(e){ console.error('lecture vidéo p3 impossible', e); }
+        }
+      }
 
       window.scrollTo(0,0);
     }
@@ -3789,6 +3847,13 @@ function initProductSearch(){
       });
       var grid = document.getElementById('productGrid');
       if (grid) grid.style.display = 'grid';
+
+      // On coupe la vidéo quand on quitte la fiche, pour ne pas la laisser tourner en arrière-plan.
+      var video = document.getElementById('p3Video');
+      if (video){
+        try{ video.pause(); }catch(e){}
+      }
+
       if (!fromTabSwitch) window.scrollTo(0,0);
     }
 
@@ -4916,13 +4981,25 @@ updateCartFabVisibility();
   }
 
   try{
+    var DIVIDER = "━━━━━━━━━━━━━━━━━━━━";
     var lines = [];
-    lines.push("🧾 Demande de devis – PochonStore");
-    lines.push("");
-    lines.push("Détail du panier :");
-    lines.push("");
+
+    lines.push("🧾 NOUVELLE DEMANDE DE DEVIS — PochonStore");
+    lines.push(DIVIDER);
+
+    // === Identité du client (si dispo via Telegram) ===
+    var tgUser = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user : null;
+    if (tgUser){
+      var clientName = ((tgUser.first_name || "") + " " + (tgUser.last_name || "")).trim() || "Client Telegram";
+      lines.push("👤 Client : " + clientName + (tgUser.username ? " (@" + tgUser.username + ")" : ""));
+      if (tgUser.id) lines.push("🆔 ID Telegram : " + tgUser.id);
+      lines.push("");
+    }
 
     var total = 0;
+
+    lines.push("🛒 ARTICLES (" + CART.length + ")");
+    lines.push("");
 
     for (var i = 0; i < CART.length; i++){
       var it = CART[i];
@@ -4945,14 +5022,14 @@ updateCartFabVisibility();
           parts.push(label + " : " + value);
         }
         if (parts.length){
-          lines.push("   • " + parts.join("\n   • "));
+          lines.push("    • " + parts.join("\n    • "));
         }
       }
 
       if (it.unit){
         var sousTotal = (it.unit || 0) * it.qty;
         total += sousTotal;
-        lines.push("   Sous-total estimé : " + euro(sousTotal));
+        lines.push("    Sous-total : " + euro(sousTotal));
       }
 
       lines.push("");
@@ -4961,8 +5038,8 @@ updateCartFabVisibility();
     // === PARTIE FRAIS / MOYEN DE PAIEMENT ===
     var fees = computePaymentFees(total, selectedPaymentMethod);
     var grandTotal = total + fees;
-    
-        // === Sauvegarde dans l’historique local ===
+
+    // === Sauvegarde dans l’historique local ===
     var snapshot = {
       date: new Date().toISOString(),
       items: CART.map(function(it){
@@ -4982,37 +5059,25 @@ updateCartFabVisibility();
     ORDER_HISTORY.push(snapshot);
     saveHistoryToStorage();
 
-    var paymentLabel;
-    switch(selectedPaymentMethod){
-      case 'paypal':  paymentLabel = "PayPal"; break;
-      case 'cash':    paymentLabel = "Main propre"; break;
-      case 'crypto':  paymentLabel = "Crypto"; break;
-      case 'tickets': paymentLabel = "Ticket tabac"; break;
-      default:        paymentLabel = "Non précisé"; break;
-    }
+    var paymentLabel = getPaymentLabel(selectedPaymentMethod);
 
-    lines.push("Mode de paiement souhaité : " + paymentLabel);
-    lines.push("Frais d’envoi automatiques : 0,00 €");
-
+    lines.push(DIVIDER);
+    lines.push("💳 Paiement : " + paymentLabel);
+    lines.push("💰 Sous-total produits : " + euro(total));
     if (fees > 0){
-      lines.push("Frais de paiement : " + euro(fees));
-    } else {
-      lines.push("Frais de paiement : 0,00 €");
+      lines.push("➕ Frais de paiement (" + paymentLabel + ") : " + euro(fees));
     }
-
-    lines.push("Total à payer estimé : " + euro(grandTotal));
+    lines.push("📦 Frais d’envoi : 0,00 € (non inclus automatiquement)");
+    lines.push("✅ TOTAL À PAYER ESTIMÉ : " + euro(grandTotal));
+    lines.push(DIVIDER);
     lines.push("");
-
-    // rappel du total produits seul
-    lines.push("Total estimé (produits seuls, min connu) : " + euro(total));
-    lines.push("");
-    lines.push("Merci de vérifier les informations puis d’envoyer ce message à PochonStore pour finaliser le devis.");
+    lines.push("Merci de confirmer ce devis pour lancer la commande 🙏");
 
     var message = lines.join("\n");
 
-    var url = "https://t.me/share/url"
-      + "?url="  + encodeURIComponent("https://t.me/" + QUOTE_USERNAME)
-      + "&text=" + encodeURIComponent(message);
+    // Ouvre DIRECTEMENT la conversation avec le message pré-rempli,
+    // au lieu du sélecteur de contact générique de Telegram.
+    var url = "https://t.me/" + QUOTE_USERNAME + "?text=" + encodeURIComponent(message);
 
     if (tg && tg.openTelegramLink){
       tg.openTelegramLink(url);
@@ -5021,7 +5086,7 @@ updateCartFabVisibility();
     }
 
     closeCart(true);
-    toast("Ouverture du chat avec PochonStore…");
+    toast("Ouverture de la conversation avec @" + QUOTE_USERNAME + "…");
         // Mettre à jour le rendu de l’historique dans l’onglet Profil
     renderHistory();
   }catch(e){
@@ -5094,8 +5159,6 @@ updateCartFabVisibility();
     }
     
     function openDevService(){
-  var baseUrl = "https://t.me/" + QUOTE_USERNAME;
-
   var intro =
     "👋 Salut, je viens de ta boutique PochonStore.\n" +
     "Je suis intéressé(e) par le développement d’une mini-app / WebApp sur mesure.\n\n" +
@@ -5105,9 +5168,8 @@ updateCartFabVisibility();
     "- Fonctionnalités souhaitées (catalogue, panier, devis, etc.) : \n" +
     "- Budget approximatif : \n";
 
-  var url = "https://t.me/share/url"
-    + "?url="  + encodeURIComponent(baseUrl)
-    + "&text=" + encodeURIComponent(intro);
+  // Lien direct vers la conversation, message pré-rempli (pas de sélecteur de contact générique).
+  var url = "https://t.me/" + QUOTE_USERNAME + "?text=" + encodeURIComponent(intro);
 
   if (tg && tg.openTelegramLink){
     tg.openTelegramLink(url);
