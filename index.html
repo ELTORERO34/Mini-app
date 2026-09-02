@@ -1320,6 +1320,18 @@
   color: var(--text-soft);
 }
 
+.cart-quote-hint {
+  margin: 0;
+  padding: 8px 16px 0;
+  font-size: .76rem;
+  line-height: 1.35;
+  color: var(--text-soft, #bdbdbd);
+}
+
+.cart-quote-hint strong {
+  color: var(--accent, #ffd766);
+}
+
 .cart-summary-line--grand {
   margin-top: 8px;
   padding-top: 8px;
@@ -3535,7 +3547,8 @@ body[data-theme="night"] .product-card {
   <!-- ===========================
        PAGE PANIER FULLSCREEN
        =========================== -->
-  <div id="cartModal" class="cart-page hidden" aria-hidden="true">
+  <div id="cartModal" class="cart-page hidden" aria-hidden="true"
+       onclick="if(event.target===this) closeCart();">
     <div class="cart-page-inner">
       <header class="cart-page-header">
         <div class="cart-page-title-block">
@@ -3591,6 +3604,12 @@ body[data-theme="night"] .product-card {
 
       <section id="cartItems" class="cart-items"></section>
 
+      <p class="cart-quote-hint">
+        💬 « Demander un devis » ouvre ta conversation Telegram avec <strong>@offpss</strong>,
+        message déjà rempli. Ton panier reste enregistré : tu peux rouvrir la boutique
+        à tout moment depuis le bot.
+      </p>
+
       <footer class="cart-page-footer">
         <button class="btn" type="button" onclick="clearCart()">Vider</button>
         <button class="btn primary" type="button" onclick="sendQuote()">Demander un devis</button>
@@ -3601,7 +3620,8 @@ body[data-theme="night"] .product-card {
       <!-- ===========================
      PAGE FAVORIS FULLSCREEN
      =========================== -->
-<div id="favModal" class="fav-page hidden" aria-hidden="true">
+<div id="favModal" class="fav-page hidden" aria-hidden="true"
+     onclick="if(event.target===this) closeFavorites();">
   <div class="fav-page-inner">
     <header class="cart-page-header">
       <div class="cart-page-title-block">
@@ -3689,6 +3709,18 @@ var selectedPaymentMethod = null;
     /* ===========================
        2) NAVIGATION TABS
        =========================== */
+    // Le vrai conteneur de scroll est <main> (overflow-y:auto), pas la fenêtre :
+    // sans remettre main.scrollTop à 0, ouvrir une fiche ou changer d'onglet après
+    // avoir défilé loin dans le catalogue laissait l'utilisateur au milieu de la
+    // nouvelle page au lieu du haut.
+    function scrollAppToTop(){
+      var main = document.getElementById('main');
+      if (main) main.scrollTop = 0;
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }
+
     function switchTab(btn){
   var tab = btn.getAttribute('data-tab'); // menu / infos / canal / contact / profil
 
@@ -3714,9 +3746,82 @@ var selectedPaymentMethod = null;
   closeCart(true);
 
   // on remonte simplement la page
-  window.scrollTo(0, 0);
-  document.documentElement.scrollTop = 0;
-  document.body.scrollTop = 0;
+  scrollAppToTop();
+}
+
+/* ===========================
+   BOUTON RETOUR NATIF TELEGRAM
+   ===========================
+   Sans ça, le geste "retour" du téléphone / la flèche native de
+   Telegram ne fait rien dans une Mini App (ou ferme direct l'appli) :
+   on branche donc notre propre pile de navigation dessus, avec un
+   ordre de priorité : modale ouverte > fiche produit ouverte > onglet
+   différent de Menu. */
+function syncBackButton(){
+  if (!tg || !tg.BackButton) return;
+  try{
+    var cartModal = document.getElementById('cartModal');
+    var favModal  = document.getElementById('favModal');
+    var cartOpen  = !!(cartModal && cartModal.classList.contains('show'));
+    var favOpen   = !!(favModal && favModal.classList.contains('show'));
+    var productOpen = !!document.querySelector('[id^="productDetail_"]:not(.hidden)');
+    var menuTab   = document.getElementById('tab-menu');
+    var onMenuTab = !!(menuTab && menuTab.classList.contains('active'));
+
+    if (cartOpen || favOpen || productOpen || !onMenuTab){
+      tg.BackButton.show();
+    } else {
+      tg.BackButton.hide();
+    }
+  }catch(e){
+    console.error('syncBackButton error', e);
+  }
+}
+
+function handleTelegramBack(){
+  var cartModal = document.getElementById('cartModal');
+  if (cartModal && cartModal.classList.contains('show')){
+    closeCart();
+    return;
+  }
+
+  var favModal = document.getElementById('favModal');
+  if (favModal && favModal.classList.contains('show')){
+    closeFavorites();
+    return;
+  }
+
+  var openDetail = document.querySelector('[id^="productDetail_"]:not(.hidden)');
+  if (openDetail){
+    closeProduct();
+    return;
+  }
+
+  var menuTab = document.getElementById('tab-menu');
+  if (menuTab && !menuTab.classList.contains('active')){
+    var menuBtn = document.querySelector('.nav-btn[data-tab="menu"]');
+    if (menuBtn) switchTab(menuBtn);
+  }
+}
+
+/* ===========================
+   OUVERTURE D'UNE CONVERSATION TELEGRAM
+   ===========================
+   Utilisé par le devis, le contact, le canal, le suivi colis et le
+   service dev : on prévient d'abord l'utilisateur (toast) avant de
+   quitter la mini-app vers le chat, car Telegram ne permet pas de
+   revenir automatiquement dans l'appli après ça — le panier et
+   l'historique restent enregistrés en local, donc rien n'est perdu. */
+function goToTelegramChat(url, label){
+  if (label) toast(label);
+
+  setTimeout(function(){
+    if (tg && tg.openTelegramLink){
+      tg.openTelegramLink(url);
+    } else {
+      window.open(url, "_blank");
+    }
+  }, 500);
 }
 
 /* ===========================
@@ -3838,7 +3943,8 @@ function initProductSearch(){
         }
       }
 
-      window.scrollTo(0,0);
+      scrollAppToTop();
+      syncBackButton();
     }
 
     function closeProduct(fromTabSwitch){
@@ -3854,7 +3960,8 @@ function initProductSearch(){
         try{ video.pause(); }catch(e){}
       }
 
-      if (!fromTabSwitch) window.scrollTo(0,0);
+      if (!fromTabSwitch) scrollAppToTop();
+      syncBackButton();
     }
 
     /* ===========================
@@ -4298,6 +4405,7 @@ function addPack(kind, btn){
       }
       var fab = document.getElementById('cartFab');
       if (fab) fab.style.display = 'none';
+      syncBackButton();
     }
 
     function closeCart(){
@@ -4316,6 +4424,7 @@ function addPack(kind, btn){
       fab.style.display = 'none';
     }
   }
+  syncBackButton();
 }
 
     function updateCartFabVisibility(){
@@ -4621,6 +4730,7 @@ function openFavorites(){
   if (!modal) return;
   modal.classList.remove('hidden');
   modal.classList.add('show');
+  syncBackButton();
 }
 
 function closeFavorites(fromNav){
@@ -4628,6 +4738,7 @@ function closeFavorites(fromNav){
   if (!modal) return;
   modal.classList.remove('show');
   modal.classList.add('hidden');
+  syncBackButton();
 }
 
     /* ===========================
@@ -4960,10 +5071,20 @@ function renderHistory(){
     }
 
     function clearCart(){
+  if (!CART.length){
+    toast("Le panier est déjà vide.");
+    return;
+  }
+
+  if (!confirm("Vider tout le panier ?")){
+    return;
+  }
+
   CART = [];
-renderCart();
-saveCartToStorage();
-updateCartFabVisibility();
+  renderCart();
+  saveCartToStorage();
+  updateCartFabVisibility();
+  toast("Panier vidé.");
 }
 
     /* ===========================
@@ -5079,16 +5200,12 @@ updateCartFabVisibility();
     // au lieu du sélecteur de contact générique de Telegram.
     var url = "https://t.me/" + QUOTE_USERNAME + "?text=" + encodeURIComponent(message);
 
-    if (tg && tg.openTelegramLink){
-      tg.openTelegramLink(url);
-    } else {
-      window.open(url, "_blank");
-    }
-
+    // On nettoie l'UI et on met à jour l'historique AVANT de quitter la
+    // mini-app, pour que tout soit déjà en ordre si l'utilisateur revient.
     closeCart(true);
-    toast("Ouverture de la conversation avec @" + QUOTE_USERNAME + "…");
-        // Mettre à jour le rendu de l’historique dans l’onglet Profil
     renderHistory();
+
+    goToTelegramChat(url, "Ouverture de la conversation avec @" + QUOTE_USERNAME + "…");
   }catch(e){
     console.error(e);
     toast("Erreur lors de la préparation du devis.");
@@ -5114,20 +5231,12 @@ updateCartFabVisibility();
        =========================== */
     function openChannel(){
       var url = "https://t.me/+BQ5eqgaiZG80MTY0";
-      if (tg && tg.openTelegramLink){
-        tg.openTelegramLink(url);
-      } else {
-        window.open(url,'_blank');
-      }
+      goToTelegramChat(url, "Ouverture du canal PochonStore…");
     }
 
     function openContact(){
       var url = "https://t.me/" + QUOTE_USERNAME;
-      if (tg && tg.openTelegramLink){
-        tg.openTelegramLink(url);
-      } else {
-        window.open(url,'_blank');
-      }
+      goToTelegramChat(url, "Ouverture de la conversation avec @" + QUOTE_USERNAME + "…");
     }
 
     function openTrackBot(){
@@ -5142,11 +5251,7 @@ updateCartFabVisibility();
         }
       }
 
-      if (tg && tg.openTelegramLink){
-        tg.openTelegramLink(url);
-      } else {
-        window.open(url, "_blank");
-      }
+      goToTelegramChat(url, "Ouverture de TrackBot…");
     }
 
     function openLinksHub(){
@@ -5171,11 +5276,7 @@ updateCartFabVisibility();
   // Lien direct vers la conversation, message pré-rempli (pas de sélecteur de contact générique).
   var url = "https://t.me/" + QUOTE_USERNAME + "?text=" + encodeURIComponent(intro);
 
-  if (tg && tg.openTelegramLink){
-    tg.openTelegramLink(url);
-  } else {
-    window.open(url, "_blank");
-  }
+  goToTelegramChat(url, "Ouverture de la conversation avec @" + QUOTE_USERNAME + "…");
 }
 
 // ===========================
@@ -5236,6 +5337,15 @@ document.addEventListener('DOMContentLoaded', function(){
   //    cliquables même si une étape suivante (historique, favoris...) plante.
   try { initTheme(); } catch(e){ console.error('initTheme error', e); }
 
+  // Bouton retour natif Telegram : un seul enregistrement du clic,
+  // l'état (affiché/caché) est ensuite piloté par syncBackButton().
+  try {
+    if (tg && tg.BackButton){
+      tg.BackButton.onClick(handleTelegramBack);
+      syncBackButton();
+    }
+  } catch(e){ console.error('init BackButton error', e); }
+
   // 1) Recherche / catalogue
   try {
     if (typeof initProductSearch === 'function') initProductSearch();
@@ -5244,16 +5354,28 @@ document.addEventListener('DOMContentLoaded', function(){
   // 2) Splash
   var splash = document.getElementById('splash');
   if (splash){
-    setTimeout(function(){ splash.classList.add('splash--show-text'); }, 400);
-    setTimeout(function(){ splash.classList.add('splash--show-dots'); }, 900);
-    setTimeout(function(){
+    var splashDismissed = false;
+    var splashTimers = [];
+
+    var hideSplash = function(){
+      if (splashDismissed) return;
+      splashDismissed = true;
+      splashTimers.forEach(function(t){ clearTimeout(t); });
       splash.classList.add('splash--hide');
       setTimeout(function(){
         if (splash && splash.parentNode){
           splash.parentNode.removeChild(splash);
         }
       }, 600);
-    }, 4500);
+    };
+
+    splashTimers.push(setTimeout(function(){ splash.classList.add('splash--show-text'); }, 400));
+    splashTimers.push(setTimeout(function(){ splash.classList.add('splash--show-dots'); }, 900));
+    splashTimers.push(setTimeout(hideSplash, 4500));
+
+    // Un tap n'importe où sur l'écran d'accueil permet de passer directement
+    // à la boutique, plutôt que de forcer les 4,5s à chaque ouverture.
+    splash.addEventListener('click', hideSplash);
   }
 
   // 3) Panier + historique
