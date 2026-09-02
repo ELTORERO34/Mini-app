@@ -5225,8 +5225,15 @@ function renderHistory(){
     // au lieu du sélecteur de contact générique de Telegram.
     var url = "https://t.me/" + QUOTE_USERNAME + "?text=" + encodeURIComponent(message);
 
-    // On nettoie l'UI et on met à jour l'historique AVANT de quitter la
-    // mini-app, pour que tout soit déjà en ordre si l'utilisateur revient.
+    // Le devis est parti : on vide le panier (déjà sauvegardé dans
+    // l'historique juste au-dessus) et on met à jour l'UI AVANT de
+    // quitter la mini-app, pour que tout soit déjà en ordre si
+    // l'utilisateur revient.
+    CART = [];
+    renderCart();
+    saveCartToStorage();
+    updateCartFabVisibility();
+
     closeCart(true);
     renderHistory();
 
