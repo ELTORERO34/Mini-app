@@ -4006,6 +4006,15 @@ function initProductSearch(){
       el.value = v;
     }
 
+    // Remet le stepper de quantité à 1 après un ajout au panier réussi.
+    // Sans ça, la quantité choisie reste affichée indéfiniment (même en
+    // rouvrant la fiche plus tard) : facile d'ajouter deux fois plus que
+    // prévu en oubliant qu'elle n'est pas revenue à 1.
+    function resetQty(id){
+      var el = document.getElementById(id);
+      if (el) el.value = 1;
+    }
+
     /* ===========================
        5) ANIM : FLY TO CART
        =========================== */
@@ -4107,6 +4116,7 @@ function initProductSearch(){
         renderCart();
         toast('Pochons ajoutés');
         flyToCart(btn);
+        resetQty('p1_qty');
       }catch(e){
         console.error(e);
       }
@@ -4148,6 +4158,7 @@ function initProductSearch(){
         renderCart();
         toast('Tableaux ajoutés');
         flyToCart(btn);
+        resetQty('p2_qty');
       }catch(e){
         console.error(e);
       }
@@ -4187,6 +4198,7 @@ function initProductSearch(){
         renderCart();
         toast('Cartes ajoutées');
         flyToCart(btn);
+        resetQty('p3_qty');
       }catch(e){
         console.error(e);
       }
@@ -4226,6 +4238,7 @@ function initProductSearch(){
         renderCart();
         toast('Étiquettes ajoutées');
         flyToCart(btn);
+        resetQty('p4_qty');
       }catch(e){
         console.error(e);
       }
@@ -4259,6 +4272,7 @@ function initProductSearch(){
         renderCart();
         toast('Scelleuse ajoutée');
         flyToCart(btn);
+        resetQty('p5_qty');
       }catch(e){
         console.error(e);
       }
@@ -4300,6 +4314,7 @@ function initProductSearch(){
         renderCart();
         toast('Fusées ajoutées');
         flyToCart(btn);
+        resetQty('p6_qty');
       }catch(e){
         console.error(e);
       }
@@ -4345,6 +4360,7 @@ function initProductSearch(){
         renderCart();
         toast('Design ajouté au panier');
         flyToCart(btn);
+        resetQty('p7_qty');
       }catch(e){
         console.error(e);
       }
