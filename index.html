@@ -1214,6 +1214,25 @@
       color: rgba(230,230,230,.85);
     }
 
+    /* Bouton retour des pages plein écran (panier / favoris) : texte
+       explicite + couleur accent pour qu'il soit immédiatement repérable,
+       au lieu d'une simple croix qui pouvait passer inaperçue. */
+    .cart-close-btn {
+      flex-shrink: 0;
+      border: 1px solid rgba(255,215,100,0.6);
+      background: rgba(255,215,100,0.1);
+      color: #ffd766;
+      font-weight: 600;
+      font-size: 0.82rem;
+      padding: 8px 12px;
+      border-radius: 10px;
+      white-space: nowrap;
+    }
+
+    .cart-close-btn:active {
+      transform: scale(0.96);
+    }
+
     .cart-page-summary {
       padding: 10px 16px 8px;
       border-bottom: 1px solid rgba(255,255,255,0.06);
@@ -1358,12 +1377,18 @@
       font-weight: 600;
     }
 
+    /* Conteneur qui défile réellement : résumé + articles + note tiennent
+       ensemble dedans, pour que rien (surtout pas les boutons du footer)
+       ne se retrouve coupé hors de l'écran sur un panier bien rempli. */
+    .cart-page-scroll {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
     .cart-items {
   padding: 8px 12px 10px;
-  overflow-y: auto;
-  flex: 1;
-  min-height: 0;                 /* ⬅️ important pour le scroll */
-  -webkit-overflow-scrolling: touch;
 }
 
     .cart-item {
@@ -3555,10 +3580,11 @@ body[data-theme="night"] .product-card {
           <h2>Votre sélection</h2>
           <p>Vérifie bien ta commande avant de demander ton devis.</p>
         </div>
-        <button class="btn" type="button" onclick="closeCart()">✕</button>
+        <button class="cart-close-btn" type="button" onclick="closeCart()">← Retour</button>
       </header>
 
-      <section class="cart-page-summary">
+      <div class="cart-page-scroll">
+        <section class="cart-page-summary">
   <!-- ligne articles -->
   <div class="cart-summary-line">
     <span>Articles</span>
@@ -3602,13 +3628,14 @@ body[data-theme="night"] .product-card {
   </div>
 </section>
 
-      <section id="cartItems" class="cart-items"></section>
+        <section id="cartItems" class="cart-items"></section>
 
-      <p class="cart-quote-hint">
-        💬 « Demander un devis » ouvre ta conversation Telegram avec <strong>@offpss</strong>,
-        message déjà rempli. Ton panier reste enregistré : tu peux rouvrir la boutique
-        à tout moment depuis le bot.
-      </p>
+        <p class="cart-quote-hint">
+          💬 « Demander un devis » ouvre ta conversation Telegram avec <strong>@offpss</strong>,
+          message déjà rempli. Ton panier reste enregistré : tu peux rouvrir la boutique
+          à tout moment depuis le bot.
+        </p>
+      </div>
 
       <footer class="cart-page-footer">
         <button class="btn" type="button" onclick="clearCart()">Vider</button>
@@ -3628,7 +3655,7 @@ body[data-theme="night"] .product-card {
         <h2>Vos favoris</h2>
         <p>Retrouve ici les produits que tu as marqués en ⭐.</p>
       </div>
-      <button class="btn" type="button" onclick="closeFavorites()">✕</button>
+      <button class="cart-close-btn" type="button" onclick="closeFavorites()">← Retour</button>
     </header>
 
     <section id="favGrid" class="fav-grid">
@@ -3808,20 +3835,18 @@ function handleTelegramBack(){
    OUVERTURE D'UNE CONVERSATION TELEGRAM
    ===========================
    Utilisé par le devis, le contact, le canal, le suivi colis et le
-   service dev : on prévient d'abord l'utilisateur (toast) avant de
-   quitter la mini-app vers le chat, car Telegram ne permet pas de
-   revenir automatiquement dans l'appli après ça — le panier et
-   l'historique restent enregistrés en local, donc rien n'est perdu. */
+   service dev. L'appel à tg.openTelegramLink() DOIT rester synchrone
+   avec le clic de l'utilisateur : un delai (setTimeout) avant l'appel
+   fait que Telegram ne le reconnaît plus comme une action directement
+   déclenchée par l'utilisateur et peut l'ignorer silencieusement —
+   c'est ce qui empêchait le devis de s'ouvrir correctement. */
 function goToTelegramChat(url, label){
+  if (tg && tg.openTelegramLink){
+    tg.openTelegramLink(url);
+  } else {
+    window.open(url, "_blank");
+  }
   if (label) toast(label);
-
-  setTimeout(function(){
-    if (tg && tg.openTelegramLink){
-      tg.openTelegramLink(url);
-    } else {
-      window.open(url, "_blank");
-    }
-  }, 500);
 }
 
 /* ===========================
