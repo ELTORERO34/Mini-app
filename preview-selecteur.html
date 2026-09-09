@@ -66,6 +66,12 @@
     .layout{ grid-template-columns:1fr; }
   }
 
+  .demos-stack{
+    display:flex;
+    flex-direction:column;
+    gap:26px;
+  }
+
   /* ============ CADRE "TELEPHONE" ============ */
   .phone{
     background:var(--card-flat);
@@ -73,6 +79,17 @@
     border-radius:28px;
     padding:14px 14px 20px;
     box-shadow:0 30px 60px rgba(0,0,0,.55);
+  }
+
+  .demo-title{
+    margin:2px 4px 12px;
+    font-size:.82rem;
+    font-weight:800;
+  }
+
+  .demo-title span{
+    font-weight:400;
+    color:var(--muted-dim);
   }
 
   .section-label{
@@ -139,6 +156,13 @@
     border:none;
     border-top:1px solid var(--border);
     margin:0 4px 22px;
+  }
+
+  .before-hint{
+    margin:8px 2px 0;
+    font-size:.7rem;
+    color:var(--muted-dim);
+    font-style:italic;
   }
 
   /* ---- APRES : puces ---- */
@@ -284,6 +308,53 @@
     white-space:nowrap;
   }
 
+  /* ---- Bloc prix : gros, dore, impossible a manquer ---- */
+  .price-panel{
+    margin:16px 0 0;
+    padding:12px 14px;
+    border-radius:14px;
+    background:linear-gradient(135deg, rgba(255,215,100,.16), rgba(255,215,100,.03));
+    border:1px solid rgba(255,215,100,.45);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+  }
+
+  .price-panel-label{
+    display:block;
+    font-size:.68rem;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    color:var(--muted-dim);
+  }
+
+  .price-panel-format{
+    font-size:.86rem;
+    font-weight:700;
+    margin-top:2px;
+  }
+
+  .price-panel-amounts{
+    text-align:right;
+  }
+
+  .price-panel-value{
+    display:block;
+    font-size:1.35rem;
+    font-weight:800;
+    color:var(--accent);
+    font-variant-numeric:tabular-nums;
+    line-height:1.1;
+  }
+
+  .price-panel-sub{
+    display:block;
+    font-size:.72rem;
+    color:var(--muted);
+    font-variant-numeric:tabular-nums;
+  }
+
   .btn-add{
     width:100%;
     margin-top:14px;
@@ -352,11 +423,13 @@
 <div class="page-head">
   <div class="eyebrow">Aperçu de composant · PochonStore</div>
   <h1>Sélection d'options : menus natifs → puces</h1>
-  <p>Fiche « Pochon personnalisé » utilisée comme exemple (5 groupes d'options, le cas le plus chargé du catalogue). Cliquable ci-dessous.</p>
+  <p>Deux cas concrets : le Pochon (beaucoup de groupes d'options simples) et le Tableau (un choix qui doit d'abord filtrer les tailles disponibles, avec un vrai prix bien visible). Cliquable ci-dessous.</p>
 </div>
 
 <div class="layout">
-  <div class="phone">
+  <div class="demos-stack">
+  <div class="phone" id="pochonDemo">
+    <p class="demo-title">Pochon personnalisé <span>— beaucoup de groupes</span></p>
 
     <div class="section-label avant">
       <span class="dot"></span>
@@ -460,6 +533,84 @@
     </div>
   </div>
 
+  <div class="phone" id="tableauDemo">
+    <p class="demo-title">Tableau personnalisé <span>— choix à 2 niveaux</span></p>
+
+    <div class="section-label avant">
+      <span class="dot"></span>
+      <span class="tag">Actuellement</span>
+    </div>
+
+    <div class="before-block">
+      <p class="before-title">Tableau personnalisé</p>
+      <div class="native-row">
+        <label>Format</label>
+        <select>
+          <option>Panoramique 60×20 — 50 €</option>
+          <option>Panoramique 60×30 — 60 €</option>
+          <option>Panoramique 80×40 — 80 €</option>
+          <option>Panoramique 100×50 — 100 €</option>
+          <option>Panoramique 120×60 — 120 €</option>
+          <option>Populaire 60×40 — 70 €</option>
+          <option>Populaire 80×60 — 90 €</option>
+          <option>Populaire 90×60 — 100 €</option>
+          <option>Carré 60×60 — 70 €</option>
+          <option>Carré 80×80 — 90 €</option>
+        </select>
+      </div>
+      <p class="before-hint">10 options à la suite dans une seule liste, sans distinction visuelle entre les formes.</p>
+    </div>
+
+    <hr class="split" />
+
+    <div class="section-label apres">
+      <span class="dot"></span>
+      <span class="tag">Proposition</span>
+    </div>
+
+    <div class="after-block">
+      <div class="product-title-mini">Tableau personnalisé</div>
+      <p class="product-desc-mini">Impression haute qualité sur toile.</p>
+
+      <div class="opt-group">
+        <div class="opt-group-label"><span>Forme</span></div>
+        <div class="chip-row" id="tabCategoryRow">
+          <!-- généré en JS -->
+        </div>
+      </div>
+
+      <div class="opt-group">
+        <div class="opt-group-label"><span>Taille</span></div>
+        <div class="chip-row" id="tabSizeRow">
+          <!-- dépend de la forme choisie, généré en JS -->
+        </div>
+      </div>
+
+      <div class="price-panel">
+        <div>
+          <span class="price-panel-label">Format sélectionné</span>
+          <div class="price-panel-format" id="tabFormatLabel">—</div>
+        </div>
+        <div class="price-panel-amounts">
+          <span class="price-panel-value" id="tabPrice">—</span>
+          <span class="price-panel-sub" id="tabTotalLine"></span>
+        </div>
+      </div>
+
+      <div class="qty-block">
+        <span class="qty-label">Combien de toiles ?</span>
+        <div class="stepper">
+          <button type="button" id="tabQtyMinus">−</button>
+          <span class="qty-value" id="tabQtyValue">1</span>
+          <button type="button" id="tabQtyPlus">+</button>
+        </div>
+      </div>
+
+      <button class="btn-add" id="tabBtnAdd" type="button">Ajouter</button>
+    </div>
+  </div>
+  </div>
+
   <div class="notes">
     <h2>Ce qui change concrètement</h2>
 
@@ -488,6 +639,22 @@
     </div>
 
     <div class="note-item">
+      <div class="note-icon">🧭</div>
+      <div class="note-text">
+        <h3>Choix à 2 niveaux quand il y a beaucoup d'options</h3>
+        <p>Pour les Tableaux, au lieu d'une seule liste de 10 formats mélangés, on choisit d'abord la forme (Populaire en premier, c'est la plus achetée), et seules les tailles qui existent pour cette forme s'affichent ensuite. Deux clics au lieu de faire défiler 10 lignes.</p>
+      </div>
+    </div>
+
+    <div class="note-item">
+      <div class="note-icon">💰</div>
+      <div class="note-text">
+        <h3>Le prix, impossible à manquer</h3>
+        <p>Plus un prix noyé dans le texte d'une puce : un bloc dédié, bien mis en avant en doré, affiche le format choisi et son prix — et le total dès que la quantité change.</p>
+      </div>
+    </div>
+
+    <div class="note-item">
       <div class="note-icon">👍</div>
       <div class="note-text">
         <h3>Zéro changement de logique</h3>
@@ -498,53 +665,163 @@
 </div>
 
 <script>
+  /* ===================== DEMO 1 : POCHON (groupes simples) ===================== */
   var BASE_TEXT = "Estimation : à partir de 0,80€/pièce (500 pcs)";
+  var pochonDemo = document.getElementById('pochonDemo');
 
   function selectChip(group, btn){
     group.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('active'); });
     btn.classList.add('active');
-    updateEstimate();
+    updatePochonEstimate();
   }
 
-  document.querySelectorAll('.opt-group').forEach(function(group){
+  pochonDemo.querySelectorAll('.opt-group').forEach(function(group){
     group.querySelectorAll('.chip').forEach(function(btn){
       btn.addEventListener('click', function(){ selectChip(group, btn); });
     });
   });
 
-  var qty = 1;
+  var pochonQty = 1;
   var qtyValueEl = document.getElementById('qtyValue');
 
   document.getElementById('qtyMinus').addEventListener('click', function(){
-    qty = Math.max(1, qty - 1);
-    qtyValueEl.textContent = qty;
-    updateEstimate();
+    pochonQty = Math.max(1, pochonQty - 1);
+    qtyValueEl.textContent = pochonQty;
+    updatePochonEstimate();
   });
   document.getElementById('qtyPlus').addEventListener('click', function(){
-    qty = qty + 1;
-    qtyValueEl.textContent = qty;
-    updateEstimate();
+    pochonQty = pochonQty + 1;
+    qtyValueEl.textContent = pochonQty;
+    updatePochonEstimate();
   });
 
-  function updateEstimate(){
+  function updatePochonEstimate(){
     var extra = 0;
-    document.querySelectorAll('.opt-group .chip.active').forEach(function(c){
+    pochonDemo.querySelectorAll('.opt-group .chip.active').forEach(function(c){
       extra += parseInt(c.getAttribute('data-surcharge') || '0', 10);
     });
-    extra = extra * qty;
+    extra = extra * pochonQty;
 
     var extraEl = document.getElementById('estimateExtra');
     extraEl.textContent = extra > 0 ? ('+' + extra + ',00 €') : '';
   }
 
   document.getElementById('btnAdd').addEventListener('click', function(){
-    var btn = this;
+    flashAdded(this);
+  });
+
+  updatePochonEstimate();
+
+  /* ===================== DEMO 2 : TABLEAU (choix a 2 niveaux) ===================== */
+  // Populaire en premier : c'est la forme la plus achetee, elle doit
+  // apparaitre par defaut a l'ouverture de la fiche plutot que Panoramique.
+  var TABLEAUX = {
+    "Populaire": [
+      { taille: "60×40", prix: 70 },
+      { taille: "80×60", prix: 90 },
+      { taille: "90×60", prix: 100 }
+    ],
+    "Carré": [
+      { taille: "60×60", prix: 70 },
+      { taille: "80×80", prix: 90 }
+    ],
+    "Panoramique": [
+      { taille: "60×20", prix: 50 },
+      { taille: "60×30", prix: 60 },
+      { taille: "80×40", prix: 80 },
+      { taille: "100×50", prix: 100 },
+      { taille: "120×60", prix: 120 }
+    ]
+  };
+
+  var tabCategoryRow = document.getElementById('tabCategoryRow');
+  var tabSizeRow = document.getElementById('tabSizeRow');
+  var tabQty = 1;
+  var tabQtyValueEl = document.getElementById('tabQtyValue');
+  var currentCategory = null;
+  var currentSize = null;
+
+  function buildCategoryChips(){
+    tabCategoryRow.innerHTML = '';
+    Object.keys(TABLEAUX).forEach(function(cat, i){
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'chip' + (i === 0 ? ' active' : '');
+      btn.textContent = cat;
+      if (cat === 'Populaire'){
+        var tag = document.createElement('span');
+        tag.className = 'surcharge';
+        tag.textContent = 'le + acheté';
+        btn.appendChild(tag);
+      }
+      btn.addEventListener('click', function(){
+        tabCategoryRow.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('active'); });
+        btn.classList.add('active');
+        currentCategory = cat;
+        buildSizeChips(cat);
+      });
+      tabCategoryRow.appendChild(btn);
+    });
+    currentCategory = Object.keys(TABLEAUX)[0];
+  }
+
+  function buildSizeChips(category){
+    tabSizeRow.innerHTML = '';
+    TABLEAUX[category].forEach(function(opt, i){
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'chip' + (i === 0 ? ' active' : '');
+      btn.textContent = opt.taille;
+      btn.addEventListener('click', function(){
+        tabSizeRow.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('active'); });
+        btn.classList.add('active');
+        currentSize = opt;
+        updateTabPrice();
+      });
+      tabSizeRow.appendChild(btn);
+    });
+    currentSize = TABLEAUX[category][0];
+    updateTabPrice();
+  }
+
+  function updateTabPrice(){
+    if (!currentSize || !currentCategory) return;
+    document.getElementById('tabFormatLabel').textContent = currentCategory + ' ' + currentSize.taille;
+    document.getElementById('tabPrice').textContent = currentSize.prix.toFixed(2).replace('.', ',') + ' €';
+
+    var subEl = document.getElementById('tabTotalLine');
+    if (tabQty > 1){
+      var total = currentSize.prix * tabQty;
+      subEl.textContent = '× ' + tabQty + ' = ' + total.toFixed(2).replace('.', ',') + ' €';
+    } else {
+      subEl.textContent = '';
+    }
+  }
+
+  document.getElementById('tabQtyMinus').addEventListener('click', function(){
+    tabQty = Math.max(1, tabQty - 1);
+    tabQtyValueEl.textContent = tabQty;
+    updateTabPrice();
+  });
+  document.getElementById('tabQtyPlus').addEventListener('click', function(){
+    tabQty = tabQty + 1;
+    tabQtyValueEl.textContent = tabQty;
+    updateTabPrice();
+  });
+
+  document.getElementById('tabBtnAdd').addEventListener('click', function(){
+    flashAdded(this);
+  });
+
+  buildCategoryChips();
+  buildSizeChips(currentCategory);
+
+  /* ===================== PARTAGE ===================== */
+  function flashAdded(btn){
     var original = btn.textContent;
     btn.textContent = 'Ajouté ✓';
     setTimeout(function(){ btn.textContent = original; }, 900);
-  });
-
-  updateEstimate();
+  }
 </script>
 </body>
 </html>
