@@ -3062,71 +3062,70 @@ body[data-theme="night"] .product-card {
       <span class="pill">Min : 500 pièces</span>
       <span class="pill">Délai : environ 20 jours</span>
     </div>
-    <div class="opt-group" id="p1_quantite_group">
-      <div class="opt-group-label">Quantité (pack)</div>
-      <div class="opt-chip-row" id="p1_quantite_row">
-        <button type="button" class="opt-chip active" data-value="500">500</button>
-        <button type="button" class="opt-chip" data-value="1000">1000</button>
-        <button type="button" class="opt-chip" data-value="2000">2000</button>
-        <button type="button" class="opt-chip" data-value="5000">5000</button>
-        <button type="button" class="opt-chip" data-value="+ sur devis">+ sur devis</button>
-      </div>
-      <input type="hidden" id="p1_quantite" value="500">
-    </div>
 
     <div class="opt-group">
       <div class="opt-group-label">Type de pochon</div>
       <div class="opt-chip-row" id="p1_type_row">
-        <!-- généré en JS : Cali bag / Sachet plat / Forme spécial -->
+        <!-- généré en JS : Cali bag / Sachet plat / Forme spécial, aucun
+             présélectionné : c'est la première décision à prendre. -->
       </div>
       <input type="hidden" id="p1_type" value="">
     </div>
 
-    <div class="opt-group">
-      <div class="opt-group-label">Taille</div>
-      <div id="p1_taille_wrap">
-        <div class="opt-chip-row" id="p1_taille_row">
-          <!-- dépend du type choisi, généré en JS -->
+    <!-- Caché tant que le type n'est pas choisi : on ne montre pas tout
+         d'un coup, ça guide le client étape par étape. -->
+    <div id="p1_options_wrap" class="hidden">
+      <div class="opt-group">
+        <div class="opt-group-label">Taille</div>
+        <div id="p1_taille_wrap">
+          <div class="opt-chip-row" id="p1_taille_row">
+            <!-- dépend du type choisi, généré en JS -->
+          </div>
         </div>
       </div>
+
+      <div class="opt-group">
+        <div class="opt-group-label">Finition</div>
+        <div class="opt-chip-row" id="p1_finition_row">
+          <button type="button" class="opt-chip active" data-value="Matte">Matte</button>
+          <button type="button" class="opt-chip" data-value="Brillant">Brillant</button>
+          <button type="button" class="opt-chip" data-value="Holographique">Holographique</button>
+        </div>
+        <input type="hidden" id="p1_finition" value="Matte">
+      </div>
+
+      <div class="opt-group">
+        <div class="opt-group-label">Impression</div>
+        <div class="opt-chip-row" id="p1_impression_row">
+          <button type="button" class="opt-chip active" data-value="1 design">1 design</button>
+          <button type="button" class="opt-chip" data-value="multi designs +40€">multi designs<span class="surcharge">+40€</span></button>
+        </div>
+        <input type="hidden" id="p1_impression" value="1 design">
+      </div>
+
+      <div class="opt-group" id="p1_fenetre_group">
+        <div class="opt-group-label">Fenêtre</div>
+        <div class="opt-chip-row" id="p1_fenetre_row">
+          <button type="button" class="opt-chip active" data-value="sans fenêtre">sans fenêtre</button>
+          <button type="button" class="opt-chip" data-value="avec fenêtre +40€">avec fenêtre<span class="surcharge">+40€</span></button>
+        </div>
+        <input type="hidden" id="p1_fenetre" value="sans fenêtre">
+      </div>
+
+      <!-- Dernière étape : la quantité (pack). -->
+      <div class="opt-group" id="p1_quantite_group">
+        <div class="opt-group-label">Quantité (pack)</div>
+        <div class="opt-chip-row" id="p1_quantite_row">
+          <button type="button" class="opt-chip active" data-value="500">500</button>
+          <button type="button" class="opt-chip" data-value="1000">1000</button>
+          <button type="button" class="opt-chip" data-value="2000">2000</button>
+          <button type="button" class="opt-chip" data-value="5000">5000</button>
+          <button type="button" class="opt-chip" data-value="+ sur devis">+ sur devis</button>
+        </div>
+        <input type="hidden" id="p1_quantite" value="500">
+      </div>
     </div>
 
-    <div class="opt-group">
-      <div class="opt-group-label">Finition</div>
-      <div class="opt-chip-row" id="p1_finition_row">
-        <button type="button" class="opt-chip active" data-value="Matte">Matte</button>
-        <button type="button" class="opt-chip" data-value="Brillant">Brillant</button>
-        <button type="button" class="opt-chip" data-value="Holographique">Holographique</button>
-      </div>
-      <input type="hidden" id="p1_finition" value="Matte">
-    </div>
-
-    <div class="opt-group">
-      <div class="opt-group-label">Impression</div>
-      <div class="opt-chip-row" id="p1_impression_row">
-        <button type="button" class="opt-chip active" data-value="1 design">1 design</button>
-        <button type="button" class="opt-chip" data-value="multi designs +40€">multi designs<span class="surcharge">+40€</span></button>
-      </div>
-      <input type="hidden" id="p1_impression" value="1 design">
-    </div>
-
-    <div class="opt-group" id="p1_fenetre_group">
-      <div class="opt-group-label">Fenêtre</div>
-      <div class="opt-chip-row" id="p1_fenetre_row">
-        <button type="button" class="opt-chip active" data-value="sans fenêtre">sans fenêtre</button>
-        <button type="button" class="opt-chip" data-value="avec fenêtre +40€">avec fenêtre<span class="surcharge">+40€</span></button>
-      </div>
-      <input type="hidden" id="p1_fenetre" value="sans fenêtre">
-    </div>
-
-    <div class="qty-stepper-row">
-      <span class="qty-stepper-label">Quantité</span>
-      <div class="stepper">
-        <button type="button" onclick="dec('p1_qty')">−</button>
-        <input id="p1_qty" type="number" min="1" value="1" />
-        <button type="button" onclick="inc('p1_qty')">+</button>
-      </div>
-    </div>
     <button class="btn primary btn-add-full" type="button" onclick="addP1(this)">Ajouter</button>
   </div>
 </div>
@@ -4342,11 +4341,13 @@ function initProductSearch(){
       var typeRow = document.getElementById('p1_type_row');
       if (!typeRow) return;
 
+      // Aucun type présélectionné : c'est la première décision que le
+      // client doit prendre, le reste de la fiche reste caché jusque-là.
       typeRow.innerHTML = '';
-      Object.keys(POCHON_TAILLES).forEach(function(type, i){
+      Object.keys(POCHON_TAILLES).forEach(function(type){
         var btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = 'opt-chip' + (i === 0 ? ' active' : '');
+        btn.className = 'opt-chip';
         btn.textContent = type;
         btn.addEventListener('click', function(){
           typeRow.querySelectorAll('.opt-chip').forEach(function(c){ c.classList.remove('active'); });
@@ -4354,14 +4355,12 @@ function initProductSearch(){
           var hiddenType = document.getElementById('p1_type');
           if (hiddenType) hiddenType.value = type;
           renderP1Taille(type);
+
+          var optionsWrap = document.getElementById('p1_options_wrap');
+          if (optionsWrap) optionsWrap.classList.remove('hidden');
         });
         typeRow.appendChild(btn);
       });
-
-      var firstType = Object.keys(POCHON_TAILLES)[0];
-      var hiddenType = document.getElementById('p1_type');
-      if (hiddenType) hiddenType.value = firstType;
-      renderP1Taille(firstType);
     }
 
     // Reconstruit la zone "Taille" (puces normales, ou un champ de saisie
@@ -4573,7 +4572,11 @@ function initProductSearch(){
     // P1 : Pochons
     function addP1(btn){
       try{
-        var type       = document.getElementById('p1_type').value;
+        var type = document.getElementById('p1_type').value;
+        if (!type){
+          toast('Choisis d’abord un type de pochon.');
+          return;
+        }
         var isSpecial  = (type === 'Forme spécial');
         // Pack et fenêtre n'ont pas de sens pour une forme sur-mesure :
         // undefined (pas null) pour que la fusion d'articles identiques
@@ -4583,8 +4586,9 @@ function initProductSearch(){
         var taille     = document.getElementById('p1_taille').value;
         var finition   = document.getElementById('p1_finition').value;
         var impression = document.getElementById('p1_impression').value;
-        var qty        = parseInt(document.getElementById('p1_qty').value || '1',10);
-        if (isNaN(qty) || qty < 1) qty = 1;
+        // Plus de stepper "combien de lots" séparé : un clic sur Ajouter
+        // ajoute 1 unité de la config choisie (fusionne si déjà présente).
+        var qty = 1;
 
         if (isSpecial && !taille.trim()){
           toast('Précise la taille souhaitée pour la forme spéciale.');
@@ -4631,7 +4635,6 @@ function initProductSearch(){
         renderCart();
         toast('Pochons ajoutés');
         flyToCart(btn);
-        resetQty('p1_qty');
       }catch(e){
         console.error(e);
       }
