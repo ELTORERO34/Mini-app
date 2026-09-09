@@ -3045,18 +3045,25 @@ body[data-theme="night"] .product-card {
       <div class="opt-chip-row" id="p1_quantite_row">
         <button type="button" class="opt-chip active" data-value="500">500</button>
         <button type="button" class="opt-chip" data-value="1000">1000</button>
-        <button type="button" class="opt-chip" data-value="1500">1500</button>
         <button type="button" class="opt-chip" data-value="2000">2000</button>
-        <button type="button" class="opt-chip" data-value="+ de quantité (sur devis)">+ sur devis</button>
+        <button type="button" class="opt-chip" data-value="5000">5000</button>
+        <button type="button" class="opt-chip" data-value="10000">10000</button>
       </div>
       <input type="hidden" id="p1_quantite" value="500">
     </div>
 
     <div class="opt-group">
+      <div class="opt-group-label">Type de pochon</div>
+      <div class="opt-chip-row" id="p1_type_row">
+        <!-- généré en JS : Cali bag / Sachet plat -->
+      </div>
+      <input type="hidden" id="p1_type" value="">
+    </div>
+
+    <div class="opt-group">
       <div class="opt-group-label">Taille</div>
       <div class="opt-chip-row" id="p1_taille_row">
-        <button type="button" class="opt-chip active" data-value="8×11 cm">8×11 cm</button>
-        <button type="button" class="opt-chip" data-value="8×13 cm">8×13 cm</button>
+        <!-- dépend du type choisi, généré en JS -->
       </div>
       <input type="hidden" id="p1_taille" value="8×11 cm">
     </div>
@@ -4287,12 +4294,69 @@ function initProductSearch(){
     function decQty(id, after){ dec(id); if (after) after(); }
 
     /* ---- P1 : 5 groupes simples, pas de prix (produit sur devis) ---- */
+    // Type -> Taille (2 niveaux) : les tailles disponibles dépendent du
+    // type de pochon choisi. Prix pas encore définis, donc pas de panneau
+    // de prix ici (produit toujours "sur devis" pour l'instant).
+    var POCHON_TAILLES = {
+      "Cali bag":    ["8×11 cm", "8×13 cm"],
+      "Sachet plat": ["7×10cm"]
+    };
+
     function initP1Selector(){
       initChipGroup(document.getElementById('p1_quantite_row'), 'p1_quantite');
-      initChipGroup(document.getElementById('p1_taille_row'), 'p1_taille');
       initChipGroup(document.getElementById('p1_finition_row'), 'p1_finition');
       initChipGroup(document.getElementById('p1_impression_row'), 'p1_impression');
       initChipGroup(document.getElementById('p1_fenetre_row'), 'p1_fenetre');
+      initP1TypeSelector();
+    }
+
+    function initP1TypeSelector(){
+      var typeRow = document.getElementById('p1_type_row');
+      if (!typeRow) return;
+
+      typeRow.innerHTML = '';
+      Object.keys(POCHON_TAILLES).forEach(function(type, i){
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'opt-chip' + (i === 0 ? ' active' : '');
+        btn.textContent = type;
+        btn.addEventListener('click', function(){
+          typeRow.querySelectorAll('.opt-chip').forEach(function(c){ c.classList.remove('active'); });
+          btn.classList.add('active');
+          var hiddenType = document.getElementById('p1_type');
+          if (hiddenType) hiddenType.value = type;
+          renderP1TailleChips(type);
+        });
+        typeRow.appendChild(btn);
+      });
+
+      var firstType = Object.keys(POCHON_TAILLES)[0];
+      var hiddenType = document.getElementById('p1_type');
+      if (hiddenType) hiddenType.value = firstType;
+      renderP1TailleChips(firstType);
+    }
+
+    function renderP1TailleChips(type){
+      var tailleRow = document.getElementById('p1_taille_row');
+      if (!tailleRow) return;
+      tailleRow.innerHTML = '';
+
+      POCHON_TAILLES[type].forEach(function(taille, i){
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'opt-chip' + (i === 0 ? ' active' : '');
+        btn.textContent = taille;
+        btn.addEventListener('click', function(){
+          tailleRow.querySelectorAll('.opt-chip').forEach(function(c){ c.classList.remove('active'); });
+          btn.classList.add('active');
+          var hiddenTaille = document.getElementById('p1_taille');
+          if (hiddenTaille) hiddenTaille.value = taille;
+        });
+        tailleRow.appendChild(btn);
+      });
+
+      var hiddenTaille = document.getElementById('p1_taille');
+      if (hiddenTaille) hiddenTaille.value = POCHON_TAILLES[type][0];
     }
 
     /* ---- P2 : Forme -> Taille (2 niveaux) + panneau de prix ---- */
@@ -4475,6 +4539,7 @@ function initProductSearch(){
     function addP1(btn){
       try{
         var pack       = document.getElementById('p1_quantite').value;
+        var type       = document.getElementById('p1_type').value;
         var taille     = document.getElementById('p1_taille').value;
         var finition   = document.getElementById('p1_finition').value;
         var impression = document.getElementById('p1_impression').value;
@@ -4488,6 +4553,7 @@ function initProductSearch(){
           if (it.title === 'Pochon personnalisé' &&
               it.opts &&
               it.opts.quantitePack === pack &&
+              it.opts.type === type &&
               it.opts.taille === taille &&
               it.opts.finition === finition &&
               it.opts.fenetre === fenetre &&
@@ -4505,6 +4571,7 @@ function initProductSearch(){
             unit: 0,
             opts: {
               quantitePack: pack,
+              type: type,
               taille: taille,
               finition: finition,
               fenetre: fenetre,
