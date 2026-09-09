@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sélecteur Pochon — Aperçu</title>
+<style>
+  :root{
+    --bg:#050508;
+    --card:rgba(20,20,20,.85);
+    --card-flat:#111216;
+    --text:#ffffff;
+    --muted:#b3b6c3;
+    --muted-dim:#7d8091;
+    --accent:#ffd766;
+    --accent-soft:rgba(255,215,100,.18);
+    --border:rgba(255,255,255,.08);
+    --border-gold:rgba(255,215,100,.28);
+  }
+
+  *{ box-sizing:border-box; }
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    padding:32px 20px 60px;
+  }
+
+  .page-head{
+    max-width:1080px;
+    margin:0 auto 28px;
+    text-align:center;
+  }
+
+  .page-head .eyebrow{
+    font-size:.72rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:700;
+  }
+
+  .page-head h1{
+    margin:8px 0 6px;
+    font-size:1.5rem;
+    text-wrap:balance;
+  }
+
+  .page-head p{
+    margin:0;
+    color:var(--muted);
+    font-size:.92rem;
+  }
+
+  .layout{
+    max-width:1080px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:minmax(280px,340px) 1fr;
+    gap:32px;
+    align-items:start;
+  }
+
+  @media (max-width:760px){
+    .layout{ grid-template-columns:1fr; }
+  }
+
+  /* ============ CADRE "TELEPHONE" ============ */
+  .phone{
+    background:var(--card-flat);
+    border:1px solid var(--border);
+    border-radius:28px;
+    padding:14px 14px 20px;
+    box-shadow:0 30px 60px rgba(0,0,0,.55);
+  }
+
+  .section-label{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin:4px 4px 10px;
+  }
+
+  .section-label .dot{
+    width:7px; height:7px; border-radius:50%;
+  }
+
+  .section-label.avant .dot{ background:var(--muted-dim); }
+  .section-label.apres .dot{ background:var(--accent); box-shadow:0 0 8px var(--accent); }
+
+  .section-label span.tag{
+    font-size:.68rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    font-weight:700;
+    color:var(--muted-dim);
+  }
+  .section-label.apres span.tag{ color:var(--accent); }
+
+  /* ---- AVANT : natif, en reduit ---- */
+  .before-block{
+    opacity:.62;
+    padding:12px;
+    border-radius:16px;
+    border:1px dashed var(--border);
+    margin-bottom:22px;
+  }
+
+  .before-block .before-title{
+    font-size:.82rem;
+    font-weight:700;
+    margin:0 0 10px;
+  }
+
+  .native-row{
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+    margin-bottom:9px;
+  }
+
+  .native-row label{
+    font-size:.72rem;
+    color:var(--muted-dim);
+  }
+
+  .native-row select{
+    background:#111;
+    color:#ddd;
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:6px;
+    padding:5px 6px;
+    font-size:.8rem;
+    font-family:inherit;
+  }
+
+  hr.split{
+    border:none;
+    border-top:1px solid var(--border);
+    margin:0 4px 22px;
+  }
+
+  /* ---- APRES : puces ---- */
+  .after-block{
+    background:var(--card);
+    border:1px solid var(--border-gold);
+    border-radius:20px;
+    padding:16px 14px 18px;
+    box-shadow:0 0 18px rgba(255,215,100,.08);
+  }
+
+  .product-title-mini{
+    font-size:1.05rem;
+    font-weight:800;
+    margin:2px 0 3px;
+    background:linear-gradient(90deg,#FFD54A,#FFF6C3,#FFD54A);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+
+  .product-desc-mini{
+    font-size:.78rem;
+    color:var(--muted);
+    margin:0 0 16px;
+  }
+
+  .opt-group{ margin-bottom:14px; }
+
+  .opt-group-label{
+    font-size:.74rem;
+    font-weight:700;
+    color:var(--muted);
+    margin:0 0 7px;
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+  }
+
+  .opt-group-label .picked{
+    color:var(--accent);
+    font-weight:700;
+    font-size:.72rem;
+  }
+
+  .chip-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+  }
+
+  .chip{
+    appearance:none;
+    border:1px solid rgba(255,255,255,.14);
+    background:rgba(5,5,5,.85);
+    color:#d0d0d0;
+    font:inherit;
+    font-size:.78rem;
+    padding:7px 13px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:border-color .15s ease, color .15s ease, box-shadow .15s ease, transform .12s ease;
+  }
+
+  .chip:hover{ border-color:rgba(255,215,100,.5); }
+  .chip:active{ transform:scale(.96); }
+
+  .chip.active{
+    border-color:rgba(255,215,100,.95);
+    color:var(--accent);
+    box-shadow:0 0 10px rgba(255,215,100,.5);
+    background:rgba(255,215,100,.08);
+  }
+
+  .chip .surcharge{
+    font-size:.7rem;
+    opacity:.75;
+    margin-left:3px;
+  }
+
+  .qty-block{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:18px;
+    padding-top:16px;
+    border-top:1px solid var(--border);
+  }
+
+  .qty-block .qty-label{
+    font-size:.78rem;
+    color:var(--muted);
+    font-weight:600;
+  }
+
+  .stepper{
+    display:flex;
+    align-items:center;
+    gap:0;
+    border:1px solid var(--border-gold);
+    border-radius:999px;
+    overflow:hidden;
+  }
+
+  .stepper button{
+    width:34px;
+    height:34px;
+    border:none;
+    background:transparent;
+    color:var(--accent);
+    font-size:1.05rem;
+    cursor:pointer;
+    line-height:1;
+  }
+
+  .stepper button:hover{ background:rgba(255,215,100,.1); }
+  .stepper button:active{ transform:scale(.9); }
+
+  .stepper .qty-value{
+    min-width:34px;
+    text-align:center;
+    font-weight:800;
+    font-size:.92rem;
+    font-variant-numeric:tabular-nums;
+  }
+
+  .estimate-line{
+    margin:16px 0 0;
+    padding:10px 12px;
+    border-radius:12px;
+    background:rgba(255,255,255,.04);
+    border:1px solid var(--border);
+    font-size:.78rem;
+    color:var(--muted);
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+  }
+
+  .estimate-line strong{
+    color:var(--accent);
+    font-variant-numeric:tabular-nums;
+    white-space:nowrap;
+  }
+
+  .btn-add{
+    width:100%;
+    margin-top:14px;
+    background:var(--accent);
+    color:#0a0a0a;
+    border:none;
+    font-weight:700;
+    font-size:.9rem;
+    padding:12px;
+    border-radius:12px;
+    cursor:pointer;
+    transition:transform .12s ease, box-shadow .15s ease;
+  }
+
+  .btn-add:hover{ box-shadow:0 6px 18px rgba(255,215,100,.35); }
+  .btn-add:active{ transform:scale(.98); }
+
+  /* ============ PANNEAU EXPLICATIF ============ */
+  .notes{
+    padding-top:6px;
+  }
+
+  .notes h2{
+    font-size:1rem;
+    margin:0 0 14px;
+  }
+
+  .note-item{
+    display:flex;
+    gap:12px;
+    margin-bottom:18px;
+    padding-bottom:18px;
+    border-bottom:1px solid var(--border);
+  }
+
+  .note-item:last-child{
+    border-bottom:none;
+    margin-bottom:0;
+    padding-bottom:0;
+  }
+
+  .note-icon{
+    flex:0 0 30px;
+    width:30px; height:30px;
+    border-radius:9px;
+    background:var(--accent-soft);
+    display:flex; align-items:center; justify-content:center;
+    font-size:.9rem;
+  }
+
+  .note-text h3{
+    margin:0 0 4px;
+    font-size:.88rem;
+  }
+
+  .note-text p{
+    margin:0;
+    font-size:.82rem;
+    color:var(--muted);
+    line-height:1.45;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-head">
+  <div class="eyebrow">Aperçu de composant · PochonStore</div>
+  <h1>Sélection d'options : menus natifs → puces</h1>
+  <p>Fiche « Pochon personnalisé » utilisée comme exemple (5 groupes d'options, le cas le plus chargé du catalogue). Cliquable ci-dessous.</p>
+</div>
+
+<div class="layout">
+  <div class="phone">
+
+    <div class="section-label avant">
+      <span class="dot"></span>
+      <span class="tag">Actuellement</span>
+    </div>
+
+    <div class="before-block">
+      <p class="before-title">Pochon personnalisé</p>
+
+      <div class="native-row">
+        <label>Quantité (pack)</label>
+        <select><option>500</option><option>1000</option></select>
+      </div>
+      <div class="native-row">
+        <label>Taille</label>
+        <select><option>8×11 cm</option><option>8×13 cm</option></select>
+      </div>
+      <div class="native-row">
+        <label>Finition</label>
+        <select><option>Mat</option><option>Brillant</option></select>
+      </div>
+      <div class="native-row">
+        <label>Impression</label>
+        <select><option>1 design</option><option>multi designs +40€</option></select>
+      </div>
+      <div class="native-row">
+        <label>Fenêtre</label>
+        <select><option>sans fenêtre</option><option>avec fenêtre +40€</option></select>
+      </div>
+    </div>
+
+    <hr class="split" />
+
+    <div class="section-label apres">
+      <span class="dot"></span>
+      <span class="tag">Proposition</span>
+    </div>
+
+    <div class="after-block">
+      <div class="product-title-mini">Pochon personnalisé</div>
+      <p class="product-desc-mini">Flatbags et doypacks imprimés avec ton visuel.</p>
+
+      <div class="opt-group" data-group="pack">
+        <div class="opt-group-label"><span>Quantité (pack)</span><span class="picked" data-picked="pack"></span></div>
+        <div class="chip-row">
+          <button class="chip active" data-value="500">500</button>
+          <button class="chip" data-value="1000">1000</button>
+          <button class="chip" data-value="1500">1500</button>
+          <button class="chip" data-value="2000">2000</button>
+          <button class="chip" data-value="sur devis">+ sur devis</button>
+        </div>
+      </div>
+
+      <div class="opt-group" data-group="taille">
+        <div class="opt-group-label"><span>Taille</span><span class="picked" data-picked="taille"></span></div>
+        <div class="chip-row">
+          <button class="chip active" data-value="8×11 cm">8×11 cm</button>
+          <button class="chip" data-value="8×13 cm">8×13 cm</button>
+        </div>
+      </div>
+
+      <div class="opt-group" data-group="finition">
+        <div class="opt-group-label"><span>Finition</span><span class="picked" data-picked="finition"></span></div>
+        <div class="chip-row">
+          <button class="chip active" data-value="Mat">Mat</button>
+          <button class="chip" data-value="Brillant">Brillant</button>
+        </div>
+      </div>
+
+      <div class="opt-group" data-group="impression">
+        <div class="opt-group-label"><span>Impression</span><span class="picked" data-picked="impression"></span></div>
+        <div class="chip-row">
+          <button class="chip active" data-value="1 design" data-surcharge="0">1 design</button>
+          <button class="chip" data-value="multi designs" data-surcharge="40">multi designs<span class="surcharge">+40€</span></button>
+        </div>
+      </div>
+
+      <div class="opt-group" data-group="fenetre">
+        <div class="opt-group-label"><span>Fenêtre</span><span class="picked" data-picked="fenetre"></span></div>
+        <div class="chip-row">
+          <button class="chip active" data-value="sans fenêtre" data-surcharge="0">sans fenêtre</button>
+          <button class="chip" data-value="avec fenêtre" data-surcharge="40">avec fenêtre<span class="surcharge">+40€</span></button>
+        </div>
+      </div>
+
+      <div class="qty-block">
+        <span class="qty-label">Combien de lots ?</span>
+        <div class="stepper">
+          <button type="button" id="qtyMinus">−</button>
+          <span class="qty-value" id="qtyValue">1</span>
+          <button type="button" id="qtyPlus">+</button>
+        </div>
+      </div>
+
+      <div class="estimate-line">
+        <span id="estimateLabel">Estimation : à partir de 0,80€/pièce (500 pcs)</span>
+        <strong id="estimateExtra"></strong>
+      </div>
+
+      <button class="btn-add" id="btnAdd" type="button">Ajouter</button>
+    </div>
+  </div>
+
+  <div class="notes">
+    <h2>Ce qui change concrètement</h2>
+
+    <div class="note-item">
+      <div class="note-icon">👀</div>
+      <div class="note-text">
+        <h3>Tout est visible d'un coup d'œil</h3>
+        <p>Avec un menu déroulant, le client doit ouvrir chaque liste pour voir les choix. Avec des puces, les 2 à 5 options sont déjà toutes affichées — plus rapide à parcourir, plus évident à comparer.</p>
+      </div>
+    </div>
+
+    <div class="note-item">
+      <div class="note-icon">✨</div>
+      <div class="note-text">
+        <h3>Le style de l'appli, pas celui du téléphone</h3>
+        <p>Un menu natif ressemble à n'importe quelle appli. Les puces reprennent exactement le même accent doré que les filtres du catalogue ("Tous / Pochons / Cartes...") — l'écran produit a enfin la même identité que le reste.</p>
+      </div>
+    </div>
+
+    <div class="note-item">
+      <div class="note-icon">🧮</div>
+      <div class="note-text">
+        <h3>Une estimation qui bouge en direct</h3>
+        <p>Choisis "avec fenêtre" ou "multi designs" et regarde la ligne d'estimation en bas : elle additionne les suppléments tout de suite, sans attendre l'ajout au panier.</p>
+      </div>
+    </div>
+
+    <div class="note-item">
+      <div class="note-icon">👍</div>
+      <div class="note-text">
+        <h3>Zéro changement de logique</h3>
+        <p>Même données, même panier, même calcul de devis derrière — seule la façon de choisir change. Si tu valides cette direction, je l'applique aux 9 fiches produits.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var BASE_TEXT = "Estimation : à partir de 0,80€/pièce (500 pcs)";
+
+  function selectChip(group, btn){
+    group.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('active'); });
+    btn.classList.add('active');
+    updateEstimate();
+  }
+
+  document.querySelectorAll('.opt-group').forEach(function(group){
+    group.querySelectorAll('.chip').forEach(function(btn){
+      btn.addEventListener('click', function(){ selectChip(group, btn); });
+    });
+  });
+
+  var qty = 1;
+  var qtyValueEl = document.getElementById('qtyValue');
+
+  document.getElementById('qtyMinus').addEventListener('click', function(){
+    qty = Math.max(1, qty - 1);
+    qtyValueEl.textContent = qty;
+    updateEstimate();
+  });
+  document.getElementById('qtyPlus').addEventListener('click', function(){
+    qty = qty + 1;
+    qtyValueEl.textContent = qty;
+    updateEstimate();
+  });
+
+  function updateEstimate(){
+    var extra = 0;
+    document.querySelectorAll('.opt-group .chip.active').forEach(function(c){
+      extra += parseInt(c.getAttribute('data-surcharge') || '0', 10);
+    });
+    extra = extra * qty;
+
+    var extraEl = document.getElementById('estimateExtra');
+    extraEl.textContent = extra > 0 ? ('+' + extra + ',00 €') : '';
+  }
+
+  document.getElementById('btnAdd').addEventListener('click', function(){
+    var btn = this;
+    var original = btn.textContent;
+    btn.textContent = 'Ajouté ✓';
+    setTimeout(function(){ btn.textContent = original; }, 900);
+  });
+
+  updateEstimate();
+</script>
+</body>
+</html>
