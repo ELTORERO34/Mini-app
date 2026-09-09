@@ -511,31 +511,6 @@
 }
 
 /* petits filtres par tags */
-.search-chips{
-  margin: 8px 0 4px;
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 6px;
-  overflow-x: auto;
-  padding-bottom: 2px;
-}
-
-.search-chip{
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgba(5,5,5,0.8);
-  color: #d0d0d0;
-  font-size: 0.78rem;
-  padding: 4px 10px;
-  white-space: nowrap;
-}
-
-.search-chip.active{
-  border-color: rgba(255,215,100,0.9);
-  color: #ffd766;
-  box-shadow: 0 0 10px rgba(255,215,100,0.6);
-}
-
 /* état "aucun résultat" dans le catalogue */
 .search-empty-state{
   display: none;
@@ -2433,6 +2408,14 @@
   -webkit-text-fill-color: transparent;
 }
 
+.profile-avatar img{
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
 .profile-hero-text{
   display: flex;
   flex-direction: column;
@@ -2793,11 +2776,6 @@ body[data-theme] .theme-pill--active {
   border-color: var(--accent);
   box-shadow: 0 0 12px var(--accent-soft);
 }
-body[data-theme] .search-chip.active {
-  border-color: var(--accent);
-  color: var(--accent);
-  box-shadow: 0 0 10px var(--accent-soft);
-}
 body[data-theme] .product-thumb::before {
   border-color: var(--accent);
   box-shadow: 0 0 10px var(--accent-soft);
@@ -2863,17 +2841,6 @@ body[data-theme="night"] .product-card {
           <button type="button" id="searchClear" class="search-clear">✕</button>
         </div>
 
-        <div class="search-chips">
-          <button type="button" class="search-chip active" data-tag="all">Tous</button>
-          <button type="button" class="search-chip" data-tag="pochons">Pochons</button>
-          <button type="button" class="search-chip" data-tag="tableaux">Tableaux</button>
-          <button type="button" class="search-chip" data-tag="cartes">Cartes</button>
-          <button type="button" class="search-chip" data-tag="etiquettes">Étiquettes</button>
-          <button type="button" class="search-chip" data-tag="fusees">Fusées</button>
-          <button type="button" class="search-chip" data-tag="design">Design</button>
-          <button type="button" class="search-chip" data-tag="packs">Packs</button>
-          <button type="button" class="search-chip" data-tag="miniapp">Mini-App Dev</button>
-        </div>
       </div>
       
       <div class="product-grid" id="productGrid">
@@ -3705,6 +3672,7 @@ body[data-theme="night"] .product-card {
   <!-- HERO PROFIL -->
   <div class="profile-hero">
     <div class="profile-avatar">
+      <img id="profileAvatarPhoto" class="hidden" alt="Photo de profil">
       <span id="profileAvatarLetter">P</span>
     </div>
     <div class="profile-hero-text">
@@ -4123,8 +4091,6 @@ function goToTelegramChat(url, label){
    RECHERCHE CATALOGUE
    =========================== */
 
-var currentTagFilter = 'all';
-
 function normalizeText(str){
   return (str || "")
     .toLowerCase()
@@ -4156,16 +4122,10 @@ function applyProductFilter(){
       tagsAttr
     );
 
-    var tagList = normalizeText(tagsAttr).split(',').map(function(t){ return t.trim(); }).filter(Boolean);
-
     var matchesTerm = tokens.every(function(tok){ return haystack.indexOf(tok) !== -1; });
 
-    var matchesTag =
-      currentTagFilter === 'all' ||
-      tagList.indexOf(currentTagFilter) !== -1;
-
-    var visible = matchesTerm && matchesTag;
-    card.style.display = visible ? '' : 'none';
+    card.style.display = matchesTerm ? '' : 'none';
+    var visible = matchesTerm;
     if (visible) visibleCount++;
   });
 
@@ -4193,18 +4153,6 @@ function initProductSearch(){
       input.focus();
     });
   }
-
-  // clic sur les tags
-  document.querySelectorAll('.search-chip').forEach(function(chip){
-    chip.addEventListener('click', function(){
-      document.querySelectorAll('.search-chip').forEach(function(c){
-        c.classList.remove('active');
-      });
-      this.classList.add('active');
-      currentTagFilter = normalizeText(this.getAttribute('data-tag') || 'all');
-      applyProductFilter();
-    });
-  });
 }
 
     /* ===========================
@@ -5147,7 +5095,9 @@ function computePaymentFees(total, method){
   if (method === 'crypto' || method === 'tickets') {
     var sevenPercent = total * 0.07;
     if (sevenPercent <= 20) return 20;
-    return Math.ceil(sevenPercent / 10) * 10;
+    // Arrondi à la dizaine la plus proche : >= 5 on monte, < 5 on descend
+    // (Math.round fait exactement ça, pas Math.ceil qui montait toujours).
+    return Math.round(sevenPercent / 10) * 10;
   }
 
   return 0;
@@ -5393,6 +5343,7 @@ function closeFavorites(fromNav){
 function initProfileFromTelegram(){
   try{
     var avatarEl = document.getElementById('profileAvatarLetter');
+    var avatarPhotoEl = document.getElementById('profileAvatarPhoto');
     var displayNameEl = document.getElementById('profileDisplayName');
     var handleEl = document.getElementById('profileHandle');
 
@@ -5423,6 +5374,24 @@ function initProfileFromTelegram(){
     if (avatarEl){
       var letter = (first || full).trim().charAt(0).toUpperCase() || "P";
       avatarEl.textContent = letter;
+    }
+
+    // Photo Telegram du client si Telegram nous la fournit (pas toujours
+    // le cas selon comment la mini-app a été ouverte) — sinon on garde
+    // le rond avec la lettre, déjà réglé ci-dessus.
+    if (avatarPhotoEl){
+      if (u.photo_url){
+        avatarPhotoEl.onerror = function(){
+          avatarPhotoEl.classList.add('hidden');
+          if (avatarEl) avatarEl.classList.remove('hidden');
+        };
+        avatarPhotoEl.src = u.photo_url;
+        avatarPhotoEl.classList.remove('hidden');
+        if (avatarEl) avatarEl.classList.add('hidden');
+      } else {
+        avatarPhotoEl.classList.add('hidden');
+        if (avatarEl) avatarEl.classList.remove('hidden');
+      }
     }
 
     if (idEl)   idEl.textContent   = u.id || "—";
