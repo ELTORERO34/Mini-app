@@ -882,6 +882,177 @@
       padding: 4px 6px;
     }
 
+    /* ===========================
+       SÉLECTEUR D'OPTIONS EN PUCES
+       (remplace les <select> natifs sur les fiches produits)
+       =========================== */
+    .opt-group{ margin-bottom: 16px; }
+
+    .opt-group-label{
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin: 0 0 8px;
+    }
+
+    .opt-chip-row{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .opt-chip{
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(5,5,5,0.85);
+      color: #d0d0d0;
+      font: inherit;
+      font-size: 0.85rem;
+      padding: 8px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: border-color .15s ease, color .15s ease, box-shadow .15s ease, transform .12s ease;
+    }
+
+    .opt-chip:hover{ border-color: rgba(255,215,100,0.5); }
+    .opt-chip:active{ transform: scale(0.96); }
+
+    .opt-chip.active{
+      border-color: rgba(255,215,100,0.95);
+      color: #ffd766;
+      box-shadow: 0 0 10px rgba(255,215,100,0.5);
+      background: rgba(255,215,100,0.08);
+    }
+
+    .opt-chip .surcharge{
+      font-size: 0.74rem;
+      opacity: 0.75;
+      margin-left: 3px;
+    }
+
+    body[data-theme] .opt-chip.active{
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 10px var(--accent-soft);
+      background: var(--accent-soft);
+    }
+
+    /* Bloc prix : gros, doré, visible d'un coup d'œil */
+    .price-panel{
+      margin: 6px 0 16px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(255,215,100,.16), rgba(255,215,100,.03));
+      border: 1px solid rgba(255,215,100,.45);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .price-panel-label{
+      display: block;
+      font-size: 0.7rem;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .price-panel-format{
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-top: 2px;
+      color: var(--text);
+    }
+
+    .price-panel-amounts{ text-align: right; }
+
+    .price-panel-value{
+      display: block;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #ffd766;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.1;
+    }
+
+    .price-panel-sub{
+      display: block;
+      font-size: 0.76rem;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    body[data-theme] .price-panel{
+      border-color: var(--border-soft);
+      background: linear-gradient(135deg, var(--accent-soft), transparent);
+    }
+    body[data-theme] .price-panel-value{ color: var(--accent); }
+
+    /* Stepper de quantité restylé (même logique inc()/dec(), juste l'habillage) */
+    .qty-stepper-row{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 4px;
+      margin-bottom: 12px;
+    }
+
+    .qty-stepper-label{
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .stepper{
+      display: flex;
+      align-items: center;
+      border: 1px solid rgba(255,215,100,0.4);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .stepper button{
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: transparent;
+      color: #ffd766;
+      font-size: 1.1rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .stepper button:hover{ background: rgba(255,215,100,0.1); }
+    .stepper button:active{ transform: scale(0.9); }
+
+    .stepper input{
+      width: 42px;
+      height: 36px;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      text-align: center;
+      font-weight: 800;
+      font-size: 0.95rem;
+      font-variant-numeric: tabular-nums;
+      -moz-appearance: textfield;
+    }
+    .stepper input::-webkit-outer-spin-button,
+    .stepper input::-webkit-inner-spin-button{
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    body[data-theme] .stepper{ border-color: var(--border-soft); }
+    body[data-theme] .stepper button{ color: var(--accent); }
+
+    .btn-add-full{
+      width: 100%;
+      justify-content: center;
+      display: flex;
+    }
+
     .qty-row {
       display: flex;
       align-items: center;
@@ -2869,56 +3040,63 @@ body[data-theme="night"] .product-card {
       <span class="pill">Min : 500 pièces</span>
       <span class="pill">Délai : 12–13 jours ouvrables</span>
     </div>
-    <div class="product-options">
-      <label>
-        Quantité (pack) :
-        <select id="p1_quantite">
-          <option>500</option>
-          <option>1000</option>
-          <option>1500</option>
-          <option>2000</option>
-          <option>+ de quantité (sur devis)</option>
-        </select>
-      </label>
-
-      <label>
-        Taille :
-        <select id="p1_taille">
-          <option>8×11 cm</option>
-          <option>8×13 cm</option>
-        </select>
-      </label>
-
-      <label>
-        Finition :
-        <select id="p1_finition">
-          <option>Mat</option>
-          <option>Brillant</option>
-        </select>
-      </label>
-
-      <label>
-        Impression :
-        <select id="p1_impression">
-          <option>1 design</option>
-          <option>multi designs +40€</option>
-        </select>
-      </label>
-
-      <label>
-        Fenêtre :
-        <select id="p1_fenetre">
-          <option>sans fenêtre</option>
-          <option>avec fenêtre +40€</option>
-        </select>
-      </label>
+    <div class="opt-group">
+      <div class="opt-group-label">Quantité (pack)</div>
+      <div class="opt-chip-row" id="p1_quantite_row">
+        <button type="button" class="opt-chip active" data-value="500">500</button>
+        <button type="button" class="opt-chip" data-value="1000">1000</button>
+        <button type="button" class="opt-chip" data-value="1500">1500</button>
+        <button type="button" class="opt-chip" data-value="2000">2000</button>
+        <button type="button" class="opt-chip" data-value="+ de quantité (sur devis)">+ sur devis</button>
+      </div>
+      <input type="hidden" id="p1_quantite" value="500">
     </div>
-    <div class="qty-row">
-      <button type="button" onclick="dec('p1_qty')">−</button>
-      <input id="p1_qty" type="number" min="1" value="1" />
-      <button type="button" onclick="inc('p1_qty')">+</button>
-      <button class="btn primary" type="button" onclick="addP1(this)">Ajouter</button>
+
+    <div class="opt-group">
+      <div class="opt-group-label">Taille</div>
+      <div class="opt-chip-row" id="p1_taille_row">
+        <button type="button" class="opt-chip active" data-value="8×11 cm">8×11 cm</button>
+        <button type="button" class="opt-chip" data-value="8×13 cm">8×13 cm</button>
+      </div>
+      <input type="hidden" id="p1_taille" value="8×11 cm">
     </div>
+
+    <div class="opt-group">
+      <div class="opt-group-label">Finition</div>
+      <div class="opt-chip-row" id="p1_finition_row">
+        <button type="button" class="opt-chip active" data-value="Mat">Mat</button>
+        <button type="button" class="opt-chip" data-value="Brillant">Brillant</button>
+      </div>
+      <input type="hidden" id="p1_finition" value="Mat">
+    </div>
+
+    <div class="opt-group">
+      <div class="opt-group-label">Impression</div>
+      <div class="opt-chip-row" id="p1_impression_row">
+        <button type="button" class="opt-chip active" data-value="1 design">1 design</button>
+        <button type="button" class="opt-chip" data-value="multi designs +40€">multi designs<span class="surcharge">+40€</span></button>
+      </div>
+      <input type="hidden" id="p1_impression" value="1 design">
+    </div>
+
+    <div class="opt-group">
+      <div class="opt-group-label">Fenêtre</div>
+      <div class="opt-chip-row" id="p1_fenetre_row">
+        <button type="button" class="opt-chip active" data-value="sans fenêtre">sans fenêtre</button>
+        <button type="button" class="opt-chip" data-value="avec fenêtre +40€">avec fenêtre<span class="surcharge">+40€</span></button>
+      </div>
+      <input type="hidden" id="p1_fenetre" value="sans fenêtre">
+    </div>
+
+    <div class="qty-stepper-row">
+      <span class="qty-stepper-label">Quantité</span>
+      <div class="stepper">
+        <button type="button" onclick="dec('p1_qty')">−</button>
+        <input id="p1_qty" type="number" min="1" value="1" />
+        <button type="button" onclick="inc('p1_qty')">+</button>
+      </div>
+    </div>
+    <button class="btn primary btn-add-full" type="button" onclick="addP1(this)">Ajouter</button>
   </div>
 </div>
 
@@ -2935,31 +3113,41 @@ body[data-theme="night"] .product-card {
     <p class="product-desc">
       Impression haute qualité sur toile, formats panoramiques, populaires et carrés.
     </p>
-    <div class="product-options">
-      <label>Format :
-        <select id="p2_format">
-          <!-- Panoramiques -->
-          <option value="Panoramique|60×20|50">Panoramique 60×20 — 50 €</option>
-          <option value="Panoramique|60×30|60">Panoramique 60×30 — 60 €</option>
-          <option value="Panoramique|80×40|80">Panoramique 80×40 — 80 €</option>
-          <option value="Panoramique|100×50|100">Panoramique 100×50 — 100 €</option>
-          <option value="Panoramique|120×60|120">Panoramique 120×60 — 120 €</option>
-          <!-- Populaires -->
-          <option value="Populaire|60×40|70">Populaire 60×40 — 70 €</option>
-          <option value="Populaire|80×60|90">Populaire 80×60 — 90 €</option>
-          <option value="Populaire|90×60|100">Populaire 90×60 — 100 €</option>
-          <!-- Carrés -->
-          <option value="Carré|60×60|70">Carré 60×60 — 70 €</option>
-          <option value="Carré|80×80|90">Carré 80×80 — 90 €</option>
-        </select>
-      </label>
+    <div class="opt-group">
+      <div class="opt-group-label">Forme</div>
+      <div class="opt-chip-row" id="p2_forme_row">
+        <!-- généré en JS : Populaire en premier (la plus achetée) -->
+      </div>
     </div>
-    <div class="qty-row">
-      <button type="button" onclick="dec('p2_qty')">−</button>
-      <input id="p2_qty" type="number" min="1" value="1" />
-      <button type="button" onclick="inc('p2_qty')">+</button>
-      <button class="btn primary" type="button" onclick="addP2(this)">Ajouter</button>
+
+    <div class="opt-group">
+      <div class="opt-group-label">Taille</div>
+      <div class="opt-chip-row" id="p2_taille_row">
+        <!-- dépend de la forme choisie, généré en JS -->
+      </div>
     </div>
+    <input type="hidden" id="p2_format" value="">
+
+    <div class="price-panel">
+      <div>
+        <span class="price-panel-label">Format sélectionné</span>
+        <div class="price-panel-format" id="p2_price_format">—</div>
+      </div>
+      <div class="price-panel-amounts">
+        <span class="price-panel-value" id="p2_price_value">—</span>
+        <span class="price-panel-sub" id="p2_price_total"></span>
+      </div>
+    </div>
+
+    <div class="qty-stepper-row">
+      <span class="qty-stepper-label">Quantité</span>
+      <div class="stepper">
+        <button type="button" onclick="decQty('p2_qty', updateP2Price)">−</button>
+        <input id="p2_qty" type="number" min="1" value="1" oninput="updateP2Price()" />
+        <button type="button" onclick="incQty('p2_qty', updateP2Price)">+</button>
+      </div>
+    </div>
+    <button class="btn primary btn-add-full" type="button" onclick="addP2(this)">Ajouter</button>
   </div>
 </div>
 
@@ -2977,22 +3165,37 @@ body[data-theme="night"] .product-card {
     <p class="product-desc">
       Cartes professionnelles recto verso, papier 350g, impression couleur.
     </p>
-    <div class="product-options">
-      <label>Quantité :
-        <select id="p3_quantite">
-          <option value="250|70">250 cartes — 70 €</option>
-          <option value="500|140">500 cartes — 140 €</option>
-          <option value="1000|180">1000 cartes — 180 €</option>
-          <option value="+1000|0">+ 1000 cartes — sur devis</option>
-        </select>
-      </label>
+    <div class="opt-group">
+      <div class="opt-group-label">Quantité</div>
+      <div class="opt-chip-row" id="p3_quantite_row">
+        <button type="button" class="opt-chip active" data-value="250|70" data-price="70">250 cartes</button>
+        <button type="button" class="opt-chip" data-value="500|140" data-price="140">500 cartes</button>
+        <button type="button" class="opt-chip" data-value="1000|180" data-price="180">1000 cartes</button>
+        <button type="button" class="opt-chip" data-value="+1000|0" data-price="0">+ 1000 cartes</button>
+      </div>
+      <input type="hidden" id="p3_quantite" value="250|70">
     </div>
-    <div class="qty-row">
-      <button type="button" onclick="dec('p3_qty')">−</button>
-      <input id="p3_qty" type="number" min="1" value="1" />
-      <button type="button" onclick="inc('p3_qty')">+</button>
-      <button class="btn primary" type="button" onclick="addP3(this)">Ajouter</button>
+
+    <div class="price-panel">
+      <div>
+        <span class="price-panel-label">Quantité sélectionnée</span>
+        <div class="price-panel-format" id="p3_price_format">—</div>
+      </div>
+      <div class="price-panel-amounts">
+        <span class="price-panel-value" id="p3_price_value">—</span>
+        <span class="price-panel-sub" id="p3_price_total"></span>
+      </div>
     </div>
+
+    <div class="qty-stepper-row">
+      <span class="qty-stepper-label">Quantité (lots)</span>
+      <div class="stepper">
+        <button type="button" onclick="decQty('p3_qty', updateP3Price)">−</button>
+        <input id="p3_qty" type="number" min="1" value="1" oninput="updateP3Price()" />
+        <button type="button" onclick="incQty('p3_qty', updateP3Price)">+</button>
+      </div>
+    </div>
+    <button class="btn primary btn-add-full" type="button" onclick="addP3(this)">Ajouter</button>
   </div>
 </div>
 
@@ -3009,21 +3212,36 @@ body[data-theme="night"] .product-card {
     <p class="product-desc">
       Étiquettes adhésives pour packaging, pochons, produits… Formats au choix.
     </p>
-    <div class="product-options">
-      <label>Format :
-        <select id="p4_format">
-          <option value="200 étiquettes 7×4 cm|70">200 étiquettes 7×4 cm — 70 €</option>
-          <option value="400 étiquettes rondes 0–3 cm|60">400 étiquettes rondes 0–3 cm — 60 €</option>
-          <option value="Taille personnalisée (sur devis)|0">Taille personnalisée — sur devis</option>
-        </select>
-      </label>
+    <div class="opt-group">
+      <div class="opt-group-label">Format</div>
+      <div class="opt-chip-row" id="p4_format_row">
+        <button type="button" class="opt-chip active" data-value="200 étiquettes 7×4 cm|70" data-price="70">200 · 7×4 cm</button>
+        <button type="button" class="opt-chip" data-value="400 étiquettes rondes 0–3 cm|60" data-price="60">400 · rondes 0–3 cm</button>
+        <button type="button" class="opt-chip" data-value="Taille personnalisée (sur devis)|0" data-price="0">Taille perso</button>
+      </div>
+      <input type="hidden" id="p4_format" value="200 étiquettes 7×4 cm|70">
     </div>
-    <div class="qty-row">
-      <button type="button" onclick="dec('p4_qty')">−</button>
-      <input id="p4_qty" type="number" min="1" value="1" />
-      <button type="button" onclick="inc('p4_qty')">+</button>
-      <button class="btn primary" type="button" onclick="addP4(this)">Ajouter</button>
+
+    <div class="price-panel">
+      <div>
+        <span class="price-panel-label">Format sélectionné</span>
+        <div class="price-panel-format" id="p4_price_format">—</div>
+      </div>
+      <div class="price-panel-amounts">
+        <span class="price-panel-value" id="p4_price_value">—</span>
+        <span class="price-panel-sub" id="p4_price_total"></span>
+      </div>
     </div>
+
+    <div class="qty-stepper-row">
+      <span class="qty-stepper-label">Quantité (lots)</span>
+      <div class="stepper">
+        <button type="button" onclick="decQty('p4_qty', updateP4Price)">−</button>
+        <input id="p4_qty" type="number" min="1" value="1" oninput="updateP4Price()" />
+        <button type="button" onclick="incQty('p4_qty', updateP4Price)">+</button>
+      </div>
+    </div>
+    <button class="btn primary btn-add-full" type="button" onclick="addP4(this)">Ajouter</button>
   </div>
 </div>
 
@@ -3044,12 +3262,15 @@ body[data-theme="night"] .product-card {
       <span class="pill">Prix : 10 €</span>
       <span class="pill">Délai : 2–3 jours</span>
     </div>
-    <div class="qty-row">
-      <button type="button" onclick="dec('p5_qty')">−</button>
-      <input id="p5_qty" type="number" min="1" value="1" />
-      <button type="button" onclick="inc('p5_qty')">+</button>
-      <button class="btn primary" type="button" onclick="addP5(this)">Ajouter</button>
+    <div class="qty-stepper-row">
+      <span class="qty-stepper-label">Quantité</span>
+      <div class="stepper">
+        <button type="button" onclick="dec('p5_qty')">−</button>
+        <input id="p5_qty" type="number" min="1" value="1" />
+        <button type="button" onclick="inc('p5_qty')">+</button>
+      </div>
     </div>
+    <button class="btn primary btn-add-full" type="button" onclick="addP5(this)">Ajouter</button>
   </div>
 </div>
 
@@ -3066,22 +3287,36 @@ body[data-theme="night"] .product-card {
     <p class="product-desc">
       Capsules vides prêtes à remplir. Tarifs dégressifs selon la quantité.
     </p>
-    <div class="product-options">
-      <label>Quantité :
-        <select id="p6_quantite">
-          <option data-price="20">100 — 20 €</option>
-          <option data-price="50">500 — 50 €</option>
-          <option data-price="100">1000 — 100 €</option>
-          <option data-price="0">+ sur devis</option>
-        </select>
-      </label>
+    <div class="opt-group">
+      <div class="opt-group-label">Quantité</div>
+      <div class="opt-chip-row" id="p6_quantite_row">
+        <button type="button" class="opt-chip active" data-value="100" data-price="20">100</button>
+        <button type="button" class="opt-chip" data-value="500" data-price="50">500</button>
+        <button type="button" class="opt-chip" data-value="1000" data-price="100">1000</button>
+        <button type="button" class="opt-chip" data-value="+ sur devis" data-price="0">+ sur devis</button>
+      </div>
     </div>
-    <div class="qty-row">
-      <button type="button" onclick="dec('p6_qty')">−</button>
-      <input id="p6_qty" type="number" min="1" value="1" />
-      <button type="button" onclick="inc('p6_qty')">+</button>
-      <button class="btn primary" type="button" onclick="addP6(this)">Ajouter</button>
+
+    <div class="price-panel">
+      <div>
+        <span class="price-panel-label">Quantité sélectionnée</span>
+        <div class="price-panel-format" id="p6_price_format">—</div>
+      </div>
+      <div class="price-panel-amounts">
+        <span class="price-panel-value" id="p6_price_value">—</span>
+        <span class="price-panel-sub" id="p6_price_total"></span>
+      </div>
     </div>
+
+    <div class="qty-stepper-row">
+      <span class="qty-stepper-label">Quantité (lots)</span>
+      <div class="stepper">
+        <button type="button" onclick="decQty('p6_qty', updateP6Price)">−</button>
+        <input id="p6_qty" type="number" min="1" value="1" oninput="updateP6Price()" />
+        <button type="button" onclick="incQty('p6_qty', updateP6Price)">+</button>
+      </div>
+    </div>
+    <button class="btn primary btn-add-full" type="button" onclick="addP6(this)">Ajouter</button>
   </div>
 </div>
 
@@ -3103,30 +3338,37 @@ body[data-theme="night"] .product-card {
       <span class="pill">Fichier livrable : PNG/JPG haute qualité</span>
       <span class="pill">Révisions possibles selon la formule</span>
     </div>
-    <div class="product-options">
-      <label>Formule :
-        <select id="p7_formule">
-          <option value="Basique|40|2–3 jours">
-            Formule basique 40€ (2–3 jours)
-          </option>
-          <option value="Premium (dessin fait main)|180|4–5 jours">
-            Formule premium (dessin fait main) 180€ (4–5 jours)
-          </option>
-          <option value="Pack identité (1 logo + 1 flyer + 2 stickers)|80|3–4 jours">
-            Pack identité (1 logo + 1 flyer + 2 stickers) 80€ (3–4 jours)
-          </option>
-          <option value="Stickers Telegram/Potato|40|2–3 jours">
-            Stickers Telegram ou potato 40€ (2–3 jours)
-          </option>
-        </select>
-      </label>
+    <div class="opt-group">
+      <div class="opt-group-label">Formule</div>
+      <div class="opt-chip-row" id="p7_formule_row">
+        <button type="button" class="opt-chip active" data-value="Basique|40|2–3 jours" data-price="40">Basique</button>
+        <button type="button" class="opt-chip" data-value="Premium (dessin fait main)|180|4–5 jours" data-price="180">Premium (fait main)</button>
+        <button type="button" class="opt-chip" data-value="Pack identité (1 logo + 1 flyer + 2 stickers)|80|3–4 jours" data-price="80">Pack identité</button>
+        <button type="button" class="opt-chip" data-value="Stickers Telegram/Potato|40|2–3 jours" data-price="40">Stickers Telegram/Potato</button>
+      </div>
+      <input type="hidden" id="p7_formule" value="Basique|40|2–3 jours">
     </div>
-    <div class="qty-row">
-      <button type="button" onclick="dec('p7_qty')">−</button>
-      <input id="p7_qty" type="number" min="1" value="1" />
-      <button type="button" onclick="inc('p7_qty')">+</button>
-      <button class="btn primary" type="button" onclick="addP7(this)">Ajouter</button>
+
+    <div class="price-panel">
+      <div>
+        <span class="price-panel-label">Formule sélectionnée</span>
+        <div class="price-panel-format" id="p7_price_format">—</div>
+      </div>
+      <div class="price-panel-amounts">
+        <span class="price-panel-value" id="p7_price_value">—</span>
+        <span class="price-panel-sub" id="p7_price_total"></span>
+      </div>
     </div>
+
+    <div class="qty-stepper-row">
+      <span class="qty-stepper-label">Quantité</span>
+      <div class="stepper">
+        <button type="button" onclick="decQty('p7_qty', updateP7Price)">−</button>
+        <input id="p7_qty" type="number" min="1" value="1" oninput="updateP7Price()" />
+        <button type="button" onclick="incQty('p7_qty', updateP7Price)">+</button>
+      </div>
+    </div>
+    <button class="btn primary btn-add-full" type="button" onclick="addP7(this)">Ajouter</button>
   </div>
 </div>
       
@@ -4016,6 +4258,165 @@ function initProductSearch(){
     }
 
     /* ===========================
+       SÉLECTEUR D'OPTIONS EN PUCES
+       =========================== */
+    // Gère un groupe de puces "un seul choix actif à la fois" : au clic,
+    // met à jour la puce active + un <input type="hidden"> qui porte la
+    // même valeur qu'un <select> aurait donné — aucune fonction addPX()
+    // n'a besoin de changer, elles lisent toujours .value au même endroit.
+    function initChipGroup(rowEl, hiddenInputId, onSelect){
+      if (!rowEl) return;
+      var hidden = document.getElementById(hiddenInputId);
+
+      function activate(btn){
+        rowEl.querySelectorAll('.opt-chip').forEach(function(c){ c.classList.remove('active'); });
+        btn.classList.add('active');
+        if (hidden) hidden.value = btn.getAttribute('data-value');
+        if (onSelect) onSelect(btn);
+      }
+
+      rowEl.querySelectorAll('.opt-chip').forEach(function(btn){
+        btn.addEventListener('click', function(){ activate(btn); });
+      });
+    }
+
+    // Variante de inc()/dec() qui prévient un panneau de prix après le
+    // changement de quantité, sans toucher au comportement de inc()/dec()
+    // eux-mêmes (utilisés tels quels sur P1 et P5, qui n'ont pas de prix).
+    function incQty(id, after){ inc(id); if (after) after(); }
+    function decQty(id, after){ dec(id); if (after) after(); }
+
+    /* ---- P1 : 5 groupes simples, pas de prix (produit sur devis) ---- */
+    function initP1Selector(){
+      initChipGroup(document.getElementById('p1_quantite_row'), 'p1_quantite');
+      initChipGroup(document.getElementById('p1_taille_row'), 'p1_taille');
+      initChipGroup(document.getElementById('p1_finition_row'), 'p1_finition');
+      initChipGroup(document.getElementById('p1_impression_row'), 'p1_impression');
+      initChipGroup(document.getElementById('p1_fenetre_row'), 'p1_fenetre');
+    }
+
+    /* ---- P2 : Forme -> Taille (2 niveaux) + panneau de prix ---- */
+    // Populaire en premier : c'est la forme la plus achetée, elle doit
+    // apparaître par défaut à l'ouverture de la fiche.
+    var TABLEAUX_DATA = {
+      "Populaire":   [ {taille:"60×40", prix:70}, {taille:"80×60", prix:90}, {taille:"90×60", prix:100} ],
+      "Carré":       [ {taille:"60×60", prix:70}, {taille:"80×80", prix:90} ],
+      "Panoramique": [ {taille:"60×20", prix:50}, {taille:"60×30", prix:60}, {taille:"80×40", prix:80}, {taille:"100×50", prix:100}, {taille:"120×60", prix:120} ]
+    };
+    var p2CurrentCategory = null;
+    var p2CurrentSize = null;
+
+    function initP2Selector(){
+      var categoryRow = document.getElementById('p2_forme_row');
+      var sizeRow = document.getElementById('p2_taille_row');
+      if (!categoryRow || !sizeRow) return;
+
+      categoryRow.innerHTML = '';
+      Object.keys(TABLEAUX_DATA).forEach(function(cat, i){
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'opt-chip' + (i === 0 ? ' active' : '');
+        btn.appendChild(document.createTextNode(cat));
+        if (cat === 'Populaire'){
+          var tag = document.createElement('span');
+          tag.className = 'surcharge';
+          tag.textContent = 'le + acheté';
+          btn.appendChild(tag);
+        }
+        btn.addEventListener('click', function(){
+          categoryRow.querySelectorAll('.opt-chip').forEach(function(c){ c.classList.remove('active'); });
+          btn.classList.add('active');
+          p2CurrentCategory = cat;
+          renderP2SizeChips(cat);
+        });
+        categoryRow.appendChild(btn);
+      });
+
+      p2CurrentCategory = Object.keys(TABLEAUX_DATA)[0];
+      renderP2SizeChips(p2CurrentCategory);
+    }
+
+    function renderP2SizeChips(category){
+      var sizeRow = document.getElementById('p2_taille_row');
+      if (!sizeRow) return;
+      sizeRow.innerHTML = '';
+
+      TABLEAUX_DATA[category].forEach(function(opt, i){
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'opt-chip' + (i === 0 ? ' active' : '');
+        btn.textContent = opt.taille;
+        btn.addEventListener('click', function(){
+          sizeRow.querySelectorAll('.opt-chip').forEach(function(c){ c.classList.remove('active'); });
+          btn.classList.add('active');
+          p2CurrentSize = opt;
+          updateP2Price();
+        });
+        sizeRow.appendChild(btn);
+      });
+
+      p2CurrentSize = TABLEAUX_DATA[category][0];
+      updateP2Price();
+    }
+
+    function updateP2Price(){
+      if (!p2CurrentCategory || !p2CurrentSize) return;
+
+      var hidden = document.getElementById('p2_format');
+      if (hidden) hidden.value = p2CurrentCategory + '|' + p2CurrentSize.taille + '|' + p2CurrentSize.prix;
+
+      var formatEl = document.getElementById('p2_price_format');
+      var valueEl  = document.getElementById('p2_price_value');
+      var totalEl  = document.getElementById('p2_price_total');
+      if (formatEl) formatEl.textContent = p2CurrentCategory + ' ' + p2CurrentSize.taille;
+      if (valueEl)  valueEl.textContent = euro(p2CurrentSize.prix);
+
+      var qtyEl = document.getElementById('p2_qty');
+      var qty = qtyEl ? (parseInt(qtyEl.value, 10) || 1) : 1;
+      if (totalEl) totalEl.textContent = qty > 1 ? ('× ' + qty + ' = ' + euro(p2CurrentSize.prix * qty)) : '';
+    }
+
+    /* ---- P3 / P4 / P6 / P7 : un seul groupe de puces + panneau de prix ---- */
+    function updateChipPricePanel(rowSelector, ids, priceIsSurDevisWhenZero){
+      var activeChip = document.querySelector(rowSelector + ' .opt-chip.active');
+      if (!activeChip) return;
+
+      var price = parseFloat(activeChip.getAttribute('data-price') || '0') || 0;
+      var formatEl = document.getElementById(ids.format);
+      var valueEl  = document.getElementById(ids.value);
+      var totalEl  = document.getElementById(ids.total);
+      var qtyEl    = document.getElementById(ids.qty);
+
+      if (formatEl) formatEl.textContent = activeChip.textContent.trim();
+      if (valueEl)  valueEl.textContent = (price > 0 || !priceIsSurDevisWhenZero) ? euro(price) : 'Sur devis';
+
+      var qty = qtyEl ? (parseInt(qtyEl.value, 10) || 1) : 1;
+      if (totalEl) totalEl.textContent = (price > 0 && qty > 1) ? ('× ' + qty + ' = ' + euro(price * qty)) : '';
+    }
+
+    function updateP3Price(){ updateChipPricePanel('#p3_quantite_row', {format:'p3_price_format', value:'p3_price_value', total:'p3_price_total', qty:'p3_qty'}, true); }
+    function updateP4Price(){ updateChipPricePanel('#p4_format_row',   {format:'p4_price_format', value:'p4_price_value', total:'p4_price_total', qty:'p4_qty'}, true); }
+    function updateP6Price(){ updateChipPricePanel('#p6_quantite_row', {format:'p6_price_format', value:'p6_price_value', total:'p6_price_total', qty:'p6_qty'}, true); }
+    function updateP7Price(){ updateChipPricePanel('#p7_formule_row',  {format:'p7_price_format', value:'p7_price_value', total:'p7_price_total', qty:'p7_qty'}, false); }
+
+    function initProductChipSelectors(){
+      initP1Selector();
+      initP2Selector();
+
+      initChipGroup(document.getElementById('p3_quantite_row'), 'p3_quantite', updateP3Price);
+      updateP3Price();
+
+      initChipGroup(document.getElementById('p4_format_row'), 'p4_format', updateP4Price);
+      updateP4Price();
+
+      initChipGroup(document.getElementById('p6_quantite_row'), null, updateP6Price);
+      updateP6Price();
+
+      initChipGroup(document.getElementById('p7_formule_row'), 'p7_formule', updateP7Price);
+      updateP7Price();
+    }
+
+    /* ===========================
        5) ANIM : FLY TO CART
        =========================== */
     function flyToCart(fromBtn){
@@ -4159,6 +4560,7 @@ function initProductSearch(){
         toast('Tableaux ajoutés');
         flyToCart(btn);
         resetQty('p2_qty');
+        updateP2Price();
       }catch(e){
         console.error(e);
       }
@@ -4199,6 +4601,7 @@ function initProductSearch(){
         toast('Cartes ajoutées');
         flyToCart(btn);
         resetQty('p3_qty');
+        updateP3Price();
       }catch(e){
         console.error(e);
       }
@@ -4239,6 +4642,7 @@ function initProductSearch(){
         toast('Étiquettes ajoutées');
         flyToCart(btn);
         resetQty('p4_qty');
+        updateP4Price();
       }catch(e){
         console.error(e);
       }
@@ -4281,10 +4685,11 @@ function initProductSearch(){
     // P6 : Fusées
     function addP6(btn){
       try{
-        var sel   = document.getElementById('p6_quantite');
-        var opt   = sel.options[sel.selectedIndex];
-        var label = opt.text;
-        var unit  = parseFloat(opt.getAttribute('data-price') || '0') || 0;
+        // Depuis le passage aux puces, il n'y a plus de <select> : on lit
+        // directement la puce active (même logique qu'avant, autre source).
+        var activeChip = document.querySelector('#p6_quantite_row .opt-chip.active');
+        var label = activeChip ? activeChip.getAttribute('data-value') : '';
+        var unit  = activeChip ? (parseFloat(activeChip.getAttribute('data-price') || '0') || 0) : 0;
 
         var qty = parseInt(document.getElementById('p6_qty').value || '1', 10);
         if (isNaN(qty) || qty < 1) qty = 1;
@@ -4315,6 +4720,7 @@ function initProductSearch(){
         toast('Fusées ajoutées');
         flyToCart(btn);
         resetQty('p6_qty');
+        updateP6Price();
       }catch(e){
         console.error(e);
       }
@@ -4361,6 +4767,7 @@ function initProductSearch(){
         toast('Design ajouté au panier');
         flyToCart(btn);
         resetQty('p7_qty');
+        updateP7Price();
       }catch(e){
         console.error(e);
       }
@@ -5384,6 +5791,11 @@ document.addEventListener('DOMContentLoaded', function(){
   // 0) Thèmes en tout premier : les boutons Gold/Nuit/Néon doivent rester
   //    cliquables même si une étape suivante (historique, favoris...) plante.
   try { initTheme(); } catch(e){ console.error('initTheme error', e); }
+
+  // Sélecteurs d'options en puces (fiches produits) : chip-groups +
+  // panneaux de prix. Les éléments sont statiques dans le DOM (juste
+  // cachés via .hidden), donc un seul branchement au chargement suffit.
+  try { initProductChipSelectors(); } catch(e){ console.error('initProductChipSelectors error', e); }
 
   // Bouton retour natif Telegram : un seul enregistrement du clic,
   // l'état (affiché/caché) est ensuite piloté par syncBackButton().
