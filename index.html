@@ -3072,58 +3072,56 @@ body[data-theme="night"] .product-card {
       <input type="hidden" id="p1_type" value="">
     </div>
 
-    <!-- Caché tant que le type n'est pas choisi : on ne montre pas tout
-         d'un coup, ça guide le client étape par étape. -->
-    <div id="p1_options_wrap" class="hidden">
-      <div class="opt-group">
-        <div class="opt-group-label">Taille</div>
-        <div id="p1_taille_wrap">
-          <div class="opt-chip-row" id="p1_taille_row">
-            <!-- dépend du type choisi, généré en JS -->
-          </div>
+    <!-- Chaque étape reste cachée tant que la précédente n'est pas
+         choisie : un choix à la fois, pas tout d'un coup. -->
+    <div class="opt-group hidden" id="p1_taille_group">
+      <div class="opt-group-label">Taille</div>
+      <div id="p1_taille_wrap">
+        <div class="opt-chip-row" id="p1_taille_row">
+          <!-- dépend du type choisi, généré en JS -->
         </div>
       </div>
+    </div>
 
-      <div class="opt-group">
-        <div class="opt-group-label">Finition</div>
-        <div class="opt-chip-row" id="p1_finition_row">
-          <button type="button" class="opt-chip active" data-value="Matte">Matte</button>
-          <button type="button" class="opt-chip" data-value="Brillant">Brillant</button>
-          <button type="button" class="opt-chip" data-value="Holographique">Holographique</button>
-        </div>
-        <input type="hidden" id="p1_finition" value="Matte">
+    <div class="opt-group hidden" id="p1_finition_group">
+      <div class="opt-group-label">Finition</div>
+      <div class="opt-chip-row" id="p1_finition_row">
+        <button type="button" class="opt-chip" data-value="Matte">Matte</button>
+        <button type="button" class="opt-chip" data-value="Brillant">Brillant</button>
+        <button type="button" class="opt-chip" data-value="Holographique">Holographique</button>
       </div>
+      <input type="hidden" id="p1_finition" value="">
+    </div>
 
-      <div class="opt-group">
-        <div class="opt-group-label">Impression</div>
-        <div class="opt-chip-row" id="p1_impression_row">
-          <button type="button" class="opt-chip active" data-value="1 design">1 design</button>
-          <button type="button" class="opt-chip" data-value="multi designs +40€">multi designs<span class="surcharge">+40€</span></button>
-        </div>
-        <input type="hidden" id="p1_impression" value="1 design">
+    <div class="opt-group hidden" id="p1_impression_group">
+      <div class="opt-group-label">Impression</div>
+      <div class="opt-chip-row" id="p1_impression_row">
+        <button type="button" class="opt-chip" data-value="1 design">1 design</button>
+        <button type="button" class="opt-chip" data-value="multi designs +40€">multi designs<span class="surcharge">+40€</span></button>
       </div>
+      <input type="hidden" id="p1_impression" value="">
+    </div>
 
-      <div class="opt-group" id="p1_fenetre_group">
-        <div class="opt-group-label">Fenêtre</div>
-        <div class="opt-chip-row" id="p1_fenetre_row">
-          <button type="button" class="opt-chip active" data-value="sans fenêtre">sans fenêtre</button>
-          <button type="button" class="opt-chip" data-value="avec fenêtre +40€">avec fenêtre<span class="surcharge">+40€</span></button>
-        </div>
-        <input type="hidden" id="p1_fenetre" value="sans fenêtre">
+    <div class="opt-group hidden" id="p1_fenetre_group">
+      <div class="opt-group-label">Fenêtre</div>
+      <div class="opt-chip-row" id="p1_fenetre_row">
+        <button type="button" class="opt-chip" data-value="sans fenêtre">sans fenêtre</button>
+        <button type="button" class="opt-chip" data-value="avec fenêtre +40€">avec fenêtre<span class="surcharge">+40€</span></button>
       </div>
+      <input type="hidden" id="p1_fenetre" value="">
+    </div>
 
-      <!-- Dernière étape : la quantité (pack). -->
-      <div class="opt-group" id="p1_quantite_group">
-        <div class="opt-group-label">Quantité (pack)</div>
-        <div class="opt-chip-row" id="p1_quantite_row">
-          <button type="button" class="opt-chip active" data-value="500">500</button>
-          <button type="button" class="opt-chip" data-value="1000">1000</button>
-          <button type="button" class="opt-chip" data-value="2000">2000</button>
-          <button type="button" class="opt-chip" data-value="5000">5000</button>
-          <button type="button" class="opt-chip" data-value="+ sur devis">+ sur devis</button>
-        </div>
-        <input type="hidden" id="p1_quantite" value="500">
+    <!-- Dernière étape : la quantité (pack). -->
+    <div class="opt-group hidden" id="p1_quantite_group">
+      <div class="opt-group-label">Quantité (pack)</div>
+      <div class="opt-chip-row" id="p1_quantite_row">
+        <button type="button" class="opt-chip" data-value="500">500</button>
+        <button type="button" class="opt-chip" data-value="1000">1000</button>
+        <button type="button" class="opt-chip" data-value="2000">2000</button>
+        <button type="button" class="opt-chip" data-value="5000">5000</button>
+        <button type="button" class="opt-chip" data-value="+ sur devis">+ sur devis</button>
       </div>
+      <input type="hidden" id="p1_quantite" value="">
     </div>
 
     <button class="btn primary btn-add-full" type="button" onclick="addP1(this)">Ajouter</button>
@@ -4257,6 +4255,10 @@ function initProductSearch(){
         try{ video.pause(); }catch(e){}
       }
 
+      // Remet la fiche Pochon à zéro à chaque sortie (bouton "← Retour",
+      // changement d'onglet...), sans effet si elle n'était pas ouverte.
+      if (typeof resetP1Form === 'function') resetP1Form();
+
       if (!fromTabSwitch) scrollAppToTop();
       syncBackButton();
     }
@@ -4329,12 +4331,33 @@ function initProductSearch(){
       "Forme spécial": null
     };
 
+    function revealP1Group(id){
+      var el = document.getElementById(id);
+      if (el) el.classList.remove('hidden');
+    }
+
     function initP1Selector(){
-      initChipGroup(document.getElementById('p1_quantite_row'), 'p1_quantite');
-      initChipGroup(document.getElementById('p1_finition_row'), 'p1_finition');
-      initChipGroup(document.getElementById('p1_impression_row'), 'p1_impression');
-      initChipGroup(document.getElementById('p1_fenetre_row'), 'p1_fenetre');
       initP1TypeSelector();
+
+      // Chaque étape ne fait qu'apparaître la suivante — un choix à la
+      // fois, jamais tout d'un coup.
+      initChipGroup(document.getElementById('p1_finition_row'), 'p1_finition', function(){
+        revealP1Group('p1_impression_group');
+      });
+      initChipGroup(document.getElementById('p1_impression_row'), 'p1_impression', function(){
+        var type = document.getElementById('p1_type').value;
+        if (type === 'Forme spécial'){
+          // Pas de fenêtre pour une forme sur-mesure : on saute direct
+          // à la quantité (qui de toute façon reste cachée pour ce type).
+          revealP1Group('p1_quantite_group');
+        } else {
+          revealP1Group('p1_fenetre_group');
+        }
+      });
+      initChipGroup(document.getElementById('p1_fenetre_row'), 'p1_fenetre', function(){
+        revealP1Group('p1_quantite_group');
+      });
+      initChipGroup(document.getElementById('p1_quantite_row'), 'p1_quantite');
     }
 
     function initP1TypeSelector(){
@@ -4355,17 +4378,16 @@ function initProductSearch(){
           var hiddenType = document.getElementById('p1_type');
           if (hiddenType) hiddenType.value = type;
           renderP1Taille(type);
-
-          var optionsWrap = document.getElementById('p1_options_wrap');
-          if (optionsWrap) optionsWrap.classList.remove('hidden');
+          revealP1Group('p1_taille_group');
         });
         typeRow.appendChild(btn);
       });
     }
 
     // Reconstruit la zone "Taille" (puces normales, ou un champ de saisie
-    // libre pour "Forme spécial"), et affiche/masque Fenêtre + Quantité
-    // (pack), qui n'ont pas de sens pour une forme sur-mesure.
+    // libre pour "Forme spécial"), et masque Fenêtre + Quantité (pack) —
+    // elles n'ont pas de sens pour une forme sur-mesure et resteront
+    // cachées pour ce type même une fois les étapes précédentes passées.
     function renderP1Taille(type){
       var wrap = document.getElementById('p1_taille_wrap');
       if (!wrap) return;
@@ -4376,21 +4398,57 @@ function initProductSearch(){
         wrap.innerHTML =
           '<input type="text" id="p1_taille" class="taille-libre" ' +
           'placeholder="Décris la taille souhaitée (ex : 10×15 cm)">';
+        // Pas de puce à cliquer ici : on passe direct à l'étape suivante.
+        revealP1Group('p1_finition_group');
       } else {
         var html = '<div class="opt-chip-row" id="p1_taille_row">';
-        POCHON_TAILLES[type].forEach(function(taille, i){
-          html += '<button type="button" class="opt-chip' + (i === 0 ? ' active' : '') +
-                  '" data-value="' + taille + '">' + taille + '</button>';
+        POCHON_TAILLES[type].forEach(function(taille){
+          html += '<button type="button" class="opt-chip" data-value="' + taille + '">' + taille + '</button>';
         });
-        html += '</div><input type="hidden" id="p1_taille" value="' + POCHON_TAILLES[type][0] + '">';
+        html += '</div><input type="hidden" id="p1_taille" value="">';
         wrap.innerHTML = html;
-        initChipGroup(document.getElementById('p1_taille_row'), 'p1_taille');
+        initChipGroup(document.getElementById('p1_taille_row'), 'p1_taille', function(){
+          revealP1Group('p1_finition_group');
+        });
       }
 
       var fenetreGroup  = document.getElementById('p1_fenetre_group');
       var quantiteGroup = document.getElementById('p1_quantite_group');
-      if (fenetreGroup)  fenetreGroup.style.display  = isSpecial ? 'none' : '';
-      if (quantiteGroup) quantiteGroup.style.display = isSpecial ? 'none' : '';
+      if (isSpecial){
+        if (fenetreGroup)  fenetreGroup.classList.add('hidden');
+        if (quantiteGroup) quantiteGroup.classList.add('hidden');
+      }
+    }
+
+    // Remet la fiche Pochon à zéro : appelé chaque fois qu'on quitte la
+    // fiche produit (bouton "← Retour", changement d'onglet...), pour
+    // qu'elle reparte de zéro à la prochaine ouverture plutôt que de
+    // garder les choix (et l'avancement) de la visite précédente.
+    function resetP1Form(){
+      var typeRow = document.getElementById('p1_type_row');
+      if (typeRow) typeRow.querySelectorAll('.opt-chip').forEach(function(c){ c.classList.remove('active'); });
+
+      var hiddenType = document.getElementById('p1_type');
+      if (hiddenType) hiddenType.value = '';
+
+      ['p1_taille_group','p1_finition_group','p1_impression_group','p1_fenetre_group','p1_quantite_group']
+        .forEach(function(id){
+          var el = document.getElementById(id);
+          if (el) el.classList.add('hidden');
+        });
+
+      ['p1_finition_row','p1_impression_row','p1_fenetre_row','p1_quantite_row'].forEach(function(rowId){
+        var row = document.getElementById(rowId);
+        if (row) row.querySelectorAll('.opt-chip').forEach(function(c){ c.classList.remove('active'); });
+      });
+
+      ['p1_finition','p1_impression','p1_fenetre','p1_quantite'].forEach(function(id){
+        var el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+
+      var tailleWrap = document.getElementById('p1_taille_wrap');
+      if (tailleWrap) tailleWrap.innerHTML = '<div class="opt-chip-row" id="p1_taille_row"></div>';
     }
 
     /* ---- P2 : Forme -> Taille (2 niveaux) + panneau de prix ---- */
@@ -4578,20 +4636,43 @@ function initProductSearch(){
           return;
         }
         var isSpecial  = (type === 'Forme spécial');
+        var taille     = (document.getElementById('p1_taille').value || '').trim();
+        var finition   = document.getElementById('p1_finition').value;
+        var impression = document.getElementById('p1_impression').value;
         // Pack et fenêtre n'ont pas de sens pour une forme sur-mesure :
         // undefined (pas null) pour que la fusion d'articles identiques
         // continue à bien fonctionner (undefined === undefined).
         var pack       = isSpecial ? undefined : document.getElementById('p1_quantite').value;
         var fenetre    = isSpecial ? undefined : document.getElementById('p1_fenetre').value;
-        var taille     = document.getElementById('p1_taille').value;
-        var finition   = document.getElementById('p1_finition').value;
-        var impression = document.getElementById('p1_impression').value;
         // Plus de stepper "combien de lots" séparé : un clic sur Ajouter
         // ajoute 1 unité de la config choisie (fusionne si déjà présente).
         var qty = 1;
 
-        if (isSpecial && !taille.trim()){
+        // Chaque étape se choisit une à une : on vérifie qu'aucune n'a
+        // été sautée avant d'ajouter, plutôt que d'accepter un article
+        // à moitié configuré.
+        if (isSpecial && !taille){
           toast('Précise la taille souhaitée pour la forme spéciale.');
+          return;
+        }
+        if (!isSpecial && !taille){
+          toast('Choisis une taille.');
+          return;
+        }
+        if (!finition){
+          toast('Choisis une finition.');
+          return;
+        }
+        if (!impression){
+          toast('Choisis une impression.');
+          return;
+        }
+        if (!isSpecial && !fenetre){
+          toast('Choisis une option fenêtre.');
+          return;
+        }
+        if (!isSpecial && !pack){
+          toast('Choisis une quantité (pack).');
           return;
         }
 
