@@ -4305,25 +4305,74 @@ function initProductSearch(){
       if (el) el.classList.remove('hidden');
     }
 
+    function hideP1Group(id){
+      var el = document.getElementById(id);
+      if (el) el.classList.add('hidden');
+    }
+
+    // Déactive/vide juste la sélection d'un groupe de puces statique (les
+    // boutons eux-mêmes ne changent jamais, ex. Finition/Impression/Fenêtre).
+    function clearP1StaticChips(rowId, hiddenId){
+      var row = document.getElementById(rowId);
+      if (row) row.querySelectorAll('.opt-chip').forEach(function(c){ c.classList.remove('active'); });
+      var hidden = document.getElementById(hiddenId);
+      if (hidden) hidden.value = '';
+    }
+
+    // Vide la sélection de quantité (puce active + valeur + panneau de
+    // prix) sans détruire les puces elles-mêmes : elles ne dépendent que
+    // du Type + de la Taille, pas de Impression/Fenêtre, donc pas besoin
+    // de les reconstruire ici — juste d'annuler le choix déjà fait.
+    function clearP1QuantiteSelection(){
+      var row = document.getElementById('p1_quantite_row');
+      if (row) row.querySelectorAll('.opt-chip').forEach(function(c){ c.classList.remove('active'); });
+      var quantiteEl = document.getElementById('p1_quantite');
+      if (quantiteEl) quantiteEl.value = '';
+      var pricePanel = document.getElementById('p1_price_panel');
+      if (pricePanel) pricePanel.classList.add('hidden');
+      hideP1Group('p1_quantite_group');
+    }
+
+    // Cascade de remise à zéro : revenir modifier une étape antérieure
+    // efface systématiquement tout ce qui vient après (comme si le client
+    // recommençait à choisir à partir de là), plutôt que de garder
+    // d'anciennes valeurs (et un vieux prix) qui ne correspondent plus
+    // forcément à ce qui vient d'être changé.
+    function resetP1AfterFenetre(){
+      clearP1QuantiteSelection();
+    }
+    function resetP1AfterImpression(){
+      clearP1StaticChips('p1_fenetre_row', 'p1_fenetre');
+      hideP1Group('p1_fenetre_group');
+      resetP1AfterFenetre();
+    }
+    function resetP1AfterFinition(){
+      clearP1StaticChips('p1_impression_row', 'p1_impression');
+      hideP1Group('p1_impression_group');
+      resetP1AfterImpression();
+    }
+    function resetP1AfterTaille(){
+      clearP1StaticChips('p1_finition_row', 'p1_finition');
+      hideP1Group('p1_finition_group');
+      resetP1AfterFinition();
+    }
+
     function initP1Selector(){
       initP1TypeSelector();
 
       // Chaque étape ne fait qu'apparaître la suivante — un choix à la
-      // fois, jamais tout d'un coup.
+      // fois, jamais tout d'un coup — et remet à zéro tout ce qui suit.
       initChipGroup(document.getElementById('p1_finition_row'), 'p1_finition', function(){
+        resetP1AfterFinition();
         revealP1Group('p1_impression_group');
       });
       initChipGroup(document.getElementById('p1_impression_row'), 'p1_impression', function(){
+        resetP1AfterImpression();
         var type = document.getElementById('p1_type').value;
-        // Ne (re)construit la quantité que si elle n'existe pas encore :
-        // sinon, revenir cocher "multi designs" après avoir déjà choisi
-        // une quantité effaçait cette sélection au lieu de juste
-        // recalculer le prix avec le nouveau supplément.
-        var qtyRow = document.getElementById('p1_quantite_row');
-        if (!qtyRow || !qtyRow.children.length){
-          renderP1Quantite();
-        }
-        updateP1PricePanel();
+        // Ne dépend que du Type + de la Taille (déjà fixés à ce stade) :
+        // se reconstruit donc toujours correctement, peu importe combien
+        // de fois on revient changer l'impression.
+        renderP1Quantite();
         if (type === 'Forme spécial'){
           // Pas de fenêtre pour une forme sur-mesure : on saute direct
           // à la quantité (déjà construite en saisie libre juste au-dessus).
@@ -4333,10 +4382,8 @@ function initProductSearch(){
         }
       });
       initChipGroup(document.getElementById('p1_fenetre_row'), 'p1_fenetre', function(){
+        resetP1AfterFenetre();
         revealP1Group('p1_quantite_group');
-        // Si le client revient changer la fenêtre après avoir déjà
-        // choisi une quantité, le prix affiché doit suivre.
-        updateP1PricePanel();
       });
     }
 
@@ -4393,6 +4440,10 @@ function initProductSearch(){
           btn.classList.add('active');
           var hiddenType = document.getElementById('p1_type');
           if (hiddenType) hiddenType.value = type;
+          // Reset AVANT de reconstruire la taille : pour "Forme spécial",
+          // renderP1Taille() réaffiche tout de suite Finition, donc il ne
+          // faut pas que ce reset la recache juste après.
+          resetP1AfterTaille();
           renderP1Taille(type);
           revealP1Group('p1_taille_group');
         });
@@ -4424,15 +4475,11 @@ function initProductSearch(){
         html += '</div><input type="hidden" id="p1_taille" value="">';
         wrap.innerHTML = html;
         initChipGroup(document.getElementById('p1_taille_row'), 'p1_taille', function(){
+          // Reset d'abord (efface finition/impression/fenêtre/quantité,
+          // qui ne correspondent plus forcément à ce nouveau choix), puis
+          // on ne réaffiche que l'étape immédiatement suivante.
+          resetP1AfterTaille();
           revealP1Group('p1_finition_group');
-          // La taille change les paliers/prix de quantité : si elle avait
-          // déjà été construite pour une taille précédente (ex. le client
-          // revient changer d'avis), il faut la refaire pour la nouvelle
-          // taille — sinon les prix affichés restaient ceux de la
-          // première taille cliquée, quelle que soit la taille choisie
-          // ensuite.
-          renderP1Quantite();
-          updateP1PricePanel();
         });
       }
 
@@ -4489,30 +4536,17 @@ function initProductSearch(){
       var hiddenType = document.getElementById('p1_type');
       if (hiddenType) hiddenType.value = '';
 
-      ['p1_taille_group','p1_finition_group','p1_impression_group','p1_fenetre_group','p1_quantite_group']
-        .forEach(function(id){
-          var el = document.getElementById(id);
-          if (el) el.classList.add('hidden');
-        });
-
-      ['p1_finition_row','p1_impression_row','p1_fenetre_row'].forEach(function(rowId){
-        var row = document.getElementById(rowId);
-        if (row) row.querySelectorAll('.opt-chip').forEach(function(c){ c.classList.remove('active'); });
-      });
-
-      ['p1_finition','p1_impression','p1_fenetre'].forEach(function(id){
-        var el = document.getElementById(id);
-        if (el) el.value = '';
-      });
-
+      hideP1Group('p1_taille_group');
       var tailleWrap = document.getElementById('p1_taille_wrap');
       if (tailleWrap) tailleWrap.innerHTML = '<div class="opt-chip-row" id="p1_taille_row"></div>';
 
+      resetP1AfterTaille();
+
+      // En quittant complètement la fiche (pas juste en changeant un
+      // choix), on vide aussi le contenu de la quantité, pas juste sa
+      // sélection, pour repartir sur une page vraiment vierge.
       var quantiteWrap = document.getElementById('p1_quantite_wrap');
       if (quantiteWrap) quantiteWrap.innerHTML = '<div class="opt-chip-row" id="p1_quantite_row"></div>';
-
-      var pricePanel = document.getElementById('p1_price_panel');
-      if (pricePanel) pricePanel.classList.add('hidden');
     }
 
     /* ---- P2 : Forme -> Taille (2 niveaux) + panneau de prix ---- */
