@@ -3030,61 +3030,37 @@ body[data-theme="night"] .product-card {
       <span class="pill">Délai : environ 20 jours</span>
     </div>
 
+    <!-- Toute la fiche (puces, étapes affichées/masquées, prix) est
+         générée par JS à partir d'un seul état (p1State), voir
+         renderP1() : aucun bouton n'est écrit ici en dur. -->
     <div class="opt-group">
       <div class="opt-group-label">Type de pochon</div>
-      <div class="opt-chip-row" id="p1_type_row">
-        <!-- généré en JS : Cali bag / Sachet plat / Forme spécial, aucun
-             présélectionné : c'est la première décision à prendre. -->
-      </div>
-      <input type="hidden" id="p1_type" value="">
+      <div class="opt-chip-row" id="p1_type_row"></div>
     </div>
 
-    <!-- Chaque étape reste cachée tant que la précédente n'est pas
-         choisie : un choix à la fois, pas tout d'un coup. -->
     <div class="opt-group hidden" id="p1_taille_group">
       <div class="opt-group-label">Taille</div>
-      <div id="p1_taille_wrap">
-        <div class="opt-chip-row" id="p1_taille_row">
-          <!-- dépend du type choisi, généré en JS -->
-        </div>
-      </div>
+      <div id="p1_taille_wrap"></div>
     </div>
 
     <div class="opt-group hidden" id="p1_finition_group">
       <div class="opt-group-label">Finition</div>
-      <div class="opt-chip-row" id="p1_finition_row">
-        <button type="button" class="opt-chip" data-value="Matte">Matte</button>
-        <button type="button" class="opt-chip" data-value="Brillant">Brillant</button>
-        <button type="button" class="opt-chip" data-value="Holographique">Holographique</button>
-      </div>
-      <input type="hidden" id="p1_finition" value="">
+      <div class="opt-chip-row" id="p1_finition_row"></div>
     </div>
 
     <div class="opt-group hidden" id="p1_impression_group">
       <div class="opt-group-label">Impression</div>
-      <div class="opt-chip-row" id="p1_impression_row">
-        <button type="button" class="opt-chip" data-value="1 design" data-surcharge="0">1 design</button>
-        <button type="button" class="opt-chip" data-value="multi designs +40€" data-surcharge="40">multi designs<span class="surcharge">+40€</span></button>
-      </div>
-      <input type="hidden" id="p1_impression" value="">
+      <div class="opt-chip-row" id="p1_impression_row"></div>
     </div>
 
     <div class="opt-group hidden" id="p1_fenetre_group">
       <div class="opt-group-label">Fenêtre</div>
-      <div class="opt-chip-row" id="p1_fenetre_row">
-        <button type="button" class="opt-chip" data-value="sans fenêtre" data-surcharge="0">sans fenêtre</button>
-        <button type="button" class="opt-chip" data-value="avec fenêtre +40€" data-surcharge="40">avec fenêtre<span class="surcharge">+40€</span></button>
-      </div>
-      <input type="hidden" id="p1_fenetre" value="">
+      <div class="opt-chip-row" id="p1_fenetre_row"></div>
     </div>
 
-    <!-- Dernière étape : la quantité (pack). Les paliers et les prix
-         dépendent de la taille choisie, généré en JS (renderP1Quantite). -->
     <div class="opt-group hidden" id="p1_quantite_group">
       <div class="opt-group-label">Quantité (pack)</div>
-      <div id="p1_quantite_wrap">
-        <div class="opt-chip-row" id="p1_quantite_row"></div>
-      </div>
+      <div id="p1_quantite_wrap"></div>
 
       <div class="price-panel hidden" id="p1_price_panel">
         <div>
@@ -4272,14 +4248,18 @@ function initProductSearch(){
     function incQty(id, after){ inc(id); if (after) after(); }
     function decQty(id, after){ dec(id); if (after) after(); }
 
-    /* ---- P1 : 5 groupes simples, pas de prix (produit sur devis) ---- */
-    // Type -> Taille (2 niveaux) : les tailles disponibles dépendent du
-    // type de pochon choisi. Prix pas encore définis, donc pas de panneau
-    // de prix ici (produit toujours "sur devis" pour l'instant).
+    /* ===========================
+       P1 (Pochons) : un seul état + une seule fonction qui redessine
+       toute la fiche à partir de cet état — voir renderP1(). Personne
+       d'autre ne touche au DOM des étapes directement : impossible
+       d'oublier de réinitialiser quelque chose en cours de route.
+       =========================== */
+    var p1State = { type:'', taille:'', finition:'', impression:'', fenetre:'', quantite:'' };
+    var P1_ORDER = ['type','taille','finition','impression','fenetre','quantite'];
+
     // "Forme spécial" (valeur null) : pas de liste de tailles fixe, le
-    // client décrit lui-même ce qu'il veut : pas de tailles fixes, pas de
-    // prix (sur devis direct), donc plus loin pas de fenêtre non plus et
-    // une quantité en saisie libre (minimum 1000) au lieu de paliers.
+    // client décrit lui-même ce qu'il veut — pas de prix, donc pas de
+    // fenêtre non plus, et une quantité en saisie libre (minimum 1000).
     var POCHON_TAILLES = {
       "Cali bag":      ["8×13 cm", "10×15 cm"],
       "Sachet plat":   ["6×8 cm", "7×10 cm"],
@@ -4300,6 +4280,16 @@ function initProductSearch(){
       }
     };
 
+    var P1_FINITIONS = ['Matte', 'Brillant', 'Holographique'];
+    var P1_IMPRESSIONS = [
+      { value: '1 design', surcharge: 0 },
+      { value: 'multi designs +40€', label: 'multi designs', surcharge: 40, surchargeLabel: '+40€' }
+    ];
+    var P1_FENETRES = [
+      { value: 'sans fenêtre', surcharge: 0 },
+      { value: 'avec fenêtre +40€', label: 'avec fenêtre', surcharge: 40, surchargeLabel: '+40€' }
+    ];
+
     function revealP1Group(id){
       var el = document.getElementById(id);
       if (el) el.classList.remove('hidden');
@@ -4310,120 +4300,96 @@ function initProductSearch(){
       if (el) el.classList.add('hidden');
     }
 
-    // Déactive/vide juste la sélection d'un groupe de puces statique (les
-    // boutons eux-mêmes ne changent jamais, ex. Finition/Impression/Fenêtre).
-    function clearP1StaticChips(rowId, hiddenId){
+    function p1FindOption(list, value){
+      for (var i = 0; i < list.length; i++){
+        var opt = list[i];
+        var v = (typeof opt === 'object' && opt !== null) ? opt.value : opt;
+        if (v === value) return opt;
+      }
+      return null;
+    }
+
+    function p1Surcharge(list, value){
+      var opt = p1FindOption(list, value);
+      return (opt && typeof opt === 'object' && opt.surcharge) || 0;
+    }
+
+    // Puces génériques : reconstruit une rangée à partir d'une liste
+    // d'options (chaînes, ou objets {value, label, surcharge,
+    // surchargeLabel}) et marque celle qui correspond à activeValue.
+    function renderP1ChipRow(rowId, options, activeValue, onClick){
       var row = document.getElementById(rowId);
-      if (row) row.querySelectorAll('.opt-chip').forEach(function(c){ c.classList.remove('active'); });
-      var hidden = document.getElementById(hiddenId);
-      if (hidden) hidden.value = '';
-    }
+      if (!row) return;
+      row.innerHTML = '';
+      options.forEach(function(opt){
+        var isObj = (typeof opt === 'object' && opt !== null);
+        var value = isObj ? opt.value : opt;
+        var label = (isObj && opt.label) ? opt.label : value;
 
-    // Vide la sélection de quantité (puce active + valeur + panneau de
-    // prix) sans détruire les puces elles-mêmes : elles ne dépendent que
-    // du Type + de la Taille, pas de Impression/Fenêtre, donc pas besoin
-    // de les reconstruire ici — juste d'annuler le choix déjà fait.
-    function clearP1QuantiteSelection(){
-      var row = document.getElementById('p1_quantite_row');
-      if (row) row.querySelectorAll('.opt-chip').forEach(function(c){ c.classList.remove('active'); });
-      var quantiteEl = document.getElementById('p1_quantite');
-      if (quantiteEl) quantiteEl.value = '';
-      var pricePanel = document.getElementById('p1_price_panel');
-      if (pricePanel) pricePanel.classList.add('hidden');
-      hideP1Group('p1_quantite_group');
-    }
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'opt-chip' + (value === activeValue ? ' active' : '');
+        btn.setAttribute('data-value', value);
+        btn.appendChild(document.createTextNode(label));
 
-    // Cascade de remise à zéro : revenir modifier une étape antérieure
-    // efface systématiquement tout ce qui vient après (comme si le client
-    // recommençait à choisir à partir de là), plutôt que de garder
-    // d'anciennes valeurs (et un vieux prix) qui ne correspondent plus
-    // forcément à ce qui vient d'être changé.
-    function resetP1AfterFenetre(){
-      clearP1QuantiteSelection();
-    }
-    function resetP1AfterImpression(){
-      clearP1StaticChips('p1_fenetre_row', 'p1_fenetre');
-      hideP1Group('p1_fenetre_group');
-      resetP1AfterFenetre();
-    }
-    function resetP1AfterFinition(){
-      clearP1StaticChips('p1_impression_row', 'p1_impression');
-      hideP1Group('p1_impression_group');
-      resetP1AfterImpression();
-    }
-    function resetP1AfterTaille(){
-      clearP1StaticChips('p1_finition_row', 'p1_finition');
-      hideP1Group('p1_finition_group');
-      resetP1AfterFinition();
-    }
-
-    function initP1Selector(){
-      initP1TypeSelector();
-
-      // Chaque étape ne fait qu'apparaître la suivante — un choix à la
-      // fois, jamais tout d'un coup.
-      //
-      // Finition/Impression/Fenêtre n'affectent PAS les paliers de
-      // quantité disponibles (contrairement au Type et à la Taille) —
-      // Impression/Fenêtre ne font qu'ajouter un supplément sur le palier
-      // déjà choisi. Les changer ne doit donc jamais désélectionner une
-      // quantité déjà choisie : juste recalculer le prix affiché.
-      initChipGroup(document.getElementById('p1_finition_row'), 'p1_finition', function(){
-        revealP1Group('p1_impression_group');
-      });
-      initChipGroup(document.getElementById('p1_impression_row'), 'p1_impression', function(){
-        var type = document.getElementById('p1_type').value;
-        var isSpecial = (type === 'Forme spécial');
-        var tailleEl = document.getElementById('p1_taille');
-        var taille = isSpecial ? '' : (tailleEl ? tailleEl.value : '');
-        var quantiteWrap = document.getElementById('p1_quantite_wrap');
-        var currentKey = type + '|' + taille;
-        var builtKey = quantiteWrap ? quantiteWrap.getAttribute('data-built-for') : null;
-
-        if (builtKey !== currentKey){
-          // Jamais construite pour ce Type+Taille (première fois ici, ou
-          // la taille a changé depuis) : on (re)construit avec les bons
-          // paliers/prix.
-          renderP1Quantite();
-        } else {
-          // Déjà construite pour ce Type+Taille exact (simple aller-retour
-          // sur Impression) : on garde la quantité déjà choisie, on
-          // recalcule juste le prix avec le nouveau supplément.
-          updateP1PricePanel();
+        if (isObj && opt.surchargeLabel){
+          var span = document.createElement('span');
+          span.className = 'surcharge';
+          span.textContent = opt.surchargeLabel;
+          btn.appendChild(span);
         }
-        if (type === 'Forme spécial'){
-          // Pas de fenêtre pour une forme sur-mesure : on saute direct
-          // à la quantité (déjà construite en saisie libre juste au-dessus).
-          revealP1Group('p1_quantite_group');
-        } else {
-          revealP1Group('p1_fenetre_group');
-        }
-      });
-      initChipGroup(document.getElementById('p1_fenetre_row'), 'p1_fenetre', function(){
-        revealP1Group('p1_quantite_group');
-        updateP1PricePanel();
+
+        btn.addEventListener('click', function(){ onClick(value); });
+        row.appendChild(btn);
       });
     }
 
-    // Additionne le palier de quantité choisi + les suppléments Impression
-    // et Fenêtre actuellement sélectionnés, et met à jour le panneau de
-    // prix en conséquence. Appelée à chaque fois qu'un de ces 3 choix
-    // change, pas seulement au clic sur la quantité.
+    // Change un champ et efface tout ce qui vient après lui dans l'ordre
+    // (Type efface Taille..Quantité, Taille efface Finition..Quantité,
+    // etc.) : revenir modifier une étape antérieure force à reconfirmer
+    // les suivantes plutôt que de garder d'anciennes valeurs périmées.
+    // Seuls Type et Taille changent ce qui est réellement disponible
+    // (produit différent, ou paliers de prix différents) : les changer
+    // efface tout ce qui suit, pour forcer à reconfirmer. Finition,
+    // Impression et Fenêtre ne sont que des choix indépendants (aucun
+    // impact sur les paliers de quantité) : les changer ne doit RIEN
+    // effacer, juste mettre à jour l'affichage et le prix.
+    var P1_CASCADING_FIELDS = ['type', 'taille'];
+
+    function setP1Field(field, value){
+      p1State[field] = value;
+      if (P1_CASCADING_FIELDS.indexOf(field) !== -1){
+        var idx = P1_ORDER.indexOf(field);
+        for (var i = idx + 1; i < P1_ORDER.length; i++){
+          p1State[P1_ORDER[i]] = '';
+        }
+      }
+      renderP1();
+    }
+
+    // Prix de base du palier de quantité actuellement choisi (0 si sur
+    // devis ou pas encore de quantité) — ne dépend que du Type+Taille,
+    // jamais d'Impression/Fenêtre qui ne sont que des suppléments.
+    function p1BasePrice(){
+      if (p1State.type === 'Forme spécial') return 0;
+      if (!p1State.quantite || p1State.quantite === '+ sur devis') return 0;
+      var tiers = (POCHON_PRICING[p1State.type] && POCHON_PRICING[p1State.type][p1State.taille]) || {};
+      return tiers[p1State.quantite] || 0;
+    }
+
     function updateP1PricePanel(){
       var pricePanel = document.getElementById('p1_price_panel');
       if (!pricePanel) return;
 
-      var qtyChip = document.querySelector('#p1_quantite_row .opt-chip.active');
-      if (!qtyChip){
+      if (!p1State.quantite || p1State.type === 'Forme spécial'){
         pricePanel.classList.add('hidden');
         return;
       }
 
-      var basePrice = parseFloat(qtyChip.getAttribute('data-price') || '0') || 0;
-
+      var basePrice = p1BasePrice();
       var formatEl = document.getElementById('p1_price_format');
       var valueEl  = document.getElementById('p1_price_value');
-      if (formatEl) formatEl.textContent = qtyChip.getAttribute('data-value') + ' pièces';
+      if (formatEl) formatEl.textContent = p1State.quantite + ' pièces';
 
       if (basePrice <= 0){
         if (valueEl) valueEl.textContent = 'Sur devis';
@@ -4431,121 +4397,129 @@ function initProductSearch(){
         return;
       }
 
-      var impChip = document.querySelector('#p1_impression_row .opt-chip.active');
-      var impSurcharge = impChip ? (parseFloat(impChip.getAttribute('data-surcharge') || '0') || 0) : 0;
+      var total = basePrice
+        + p1Surcharge(P1_IMPRESSIONS, p1State.impression)
+        + p1Surcharge(P1_FENETRES, p1State.fenetre);
 
-      var fenChip = document.querySelector('#p1_fenetre_row .opt-chip.active');
-      var fenSurcharge = fenChip ? (parseFloat(fenChip.getAttribute('data-surcharge') || '0') || 0) : 0;
-
-      if (valueEl) valueEl.textContent = euro(basePrice + impSurcharge + fenSurcharge);
+      if (valueEl) valueEl.textContent = euro(total);
       pricePanel.classList.remove('hidden');
     }
 
-    function initP1TypeSelector(){
-      var typeRow = document.getElementById('p1_type_row');
-      if (!typeRow) return;
-
-      // Aucun type présélectionné : c'est la première décision que le
-      // client doit prendre, le reste de la fiche reste caché jusque-là.
-      typeRow.innerHTML = '';
-      Object.keys(POCHON_TAILLES).forEach(function(type){
-        var btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'opt-chip';
-        btn.textContent = type;
-        btn.addEventListener('click', function(){
-          typeRow.querySelectorAll('.opt-chip').forEach(function(c){ c.classList.remove('active'); });
-          btn.classList.add('active');
-          var hiddenType = document.getElementById('p1_type');
-          if (hiddenType) hiddenType.value = type;
-          // Reset AVANT de reconstruire la taille : pour "Forme spécial",
-          // renderP1Taille() réaffiche tout de suite Finition, donc il ne
-          // faut pas que ce reset la recache juste après.
-          resetP1AfterTaille();
-          renderP1Taille(type);
-          revealP1Group('p1_taille_group');
-        });
-        typeRow.appendChild(btn);
-      });
-    }
-
-    // Reconstruit la zone "Taille" (puces normales, ou un champ de saisie
-    // libre pour "Forme spécial"), et masque Fenêtre — elle n'a pas de
-    // sens pour une forme sur-mesure et restera cachée pour ce type même
-    // une fois les étapes précédentes passées.
-    function renderP1Taille(type){
+    // Zone "Taille" : puces normales, ou un champ de saisie libre pour
+    // "Forme spécial". L'input libre n'est créé qu'une fois (jamais
+    // recréé tant qu'on reste sur ce type) pour ne pas couper le client
+    // en plein milieu de sa frappe à chaque nouveau rendu.
+    function renderP1Taille(special){
       var wrap = document.getElementById('p1_taille_wrap');
       if (!wrap) return;
 
-      var isSpecial = (POCHON_TAILLES[type] === null);
-
-      if (isSpecial){
-        wrap.innerHTML =
-          '<input type="text" id="p1_taille" class="taille-libre" ' +
-          'placeholder="Décris la taille souhaitée (ex : 10×15 cm)">';
-        // Pas de puce à cliquer ici : on passe direct à l'étape suivante.
-        revealP1Group('p1_finition_group');
+      if (special){
+        var existing = document.getElementById('p1_taille_input');
+        if (!existing){
+          wrap.innerHTML =
+            '<input type="text" id="p1_taille_input" class="taille-libre" ' +
+            'placeholder="Décris la taille souhaitée (ex : 10×15 cm)">';
+          document.getElementById('p1_taille_input').addEventListener('input', function(){
+            p1State.taille = this.value;
+          });
+        }
       } else {
-        var html = '<div class="opt-chip-row" id="p1_taille_row">';
-        POCHON_TAILLES[type].forEach(function(taille){
-          html += '<button type="button" class="opt-chip" data-value="' + taille + '">' + taille + '</button>';
-        });
-        html += '</div><input type="hidden" id="p1_taille" value="">';
-        wrap.innerHTML = html;
-        initChipGroup(document.getElementById('p1_taille_row'), 'p1_taille', function(){
-          // Reset d'abord (efface finition/impression/fenêtre/quantité,
-          // qui ne correspondent plus forcément à ce nouveau choix), puis
-          // on ne réaffiche que l'étape immédiatement suivante.
-          resetP1AfterTaille();
-          revealP1Group('p1_finition_group');
+        wrap.innerHTML = '<div class="opt-chip-row" id="p1_taille_row"></div>';
+        renderP1ChipRow('p1_taille_row', POCHON_TAILLES[p1State.type], p1State.taille, function(v){
+          setP1Field('taille', v);
         });
       }
-
-      var fenetreGroup = document.getElementById('p1_fenetre_group');
-      if (isSpecial && fenetreGroup) fenetreGroup.classList.add('hidden');
     }
 
-    // Reconstruit la zone "Quantité" : paliers avec prix réels pour
-    // Cali bag / Sachet plat (dépend de la taille choisie), ou un champ
-    // de saisie libre (minimum 1000, sur devis) pour Forme spécial.
-    function renderP1Quantite(){
+    // Zone "Quantité" : paliers avec prix réels (dépend du Type+Taille),
+    // ou un champ de saisie libre (minimum 1000, sur devis) pour Forme
+    // spéciale — même logique de non-recréation que la Taille libre.
+    function renderP1Quantite(special){
       var wrap = document.getElementById('p1_quantite_wrap');
-      var pricePanel = document.getElementById('p1_price_panel');
       if (!wrap) return;
 
-      var type = document.getElementById('p1_type').value;
-      var isSpecial = (type === 'Forme spécial');
-
-      if (isSpecial){
-        wrap.innerHTML =
-          '<input type="number" id="p1_quantite" class="taille-libre" min="1000" step="1" ' +
-          'placeholder="Quantité souhaitée (minimum 1000 pièces)">';
-        wrap.setAttribute('data-built-for', type + '|');
-        if (pricePanel) pricePanel.classList.add('hidden');
+      if (special){
+        var existing = document.getElementById('p1_quantite_input');
+        if (!existing){
+          wrap.innerHTML =
+            '<input type="number" id="p1_quantite_input" class="taille-libre" min="1000" step="1" ' +
+            'placeholder="Quantité souhaitée (minimum 1000 pièces)">';
+          document.getElementById('p1_quantite_input').addEventListener('input', function(){
+            p1State.quantite = this.value;
+          });
+        }
         return;
       }
 
-      var taille = document.getElementById('p1_taille').value;
-      var tiers  = (POCHON_PRICING[type] && POCHON_PRICING[type][taille]) || {};
-      var qtys   = Object.keys(tiers).map(Number).sort(function(a,b){ return a - b; });
+      wrap.innerHTML = '<div class="opt-chip-row" id="p1_quantite_row"></div>';
+      var tiers = (POCHON_PRICING[p1State.type] && POCHON_PRICING[p1State.type][p1State.taille]) || {};
+      var qtys  = Object.keys(tiers).map(Number).sort(function(a,b){ return a - b; });
+      var options = qtys.map(function(q){ return String(q); });
+      options.push('+ sur devis');
 
-      var html = '<div class="opt-chip-row" id="p1_quantite_row">';
-      qtys.forEach(function(q){
-        html += '<button type="button" class="opt-chip" data-value="' + q + '" data-price="' + tiers[q] + '">' + q + '</button>';
+      renderP1ChipRow('p1_quantite_row', options, p1State.quantite, function(v){
+        setP1Field('quantite', v);
       });
-      html += '<button type="button" class="opt-chip" data-value="+ sur devis" data-price="0">+ sur devis</button>';
-      html += '</div><input type="hidden" id="p1_quantite" value="">';
-      wrap.innerHTML = html;
-      // Marque pour quel Type+Taille ces puces ont été construites, pour
-      // qu'Impression sache s'il faut les reconstruire (taille changée)
-      // ou juste recalculer le prix (simple aller-retour sur Impression).
-      wrap.setAttribute('data-built-for', type + '|' + taille);
+    }
 
-      if (pricePanel) pricePanel.classList.add('hidden');
+    // Le seul endroit qui décide de ce qui est affiché/caché : toujours
+    // dérivé de p1State, jamais d'un historique de clics à se rappeler.
+    function renderP1(){
+      var special = (p1State.type === 'Forme spécial');
 
-      initChipGroup(document.getElementById('p1_quantite_row'), 'p1_quantite', function(){
-        updateP1PricePanel();
+      renderP1ChipRow('p1_type_row', Object.keys(POCHON_TAILLES), p1State.type, function(v){
+        setP1Field('type', v);
       });
+
+      if (!p1State.type){
+        hideP1Group('p1_taille_group');
+      } else {
+        revealP1Group('p1_taille_group');
+        renderP1Taille(special);
+      }
+
+      // Pour "Forme spécial", la taille est un champ libre en texte : il
+      // n'y a pas de "clic qui confirme" comme pour une puce, donc on
+      // considère cette étape franchie dès que le type est choisi (pas
+      // besoin d'attendre que le client tape quelque chose pour révéler
+      // la suite).
+      var tailleDone = special ? true : !!p1State.taille;
+      if (!tailleDone){
+        hideP1Group('p1_finition_group');
+      } else {
+        revealP1Group('p1_finition_group');
+        renderP1ChipRow('p1_finition_row', P1_FINITIONS, p1State.finition, function(v){
+          setP1Field('finition', v);
+        });
+      }
+
+      if (!p1State.finition){
+        hideP1Group('p1_impression_group');
+      } else {
+        revealP1Group('p1_impression_group');
+        renderP1ChipRow('p1_impression_row', P1_IMPRESSIONS, p1State.impression, function(v){
+          setP1Field('impression', v);
+        });
+      }
+
+      if (special || !p1State.impression){
+        hideP1Group('p1_fenetre_group');
+      } else {
+        revealP1Group('p1_fenetre_group');
+        renderP1ChipRow('p1_fenetre_row', P1_FENETRES, p1State.fenetre, function(v){
+          setP1Field('fenetre', v);
+        });
+      }
+
+      var readyForQuantite = p1State.impression && (special || p1State.fenetre);
+      if (!readyForQuantite){
+        hideP1Group('p1_quantite_group');
+      } else {
+        revealP1Group('p1_quantite_group');
+        renderP1Quantite(special);
+      }
+
+      updateP1PricePanel();
     }
 
     // Remet la fiche Pochon à zéro : appelé chaque fois qu'on quitte la
@@ -4553,23 +4527,12 @@ function initProductSearch(){
     // qu'elle reparte de zéro à la prochaine ouverture plutôt que de
     // garder les choix (et l'avancement) de la visite précédente.
     function resetP1Form(){
-      var typeRow = document.getElementById('p1_type_row');
-      if (typeRow) typeRow.querySelectorAll('.opt-chip').forEach(function(c){ c.classList.remove('active'); });
+      p1State = { type:'', taille:'', finition:'', impression:'', fenetre:'', quantite:'' };
+      renderP1();
+    }
 
-      var hiddenType = document.getElementById('p1_type');
-      if (hiddenType) hiddenType.value = '';
-
-      hideP1Group('p1_taille_group');
-      var tailleWrap = document.getElementById('p1_taille_wrap');
-      if (tailleWrap) tailleWrap.innerHTML = '<div class="opt-chip-row" id="p1_taille_row"></div>';
-
-      resetP1AfterTaille();
-
-      // En quittant complètement la fiche (pas juste en changeant un
-      // choix), on vide aussi le contenu de la quantité, pas juste sa
-      // sélection, pour repartir sur une page vraiment vierge.
-      var quantiteWrap = document.getElementById('p1_quantite_wrap');
-      if (quantiteWrap) quantiteWrap.innerHTML = '<div class="opt-chip-row" id="p1_quantite_row"></div>';
+    function initP1Selector(){
+      renderP1();
     }
 
     /* ---- P2 : Forme -> Taille (2 niveaux) + panneau de prix ---- */
@@ -4751,35 +4714,26 @@ function initProductSearch(){
     // P1 : Pochons
     function addP1(btn){
       try{
-        var type = document.getElementById('p1_type').value;
-        if (!type){
+        // Tout se lit directement dans p1State — plus aucune interrogation
+        // du DOM (ni ordre à respecter pour être sûr qu'un champ existe).
+        if (!p1State.type){
           toast('Choisis d’abord un type de pochon.');
           return;
         }
-        var isSpecial  = (type === 'Forme spécial');
-        var taille     = (document.getElementById('p1_taille').value || '').trim();
-        var finition   = document.getElementById('p1_finition').value;
-        var impression = document.getElementById('p1_impression').value;
-        var fenetreEl  = document.getElementById('p1_fenetre');
-        var fenetre    = isSpecial ? undefined : (fenetreEl ? fenetreEl.value : '');
+        var isSpecial = (p1State.type === 'Forme spécial');
+        var type       = p1State.type;
+        var taille     = (p1State.taille || '').trim();
+        var finition   = p1State.finition;
+        var impression = p1State.impression;
+        var fenetre    = isSpecial ? undefined : p1State.fenetre;
         // Plus de stepper "combien de lots" séparé : un clic sur Ajouter
         // ajoute 1 unité de la config choisie (fusionne si déjà présente).
         var qty = 1;
         var unit = 0;
-        var pack; // lu plus bas, une fois sûr que l'étape Quantité existe
+        var pack;
 
-        // Chaque étape se choisit une à une : on vérifie qu'aucune n'a
-        // été sautée avant d'ajouter, plutôt que d'accepter un article
-        // à moitié configuré. #p1_quantite n'est créé par renderP1Quantite()
-        // qu'au moment où Impression est choisi — tant que ces vérifications
-        // n'ont pas toutes réussi, il ne faut pas essayer de le lire, sinon
-        // ça plante en silence si l'étape n'a pas encore été atteinte.
-        if (isSpecial && !taille){
-          toast('Précise la taille souhaitée pour la forme spéciale.');
-          return;
-        }
-        if (!isSpecial && !taille){
-          toast('Choisis une taille.');
+        if (!taille){
+          toast(isSpecial ? 'Précise la taille souhaitée pour la forme spéciale.' : 'Choisis une taille.');
           return;
         }
         if (!finition){
@@ -4795,41 +4749,28 @@ function initProductSearch(){
           return;
         }
 
-        var quantiteEl = document.getElementById('p1_quantite');
-
         if (isSpecial){
           // Forme spéciale : toujours sur devis, quantité tapée à la main,
           // minimum 1000 pièces (pas de palier "+ sur devis" ici, elle
           // l'est déjà de fait).
-          var qtyWanted = parseInt((quantiteEl ? quantiteEl.value : '') || '0', 10);
+          var qtyWanted = parseInt(p1State.quantite || '0', 10);
           if (!qtyWanted || qtyWanted < 1000){
             toast('Quantité minimum 1000 pièces pour une forme spéciale.');
             return;
           }
           pack = String(qtyWanted);
         } else {
-          pack = quantiteEl ? quantiteEl.value : '';
-          if (!pack){
+          if (!p1State.quantite){
             toast('Choisis une quantité (pack).');
             return;
           }
-          // Prix réel du palier choisi, lu sur la puce active (0 = sur devis)
-          // + suppléments impression/fenêtre s'ils ont été choisis — sinon
-          // le prix affiché/ajouté ignorait ces options.
-          var activeQtyChip = document.querySelector('#p1_quantite_row .opt-chip.active');
-          var basePrice = activeQtyChip ? (parseFloat(activeQtyChip.getAttribute('data-price') || '0') || 0) : 0;
-
-          if (basePrice > 0){
-            var impChip = document.querySelector('#p1_impression_row .opt-chip.active');
-            var impSurcharge = impChip ? (parseFloat(impChip.getAttribute('data-surcharge') || '0') || 0) : 0;
-
-            var fenChip = document.querySelector('#p1_fenetre_row .opt-chip.active');
-            var fenSurcharge = fenChip ? (parseFloat(fenChip.getAttribute('data-surcharge') || '0') || 0) : 0;
-
-            unit = basePrice + impSurcharge + fenSurcharge;
-          } else {
-            unit = 0;
-          }
+          pack = p1State.quantite;
+          // Prix réel du palier choisi + suppléments impression/fenêtre
+          // s'ils ont été choisis — sinon le prix ajouté ignorait ces options.
+          var basePrice = p1BasePrice();
+          unit = basePrice > 0
+            ? basePrice + p1Surcharge(P1_IMPRESSIONS, impression) + p1Surcharge(P1_FENETRES, fenetre)
+            : 0;
         }
 
         var merged = false;
