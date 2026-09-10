@@ -4315,7 +4315,15 @@ function initProductSearch(){
       });
       initChipGroup(document.getElementById('p1_impression_row'), 'p1_impression', function(){
         var type = document.getElementById('p1_type').value;
-        renderP1Quantite();
+        // Ne (re)construit la quantité que si elle n'existe pas encore :
+        // sinon, revenir cocher "multi designs" après avoir déjà choisi
+        // une quantité effaçait cette sélection au lieu de juste
+        // recalculer le prix avec le nouveau supplément.
+        var qtyRow = document.getElementById('p1_quantite_row');
+        if (!qtyRow || !qtyRow.children.length){
+          renderP1Quantite();
+        }
+        updateP1PricePanel();
         if (type === 'Forme spécial'){
           // Pas de fenêtre pour une forme sur-mesure : on saute direct
           // à la quantité (déjà construite en saisie libre juste au-dessus).
@@ -4417,6 +4425,14 @@ function initProductSearch(){
         wrap.innerHTML = html;
         initChipGroup(document.getElementById('p1_taille_row'), 'p1_taille', function(){
           revealP1Group('p1_finition_group');
+          // La taille change les paliers/prix de quantité : si elle avait
+          // déjà été construite pour une taille précédente (ex. le client
+          // revient changer d'avis), il faut la refaire pour la nouvelle
+          // taille — sinon les prix affichés restaient ceux de la
+          // première taille cliquée, quelle que soit la taille choisie
+          // ensuite.
+          renderP1Quantite();
+          updateP1PricePanel();
         });
       }
 
