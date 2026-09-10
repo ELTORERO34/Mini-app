@@ -3063,8 +3063,8 @@ body[data-theme="night"] .product-card {
     <div class="opt-group hidden" id="p1_impression_group">
       <div class="opt-group-label">Impression</div>
       <div class="opt-chip-row" id="p1_impression_row">
-        <button type="button" class="opt-chip" data-value="1 design">1 design</button>
-        <button type="button" class="opt-chip" data-value="multi designs +40€">multi designs<span class="surcharge">+40€</span></button>
+        <button type="button" class="opt-chip" data-value="1 design" data-surcharge="0">1 design</button>
+        <button type="button" class="opt-chip" data-value="multi designs +40€" data-surcharge="40">multi designs<span class="surcharge">+40€</span></button>
       </div>
       <input type="hidden" id="p1_impression" value="">
     </div>
@@ -3072,8 +3072,8 @@ body[data-theme="night"] .product-card {
     <div class="opt-group hidden" id="p1_fenetre_group">
       <div class="opt-group-label">Fenêtre</div>
       <div class="opt-chip-row" id="p1_fenetre_row">
-        <button type="button" class="opt-chip" data-value="sans fenêtre">sans fenêtre</button>
-        <button type="button" class="opt-chip" data-value="avec fenêtre +40€">avec fenêtre<span class="surcharge">+40€</span></button>
+        <button type="button" class="opt-chip" data-value="sans fenêtre" data-surcharge="0">sans fenêtre</button>
+        <button type="button" class="opt-chip" data-value="avec fenêtre +40€" data-surcharge="40">avec fenêtre<span class="surcharge">+40€</span></button>
       </div>
       <input type="hidden" id="p1_fenetre" value="">
     </div>
@@ -4326,7 +4326,46 @@ function initProductSearch(){
       });
       initChipGroup(document.getElementById('p1_fenetre_row'), 'p1_fenetre', function(){
         revealP1Group('p1_quantite_group');
+        // Si le client revient changer la fenêtre après avoir déjà
+        // choisi une quantité, le prix affiché doit suivre.
+        updateP1PricePanel();
       });
+    }
+
+    // Additionne le palier de quantité choisi + les suppléments Impression
+    // et Fenêtre actuellement sélectionnés, et met à jour le panneau de
+    // prix en conséquence. Appelée à chaque fois qu'un de ces 3 choix
+    // change, pas seulement au clic sur la quantité.
+    function updateP1PricePanel(){
+      var pricePanel = document.getElementById('p1_price_panel');
+      if (!pricePanel) return;
+
+      var qtyChip = document.querySelector('#p1_quantite_row .opt-chip.active');
+      if (!qtyChip){
+        pricePanel.classList.add('hidden');
+        return;
+      }
+
+      var basePrice = parseFloat(qtyChip.getAttribute('data-price') || '0') || 0;
+
+      var formatEl = document.getElementById('p1_price_format');
+      var valueEl  = document.getElementById('p1_price_value');
+      if (formatEl) formatEl.textContent = qtyChip.getAttribute('data-value') + ' pièces';
+
+      if (basePrice <= 0){
+        if (valueEl) valueEl.textContent = 'Sur devis';
+        pricePanel.classList.remove('hidden');
+        return;
+      }
+
+      var impChip = document.querySelector('#p1_impression_row .opt-chip.active');
+      var impSurcharge = impChip ? (parseFloat(impChip.getAttribute('data-surcharge') || '0') || 0) : 0;
+
+      var fenChip = document.querySelector('#p1_fenetre_row .opt-chip.active');
+      var fenSurcharge = fenChip ? (parseFloat(fenChip.getAttribute('data-surcharge') || '0') || 0) : 0;
+
+      if (valueEl) valueEl.textContent = euro(basePrice + impSurcharge + fenSurcharge);
+      pricePanel.classList.remove('hidden');
     }
 
     function initP1TypeSelector(){
@@ -4418,13 +4457,8 @@ function initProductSearch(){
 
       if (pricePanel) pricePanel.classList.add('hidden');
 
-      initChipGroup(document.getElementById('p1_quantite_row'), 'p1_quantite', function(chip){
-        var price = parseFloat(chip.getAttribute('data-price') || '0') || 0;
-        var formatEl = document.getElementById('p1_price_format');
-        var valueEl  = document.getElementById('p1_price_value');
-        if (formatEl) formatEl.textContent = chip.getAttribute('data-value') + ' pièces';
-        if (valueEl)  valueEl.textContent = price > 0 ? euro(price) : 'Sur devis';
-        if (pricePanel) pricePanel.classList.remove('hidden');
+      initChipGroup(document.getElementById('p1_quantite_row'), 'p1_quantite', function(){
+        updateP1PricePanel();
       });
     }
 
@@ -4706,9 +4740,23 @@ function initProductSearch(){
             toast('Choisis une quantité (pack).');
             return;
           }
-          // Prix réel du palier choisi, lu sur la puce active (0 = sur devis).
+          // Prix réel du palier choisi, lu sur la puce active (0 = sur devis)
+          // + suppléments impression/fenêtre s'ils ont été choisis — sinon
+          // le prix affiché/ajouté ignorait ces options.
           var activeQtyChip = document.querySelector('#p1_quantite_row .opt-chip.active');
-          unit = activeQtyChip ? (parseFloat(activeQtyChip.getAttribute('data-price') || '0') || 0) : 0;
+          var basePrice = activeQtyChip ? (parseFloat(activeQtyChip.getAttribute('data-price') || '0') || 0) : 0;
+
+          if (basePrice > 0){
+            var impChip = document.querySelector('#p1_impression_row .opt-chip.active');
+            var impSurcharge = impChip ? (parseFloat(impChip.getAttribute('data-surcharge') || '0') || 0) : 0;
+
+            var fenChip = document.querySelector('#p1_fenetre_row .opt-chip.active');
+            var fenSurcharge = fenChip ? (parseFloat(fenChip.getAttribute('data-surcharge') || '0') || 0) : 0;
+
+            unit = basePrice + impSurcharge + fenSurcharge;
+          } else {
+            unit = 0;
+          }
         }
 
         var merged = false;
