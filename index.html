@@ -4361,18 +4361,36 @@ function initProductSearch(){
       initP1TypeSelector();
 
       // Chaque étape ne fait qu'apparaître la suivante — un choix à la
-      // fois, jamais tout d'un coup — et remet à zéro tout ce qui suit.
+      // fois, jamais tout d'un coup.
+      //
+      // Finition/Impression/Fenêtre n'affectent PAS les paliers de
+      // quantité disponibles (contrairement au Type et à la Taille) —
+      // Impression/Fenêtre ne font qu'ajouter un supplément sur le palier
+      // déjà choisi. Les changer ne doit donc jamais désélectionner une
+      // quantité déjà choisie : juste recalculer le prix affiché.
       initChipGroup(document.getElementById('p1_finition_row'), 'p1_finition', function(){
-        resetP1AfterFinition();
         revealP1Group('p1_impression_group');
       });
       initChipGroup(document.getElementById('p1_impression_row'), 'p1_impression', function(){
-        resetP1AfterImpression();
         var type = document.getElementById('p1_type').value;
-        // Ne dépend que du Type + de la Taille (déjà fixés à ce stade) :
-        // se reconstruit donc toujours correctement, peu importe combien
-        // de fois on revient changer l'impression.
-        renderP1Quantite();
+        var isSpecial = (type === 'Forme spécial');
+        var tailleEl = document.getElementById('p1_taille');
+        var taille = isSpecial ? '' : (tailleEl ? tailleEl.value : '');
+        var quantiteWrap = document.getElementById('p1_quantite_wrap');
+        var currentKey = type + '|' + taille;
+        var builtKey = quantiteWrap ? quantiteWrap.getAttribute('data-built-for') : null;
+
+        if (builtKey !== currentKey){
+          // Jamais construite pour ce Type+Taille (première fois ici, ou
+          // la taille a changé depuis) : on (re)construit avec les bons
+          // paliers/prix.
+          renderP1Quantite();
+        } else {
+          // Déjà construite pour ce Type+Taille exact (simple aller-retour
+          // sur Impression) : on garde la quantité déjà choisie, on
+          // recalcule juste le prix avec le nouveau supplément.
+          updateP1PricePanel();
+        }
         if (type === 'Forme spécial'){
           // Pas de fenêtre pour une forme sur-mesure : on saute direct
           // à la quantité (déjà construite en saisie libre juste au-dessus).
@@ -4382,8 +4400,8 @@ function initProductSearch(){
         }
       });
       initChipGroup(document.getElementById('p1_fenetre_row'), 'p1_fenetre', function(){
-        resetP1AfterFenetre();
         revealP1Group('p1_quantite_group');
+        updateP1PricePanel();
       });
     }
 
@@ -4502,6 +4520,7 @@ function initProductSearch(){
         wrap.innerHTML =
           '<input type="number" id="p1_quantite" class="taille-libre" min="1000" step="1" ' +
           'placeholder="Quantité souhaitée (minimum 1000 pièces)">';
+        wrap.setAttribute('data-built-for', type + '|');
         if (pricePanel) pricePanel.classList.add('hidden');
         return;
       }
@@ -4517,6 +4536,10 @@ function initProductSearch(){
       html += '<button type="button" class="opt-chip" data-value="+ sur devis" data-price="0">+ sur devis</button>';
       html += '</div><input type="hidden" id="p1_quantite" value="">';
       wrap.innerHTML = html;
+      // Marque pour quel Type+Taille ces puces ont été construites, pour
+      // qu'Impression sache s'il faut les reconstruire (taille changée)
+      // ou juste recalculer le prix (simple aller-retour sur Impression).
+      wrap.setAttribute('data-built-for', type + '|' + taille);
 
       if (pricePanel) pricePanel.classList.add('hidden');
 
