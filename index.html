@@ -3078,17 +3078,23 @@ body[data-theme="night"] .product-card {
       <input type="hidden" id="p1_fenetre" value="">
     </div>
 
-    <!-- Dernière étape : la quantité (pack). -->
+    <!-- Dernière étape : la quantité (pack). Les paliers et les prix
+         dépendent de la taille choisie, généré en JS (renderP1Quantite). -->
     <div class="opt-group hidden" id="p1_quantite_group">
       <div class="opt-group-label">Quantité (pack)</div>
-      <div class="opt-chip-row" id="p1_quantite_row">
-        <button type="button" class="opt-chip" data-value="500">500</button>
-        <button type="button" class="opt-chip" data-value="1000">1000</button>
-        <button type="button" class="opt-chip" data-value="2000">2000</button>
-        <button type="button" class="opt-chip" data-value="5000">5000</button>
-        <button type="button" class="opt-chip" data-value="+ sur devis">+ sur devis</button>
+      <div id="p1_quantite_wrap">
+        <div class="opt-chip-row" id="p1_quantite_row"></div>
       </div>
-      <input type="hidden" id="p1_quantite" value="">
+
+      <div class="price-panel hidden" id="p1_price_panel">
+        <div>
+          <span class="price-panel-label">Palier sélectionné</span>
+          <div class="price-panel-format" id="p1_price_format">—</div>
+        </div>
+        <div class="price-panel-amounts">
+          <span class="price-panel-value" id="p1_price_value">—</span>
+        </div>
+      </div>
     </div>
 
     <button class="btn primary btn-add-full" type="button" onclick="addP1(this)">Ajouter</button>
@@ -4271,12 +4277,27 @@ function initProductSearch(){
     // type de pochon choisi. Prix pas encore définis, donc pas de panneau
     // de prix ici (produit toujours "sur devis" pour l'instant).
     // "Forme spécial" (valeur null) : pas de liste de tailles fixe, le
-    // client décrit lui-même ce qu'il veut — et ça n'a pas de sens de lui
-    // proposer un pack de quantité fixe ni l'option fenêtre dans ce cas.
+    // client décrit lui-même ce qu'il veut : pas de tailles fixes, pas de
+    // prix (sur devis direct), donc plus loin pas de fenêtre non plus et
+    // une quantité en saisie libre (minimum 1000) au lieu de paliers.
     var POCHON_TAILLES = {
-      "Cali bag":      ["8×11 cm", "8×13 cm"],
-      "Sachet plat":   ["7×10cm"],
+      "Cali bag":      ["8×13 cm", "10×15 cm"],
+      "Sachet plat":   ["6×8 cm", "7×10 cm"],
       "Forme spécial": null
+    };
+
+    // Prix par palier de quantité, selon le type ET la taille (les
+    // paliers disponibles ne sont pas les mêmes pour toutes les tailles :
+    // ex. 8×13cm et 7×10cm n'ont pas de palier 3000).
+    var POCHON_PRICING = {
+      "Cali bag": {
+        "8×13 cm":  { 500: 400, 1000: 500, 2000: 680, 5000: 1100 },
+        "10×15 cm": { 500: 430, 1000: 500, 2000: 700, 3000: 800, 5000: 1200 }
+      },
+      "Sachet plat": {
+        "6×8 cm":  { 500: 380, 1000: 440, 2000: 500, 3000: 620, 5000: 850 },
+        "7×10 cm": { 500: 380, 1000: 440, 2000: 500, 5000: 900 }
+      }
     };
 
     function revealP1Group(id){
@@ -4294,9 +4315,10 @@ function initProductSearch(){
       });
       initChipGroup(document.getElementById('p1_impression_row'), 'p1_impression', function(){
         var type = document.getElementById('p1_type').value;
+        renderP1Quantite();
         if (type === 'Forme spécial'){
           // Pas de fenêtre pour une forme sur-mesure : on saute direct
-          // à la quantité (qui de toute façon reste cachée pour ce type).
+          // à la quantité (déjà construite en saisie libre juste au-dessus).
           revealP1Group('p1_quantite_group');
         } else {
           revealP1Group('p1_fenetre_group');
@@ -4305,7 +4327,6 @@ function initProductSearch(){
       initChipGroup(document.getElementById('p1_fenetre_row'), 'p1_fenetre', function(){
         revealP1Group('p1_quantite_group');
       });
-      initChipGroup(document.getElementById('p1_quantite_row'), 'p1_quantite');
     }
 
     function initP1TypeSelector(){
@@ -4333,9 +4354,9 @@ function initProductSearch(){
     }
 
     // Reconstruit la zone "Taille" (puces normales, ou un champ de saisie
-    // libre pour "Forme spécial"), et masque Fenêtre + Quantité (pack) —
-    // elles n'ont pas de sens pour une forme sur-mesure et resteront
-    // cachées pour ce type même une fois les étapes précédentes passées.
+    // libre pour "Forme spécial"), et masque Fenêtre — elle n'a pas de
+    // sens pour une forme sur-mesure et restera cachée pour ce type même
+    // une fois les étapes précédentes passées.
     function renderP1Taille(type){
       var wrap = document.getElementById('p1_taille_wrap');
       if (!wrap) return;
@@ -4360,12 +4381,51 @@ function initProductSearch(){
         });
       }
 
-      var fenetreGroup  = document.getElementById('p1_fenetre_group');
-      var quantiteGroup = document.getElementById('p1_quantite_group');
+      var fenetreGroup = document.getElementById('p1_fenetre_group');
+      if (isSpecial && fenetreGroup) fenetreGroup.classList.add('hidden');
+    }
+
+    // Reconstruit la zone "Quantité" : paliers avec prix réels pour
+    // Cali bag / Sachet plat (dépend de la taille choisie), ou un champ
+    // de saisie libre (minimum 1000, sur devis) pour Forme spécial.
+    function renderP1Quantite(){
+      var wrap = document.getElementById('p1_quantite_wrap');
+      var pricePanel = document.getElementById('p1_price_panel');
+      if (!wrap) return;
+
+      var type = document.getElementById('p1_type').value;
+      var isSpecial = (type === 'Forme spécial');
+
       if (isSpecial){
-        if (fenetreGroup)  fenetreGroup.classList.add('hidden');
-        if (quantiteGroup) quantiteGroup.classList.add('hidden');
+        wrap.innerHTML =
+          '<input type="number" id="p1_quantite" class="taille-libre" min="1000" step="1" ' +
+          'placeholder="Quantité souhaitée (minimum 1000 pièces)">';
+        if (pricePanel) pricePanel.classList.add('hidden');
+        return;
       }
+
+      var taille = document.getElementById('p1_taille').value;
+      var tiers  = (POCHON_PRICING[type] && POCHON_PRICING[type][taille]) || {};
+      var qtys   = Object.keys(tiers).map(Number).sort(function(a,b){ return a - b; });
+
+      var html = '<div class="opt-chip-row" id="p1_quantite_row">';
+      qtys.forEach(function(q){
+        html += '<button type="button" class="opt-chip" data-value="' + q + '" data-price="' + tiers[q] + '">' + q + '</button>';
+      });
+      html += '<button type="button" class="opt-chip" data-value="+ sur devis" data-price="0">+ sur devis</button>';
+      html += '</div><input type="hidden" id="p1_quantite" value="">';
+      wrap.innerHTML = html;
+
+      if (pricePanel) pricePanel.classList.add('hidden');
+
+      initChipGroup(document.getElementById('p1_quantite_row'), 'p1_quantite', function(chip){
+        var price = parseFloat(chip.getAttribute('data-price') || '0') || 0;
+        var formatEl = document.getElementById('p1_price_format');
+        var valueEl  = document.getElementById('p1_price_value');
+        if (formatEl) formatEl.textContent = chip.getAttribute('data-value') + ' pièces';
+        if (valueEl)  valueEl.textContent = price > 0 ? euro(price) : 'Sur devis';
+        if (pricePanel) pricePanel.classList.remove('hidden');
+      });
     }
 
     // Remet la fiche Pochon à zéro : appelé chaque fois qu'on quitte la
@@ -4385,18 +4445,24 @@ function initProductSearch(){
           if (el) el.classList.add('hidden');
         });
 
-      ['p1_finition_row','p1_impression_row','p1_fenetre_row','p1_quantite_row'].forEach(function(rowId){
+      ['p1_finition_row','p1_impression_row','p1_fenetre_row'].forEach(function(rowId){
         var row = document.getElementById(rowId);
         if (row) row.querySelectorAll('.opt-chip').forEach(function(c){ c.classList.remove('active'); });
       });
 
-      ['p1_finition','p1_impression','p1_fenetre','p1_quantite'].forEach(function(id){
+      ['p1_finition','p1_impression','p1_fenetre'].forEach(function(id){
         var el = document.getElementById(id);
         if (el) el.value = '';
       });
 
       var tailleWrap = document.getElementById('p1_taille_wrap');
       if (tailleWrap) tailleWrap.innerHTML = '<div class="opt-chip-row" id="p1_taille_row"></div>';
+
+      var quantiteWrap = document.getElementById('p1_quantite_wrap');
+      if (quantiteWrap) quantiteWrap.innerHTML = '<div class="opt-chip-row" id="p1_quantite_row"></div>';
+
+      var pricePanel = document.getElementById('p1_price_panel');
+      if (pricePanel) pricePanel.classList.add('hidden');
     }
 
     /* ---- P2 : Forme -> Taille (2 niveaux) + panneau de prix ---- */
@@ -4587,18 +4653,20 @@ function initProductSearch(){
         var taille     = (document.getElementById('p1_taille').value || '').trim();
         var finition   = document.getElementById('p1_finition').value;
         var impression = document.getElementById('p1_impression').value;
-        // Pack et fenêtre n'ont pas de sens pour une forme sur-mesure :
-        // undefined (pas null) pour que la fusion d'articles identiques
-        // continue à bien fonctionner (undefined === undefined).
-        var pack       = isSpecial ? undefined : document.getElementById('p1_quantite').value;
-        var fenetre    = isSpecial ? undefined : document.getElementById('p1_fenetre').value;
+        var fenetreEl  = document.getElementById('p1_fenetre');
+        var fenetre    = isSpecial ? undefined : (fenetreEl ? fenetreEl.value : '');
         // Plus de stepper "combien de lots" séparé : un clic sur Ajouter
         // ajoute 1 unité de la config choisie (fusionne si déjà présente).
         var qty = 1;
+        var unit = 0;
+        var pack; // lu plus bas, une fois sûr que l'étape Quantité existe
 
         // Chaque étape se choisit une à une : on vérifie qu'aucune n'a
         // été sautée avant d'ajouter, plutôt que d'accepter un article
-        // à moitié configuré.
+        // à moitié configuré. #p1_quantite n'est créé par renderP1Quantite()
+        // qu'au moment où Impression est choisi — tant que ces vérifications
+        // n'ont pas toutes réussi, il ne faut pas essayer de le lire, sinon
+        // ça plante en silence si l'étape n'a pas encore été atteinte.
         if (isSpecial && !taille){
           toast('Précise la taille souhaitée pour la forme spéciale.');
           return;
@@ -4619,9 +4687,28 @@ function initProductSearch(){
           toast('Choisis une option fenêtre.');
           return;
         }
-        if (!isSpecial && !pack){
-          toast('Choisis une quantité (pack).');
-          return;
+
+        var quantiteEl = document.getElementById('p1_quantite');
+
+        if (isSpecial){
+          // Forme spéciale : toujours sur devis, quantité tapée à la main,
+          // minimum 1000 pièces (pas de palier "+ sur devis" ici, elle
+          // l'est déjà de fait).
+          var qtyWanted = parseInt((quantiteEl ? quantiteEl.value : '') || '0', 10);
+          if (!qtyWanted || qtyWanted < 1000){
+            toast('Quantité minimum 1000 pièces pour une forme spéciale.');
+            return;
+          }
+          pack = String(qtyWanted);
+        } else {
+          pack = quantiteEl ? quantiteEl.value : '';
+          if (!pack){
+            toast('Choisis une quantité (pack).');
+            return;
+          }
+          // Prix réel du palier choisi, lu sur la puce active (0 = sur devis).
+          var activeQtyChip = document.querySelector('#p1_quantite_row .opt-chip.active');
+          unit = activeQtyChip ? (parseFloat(activeQtyChip.getAttribute('data-price') || '0') || 0) : 0;
         }
 
         var merged = false;
@@ -4647,16 +4734,15 @@ function initProductSearch(){
             taille: taille,
             finition: finition,
             impression: impression,
-            minPrice: 0.8
+            quantitePack: pack
           };
           if (!isSpecial){
-            opts.quantitePack = pack;
             opts.fenetre = fenetre;
           }
           CART.push({
             title: 'Pochon personnalisé',
             qty: qty,
-            unit: 0,
+            unit: unit,
             opts: opts
           });
         }
